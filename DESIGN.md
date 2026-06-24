@@ -1,6 +1,6 @@
 ---
 name: Kipo Design System
-description: CFDI 4.0 e-invoicing and POS for Mexican freelancers and micro-businesses — the tool that liberates.
+description: CFDI 4.0 e-invoicing for Mexican freelancers and micro-businesses — the tool that liberates. Quotes and inventory management available for subscribers.
 colors:
   tomate-kipo: "#CE0D2F"
   sangria: "#9F0824"

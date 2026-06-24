@@ -12,7 +12,7 @@ product
 
 ## Product Purpose
 
-Kipo is a CFDI 4.0 e-invoicing and POS SaaS platform for the Mexican market. The design system (`@kipo/theme` + `@kipo/ui-react`) is the shared visual foundation between the marketing landing page and the web app — same tokens, same components, one identity.
+Kipo is a CFDI 4.0 e-invoicing SaaS platform for the Mexican market. Subscribers also get access to quotes and inventory management. The design system (`@kipo/theme` + `@kipo/ui-react`) is the shared visual foundation between the marketing landing page and the web app — same tokens, same components, one identity.
 
 Success looks like this: a freelancer can issue a CFDI invoice in under 90 seconds without reading a manual, and the landing converts visitors into users because the product looks trustworthy from the first scroll.
 

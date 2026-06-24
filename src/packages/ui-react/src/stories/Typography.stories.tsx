@@ -13,7 +13,6 @@ export const Typography: Story = {
   render: () => (
     <DocPage category="Type">
 
-      {/* ── Body & UI — Inter ── */}
       <DocSection
         title="Body & UI — Inter"
         subtitle="Interface copy, high legibility on mobile"
@@ -57,7 +56,6 @@ export const Typography: Story = {
         </div>
       </DocSection>
 
-      {/* ── Display — Plus Jakarta Sans ── */}
       <DocSection
         title="Display — Plus Jakarta Sans"
         subtitle="Headings & hero titles, bold geometric"
@@ -89,7 +87,6 @@ export const Typography: Story = {
         </div>
       </DocSection>
 
-      {/* ── Financial — Geist Mono ── */}
       <DocSection
         title="Financial — Geist Mono"
         subtitle="Amounts, RFC, folios, tax tables — tabular"
@@ -145,7 +142,6 @@ export const Typography: Story = {
         </div>
       </DocSection>
 
-      {/* ── Type Scale ── */}
       <DocSection
         title="Type Scale"
         subtitle="Display → caption, with role + size"
