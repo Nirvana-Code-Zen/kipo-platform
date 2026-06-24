@@ -8,12 +8,12 @@ export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
 }
 
 const tones = {
-  neutral: { fg: 'var(--text-body)',      bg: 'var(--kipo-gray-100)',    solidBg: 'var(--kipo-gray-700)' },
-  brand:   { fg: 'var(--kipo-plum)',      bg: 'var(--kipo-magenta-50)',  solidBg: 'var(--kipo-plum)' },
+  neutral: { fg: 'var(--text-body)',      bg: 'var(--kipo-cream-200)',   solidBg: 'var(--kipo-cream-600)' },
+  brand:   { fg: 'var(--kipo-red-dark)',  bg: 'var(--kipo-red-50)',      solidBg: 'var(--kipo-red-dark)' },
   success: { fg: '#0E6B47',               bg: 'var(--kipo-success-bg)',  solidBg: 'var(--kipo-success)' },
   warning: { fg: '#8A5A06',               bg: 'var(--kipo-warning-bg)',  solidBg: 'var(--kipo-warning)' },
-  danger:  { fg: '#A11E32',               bg: 'var(--kipo-danger-bg)',   solidBg: 'var(--kipo-danger)' },
-  info:    { fg: '#1C4FA0',               bg: 'var(--kipo-info-bg)',     solidBg: 'var(--kipo-info)' },
+  danger:  { fg: 'var(--kipo-red-dark)',  bg: 'var(--kipo-danger-bg)',   solidBg: 'var(--kipo-danger)' },
+  info:    { fg: '#5B21B6',               bg: 'var(--kipo-info-bg)',     solidBg: 'var(--kipo-info)' },
 }
 
 export function Badge({ tone = 'neutral', solid = false, dot = false, children, style, ...rest }: BadgeProps) {

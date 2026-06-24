@@ -1,0 +1,147 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-06-23T00:00:00Z",
+  "title": "Design System: Kipo",
+  "extensions": {
+    "colorMeta": {
+      "tomate-kipo":       { "role": "primary",   "displayName": "Tomate Kipo",       "canonical": "#CE0D2F", "tonalRamp": ["#4A030C","#680413","#83061C","#9F0824","#B30A27","#CE0D2F","#E56370","#F9CBCB"] },
+      "sangria":           { "role": "primary",   "displayName": "Sangría",            "canonical": "#9F0824", "tonalRamp": ["#350208","#52040F","#6B0519","#820620","#9F0824","#B71430","#CE3050","#F0A0A8"] },
+      "verde-viral":       { "role": "secondary", "displayName": "Verde Viral",         "canonical": "#C6F542", "tonalRamp": ["#2A4000","#3E6000","#538000","#72A800","#93CC00","#B8E800","#C6F542","#E6FF9E"] },
+      "crema-base":        { "role": "neutral",   "displayName": "Crema Base",          "canonical": "#FAF8FB", "tonalRamp": ["#1A150F","#3D3530","#574F44","#7E7260","#A99E8C","#C8BCA8","#E4D9C9","#FAF8FB"] },
+      "tinta-900":         { "role": "neutral",   "displayName": "Tinta Noche",         "canonical": "#182230", "tonalRamp": ["#182230","#1F2C3A","#2B3A4B","#3A4C5F","#4C6075","#6A7F94","#9DB3C4","#D4E0E9"] },
+      "exito":             { "role": "status",    "displayName": "Éxito (Timbrada)",    "canonical": "#16A34A" },
+      "alerta":            { "role": "status",    "displayName": "Alerta (Pendiente)",  "canonical": "#CA8A04" },
+      "borrador":          { "role": "status",    "displayName": "Borrador",            "canonical": "#7C3AED" }
+    },
+    "typographyMeta": {
+      "display":  { "displayName": "Display",  "purpose": "Landing hero — one use per page, maximum." },
+      "headline": { "displayName": "Headline", "purpose": "H1 on internal screens. Strong declarations." },
+      "title":    { "displayName": "Title",    "purpose": "H2/H3, section headings, highlighted invoice names." },
+      "body":     { "displayName": "Body",     "purpose": "All body copy. Max 65ch. text-wrap: pretty on paragraphs." },
+      "label":    { "displayName": "Label",    "purpose": "Field labels, badges. Never decorative uppercase." },
+      "mono":     { "displayName": "Mono",     "purpose": "RFC, amounts, folios, stamp dates. REQUIRED for financial data." }
+    },
+    "shadows": [
+      { "name": "shadow-xs",     "value": "0 1px 2px rgba(26,21,15,0.06)",    "purpose": "Minimal separation. Resting inputs, badges." },
+      { "name": "shadow-sm",     "value": "0 2px 8px rgba(26,21,15,0.07)",    "purpose": "Default resting card surface." },
+      { "name": "shadow-md",     "value": "0 6px 20px rgba(26,21,15,0.09)",   "purpose": "Elevated card / interactive hover." },
+      { "name": "shadow-lg",     "value": "0 16px 40px rgba(26,21,15,0.12)",  "purpose": "Modals, sheets, overlays." },
+      { "name": "shadow-brand",  "value": "0 10px 30px rgba(206,13,47,0.28)", "purpose": "Primary button and featured StampCard. One per screen." },
+      { "name": "shadow-accent", "value": "0 8px 24px rgba(169,217,43,0.35)", "purpose": "Viral green accent button. One per screen." }
+    ],
+    "motion": [
+      { "name": "ease-out",    "value": "cubic-bezier(0.22, 1, 0.36, 1)",  "purpose": "Exits and entrances. Default for most transitions." },
+      { "name": "ease-in-out", "value": "cubic-bezier(0.65, 0, 0.35, 1)",  "purpose": "Symmetric state transitions (switch, tab)." },
+      { "name": "dur-fast",    "value": "120ms", "purpose": "Press/tap feedback, microinteractions." },
+      { "name": "dur-base",    "value": "200ms", "purpose": "Hover, focus, show/hide." },
+      { "name": "dur-slow",    "value": "320ms", "purpose": "Elements entering the viewport, page transitions." }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "640px" },
+      { "name": "md", "value": "768px" },
+      { "name": "lg", "value": "1024px" },
+      { "name": "xl", "value": "1200px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "Main action for the screen. Tomate → Sangría gradient. One visible primary per view.",
+      "html": "<button class=\"ds-btn-primary\">Timbrar factura</button>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; justify-content: center; gap: 8px; padding: 12px 20px; background: linear-gradient(135deg, #CE0D2F 0%, #9F0824 100%); color: #ffffff; border: none; border-radius: 12px; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 700; font-size: 15px; line-height: 1; letter-spacing: -0.01em; cursor: pointer; box-shadow: 0 10px 30px rgba(206,13,47,0.28); transition: transform 120ms cubic-bezier(0.22,1,0.36,1), filter 120ms cubic-bezier(0.22,1,0.36,1); } .ds-btn-primary:hover { filter: brightness(1.08); } .ds-btn-primary:active { transform: scale(0.97); } .ds-btn-primary:focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(206,13,47,0.4); } .ds-btn-primary:disabled { opacity: 0.45; cursor: not-allowed; }"
+    },
+    {
+      "name": "Accent Button (Verde Viral)",
+      "kind": "button",
+      "refersTo": "button-accent",
+      "description": "Conversion CTA. Neon green on dark ink. For 'Cobrar ahora', 'Crear cuenta'.",
+      "html": "<button class=\"ds-btn-accent\">Cobrar ahora</button>",
+      "css": ".ds-btn-accent { display: inline-flex; align-items: center; justify-content: center; padding: 12px 20px; background: #C6F542; color: #182230; border: none; border-radius: 12px; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 700; font-size: 15px; line-height: 1; letter-spacing: -0.01em; cursor: pointer; box-shadow: 0 8px 24px rgba(169,217,43,0.35); transition: transform 120ms cubic-bezier(0.22,1,0.36,1), filter 120ms cubic-bezier(0.22,1,0.36,1); } .ds-btn-accent:hover { filter: brightness(1.06); } .ds-btn-accent:active { transform: scale(0.97); } .ds-btn-accent:focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(198,245,66,0.45); }"
+    },
+    {
+      "name": "Secondary Button",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "Secondary action. White with warm-gray border. No visual prominence.",
+      "html": "<button class=\"ds-btn-secondary\">Cancelar</button>",
+      "css": ".ds-btn-secondary { display: inline-flex; align-items: center; justify-content: center; padding: 12px 20px; background: #ffffff; color: #1A150F; border: 1.5px solid #D3CBDB; border-radius: 12px; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 700; font-size: 15px; line-height: 1; letter-spacing: -0.01em; cursor: pointer; box-shadow: 0 1px 2px rgba(26,21,15,0.06); transition: border-color 120ms, box-shadow 120ms; } .ds-btn-secondary:hover { border-color: #A99E8C; box-shadow: 0 2px 8px rgba(26,21,15,0.07); } .ds-btn-secondary:focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(206,13,47,0.2); }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Tertiary action. No border, no background. Brand typography only.",
+      "html": "<button class=\"ds-btn-ghost\">Ver detalles</button>",
+      "css": ".ds-btn-ghost { display: inline-flex; align-items: center; justify-content: center; gap: 6px; padding: 12px 20px; background: transparent; color: #CE0D2F; border: none; border-radius: 12px; font-family: 'Plus Jakarta Sans', system-ui, sans-serif; font-weight: 700; font-size: 15px; line-height: 1; letter-spacing: -0.01em; cursor: pointer; transition: background 120ms; } .ds-btn-ghost:hover { background: rgba(206,13,47,0.06); } .ds-btn-ghost:focus-visible { outline: none; box-shadow: 0 0 0 4px rgba(206,13,47,0.2); }"
+    },
+    {
+      "name": "Card",
+      "kind": "card",
+      "refersTo": "card",
+      "description": "Content surface. White on cream. Optional hover lift via interactive prop.",
+      "html": "<div class=\"ds-card\"><p class=\"ds-card-label\">Factura #0042</p><p class=\"ds-card-value\">$3,500.00</p></div>",
+      "css": ".ds-card { background: #ffffff; border: 1px solid #E4D9C9; border-radius: 16px; padding: 20px; box-shadow: 0 2px 8px rgba(26,21,15,0.07); transition: transform 200ms cubic-bezier(0.22,1,0.36,1), box-shadow 200ms cubic-bezier(0.22,1,0.36,1); } .ds-card:hover { transform: translateY(-2px); box-shadow: 0 6px 20px rgba(26,21,15,0.09); } .ds-card-label { font-family: 'Inter', system-ui, sans-serif; font-size: 13px; font-weight: 600; color: #7E7260; margin: 0 0 6px; } .ds-card-value { font-family: 'Geist Mono', ui-monospace, 'SF Mono', monospace; font-size: 22px; font-weight: 600; color: #1A150F; letter-spacing: -0.01em; font-variant-numeric: tabular-nums; margin: 0; }"
+    },
+    {
+      "name": "Status Badge",
+      "kind": "chip",
+      "refersTo": "badge-neutral",
+      "description": "CFDI status indicator. Dot + label. Four tones: success, warning, danger, info.",
+      "html": "<span class=\"ds-badge ds-badge--success\"><span class=\"ds-badge-dot\"></span>Timbrada</span><span class=\"ds-badge ds-badge--warning\"><span class=\"ds-badge-dot\"></span>Pendiente</span><span class=\"ds-badge ds-badge--danger\"><span class=\"ds-badge-dot\"></span>Rechazada</span><span class=\"ds-badge ds-badge--info\"><span class=\"ds-badge-dot\"></span>Borrador</span>",
+      "css": ".ds-badge { display: inline-flex; align-items: center; gap: 6px; padding: 4px 10px; border-radius: 999px; font-family: 'Inter', system-ui, sans-serif; font-weight: 600; font-size: 12px; line-height: 1.3; } .ds-badge-dot { width: 7px; height: 7px; border-radius: 50%; flex-shrink: 0; } .ds-badge--success { background: #DCFCE7; color: #0E6B47; } .ds-badge--success .ds-badge-dot { background: #16A34A; } .ds-badge--warning { background: #FEF9C3; color: #8A5A06; } .ds-badge--warning .ds-badge-dot { background: #CA8A04; } .ds-badge--danger { background: #FEE2E5; color: #9F0824; } .ds-badge--danger .ds-badge-dot { background: #9F0824; } .ds-badge--info { background: #EDE9FE; color: #5B21B6; } .ds-badge--info .ds-badge-dot { background: #7C3AED; }"
+    },
+    {
+      "name": "Text Input",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "Form field. Brand focus ring. Mono variant for RFC/amounts with Geist Mono.",
+      "html": "<div class=\"ds-input-wrap\"><label class=\"ds-input-label\" for=\"rfc\">RFC del receptor</label><div class=\"ds-input-field\"><input class=\"ds-input\" id=\"rfc\" placeholder=\"XAXX010101000\" /></div></div>",
+      "css": ".ds-input-wrap { display: flex; flex-direction: column; gap: 6px; } .ds-input-label { font-family: 'Inter', system-ui, sans-serif; font-weight: 600; font-size: 13px; color: #1A150F; } .ds-input-field { display: flex; align-items: center; background: #ffffff; border: 1.5px solid #D3CBDB; border-radius: 12px; padding: 0 14px; transition: border-color 120ms, box-shadow 120ms; } .ds-input-field:focus-within { border-color: #CE0D2F; box-shadow: 0 0 0 4px rgba(206,13,47,0.15); } .ds-input { flex: 1; border: none; outline: none; background: transparent; padding: 12px 0; font-size: 15px; font-family: 'Geist Mono', ui-monospace, 'SF Mono', monospace; font-variant-numeric: tabular-nums; letter-spacing: -0.01em; color: #1A150F; } .ds-input::placeholder { color: #A99E8C; }"
+    },
+    {
+      "name": "StampCard — Stamp Pack",
+      "kind": "custom",
+      "refersTo": "card-featured",
+      "description": "Core monetization component. CFDI stamp pack. Featured variant uses brand gradient.",
+      "html": "<button class=\"ds-stamp-card ds-stamp-card--featured\"><span class=\"ds-stamp-ribbon\">Más popular</span><div class=\"ds-stamp-qty\">100</div><div class=\"ds-stamp-sub\">timbres CFDI</div><div class=\"ds-stamp-footer\"><span class=\"ds-stamp-price\">$350.00</span><span class=\"ds-stamp-unit\">$3.50/u</span></div></button>",
+      "css": ".ds-stamp-card { position: relative; text-align: left; width: 100%; cursor: pointer; border-radius: 16px; padding: 20px; transition: transform 120ms cubic-bezier(0.22,1,0.36,1); } .ds-stamp-card--featured { background: linear-gradient(135deg, #CE0D2F 0%, #9F0824 100%); color: #ffffff; border: 2px solid transparent; box-shadow: 0 10px 30px rgba(206,13,47,0.28); } .ds-stamp-card--featured:active { transform: scale(0.98); } .ds-stamp-ribbon { position: absolute; top: 14px; right: 14px; font-family: 'Inter', system-ui, sans-serif; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; padding: 3px 9px; border-radius: 999px; background: #C6F542; color: #182230; } .ds-stamp-qty { font-family: 'Geist Mono', ui-monospace, 'SF Mono', monospace; font-weight: 600; font-size: 34px; letter-spacing: -0.02em; font-variant-numeric: tabular-nums; } .ds-stamp-sub { font-size: 13px; opacity: 0.85; margin-top: 2px; font-family: 'Inter', system-ui, sans-serif; } .ds-stamp-footer { margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(255,255,255,0.25); display: flex; align-items: baseline; justify-content: space-between; } .ds-stamp-price { font-family: 'Geist Mono', ui-monospace, 'SF Mono', monospace; font-weight: 600; font-size: 22px; font-variant-numeric: tabular-nums; } .ds-stamp-unit { font-family: 'Geist Mono', ui-monospace, 'SF Mono', monospace; font-size: 12px; opacity: 0.7; }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Tool That Liberates",
+    "overview": "Kipo is not accounting software — it's SAT bureaucracy transformed into a fast, human tool. The design system carries that promise in every visual decision: the screen that used to intimidate now acts, and acts fast. The identity is not borrowed from the American fintech sector or government portals; it speaks with its own red-and-cream accent.\n\nThe personality is Modern · Agile · Human. Modern through resolved information density, typographic weight, and clear hierarchy. Agile because the interface never puts unnecessary screens between the user and their task. Human through the visual temperature (warm cream, vivid red, generous typography) and a voice that doesn't condescend.",
+    "keyCharacteristics": [
+      "Color as signature, not decoration: Kipo red appears on action, not as wallpaper.",
+      "Typography that acts: Plus Jakarta Sans carries the weight; Inter executes; Geist Mono measures.",
+      "Rhythmic spacing: 4px base scale, never arbitrary values.",
+      "Soft corners (12–16px) that say modern product without saying 2021 app.",
+      "Shadows that whisper: warm-tinted, low-profile, never the harsh black of Material 2014.",
+      "Financial data always in tabular monospaced — zero ambiguity about any figure."
+    ],
+    "rules": [
+      { "name": "The One Red Rule",      "body": "The Tomate → Sangría gradient is Kipo's visual voice. Using it on more than one element per screen dilutes the signal. One primary CTA per view, not three.", "section": "colors" },
+      { "name": "The Whisper Rule",      "body": "Shadows are contextual information, not decoration. A resting card has shadow-sm. Two elements competing in elevation is a design failure.", "section": "elevation" },
+      { "name": "The Three Voices Rule", "body": "Display/Title is the one that speaks. Body is the one that explains. Mono is the one that signs. Mixing fonts outside these roles breaks hierarchy.", "section": "typography" }
+    ],
+    "dos": [
+      "Use Geist Mono + tabular-nums for all financial data: amounts, RFCs, folios, stamp dates.",
+      "Limit the Tomate → Sangría gradient to one action element per screen.",
+      "Use data-theme=\"dark\" on premium landing sections.",
+      "Verify contrast ≥ 4.5:1 for body text.",
+      "Include prefers-reduced-motion for every entrance animation.",
+      "Label every CFDI status with the correct Badge tone: success=Timbrada, warning=Pendiente, danger=Rechazada, info=Borrador."
+    ],
+    "donts": [
+      "Imitate Mexican government portals (SAT, IMSS): institutional blue, formless hierarchy, intimidating tables.",
+      "Replicate generic American SaaS: hero-metric, navy/gold gradient, stock photos, uppercase eyebrow above every section.",
+      "Use border-left greater than 1px as a color accent on cards or alerts.",
+      "Use background-clip: text with a gradient for decorative text.",
+      "Apply glassmorphism as decoration.",
+      "Use Verde Viral on text smaller than 18px on a light background.",
+      "Show two elements with shadow-brand or shadow-accent simultaneously.",
+      "Use section numbers (01/02/03) as visual scaffolding when content is not an ordered sequence."
+    ]
+  }
+}

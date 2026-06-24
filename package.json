@@ -14,6 +14,7 @@
     "build:dashboard": "pnpm build:packages && pnpm --filter kipo-dashboard build",
     "build:landing": "pnpm build:packages && pnpm --filter Kipo-landing build",
     "build:packages": "pnpm --filter @kipo/ui-react build",
+    "storybook": "pnpm --filter @kipo/ui-react storybook",
     "lint": "pnpm -r --parallel lint",
     "typecheck": "pnpm -r --parallel typecheck"
   },

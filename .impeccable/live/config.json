@@ -1,0 +1,17 @@
+{
+  "apps": {
+    "kipo-landing": {
+      "files": ["src/apps/kipo-landing/src/layouts/Layout.astro"],
+      "insertBefore": "</head>",
+      "commentSyntax": "html",
+      "framework": "astro"
+    },
+    "kipo-dashboard": {
+      "files": ["src/apps/kipo-dashboard/index.html"],
+      "insertBefore": "</head>",
+      "commentSyntax": "html",
+      "framework": "vite"
+    }
+  },
+  "cspChecked": true
+}

@@ -4,89 +4,90 @@
    Kipo Design System — light theme (default)
    ============================================================ */
 :root {
-  /* Brand: Magenta / Plum scale */
-  --kipo-magenta-50:  #FCE9F1;
-  --kipo-magenta-100: #F8CCDF;
-  --kipo-magenta-200: #F09BC0;
-  --kipo-magenta-300: #E363A0;
-  --kipo-magenta-400: #D13A82;
-  --kipo-magenta-500: #B81D53;
-  --kipo-magenta-600: #9A1B5E;
-  --kipo-magenta-700: #7C1550;
-  --kipo-magenta-800: #5C0E3F;
-  --kipo-magenta-900: #3D0A2C;
+  /* ---- Brand: Red scale ---- */
+  --kipo-red-50:  #FCEAEA;
+  --kipo-red-100: #F9CBCB;
+  --kipo-red-200: #F19AA0;
+  --kipo-red-300: #E56370;
+  --kipo-red-400: #CE0D2F;
+  --kipo-red-500: #B30A27;
+  --kipo-red-600: #9F0824;
+  --kipo-red-700: #83061C;
+  --kipo-red-800: #680413;
+  --kipo-red-900: #4A030C;
 
-  --kipo-magenta:     #B81D53;
-  --kipo-plum:        #9A1B5E;
-  --kipo-plum-deep:   #6E0E45;
+  /* Brand anchors */
+  --kipo-red:      #CE0D2F;
+  --kipo-red-dark: #9F0824;
 
-  --kipo-gradient:      linear-gradient(135deg, #9A1B5E 0%, #B81D53 100%);
-  --kipo-gradient-soft: linear-gradient(135deg, #B81D53 0%, #D13A82 100%);
+  /* Signature gradient */
+  --kipo-gradient:      linear-gradient(135deg, #CE0D2F 0%, #9F0824 100%);
+  --kipo-gradient-soft: linear-gradient(135deg, #E56370 0%, #CE0D2F 100%);
 
-  /* Accent: neon lime CTA */
+  /* ---- Accent: Neon Lime CTA ---- */
   --kipo-lime-300: #E6FF9E;
   --kipo-lime-400: #D7FB63;
   --kipo-lime-500: #C6F542;
   --kipo-lime-600: #A9D92B;
   --kipo-lime:     #C6F542;
 
-  /* Neutrals: plum-tinted darks */
-  --kipo-ink-900: #120D17;
-  --kipo-ink-800: #181221;
-  --kipo-ink-700: #211A2C;
-  --kipo-ink-600: #2C2438;
-  --kipo-ink-500: #3A3147;
+  /* ---- Neutrals: Slate Darks (dark surfaces) ---- */
+  --kipo-slate-900: #182230;
+  --kipo-slate-800: #1F2C3A;
+  --kipo-slate-700: #2B3A4B;
+  --kipo-slate-600: #3A4C5F;
+  --kipo-slate-500: #4C6075;
 
-  /* Neutrals: clean grays */
-  --kipo-gray-0:   #FFFFFF;
-  --kipo-gray-50:  #FAF8FB;
-  --kipo-gray-100: #F3F0F5;
-  --kipo-gray-200: #E7E2EC;
-  --kipo-gray-300: #D3CBDB;
-  --kipo-gray-400: #A99FB4;
-  --kipo-gray-500: #7C7388;
-  --kipo-gray-600: #574F62;
-  --kipo-gray-700: #3D3645;
-  --kipo-gray-800: #261F2E;
-  --kipo-gray-900: #16111C;
+  /* ---- Neutrals: Warm Cream (light surfaces) ---- */
+  --kipo-cream-0:   #FFFFFF;
+  --kipo-cream-100: #F1EAE0;
+  --kipo-cream-200: #E4D9C9;
+  --kipo-cream-300: #C8BCA8;
+  --kipo-cream-400: #A99E8C;
+  --kipo-cream-500: #7E7260;
+  --kipo-cream-600: #574F44;
+  --kipo-cream-700: #3D3530;
+  --kipo-cream-800: #2B2219;
+  --kipo-cream-900: #1A150F;
 
-  /* Status */
-  --kipo-success:    #16A36B;
-  --kipo-success-bg: #E3F7EE;
-  --kipo-warning:    #E0950E;
-  --kipo-warning-bg: #FCF1DA;
-  --kipo-danger:     #D5314B;
-  --kipo-danger-bg:  #FCE6E9;
-  --kipo-info:       #2D6FE0;
-  --kipo-info-bg:    #E5EEFC;
+  /* ---- Semantic status ---- */
+  --kipo-success:    #16A34A;
+  --kipo-success-bg: #DCFCE7;
+  --kipo-warning:    #CA8A04;
+  --kipo-warning-bg: #FEF9C3;
+  --kipo-danger:     #9F0824;
+  --kipo-danger-bg:  #FEE2E5;
+  --kipo-info:       #7C3AED;
+  --kipo-info-bg:    #EDE9FE;
 
-  /* Semantic surface */
-  --bg-base:        var(--kipo-gray-50);
-  --bg-subtle:      var(--kipo-gray-100);
-  --surface-card:   var(--kipo-gray-0);
-  --surface-raised: var(--kipo-gray-0);
-  --surface-sunken: var(--kipo-gray-100);
+  /* ============================================================
+     Semantic aliases — light theme
+     ============================================================ */
+  --bg-base:        var(--kipo-cream-100);
+  --bg-subtle:      var(--kipo-cream-200);
+  --surface-card:   var(--kipo-cream-0);
+  --surface-raised: var(--kipo-cream-0);
+  --surface-sunken: var(--kipo-cream-200);
 
-  /* Semantic border */
-  --border-subtle: var(--kipo-gray-200);
-  --border-strong: var(--kipo-gray-300);
+  --border-subtle:  var(--kipo-cream-200);
+  --border-strong:  var(--kipo-cream-300);
 
-  /* Semantic text */
-  --text-strong:    var(--kipo-gray-900);
-  --text-body:      var(--kipo-gray-700);
-  --text-muted:     var(--kipo-gray-500);
+  --text-strong:    var(--kipo-cream-900);
+  --text-body:      var(--kipo-cream-700);
+  --text-muted:     var(--kipo-cream-500);
   --text-on-brand:  #FFFFFF;
-  --text-on-accent: var(--kipo-ink-900);
+  --text-on-accent: var(--kipo-slate-900);
 
-  /* Semantic brand */
-  --brand:         var(--kipo-magenta);
-  --brand-strong:  var(--kipo-plum);
-  --accent:        var(--kipo-lime-500);
-  --accent-strong: var(--kipo-lime-600);
+  --brand:          var(--kipo-red);
+  --brand-strong:   var(--kipo-red-dark);
+  --accent:         var(--kipo-lime-500);
+  --accent-strong:  var(--kipo-lime-600);
 
-  --focus-ring: color-mix(in oklch, var(--kipo-magenta) 45%, transparent);
+  --focus-ring: color-mix(in oklch, var(--kipo-red) 40%, transparent);
 
-  /* Typography */
+  /* ============================================================
+     Typography
+     ============================================================ */
   --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
   --font-body:    "Inter", system-ui, sans-serif;
   --font-mono:    "Geist Mono", ui-monospace, "SF Mono", monospace;
@@ -119,7 +120,9 @@
   --ls-wide:    0.04em;
   --ls-mono:    -0.01em;
 
-  /* Spacing (4px base) */
+  /* ============================================================
+     Spacing (4px base)
+     ============================================================ */
   --space-0:  0;
   --space-1:  0.25rem;
   --space-2:  0.5rem;
@@ -143,12 +146,12 @@
   --radius-pill:   999px;
   --radius-circle: 50%;
 
-  /* Shadows (plum-tinted, never harsh black) */
-  --shadow-xs:     0 1px 2px rgba(60, 14, 45, 0.06);
-  --shadow-sm:     0 2px 8px rgba(60, 14, 45, 0.07);
-  --shadow-md:     0 6px 20px rgba(60, 14, 45, 0.09);
-  --shadow-lg:     0 16px 40px rgba(60, 14, 45, 0.12);
-  --shadow-brand:  0 10px 30px rgba(154, 27, 94, 0.28);
+  /* Shadows (warm-tinted) */
+  --shadow-xs:     0 1px 2px rgba(26, 21, 15, 0.06);
+  --shadow-sm:     0 2px 8px rgba(26, 21, 15, 0.07);
+  --shadow-md:     0 6px 20px rgba(26, 21, 15, 0.09);
+  --shadow-lg:     0 16px 40px rgba(26, 21, 15, 0.12);
+  --shadow-brand:  0 10px 30px rgba(206, 13, 47, 0.28);
   --shadow-accent: 0 8px 24px rgba(169, 217, 43, 0.35);
 
   /* Motion */
@@ -170,23 +173,23 @@
    Usage: <div data-theme="dark">…</div>
    ============================================================ */
 [data-theme="dark"] {
-  --bg-base:        var(--kipo-ink-900);
-  --bg-subtle:      var(--kipo-ink-800);
-  --surface-card:   var(--kipo-ink-800);
-  --surface-raised: var(--kipo-ink-700);
-  --surface-sunken: var(--kipo-ink-900);
+  --bg-base:        var(--kipo-slate-900);
+  --bg-subtle:      var(--kipo-slate-800);
+  --surface-card:   var(--kipo-slate-800);
+  --surface-raised: var(--kipo-slate-700);
+  --surface-sunken: var(--kipo-slate-900);
 
-  --border-subtle: var(--kipo-ink-600);
-  --border-strong: var(--kipo-ink-500);
+  --border-subtle:  var(--kipo-slate-600);
+  --border-strong:  var(--kipo-slate-500);
 
-  --text-strong:    #FBF8FC;
-  --text-body:      #C9C0D3;
-  --text-muted:     #8C8298;
+  --text-strong:    #F8F4EF;
+  --text-body:      #D4C9BC;
+  --text-muted:     #8C8075;
   --text-on-brand:  #FFFFFF;
-  --text-on-accent: var(--kipo-ink-900);
+  --text-on-accent: var(--kipo-slate-900);
 
-  --brand:         var(--kipo-magenta-400);
-  --brand-strong:  var(--kipo-magenta-300);
+  --brand:         var(--kipo-red-400);
+  --brand-strong:  var(--kipo-red-300);
   --accent:        var(--kipo-lime-500);
   --accent-strong: var(--kipo-lime-400);
 }

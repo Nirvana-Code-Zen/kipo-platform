@@ -5,7 +5,7 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Semantic aliases (map to CSS variables)
+        // Semantic aliases (CSS variables — adapt to light/dark theme)
         'bg-base':        'var(--bg-base)',
         'bg-subtle':      'var(--bg-subtle)',
         'surface-card':   'var(--surface-card)',
@@ -24,13 +24,13 @@ module.exports = {
         'accent-strong':  'var(--accent-strong)',
         // Static palette
         kipo: {
-          magenta: '#B81D53',
-          plum:    '#9A1B5E',
+          red:     '#CE0D2F',
+          'red-dark': '#9F0824',
           lime:    '#C6F542',
-          success: '#16A36B',
-          warning: '#E0950E',
-          danger:  '#D5314B',
-          info:    '#2D6FE0',
+          success: '#16A34A',
+          warning: '#CA8A04',
+          danger:  '#9F0824',
+          info:    '#7C3AED',
         },
       },
       fontFamily: {
@@ -53,11 +53,11 @@ module.exports = {
         'kipo-pill': '999px',
       },
       boxShadow: {
-        'kipo-xs':     '0 1px 2px rgba(60, 14, 45, 0.06)',
-        'kipo-sm':     '0 2px 8px rgba(60, 14, 45, 0.07)',
-        'kipo-md':     '0 6px 20px rgba(60, 14, 45, 0.09)',
-        'kipo-lg':     '0 16px 40px rgba(60, 14, 45, 0.12)',
-        'kipo-brand':  '0 10px 30px rgba(154, 27, 94, 0.28)',
+        'kipo-xs':     '0 1px 2px rgba(26, 21, 15, 0.06)',
+        'kipo-sm':     '0 2px 8px rgba(26, 21, 15, 0.07)',
+        'kipo-md':     '0 6px 20px rgba(26, 21, 15, 0.09)',
+        'kipo-lg':     '0 16px 40px rgba(26, 21, 15, 0.12)',
+        'kipo-brand':  '0 10px 30px rgba(206, 13, 47, 0.28)',
         'kipo-accent': '0 8px 24px rgba(169, 217, 43, 0.35)',
       },
     },

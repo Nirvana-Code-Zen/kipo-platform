@@ -1,6 +1,6 @@
 import { useState, type InputHTMLAttributes, type ReactNode } from 'react'
 
-export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
+export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'prefix'> {
   label?: string
   hint?: string
   error?: string

@@ -30,7 +30,7 @@ export function Switch({ checked = false, onChange, disabled = false, label = ''
           width: 46,
           height: 28,
           borderRadius: 'var(--radius-pill)',
-          background: checked ? 'var(--kipo-gradient)' : 'var(--kipo-gray-300)',
+          background: checked ? 'var(--kipo-gradient)' : 'var(--kipo-cream-300)',
           position: 'relative',
           transition: 'background var(--dur-base) var(--ease-out)',
           flexShrink: 0,
