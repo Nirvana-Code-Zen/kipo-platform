@@ -1,0 +1,22 @@
+{
+  "name": "@kipo/tokens",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Kipo design tokens — colors, typography, spacing",
+  "main": "index.js",
+  "types": "index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./index.d.ts",
+      "default": "./index.js"
+    },
+    "./colors": "./src/colors.json",
+    "./typography": "./src/typography.json",
+    "./spacing": "./src/spacing.json"
+  },
+  "files": [
+    "index.js",
+    "index.d.ts",
+    "src/"
+  ]
+}

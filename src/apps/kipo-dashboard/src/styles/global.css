@@ -1,0 +1,13 @@
+@import '@kipo/theme/index.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: var(--font-inter);
+    color: var(--color-brand-secondary);
+    background-color: white;
+  }
+}

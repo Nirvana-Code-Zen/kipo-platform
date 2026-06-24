@@ -1,0 +1,9 @@
+{
+  "brand": {
+    "primary": "#ce0d2f",
+    "secondary": "#2b3a4b"
+  },
+  "neutral": {
+    "base": "#f1eae0"
+  }
+}

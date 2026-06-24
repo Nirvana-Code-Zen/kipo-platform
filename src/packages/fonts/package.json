@@ -1,0 +1,13 @@
+{
+  "name": "@kipo/fonts",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Kipo platform font-face declarations",
+  "main": "index.css",
+  "exports": {
+    ".": "./index.css"
+  },
+  "files": [
+    "index.css"
+  ]
+}

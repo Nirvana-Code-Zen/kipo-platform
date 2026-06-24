@@ -1,0 +1,20 @@
+{
+  "name": "@kipo/theme",
+  "version": "0.0.1",
+  "private": true,
+  "description": "Kipo Tailwind preset + CSS variables",
+  "main": "tailwind.preset.js",
+  "exports": {
+    ".": "./tailwind.preset.js",
+    "./tailwind.preset": "./tailwind.preset.js",
+    "./index.css": "./index.css"
+  },
+  "files": [
+    "tailwind.preset.js",
+    "index.css"
+  ],
+  "dependencies": {
+    "@kipo/tokens": "workspace:*",
+    "@kipo/fonts": "workspace:*"
+  }
+}

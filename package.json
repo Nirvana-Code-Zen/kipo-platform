@@ -1,0 +1,24 @@
+{
+  "name": "kipo-platform",
+  "version": "0.0.1",
+  "private": true,
+  "engines": {
+    "node": ">=20.0.0",
+    "pnpm": ">=9.0.0"
+  },
+  "scripts": {
+    "dev": "pnpm --parallel --filter './src/apps/**' dev",
+    "dev:dashboard": "pnpm --filter kipo-dashboard dev",
+    "dev:landing": "pnpm --filter Kipo-landing dev",
+    "build": "pnpm build:packages && pnpm --parallel --filter './src/apps/**' build",
+    "build:dashboard": "pnpm build:packages && pnpm --filter kipo-dashboard build",
+    "build:landing": "pnpm build:packages && pnpm --filter Kipo-landing build",
+    "build:packages": "pnpm --filter @kipo/ui-react build",
+    "lint": "pnpm -r --parallel lint",
+    "typecheck": "pnpm -r --parallel typecheck"
+  },
+  "devDependencies": {
+    "playwright": "^1.45.0",
+    "typescript": "^5.4.5"
+  }
+}

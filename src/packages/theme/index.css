@@ -1,0 +1,200 @@
+@import '@kipo/fonts';
+
+/* ============================================================
+   Kipo Design System — light theme (default)
+   ============================================================ */
+:root {
+  /* Brand: Magenta / Plum scale */
+  --kipo-magenta-50:  #FCE9F1;
+  --kipo-magenta-100: #F8CCDF;
+  --kipo-magenta-200: #F09BC0;
+  --kipo-magenta-300: #E363A0;
+  --kipo-magenta-400: #D13A82;
+  --kipo-magenta-500: #B81D53;
+  --kipo-magenta-600: #9A1B5E;
+  --kipo-magenta-700: #7C1550;
+  --kipo-magenta-800: #5C0E3F;
+  --kipo-magenta-900: #3D0A2C;
+
+  --kipo-magenta:     #B81D53;
+  --kipo-plum:        #9A1B5E;
+  --kipo-plum-deep:   #6E0E45;
+
+  --kipo-gradient:      linear-gradient(135deg, #9A1B5E 0%, #B81D53 100%);
+  --kipo-gradient-soft: linear-gradient(135deg, #B81D53 0%, #D13A82 100%);
+
+  /* Accent: neon lime CTA */
+  --kipo-lime-300: #E6FF9E;
+  --kipo-lime-400: #D7FB63;
+  --kipo-lime-500: #C6F542;
+  --kipo-lime-600: #A9D92B;
+  --kipo-lime:     #C6F542;
+
+  /* Neutrals: plum-tinted darks */
+  --kipo-ink-900: #120D17;
+  --kipo-ink-800: #181221;
+  --kipo-ink-700: #211A2C;
+  --kipo-ink-600: #2C2438;
+  --kipo-ink-500: #3A3147;
+
+  /* Neutrals: clean grays */
+  --kipo-gray-0:   #FFFFFF;
+  --kipo-gray-50:  #FAF8FB;
+  --kipo-gray-100: #F3F0F5;
+  --kipo-gray-200: #E7E2EC;
+  --kipo-gray-300: #D3CBDB;
+  --kipo-gray-400: #A99FB4;
+  --kipo-gray-500: #7C7388;
+  --kipo-gray-600: #574F62;
+  --kipo-gray-700: #3D3645;
+  --kipo-gray-800: #261F2E;
+  --kipo-gray-900: #16111C;
+
+  /* Status */
+  --kipo-success:    #16A36B;
+  --kipo-success-bg: #E3F7EE;
+  --kipo-warning:    #E0950E;
+  --kipo-warning-bg: #FCF1DA;
+  --kipo-danger:     #D5314B;
+  --kipo-danger-bg:  #FCE6E9;
+  --kipo-info:       #2D6FE0;
+  --kipo-info-bg:    #E5EEFC;
+
+  /* Semantic surface */
+  --bg-base:        var(--kipo-gray-50);
+  --bg-subtle:      var(--kipo-gray-100);
+  --surface-card:   var(--kipo-gray-0);
+  --surface-raised: var(--kipo-gray-0);
+  --surface-sunken: var(--kipo-gray-100);
+
+  /* Semantic border */
+  --border-subtle: var(--kipo-gray-200);
+  --border-strong: var(--kipo-gray-300);
+
+  /* Semantic text */
+  --text-strong:    var(--kipo-gray-900);
+  --text-body:      var(--kipo-gray-700);
+  --text-muted:     var(--kipo-gray-500);
+  --text-on-brand:  #FFFFFF;
+  --text-on-accent: var(--kipo-ink-900);
+
+  /* Semantic brand */
+  --brand:         var(--kipo-magenta);
+  --brand-strong:  var(--kipo-plum);
+  --accent:        var(--kipo-lime-500);
+  --accent-strong: var(--kipo-lime-600);
+
+  --focus-ring: color-mix(in oklch, var(--kipo-magenta) 45%, transparent);
+
+  /* Typography */
+  --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
+  --font-body:    "Inter", system-ui, sans-serif;
+  --font-mono:    "Geist Mono", ui-monospace, "SF Mono", monospace;
+
+  --fw-light:     300;
+  --fw-regular:   400;
+  --fw-medium:    500;
+  --fw-semibold:  600;
+  --fw-bold:      700;
+  --fw-extrabold: 800;
+
+  --fs-display: 3.5rem;
+  --fs-h1:      2.5rem;
+  --fs-h2:      2rem;
+  --fs-h3:      1.5rem;
+  --fs-h4:      1.25rem;
+  --fs-lg:      1.125rem;
+  --fs-base:    1rem;
+  --fs-sm:      0.875rem;
+  --fs-xs:      0.75rem;
+
+  --lh-tight:   1.05;
+  --lh-heading: 1.18;
+  --lh-snug:    1.35;
+  --lh-body:    1.6;
+
+  --ls-tighter: -0.03em;
+  --ls-tight:   -0.015em;
+  --ls-normal:  0;
+  --ls-wide:    0.04em;
+  --ls-mono:    -0.01em;
+
+  /* Spacing (4px base) */
+  --space-0:  0;
+  --space-1:  0.25rem;
+  --space-2:  0.5rem;
+  --space-3:  0.75rem;
+  --space-4:  1rem;
+  --space-5:  1.25rem;
+  --space-6:  1.5rem;
+  --space-8:  2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+  --space-20: 5rem;
+  --space-24: 6rem;
+
+  /* Radius */
+  --radius-xs:     6px;
+  --radius-sm:     8px;
+  --radius-md:     12px;
+  --radius-lg:     16px;
+  --radius-xl:     24px;
+  --radius-pill:   999px;
+  --radius-circle: 50%;
+
+  /* Shadows (plum-tinted, never harsh black) */
+  --shadow-xs:     0 1px 2px rgba(60, 14, 45, 0.06);
+  --shadow-sm:     0 2px 8px rgba(60, 14, 45, 0.07);
+  --shadow-md:     0 6px 20px rgba(60, 14, 45, 0.09);
+  --shadow-lg:     0 16px 40px rgba(60, 14, 45, 0.12);
+  --shadow-brand:  0 10px 30px rgba(154, 27, 94, 0.28);
+  --shadow-accent: 0 8px 24px rgba(169, 217, 43, 0.35);
+
+  /* Motion */
+  --ease-out:    cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --dur-fast:    120ms;
+  --dur-base:    200ms;
+  --dur-slow:    320ms;
+
+  /* Layout */
+  --container-max: 1200px;
+  --app-max:       420px;
+  --header-h:      64px;
+  --tabbar-h:      72px;
+}
+
+/* ============================================================
+   Dark theme — premium landing / marketing surfaces
+   Usage: <div data-theme="dark">…</div>
+   ============================================================ */
+[data-theme="dark"] {
+  --bg-base:        var(--kipo-ink-900);
+  --bg-subtle:      var(--kipo-ink-800);
+  --surface-card:   var(--kipo-ink-800);
+  --surface-raised: var(--kipo-ink-700);
+  --surface-sunken: var(--kipo-ink-900);
+
+  --border-subtle: var(--kipo-ink-600);
+  --border-strong: var(--kipo-ink-500);
+
+  --text-strong:    #FBF8FC;
+  --text-body:      #C9C0D3;
+  --text-muted:     #8C8298;
+  --text-on-brand:  #FFFFFF;
+  --text-on-accent: var(--kipo-ink-900);
+
+  --brand:         var(--kipo-magenta-400);
+  --brand-strong:  var(--kipo-magenta-300);
+  --accent:        var(--kipo-lime-500);
+  --accent-strong: var(--kipo-lime-400);
+}
+
+/* Financial data — tabular numerals, Geist Mono */
+.kipo-num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: var(--ls-mono);
+  font-feature-settings: "tnum" 1, "zero" 1;
+}
