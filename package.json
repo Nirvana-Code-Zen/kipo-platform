@@ -16,10 +16,16 @@
     "build:packages": "pnpm --filter @kipo/ui-react build",
     "storybook": "pnpm --filter @kipo/ui-react storybook",
     "lint": "pnpm -r --parallel lint",
-    "typecheck": "pnpm -r --parallel typecheck"
+    "typecheck": "pnpm -r --parallel typecheck",
+    "prepare": "husky"
   },
   "devDependencies": {
+    "husky": "^9.1.7",
+    "lint-staged": "^17.0.8",
     "playwright": "^1.45.0",
     "typescript": "^5.4.5"
+  },
+  "lint-staged": {
+    "*.{ts,tsx,astro,js,jsx}": "eslint --max-warnings=0 --fix"
   }
 }

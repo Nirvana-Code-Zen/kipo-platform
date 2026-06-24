@@ -9,15 +9,19 @@
     "typecheck": "astro check"
   },
   "dependencies": {
-    "@astrojs/tailwind": "^5.1.0",
+    "@astrojs/tailwind": "5.1.0",
     "@kipo/fonts": "workspace:*",
     "@kipo/theme": "workspace:*",
     "@kipo/ui-react": "workspace:*",
-    "astro": "^4.11.3"
+    "astro": "4.11.3"
   },
   "devDependencies": {
-    "autoprefixer": "^10.4.19",
-    "postcss": "^8.4.38",
-    "tailwindcss": "^3.4.4"
+    "@typescript-eslint/parser": "8.62.0",
+    "astro-eslint-parser": "2.0.0",
+    "autoprefixer": "10.4.19",
+    "eslint": "10.5.0",
+    "eslint-plugin-astro": "2.0.0",
+    "postcss": "8.4.38",
+    "tailwindcss": "3.4.4"
   }
 }
