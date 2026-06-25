@@ -1,43 +1,64 @@
 ---
 interface Props {
   href?: string
-  variant?: 'primary' | 'secondary' | 'ghost'
+  variant?: 'primary' | 'secondary' | 'ghost' | 'accent'
   size?: 'sm' | 'md' | 'lg'
   class?: string
+  type?: 'button' | 'submit'
 }
 
-const { href, variant = 'primary', size = 'md', class: className = '' } = Astro.props
+const {
+  href,
+  variant = 'primary',
+  size = 'md',
+  class: className = '',
+  type = 'button',
+} = Astro.props
 
-const variantClasses = {
-  primary: 'bg-brand-primary text-white hover:bg-brand-primary/90',
-  secondary: 'bg-brand-secondary text-white hover:bg-brand-secondary/90',
-  ghost: 'bg-transparent text-brand-secondary border border-brand-secondary hover:bg-neutral-base',
+const base =
+  'inline-flex items-center justify-center rounded-kipo font-body font-semibold ' +
+  'transition-all duration-150 active:scale-[0.97] ' +
+  'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand focus-visible:ring-offset-2 ' +
+  'disabled:opacity-45 disabled:pointer-events-none select-none'
+
+const variantClasses: Record<string, string> = {
+  primary:   'text-white shadow-kipo-brand hover:opacity-90',
+  secondary: 'bg-surface-card text-text-strong border border-border-strong shadow-kipo-xs hover:bg-bg-subtle',
+  ghost:     'bg-transparent text-brand',
+  accent:    'shadow-kipo-accent hover:opacity-90',
 }
 
-const sizeClasses = {
-  sm: 'h-8 px-4 text-sm',
-  md: 'h-11 px-6 text-base',
-  lg: 'h-13 px-8 text-lg',
+const variantStyles: Record<string, string> = {
+  primary:   'background-color: var(--kipo-red);',
+  secondary: '',
+  ghost:     '',
+  accent:    'background-color: var(--kipo-lime); color: var(--kipo-slate-900);',
 }
 
-const base = [
-  'inline-flex items-center justify-center rounded-md font-inter font-medium',
-  'transition-colors duration-150 focus-visible:outline-none',
-  'focus-visible:ring-2 focus-visible:ring-brand-primary focus-visible:ring-offset-2',
-  variantClasses[variant],
-  sizeClasses[size],
-  className,
-].join(' ')
+const sizeClasses: Record<string, string> = {
+  sm: 'h-9 px-4 text-sm gap-1.5',
+  md: 'h-11 px-5 text-base gap-2',
+  lg: 'h-14 px-8 text-lg gap-2',
+}
+
+const cls = [base, variantClasses[variant], sizeClasses[size], className].join(' ')
+const inlineStyle = variantStyles[variant]
 ---
 
-{
-  href ? (
-    <a href={href} class={base}>
-      <slot />
-    </a>
-  ) : (
-    <button class={base}>
-      <slot />
-    </button>
-  )
-}
+{href ? (
+  <a href={href} class={cls} style={inlineStyle || undefined}>
+    <slot />
+  </a>
+) : (
+  <button type={type} class={cls} style={inlineStyle || undefined}>
+    <slot />
+  </button>
+)}
+
+<style>
+  /* Ghost hover — can't express rgba in arbitrary Tailwind without JIT config */
+  a[class*="bg-transparent"]:hover,
+  button[class*="bg-transparent"]:hover {
+    background-color: rgba(224, 11, 38, 0.08);
+  }
+</style>

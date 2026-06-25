@@ -1,0 +1,49 @@
+---
+interface Props {
+  reversed?: boolean
+  title: string
+  body: string
+  highlights?: string[]
+}
+
+const { reversed = false, title, body, highlights = [] } = Astro.props
+---
+
+<div class={`grid items-center gap-12 md:grid-cols-2`}>
+  <div class={reversed ? 'md:order-2' : ''}>
+    <h3
+      class="mb-4 font-bold leading-tight text-text-strong"
+      style="font-family: var(--font-display); font-size: clamp(1.5rem, 3vw, 2rem); letter-spacing: -0.02em; text-wrap: balance;"
+    >
+      {title}
+    </h3>
+    <p
+      class="mb-6 font-body text-base leading-relaxed text-text-body"
+      style="max-width: 52ch; text-wrap: pretty;"
+    >
+      {body}
+    </p>
+    {highlights.length > 0 && (
+      <ul class="flex flex-col gap-3">
+        {highlights.map((h) => (
+          <li class="flex items-center gap-3 font-body text-sm font-medium text-text-body">
+            <span
+              class="flex h-5 w-5 shrink-0 items-center justify-center rounded-full"
+              style="background: var(--kipo-gradient);"
+              aria-hidden="true"
+            >
+              <svg width="10" height="8" viewBox="0 0 10 8" fill="none">
+                <path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </span>
+            {h}
+          </li>
+        ))}
+      </ul>
+    )}
+  </div>
+
+  <div class={`flex items-center justify-center ${reversed ? 'md:order-1' : ''}`}>
+    <slot name="illustration" />
+  </div>
+</div>

@@ -1,5 +1,9 @@
 import { defineConfig } from 'astro/config'
 import tailwind from '@astrojs/tailwind'
+import { fileURLToPath } from 'url'
+import path from 'path'
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 export default defineConfig({
   integrations: [
@@ -8,8 +12,12 @@ export default defineConfig({
   vite: {
     server: {
       fs: {
-        // allow workspace root so @kipo/fonts can resolve font files
-        allow: ['../..'],
+        allow: [
+          __dirname,
+          path.resolve(__dirname, 'src/packages'),
+          path.resolve(__dirname, '..'),
+          path.resolve(__dirname, '../../..')
+        ],
       },
     },
   },

@@ -2,9 +2,10 @@
   "name": "kipo-platform",
   "version": "0.0.1",
   "private": true,
+  "type": "module",
   "engines": {
-    "node": ">=20.0.0",
-    "pnpm": ">=9.0.0"
+    "node": ">=22.0.0",
+    "pnpm": ">=10.0.0"
   },
   "scripts": {
     "dev": "pnpm --parallel --filter './src/apps/**' dev",
@@ -20,10 +21,14 @@
     "prepare": "husky"
   },
   "devDependencies": {
-    "husky": "^9.1.7",
-    "lint-staged": "^17.0.8",
-    "playwright": "^1.45.0",
-    "typescript": "^5.4.5"
+    "@typescript-eslint/parser": "8.62.0",
+    "astro-eslint-parser": "2.0.0",
+    "eslint": "10.5.0",
+    "eslint-plugin-astro": "2.0.0",
+    "husky": "9.1.7",
+    "lint-staged": "17.0.8",
+    "playwright": "1.45.0",
+    "typescript": "5.4.5"
   },
   "lint-staged": {
     "*.{ts,tsx,astro,js,jsx}": "eslint --max-warnings=0 --fix"

@@ -1,0 +1,52 @@
+---
+import FeatureBlock from '../FeatureBlock.astro'
+import InvoiceIllustration from '../illustrations/InvoiceIllustration.astro'
+import BusinessIllustration from '../illustrations/BusinessIllustration.astro'
+import MobileIllustration from '../illustrations/MobileIllustration.astro'
+---
+
+<section id="caracteristicas" class="bg-bg-base" style="border-top: 1px solid var(--border-subtle);">
+  <div class="mx-auto max-w-6xl px-6">
+
+    <!-- Feature 1: flagship — full vertical breathing room -->
+    <div class="py-24">
+      <FeatureBlock
+        title="Factura desde el primer minuto"
+        body="Sin instalaciones ni contadores. Abre Kipo desde tu teléfono o computadora y emite tu primer CFDI en menos de dos minutos. Nada que instalar, nada que memorizar."
+        highlights={["RFC validado en tiempo real", "Complemento de pago incluido", "Exporta PDF y XML oficial"]}
+      >
+        <div slot="illustration" class="flex w-full max-w-md items-center justify-center mx-auto">
+          <InvoiceIllustration />
+        </div>
+      </FeatureBlock>
+    </div>
+
+    <!-- Feature 2 -->
+    <div class="border-t py-16" style="border-color: var(--border-subtle);">
+      <FeatureBlock
+        reversed={true}
+        title="Para ti y tu equipo"
+        body="¿Tienes una ferretería, taller, boutique o despacho? Kipo crece contigo. Gestiona clientes, catálogo de servicios y reportes de ventas desde un solo lugar."
+        highlights={["Hasta 3 usuarios sin costo extra", "Catálogo de productos ilimitado", "Reportes de ventas en tiempo real"]}
+      >
+        <div slot="illustration" class="flex w-full max-w-md items-center justify-center mx-auto">
+          <BusinessIllustration />
+        </div>
+      </FeatureBlock>
+    </div>
+
+    <!-- Feature 3: closing block — extra bottom space before next section -->
+    <div class="border-t pb-24 pt-16" style="border-color: var(--border-subtle);">
+      <FeatureBlock
+        title="Siempre en tu bolsillo"
+        body="Cobra en el mostrador, en una reunión o en tu carro. Kipo funciona en cualquier dispositivo con conexión a internet — sin apps que actualizar."
+        highlights={["Funciona en iOS y Android", "Sin app que descargar", "Modo oscuro disponible"]}
+      >
+        <div slot="illustration" class="flex w-full max-w-xs items-center justify-center mx-auto">
+          <MobileIllustration />
+        </div>
+      </FeatureBlock>
+    </div>
+
+  </div>
+</section>

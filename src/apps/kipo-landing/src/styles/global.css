@@ -1,4 +1,5 @@
-@import '@kipo/theme';
+@import "@kipo/fonts";
+@import "@kipo/theme/index.css";
 
 @tailwind base;
 @tailwind components;
@@ -9,5 +10,172 @@
     font-family: var(--font-body);
     color: var(--text-strong);
     background-color: var(--bg-base);
+  }
+  body {
+    padding-bottom: env(safe-area-inset-bottom, 0px);
+  }
+}
+
+/* Smooth scroll */
+html { scroll-behavior: smooth; }
+
+/* ── Easing tokens ─────────────────────────────────────── */
+:root {
+  --ease-expo:  cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-quart: cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* ── Scroll reveal ─────────────────────────────────────── */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.55s var(--ease-quart), transform 0.55s var(--ease-quart);
+}
+.reveal.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ── Stagger delays (reveal transitions) ──────────────── */
+.stagger-1 { transition-delay: 0ms; }
+.stagger-2 { transition-delay: 80ms; }
+.stagger-3 { transition-delay: 160ms; }
+.stagger-4 { transition-delay: 240ms; }
+.stagger-5 { transition-delay: 320ms; }
+.stagger-6 { transition-delay: 400ms; }
+
+/* ── Hero entrance (page-load, keyframe-based) ─────────── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(22px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes fade-in-scale {
+  from { opacity: 0; transform: scale(0.96); }
+  to   { opacity: 1; transform: scale(1); }
+}
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50%       { transform: translateY(-10px); }
+}
+
+.hero-enter {
+  animation: fade-up 600ms var(--ease-quint) both;
+}
+.hero-enter-scale {
+  animation: fade-in-scale 700ms var(--ease-quint) both;
+}
+.hero-float {
+  animation: float 5s ease-in-out infinite;
+  animation-delay: 700ms;
+}
+
+/* Animation delay helpers for hero stagger */
+.anim-d0   { animation-delay: 0ms; }
+.anim-d80  { animation-delay: 80ms; }
+.anim-d160 { animation-delay: 160ms; }
+.anim-d240 { animation-delay: 240ms; }
+.anim-d320 { animation-delay: 320ms; }
+.anim-d400 { animation-delay: 400ms; }
+
+/* ── Mobile menu slide-down ────────────────────────────── */
+@keyframes menu-slide-down {
+  from { opacity: 0; transform: translateY(-10px); }
+  to   { opacity: 1; transform: none; }
+}
+/* Applied via JS: remove 'hidden', add 'menu-open' */
+.menu-open {
+  animation: menu-slide-down 180ms var(--ease-quart) both;
+}
+
+/* ── FAQ ───────────────────────────────────────────────── */
+details summary { cursor: pointer; list-style: none; }
+details summary::-webkit-details-marker { display: none; }
+details[open] .faq-icon { transform: rotate(45deg); }
+.faq-icon { transition: transform 0.2s var(--ease-quart); }
+
+@keyframes faq-reveal {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: none; }
+}
+details[open] .faq-content {
+  animation: faq-reveal 200ms var(--ease-quint) both;
+}
+
+/* ── Card hover lift ───────────────────────────────────── */
+/* Standard card: transform + shadow */
+.card-lift {
+  transition:
+    transform 220ms var(--ease-quint),
+    box-shadow 220ms var(--ease-quint);
+  will-change: transform;
+}
+.card-lift:hover {
+  transform: translateY(-3px);
+  box-shadow: var(--shadow-md);
+}
+
+/* Featured card (has inline box-shadow): only lift, preserve ring */
+.card-lift-featured {
+  transition: transform 220ms var(--ease-quint);
+  will-change: transform;
+}
+.card-lift-featured:hover {
+  transform: translateY(-3px);
+}
+
+/* ── Nav scroll state ──────────────────────────────────── */
+.nav-scrolled {
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  background-color: rgba(255, 255, 255, 0.92) !important;
+  box-shadow: var(--shadow-sm);
+}
+[data-theme="dark"] .nav-scrolled {
+  background-color: rgba(3, 38, 65, 0.92) !important;
+}
+
+/* ── Utility ───────────────────────────────────────────── */
+/* Mono number helper */
+.num {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum" 1, "zero" 1;
+  letter-spacing: -0.01em;
+}
+
+/* Hero subtle grid overlay for dark sections */
+.hero-grid-bg {
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 48px 48px;
+}
+
+/* ── Reduced motion ────────────────────────────────────── */
+@media (prefers-reduced-motion: reduce) {
+  .reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .hero-enter,
+  .hero-enter-scale {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+  .hero-float {
+    animation: none;
+  }
+  .menu-open {
+    animation: none;
+  }
+  details[open] .faq-content {
+    animation: none;
+  }
+  .card-lift,
+  .card-lift-featured {
+    transition: none;
   }
 }

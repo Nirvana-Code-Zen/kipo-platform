@@ -1,21 +1,44 @@
 ---
 import Layout from '../layouts/Layout.astro'
-import Hero from '../components/Hero.astro'
+import Nav from '../components/Nav.astro'
+import Footer from '../components/Footer.astro'
+import LandingHero from '../components/sections/LandingHero.astro'
+import TrustStrip from '../components/sections/TrustStrip.astro'
+import HowItWorks from '../components/sections/HowItWorks.astro'
+import FeaturesSection from '../components/sections/FeaturesSection.astro'
+import PricingTeaser from '../components/sections/PricingTeaser.astro'
+import LandingCTA from '../components/sections/LandingCTA.astro'
 ---
 
-<Layout title="Kipo — Tu plataforma financiera">
+<Layout title="Kipo — Factura. Sin drama.">
+  <Nav />
   <main>
-    <Hero />
-
-    <section id="features" class="px-6 py-24">
-      <div class="mx-auto max-w-5xl">
-        <h2 class="font-lato text-3xl font-bold text-brand-secondary">
-          Todo lo que necesitas
-        </h2>
-        <p class="mt-4 font-inter text-brand-secondary/70">
-          Más funcionalidades próximamente.
-        </p>
-      </div>
-    </section>
+    <LandingHero />
+    <TrustStrip />
+    <HowItWorks />
+    <FeaturesSection />
+    <PricingTeaser />
+    <LandingCTA />
   </main>
+  <Footer />
 </Layout>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  if (reveals.length && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.15, rootMargin: '0px 0px -48px 0px' }
+    );
+    reveals.forEach((el) => observer.observe(el));
+  } else {
+    reveals.forEach((el) => el.classList.add('visible'));
+  }
+</script>

@@ -1,0 +1,50 @@
+---
+import Button from '../Button.astro'
+---
+
+<section
+  class="py-24 text-center"
+  style="background-color: var(--kipo-slate-900);"
+  data-theme="dark"
+>
+  <div class="mx-auto max-w-2xl px-6">
+    <h2
+      class="font-display mb-6 text-3xl font-bold text-text-strong md:text-4xl"
+      style="font-family: var(--font-display); letter-spacing: -0.02em; text-wrap: balance;"
+    >
+      Tu primera factura, lista en 2 minutos.
+    </h2>
+
+    <div class="mb-8 flex flex-wrap items-center justify-center gap-2">
+      {[
+        'RFC validado en tiempo real',
+        'CFDI 4.0 válido ante el SAT',
+        'PDF y XML oficiales incluidos',
+      ].map((item, i) => (
+        <span
+          class="reveal inline-flex items-center gap-1.5 rounded-kipo-pill border px-3 py-1 font-body text-xs font-medium"
+          style={`border-color: var(--border-subtle); color: var(--text-body); transition-delay: ${i * 70}ms;`}
+        >
+          <svg
+            width="10"
+            height="8"
+            viewBox="0 0 10 8"
+            fill="none"
+            aria-hidden="true"
+          >
+            <path
+              d="M1 4l2.5 2.5L9 1"
+              stroke="currentColor"
+              stroke-width="1.5"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            />
+          </svg>
+          {item}
+        </span>
+      ))}
+    </div>
+
+    <Button href="/registro" variant="accent" size="lg">Empieza gratis</Button>
+  </div>
+</section>

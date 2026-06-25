@@ -1,0 +1,62 @@
+---
+import {Image} from 'astro:assets'
+import kipoLogo from '../assets/kipo-logo@1x.png'
+
+const year = new Date().getFullYear()
+---
+
+<footer style="background-color: var(--kipo-slate-900);" data-theme="dark">
+  <div class="mx-auto max-w-6xl px-6 py-16">
+    <div class="grid gap-12 md:grid-cols-3">
+
+      <div>
+        <a href="/" class="mb-5 flex items-center gap-2" aria-label="Kipo inicio">
+          <div class="h-8 w-8 shrink-0 overflow-hidden rounded-lg">
+            <Image src={kipoLogo} alt="Kipo Logo" width="32" height="32" class="h-8 w-8 object-cover" aria-hidden="true" />
+          </div>
+          <span class="text-lg font-bold text-text-strong" style="font-family: var(--font-display);">kipo</span>
+        </a>
+        <p class="mb-6 font-body text-sm leading-relaxed text-text-body" style="max-width: 26ch;">
+          Factura. Sin drama.<br/>
+          CFDI 4.0 para freelancers y pequeños negocios en México.
+        </p>
+        <p class="font-body text-xs text-text-muted">
+          © {year} Kipo. Todos los derechos reservados.
+        </p>
+      </div>
+
+      <div>
+        <p class="mb-4 font-body text-xs font-semibold uppercase tracking-widest text-text-muted">Producto</p>
+        <nav class="flex flex-col gap-3" aria-label="Links del producto">
+          <a href="/#como-funciona" class="font-body text-sm text-text-body transition-colors hover:text-text-strong">Cómo funciona</a>
+          <a href="/precios"        class="font-body text-sm text-text-body transition-colors hover:text-text-strong">Precios</a>
+        </nav>
+      </div>
+
+      <div>
+        <p class="mb-4 font-body text-xs font-semibold uppercase tracking-widest text-text-muted">Legal</p>
+        <nav class="flex flex-col gap-3" aria-label="Links legales">
+          <a href="/terminos"   class="font-body text-sm text-text-body transition-colors hover:text-text-strong">Términos de uso</a>
+          <a href="/privacidad" class="font-body text-sm text-text-body transition-colors hover:text-text-strong">Aviso de privacidad</a>
+        </nav>
+      </div>
+    </div>
+
+    <div class="mt-12 border-t border-border-subtle pt-6">
+      <div class="flex flex-wrap items-center gap-2 font-body text-xs text-text-muted">
+        <span>Timbrado certificado por el SAT</span>
+        <span aria-hidden="true">·</span>
+        <a
+          href="https://www.facturapi.io"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="font-semibold text-text-body underline-offset-2 transition-colors hover:text-text-strong hover:underline"
+        >
+          FacturAPI
+        </a>
+        <span aria-hidden="true">·</span>
+        <span>CFDI 4.0</span>
+      </div>
+    </div>
+  </div>
+</footer>

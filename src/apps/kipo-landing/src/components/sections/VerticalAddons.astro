@@ -1,0 +1,99 @@
+---
+const niches = [
+  {
+    id: 'taller',
+    name: 'Taller Mecánico',
+    badge: 'Pack Taller',
+    star: 'Orden de Trabajo → CFDI automático con la clave de producto correcta para refacciones y mano de obra.',
+    icon: `<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>`,
+  },
+  {
+    id: 'salud',
+    name: 'Médicos y Clínicas',
+    badge: 'Pack Salud',
+    star: 'CFDI con uso "Honorarios Médicos" + gestión de pacientes y receta digital adjunta al XML.',
+    icon: `<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>`,
+  },
+  {
+    id: 'educativo',
+    name: 'Escuelas Privadas',
+    badge: 'Pack Educativo',
+    star: 'Complemento Educativo SAT automático (CURP del alumno y nivel educativo) en cada colegiatura.',
+    icon: `<path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>`,
+  },
+  {
+    id: 'renta',
+    name: 'Arrendadores',
+    badge: 'Pack Renta',
+    star: 'CFDI de arrendamiento recurrente automático + alerta de retención de ISR para personas físicas.',
+    icon: `<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>`,
+  },
+  {
+    id: 'transportistas',
+    name: 'Transportistas',
+    badge: 'Pack Carta Porte',
+    star: 'Complemento Carta Porte 3.1 integrado al flujo de viaje, con validación de unidades y operadores.',
+    icon: `<rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>`,
+  },
+]
+---
+
+<section class="bg-bg-base py-20" style="border-top: 1px solid var(--border-subtle);">
+  <div class="mx-auto max-w-4xl px-6">
+
+    <div class="mb-12">
+      <h2
+        class="font-display mb-3 text-3xl font-bold"
+        style="font-family: var(--font-display); letter-spacing: -0.02em; text-wrap: balance; color: var(--text-strong);"
+      >
+        ¿Tienes un giro específico?
+      </h2>
+      <p class="font-body text-base" style="color: var(--text-body); max-width: 52ch; text-wrap: pretty;">
+        Agrega el Pack de tu industria y Kipo genera los complementos SAT correctos
+        automáticamente — sin configuración manual.
+      </p>
+    </div>
+
+    <div class="flex flex-col divide-y" style="--tw-divide-opacity: 1; border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+      {niches.map((niche, i) => (
+        <div class="reveal flex items-start gap-5 py-6" style={`transition-delay: ${i * 80}ms;`}>
+          <div
+            class="flex h-10 w-10 shrink-0 items-center justify-center rounded-kipo-lg"
+            style="background-color: var(--bg-subtle);"
+          >
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="var(--kipo-red)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <Fragment set:html={niche.icon} />
+            </svg>
+          </div>
+          <div class="min-w-0 flex-1">
+            <div class="mb-1 flex flex-wrap items-center gap-2">
+              <span class="font-body text-sm font-bold" style="color: var(--text-strong);">{niche.name}</span>
+              <span
+                class="inline-block rounded-kipo-pill px-2 py-0.5 font-body text-xs font-semibold"
+                style="background-color: var(--bg-subtle); color: var(--text-muted);"
+              >
+                {niche.badge}
+              </span>
+            </div>
+            <p class="font-body text-sm leading-relaxed" style="color: var(--text-body); text-wrap: pretty;">
+              {niche.star}
+            </p>
+            <span class="mt-1.5 inline-block font-body text-xs font-semibold sm:hidden" style="color: var(--text-muted);">desde $99/mes</span>
+          </div>
+          <span class="hidden font-body shrink-0 text-xs font-semibold sm:block" style="color: var(--text-muted); white-space: nowrap;">desde $99/mes</span>
+        </div>
+      ))}
+    </div>
+
+    <div class="mt-8">
+      <a
+        href="/soluciones"
+        class="font-body text-sm font-semibold transition-colors"
+        style="color: var(--kipo-red);"
+      >
+        Ver todos los packs y sus features →
+      </a>
+    </div>
+
+  </div>
+</section>

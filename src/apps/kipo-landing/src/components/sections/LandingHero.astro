@@ -1,0 +1,47 @@
+---
+import Button from '../Button.astro'
+import Badge from '../Badge.astro'
+import HeroIllustration from '../illustrations/HeroIllustration.astro'
+---
+
+<section class="hero-grid-bg pt-24 pb-16 bg-bg-base md:pt-32 md:pb-20">
+  <div class="mx-auto grid max-w-6xl items-center gap-12 px-6 md:grid-cols-2">
+    <div class="flex flex-col gap-6">
+
+      <div class="hero-enter anim-d0">
+        <Badge tone="brand">CFDI 4.0 · Certificado SAT</Badge>
+      </div>
+
+      <h1
+        class="hero-enter anim-d80 font-display font-extrabold leading-none tracking-tighter text-text-strong"
+        style="font-family: var(--font-display); font-size: clamp(2.2rem, 4vw, 4rem); letter-spacing: -0.03em; text-wrap: balance;"
+      >
+        Factura en segundos.<br />Sin drama, sin SAT.
+      </h1>
+
+      <p
+        class="hero-enter anim-d160 font-body text-lg leading-relaxed"
+        style="color: var(--text-body); max-width: 44ch; text-wrap: pretty;"
+      >
+        Timbra CFDI 4.0 desde tu celular o computadora. Para freelancers,
+        talleres, tiendas — cualquier negocio que necesite facturar en México.
+      </p>
+
+      <div class="hero-enter anim-d240 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-start sm:gap-4">
+        <Button href="/registro" variant="accent" size="lg" class="w-full sm:w-auto">Empieza gratis</Button>
+        <a
+          href="#como-funciona"
+          class="inline-flex h-14 w-full items-center justify-center rounded-kipo px-8 font-body text-lg font-semibold transition-all duration-150 active:scale-[0.97] sm:w-auto"
+          style="color: var(--text-strong); border: 1px solid var(--border-strong); background: transparent;"
+        >
+          Ver cómo funciona
+        </a>
+      </div>
+
+    </div>
+
+    <div class="hero-enter-scale anim-d160 hero-float hidden items-center justify-center md:flex">
+      <HeroIllustration />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,204 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Nav from '../components/Nav.astro'
+import Footer from '../components/Footer.astro'
+import Button from '../components/Button.astro'
+
+const addons = [
+  {
+    id: 'taller',
+    badge: 'Pack Taller',
+    name: 'Talleres Mecánicos',
+    price: '$99 MXN/mes',
+    star: 'Genera el CFDI correcto desde la Orden de Trabajo — con la clave de producto exacta para refacciones y mano de obra, sin buscar en el catálogo SAT.',
+    bullets: [
+      'Catálogo de claves SAT para autopartes y servicios precargado',
+      'Refacción + mano de obra en un solo CFDI, desgloses correctos',
+      'Historial de órdenes por vehículo y cliente',
+    ],
+    icon: `<path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/>`,
+  },
+  {
+    id: 'salud',
+    badge: 'Pack Salud',
+    name: 'Médicos y Clínicas',
+    price: '$99 MXN/mes',
+    star: 'CFDI con uso "Honorarios Médicos" preseleccionado, catálogo de pacientes con historial de facturas y receta digital adjunta al XML oficial.',
+    bullets: [
+      'Uso fiscal correcto por tipo de consulta sin configuración manual',
+      'Catálogo de pacientes con historial y datos fiscales guardados',
+      'Complemento de honorarios médicos aplicado automáticamente',
+    ],
+    icon: `<path d="M22 12h-4l-3 9L9 3l-3 9H2"/>`,
+  },
+  {
+    id: 'educativo',
+    badge: 'Pack Educativo',
+    name: 'Escuelas Privadas',
+    price: '$99 MXN/mes',
+    star: 'Complemento Educativo SAT (CURP del alumno, nivel educativo y ciclo escolar) generado automáticamente en cada colegiatura mensual.',
+    bullets: [
+      'Colegiatura mensual recurrente: se timbra sola el día que defines',
+      'CURP del alumno vinculado al CFDI sin captura manual',
+      'Nivel educativo y ciclo escolar pre-configurados por grupo',
+    ],
+    icon: `<path d="M22 10v6M2 10l10-5 10 5-10 5z"/><path d="M6 12v5c3 3 9 3 12 0v-5"/>`,
+  },
+  {
+    id: 'renta',
+    badge: 'Pack Renta',
+    name: 'Arrendadores',
+    price: '$99 MXN/mes',
+    star: 'Factura de arrendamiento generada y timbrada automáticamente cada mes, con alerta cuando debes retener ISR como persona física.',
+    bullets: [
+      'Renta recurrente: el CFDI se genera solo el día que eliges',
+      'Alerta proactiva si la ley requiere retención de ISR en tu contrato',
+      'Historial por inmueble y arrendatario para reportes de ingresos',
+    ],
+    icon: `<path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/>`,
+  },
+  {
+    id: 'carta-porte',
+    badge: 'Pack Carta Porte',
+    name: 'Transportistas',
+    price: '$149 MXN/mes',
+    star: 'Complemento Carta Porte 3.1 integrado al flujo de viaje: captura origen, destino, unidades y operadores, y Kipo genera el CFDI completo.',
+    bullets: [
+      'Validación de unidades, remolques y operadores registrados ante el SAT',
+      'Datos de ubicación origen-destino con asistencia paso a paso',
+      'CFDI de traslado + Carta Porte en un solo paso, sin re-captura',
+    ],
+    icon: `<rect x="1" y="3" width="15" height="13"/><polygon points="16 8 20 8 23 11 23 16 16 16 16 8"/><circle cx="5.5" cy="18.5" r="2.5"/><circle cx="18.5" cy="18.5" r="2.5"/>`,
+  },
+]
+---
+
+<Layout
+  title="Soluciones por Industria · Kipo"
+  description="Packs verticales de Kipo: complementos SAT automáticos para talleres mecánicos, médicos, escuelas, arrendadores y transportistas."
+>
+  <Nav />
+  <main class="pt-16">
+
+    <!-- Hero -->
+    <section class="bg-bg-base py-20 text-center">
+      <div class="mx-auto max-w-2xl px-6">
+        <h1
+          class="font-display mb-4 text-4xl font-bold md:text-5xl"
+          style="font-family: var(--font-display); letter-spacing: -0.03em; text-wrap: balance; color: var(--text-strong); line-height: 1.05;"
+        >
+          Kipo para tu industria
+        </h1>
+        <p
+          class="font-body text-lg"
+          style="color: var(--text-body); max-width: 46ch; margin: 0 auto; text-wrap: pretty;"
+        >
+          Los complementos SAT correctos para tu giro — generados automáticamente,
+          sin que tengas que aprender el catálogo del SAT.
+        </p>
+        <p class="mt-4 font-body text-sm" style="color: var(--text-muted);">
+          Disponibles con Plan Emprendedor o PyME · Se agrega en un click
+        </p>
+      </div>
+    </section>
+
+    <!-- Add-ons list -->
+    <section class="bg-bg-base pb-24">
+      <div class="mx-auto max-w-5xl px-6">
+        <div class="flex flex-col divide-y" style="border-top: 1px solid var(--border-subtle); border-bottom: 1px solid var(--border-subtle);">
+          {addons.map((addon) => (
+            <div class="grid gap-8 py-12 md:grid-cols-[1fr_2fr]">
+
+              <!-- Left: identity + price -->
+              <div>
+                <div
+                  class="mb-4 flex h-12 w-12 items-center justify-center rounded-kipo-lg"
+                  style="background-color: var(--bg-subtle);"
+                >
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--kipo-red)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <Fragment set:html={addon.icon} />
+                  </svg>
+                </div>
+                <span
+                  class="mb-2 inline-block rounded-kipo-pill px-2.5 py-1 font-body text-xs font-semibold"
+                  style="background-color: var(--kipo-red); color: var(--text-on-brand);"
+                >
+                  {addon.badge}
+                </span>
+                <h2
+                  class="font-display mt-2 text-xl font-bold"
+                  style="font-family: var(--font-display); color: var(--text-strong);"
+                >
+                  {addon.name}
+                </h2>
+                <p class="font-body mt-1 text-lg font-bold" style="color: var(--text-strong);">
+                  {addon.price}
+                  <span class="font-body text-sm font-normal" style="color: var(--text-muted);">adicional</span>
+                </p>
+                <p class="mt-1 font-body text-xs" style="color: var(--text-muted);">+ Plan Emprendedor o PyME</p>
+              </div>
+
+              <!-- Right: feature star + bullets + CTA -->
+              <div>
+                <div
+                  class="mb-5 rounded-kipo-lg p-4"
+                  style="background-color: var(--bg-subtle);"
+                >
+                  <p class="font-body text-sm font-semibold leading-relaxed" style="color: var(--text-strong); text-wrap: pretty;">
+                    {addon.star}
+                  </p>
+                </div>
+                <ul class="mb-6 flex flex-col gap-3">
+                  {addon.bullets.map((bullet) => (
+                    <li class="flex items-start gap-3">
+                      <svg class="mt-0.5 shrink-0" width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true">
+                        <circle cx="8" cy="8" r="8" style="fill: color-mix(in srgb, var(--kipo-red) 10%, transparent);" />
+                        <path d="M5 8l2.5 2.5L11 5" stroke="var(--kipo-red)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                      </svg>
+                      <span class="font-body text-sm leading-snug" style="color: var(--text-body);">{bullet}</span>
+                    </li>
+                  ))}
+                </ul>
+                <a
+                  href={`/registro?addon=${addon.id}`}
+                  class="inline-flex items-center gap-2 font-body text-sm font-semibold transition-colors"
+                  style="color: var(--kipo-red);"
+                >
+                  Agregar {addon.badge} a mi plan
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </a>
+              </div>
+
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section
+      class="py-20 text-center"
+      style="background-color: var(--kipo-slate-900);"
+      data-theme="dark"
+    >
+      <div class="mx-auto max-w-xl px-6">
+        <h2
+          class="font-display mb-4 text-3xl font-bold"
+          style="font-family: var(--font-display); letter-spacing: -0.02em; text-wrap: balance; color: var(--text-strong);"
+        >
+          Prueba el Pack de tu industria gratis por 14 días.
+        </h2>
+        <p class="font-body mb-8 text-base" style="color: var(--text-body);">
+          Activa el Plan Emprendedor y agrega el Pack de tu giro en un click.
+        </p>
+        <Button href="/registro?trial=emprendedor" variant="accent" size="lg">
+          Empezar prueba gratis
+        </Button>
+      </div>
+    </section>
+
+  </main>
+  <Footer />
+</Layout>

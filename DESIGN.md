@@ -2,24 +2,30 @@
 name: Kipo Design System
 description: CFDI 4.0 e-invoicing for Mexican freelancers and micro-businesses — the tool that liberates. Quotes and inventory management available for subscribers.
 colors:
-  tomate-kipo: "#CE0D2F"
-  sangria: "#9F0824"
+  rojo-kipo: "#e00b26"
+  rojo-oscuro: "#bc0921"
+  rojo-suave: "#f0606c"
   verde-viral: "#C6F542"
   verde-viral-fuerte: "#A9D92B"
-  crema-base: "#FAF8FB"
-  crema-100: "#F1EAE0"
-  crema-200: "#E4D9C9"
-  crema-400: "#A99E8C"
-  crema-600: "#574F44"
-  crema-900: "#1A150F"
-  tinta-900: "#182230"
-  tinta-700: "#2B3A4B"
-  tinta-500: "#4C6075"
+  papel: "#f8f6f5"
+  papel-sutil: "#edeae8"
+  papel-300: "#d5d0cd"
+  papel-400: "#aba4a0"
+  papel-500: "#7a7370"
+  papel-600: "#4d4744"
+  papel-700: "#332e2b"
+  tinta: "#032641"
+  tinta-800: "#0a3352"
+  tinta-700: "#124066"
+  tinta-600: "#1c4f78"
+  tinta-500: "#2d6a9f"
   blanco: "#FFFFFF"
   exito: "#16A34A"
   exito-bg: "#DCFCE7"
   alerta: "#CA8A04"
   alerta-bg: "#FEF9C3"
+  peligro: "#bc0921"
+  peligro-bg: "#FEE2E5"
   borrador: "#7C3AED"
   borrador-bg: "#EDE9FE"
 typography:
@@ -79,23 +85,23 @@ spacing:
   16: "4rem"
 components:
   button-primary:
-    backgroundColor: "{colors.tomate-kipo}"
+    backgroundColor: "{colors.rojo-kipo}"
     textColor: "{colors.blanco}"
     rounded: "{rounded.md}"
     padding: "12px 20px"
   button-accent:
     backgroundColor: "{colors.verde-viral}"
-    textColor: "{colors.tinta-900}"
+    textColor: "{colors.tinta}"
     rounded: "{rounded.md}"
     padding: "12px 20px"
   button-secondary:
     backgroundColor: "{colors.blanco}"
-    textColor: "{colors.crema-900}"
+    textColor: "{colors.papel-700}"
     rounded: "{rounded.md}"
     padding: "12px 20px"
   button-ghost:
     backgroundColor: "transparent"
-    textColor: "{colors.tomate-kipo}"
+    textColor: "{colors.rojo-kipo}"
     rounded: "{rounded.md}"
     padding: "12px 20px"
   card:
@@ -103,23 +109,23 @@ components:
     rounded: "{rounded.lg}"
     padding: "{spacing.5}"
   card-featured:
-    backgroundColor: "{colors.tomate-kipo}"
+    backgroundColor: "{colors.rojo-kipo}"
     textColor: "{colors.blanco}"
     rounded: "{rounded.lg}"
     padding: "{spacing.5}"
   badge-neutral:
-    backgroundColor: "{colors.crema-200}"
-    textColor: "{colors.crema-600}"
+    backgroundColor: "{colors.papel-sutil}"
+    textColor: "{colors.papel-600}"
     rounded: "{rounded.pill}"
     padding: "4px 10px"
   badge-brand:
-    backgroundColor: "{colors.sangria}"
+    backgroundColor: "{colors.rojo-oscuro}"
     textColor: "{colors.blanco}"
     rounded: "{rounded.pill}"
     padding: "4px 10px"
   input:
     backgroundColor: "{colors.blanco}"
-    textColor: "{colors.crema-900}"
+    textColor: "{colors.papel-700}"
     rounded: "{rounded.md}"
     padding: "12px 14px"
 ---
@@ -130,9 +136,9 @@ components:
 
 **Creative North Star: "The Tool That Liberates"**
 
-Kipo is not accounting software — it's SAT bureaucracy transformed into a fast, human tool. The design system carries that promise in every visual decision: the screen that used to intimidate now acts, and acts fast. The identity is not borrowed from the American fintech sector or government portals; it speaks with its own red-and-cream accent.
+Kipo is not accounting software — it's SAT bureaucracy transformed into a fast, human tool. The design system carries that promise in every visual decision: the screen that used to intimidate now acts, and acts fast. The identity is not borrowed from the American fintech sector or government portals; it speaks with its own red-and-white accent on deep navy.
 
-The personality is **Modern · Agile · Human**. Modern through resolved information density, typographic weight, and clear hierarchy. Agile because the interface never puts unnecessary screens between the user and their task. Human through the visual temperature (warm cream, vivid red, generous typography) and a voice that doesn't condescend.
+The personality is **Modern · Agile · Human**. Modern through resolved information density, typographic weight, and clear hierarchy. Agile because the interface never puts unnecessary screens between the user and their task. Human through the visual temperature (crisp white surfaces, decisive red, deep navy authority) and a voice that doesn't condescend.
 
 The system explicitly rejects two ghosts: the **government portal** (institutional blue, flat hierarchy, intimidating forms) and the **generic American SaaS** (hero-metric big number, navy/gold gradient, stock photos, uppercase eyebrows above every section). If a screen could belong to the SAT or to any San Francisco SaaS, it's poorly designed.
 
@@ -141,36 +147,34 @@ The system explicitly rejects two ghosts: the **government portal** (institution
 - Typography that acts: Plus Jakarta Sans carries the weight; Inter executes; Geist Mono measures.
 - Rhythmic spacing: 4px base scale, never arbitrary values.
 - Soft corners (12–16px) that say "modern product" without saying "2021 app."
-- Shadows that whisper: warm-tinted, low-profile, never the harsh black of Material 2014.
+- Shadows that whisper: navy-tinted, low-profile, never the harsh black of Material 2014.
 - Financial data always in tabular monospaced — zero ambiguity about any figure.
 
-## 2. Colors: The Workshop Palette
+## 2. Colors: The Three-Color Palette
 
-Two reds with character, a green that converts, and warm surfaces that are not generic cream.
+Three colors. No ambiguity. Every design decision traces back to one of them.
 
 ### Primary
-- **Kipo Red** (`#CE0D2F`): The brand red. Used on primary buttons (as gradient `#CE0D2F → #9F0824`), active element borders, action text, and critical status icons. Never as a page background, never decorative.
-- **Sangria** (`#9F0824`): The dark end of the gradient. Also the `danger` color for CFDI error states — semantically coherent with the brand.
+- **Kipo Red** (`#e00b26`): The brand red. Used on primary buttons (gradient `#e00b26 → #bc0921`), active element borders, action text, and critical status icons. Never as a page background, never decorative.
+- **Red Dark** (`#bc0921`): The dark end of the gradient. Also the `danger` color for CFDI error states — semantically coherent with the brand.
 
-**The One Red Rule.** The Kipo Red → Sangria gradient is Kipo's visual voice. Using it on more than one element per screen dilutes the signal. One primary CTA per view, not three.
+**The One Red Rule.** The Kipo Red → Red Dark gradient is Kipo's visual voice. Using it on more than one element per screen dilutes the signal. One primary CTA per view, not three.
 
 ### Secondary
 - **Viral Green** (`#C6F542`): The conversion accent. "Cobrar ahora" buttons, success indicators in payment flows, landing CTAs. High saturation, high contrast against dark ink. Never on small text; green at 12px fails readability.
 - **Strong Viral Green** (`#A9D92B`): The hover/active state of the green. Also as `accent-strong` for lime glow shadows under CTAs.
 
 ### Neutral
-- **Cream Base** (`#FAF8FB`): Light-theme page background. Not pure white, not generic AI paper — it has a barely perceptible warm temperature that complements the red without imposing it.
-- **Cream 100** (`#F1EAE0`): Secondary surfaces, resting inputs, separators. The warmth of the palette comes from here, not from the brand.
-- **Cream 200** (`#E4D9C9`): Subtle borders, neutral badge backgrounds, surface hover states.
-- **Cream 900** (`#1A150F`): Strong text on light. Near-black with warm temperature.
-- **Ink Night** (`#182230`): Dark-theme base (premium landing, future dark mode). Slate-blue, not pure black — more cinema than terminal.
+- **Papel** (`#f8f6f5`): Light-theme page background. Barely-off-white, almost neutral — lets the red and navy carry the personality.
+- **Papel Sutil** (`#edeae8`): Secondary surfaces, resting inputs, subtle borders.
+- **Tinta** (`#032641`): The deep navy. **Heading text in light mode**, dark-theme background, footer, dark section bands. The authoritative ink.
 - **White** (`#FFFFFF`): Card surfaces in light theme. Never as a page background.
 
 ### Status
-- **Success** (`#16A34A`): "Timbrada" (Stamped) state — saturated green, not minty teal.
-- **Warning** (`#CA8A04`): "Pendiente" (Pending) state — amber/gold. Never orange; orange reads as error, not caution.
-- **Sangria** (`#9F0824`): "Rechazada" (Rejected) state — the same brand sangria. Semantic coherence: brand and error share the same temperature.
-- **Draft** (`#7C3AED`): "Borrador" (Draft) state — purple/violet, completely distinct from the other three to avoid red-green colorblindness confusion.
+- **Éxito** (`#16A34A`): "Timbrada" (Stamped) state — saturated green, not minty teal.
+- **Alerta** (`#CA8A04`): "Pendiente" (Pending) state — amber/gold. Never orange; orange reads as error, not caution.
+- **Peligro** (`#bc0921`): "Rechazada" (Rejected) state — the brand dark red. Semantic coherence: brand and error share the same temperature.
+- **Borrador** (`#7C3AED`): "Borrador" (Draft) state — purple/violet, completely distinct from the other three to avoid red-green colorblindness confusion.
 
 ## 3. Typography: Three Voices, One Workshop
 
@@ -193,15 +197,15 @@ Two reds with character, a green that converts, and warm surfaces that are not g
 
 ## 4. Elevation
 
-The system uses warm-tinted shadows — never harsh black. The shadow tint is warm-cream: `rgba(26, 21, 15, α)`. Shadows are so subtle they could be overlooked, but without them the screen feels flat.
+The system uses navy-tinted shadows — never harsh black. The shadow tint is `rgba(3, 38, 65, α)`. Shadows are so subtle they could be overlooked, but without them the screen feels flat.
 
-**The Whisper Rule.** Shadows are contextual information, not decoration. A resting card has `shadow-sm` (2px/8px). An interactive card lifts to `shadow-md` (6px/20px) on hover. Nothing else carries a shadow at the same time as the focused element. Two elements competing in elevation is a design failure.
+**The Whisper Rule.** Shadows are contextual information, not decoration. A resting card has `shadow-sm`. An interactive card lifts to `shadow-md` on hover. Nothing else carries a shadow at the same time as the focused element.
 
 ### Shadow Vocabulary
-- **Ambient** (`0 1px 2px rgba(26,21,15,0.06)` — `shadow-xs`): Minimal separation. Resting inputs, badges.
-- **Resting card** (`0 2px 8px rgba(26,21,15,0.07)` — `shadow-sm`): Default card surfaces.
-- **Elevated card / hover** (`0 6px 20px rgba(26,21,15,0.09)` — `shadow-md`): Hover on interactive card.
-- **Brand glow** (`0 10px 30px rgba(206,13,47,0.28)` — `shadow-brand`): Exclusive to the primary button and featured StampCard. Reinforces the action signal with red temperature. One per screen.
+- **Ambient** (`0 1px 2px rgba(3,38,65,0.06)` — `shadow-xs`): Minimal separation. Resting inputs, badges.
+- **Resting card** (`0 2px 8px rgba(3,38,65,0.08)` — `shadow-sm`): Default card surfaces.
+- **Elevated card / hover** (`0 6px 20px rgba(3,38,65,0.10)` — `shadow-md`): Hover on interactive card.
+- **Brand glow** (`0 10px 30px rgba(224,11,38,0.28)` — `shadow-brand`): Exclusive to the primary button and featured StampCard. One per screen.
 - **Accent glow** (`0 8px 24px rgba(169,217,43,0.35)` — `shadow-accent`): Exclusive to the lime accent button. One per screen.
 
 ## 5. Components
@@ -211,72 +215,65 @@ The system uses warm-tinted shadows — never harsh black. The shadow tint is wa
 Compact and decisive. No `uppercase` or wide `letter-spacing` — the text speaks for itself.
 
 - **Shape:** Soft corners, 12px radius (`rounded.md`) on MD/LG, 8px (`rounded.sm`) on SM.
-- **Primary:** Gradient `#CE0D2F → #9F0824` (135°), white text, `shadow-brand`. Scales to `0.97` on `mousedown` — real tactile feedback. One visible primary per screen.
-- **Accent:** Background `#C6F542`, text `#182230` (dark ink). `shadow-accent`. For conversion CTAs on the landing.
-- **Secondary:** White background, `1.5px solid #D3CBDB` border, `shadow-xs`. The safe neutral for secondary actions.
+- **Primary:** Gradient `#e00b26 → #bc0921` (135°), white text, `shadow-brand`. Scales to `0.97` on `mousedown`. One visible primary per screen.
+- **Accent:** Background `#C6F542`, text `#032641` (deep navy). `shadow-accent`. For conversion CTAs on the landing.
+- **Secondary:** White background, `1.5px solid #d5d0cd` border, `shadow-xs`. The safe neutral for secondary actions.
 - **Ghost:** Transparent, brand-color text. No border. For tertiary actions without visual noise.
-- **Danger:** Background `#9F0824` (Sangria), white text. For confirmed destructive actions.
+- **Danger:** Background `#bc0921` (Red Dark), white text. For confirmed destructive actions.
 - **Disabled:** Opacity 0.45. No hover or press feedback.
 
 ### Cards / Containers
 
 - **Corner Style:** 16px radius (`rounded.lg`) standard; 24px (`rounded.xl`) for sheets and modals.
-- **Background:** White on cream. Never cream on cream (no surface contrast).
+- **Background:** White on `#f8f6f5`. Never off-white on off-white (no surface contrast).
 - **Shadow:** `shadow-sm` at rest. `shadow-md` + `translateY(-2px)` on interactive hover.
-- **Border:** `1px solid #E4D9C9` — subtle, not structural.
-- **Internal Padding:** `var(--space-5)` (20px) by default. Never less than `var(--space-4)` (16px).
+- **Border:** `1px solid #edeae8` — subtle, not structural.
+- **Internal Padding:** `var(--space-5)` (20px) by default.
 - **Featured variant:** Brand gradient as background, white text, `shadow-brand`. Only for StampCard and pricing hero cards.
 
 ### Inputs / Fields
 
-- **Style:** White background, `1.5px solid #D3CBDB` border, 12px radius. No tinted background.
-- **Focus:** `border-color` shifts to `var(--brand)` + `box-shadow: 0 0 0 4px var(--focus-ring)` (red at 40% transparency). Never the default browser outline.
-- **Error:** `border-color: #9F0824` (Sangria). Error message in red below the field, 12px.
-- **Mono mode:** For RFC, amounts, folios — activates Geist Mono + `tabular-nums` on the input. Use `mono={true}` prop.
-- **Prefix/Suffix:** Typographic adornments in muted/mono: `$`, `MXN`, RFC prefix.
+- **Style:** White background, `1.5px solid #d5d0cd` border, 12px radius. No tinted background.
+- **Focus:** `border-color` shifts to `var(--brand)` + `box-shadow: 0 0 0 4px var(--focus-ring)`. Never the default browser outline.
+- **Error:** `border-color: #bc0921`. Error message in red below the field, 12px.
+- **Mono mode:** For RFC, amounts, folios — activates Geist Mono + `tabular-nums`.
 
 ### Badge / Status Chips
 
 - **Shape:** `border-radius: 999px` (pill). Compact: `4px 10px` padding.
-- **Tones:** `neutral` (cream-200 bg), `brand` (red-50 bg, sangria text), `success`, `warning`, `danger`, `info`.
+- **Tones:** `neutral` (papel-sutil bg), `brand` (red-50 bg, rojo-oscuro text), `success`, `warning`, `danger`, `info`.
 - **Solid variant:** Solid tone background, white text — for badges on dark surfaces.
-- **Dot indicator:** 7px circle before the label. Semantic: indicates live status (stamped/pending).
-
-### Switch
-
-- **On:** Brand gradient (`#CE0D2F → #9F0824`) as track. White thumb with `shadow-sm`.
-- **Off:** `#C8BCA8` (cream-300). Not black, not cold gray.
-- **Transition:** `200ms ease-out` for background and thumb. Feels instant to the user.
 
 ### StampCard (Kipo Signature Component)
 
 The core monetization component. CFDI stamp pack, checkout micro-card.
 
 - **Default:** White, subtle border, `shadow-xs`. Counter in Geist Mono at 34px.
-- **Featured:** Full brand gradient, "Más popular" ribbon in Viral Green on dark ink, `shadow-brand`.
+- **Featured:** Full brand gradient, `shadow-brand`. One per screen.
 - **Selected:** `2px solid var(--brand)` border.
-- **Press:** Scale `0.98` on mousedown — it's a button, not a passive card.
+- **Press:** Scale `0.98` on mousedown.
 
 ## 6. Do's and Don'ts
 
 ### Do:
 - **Do** use Geist Mono + `tabular-nums` for all financial data: amounts, RFCs, folios, stamp dates. No exceptions.
-- **Do** limit the Kipo Red → Sangria gradient to one action element per screen. Its power comes from its scarcity.
-- **Do** use `data-theme="dark"` on premium landing sections to automatically activate the Ink Night palette.
-- **Do** verify contrast ≥ 4.5:1 for body text. Cream-900 (`#1A150F`) on Cream-100 (`#F1EAE0`) always passes.
-- **Do** include `@media (prefers-reduced-motion: reduce)` for every entrance animation. Field users don't want effects.
-- **Do** cap body text lines at 65ch maximum. Invoices have lots of text; line width matters.
+- **Do** use `#032641` (Tinta) for all heading text in light mode — it's the brand ink, not just a neutral.
+- **Do** limit the Kipo Red → Red Dark gradient to one action element per screen.
+- **Do** use `data-theme="dark"` on the `<html>` element to activate the Tinta navy palette for dark mode.
+- **Do** verify contrast ≥ 4.5:1 for body text. `#032641` on `#f8f6f5` passes with significant margin.
+- **Do** include `@media (prefers-reduced-motion: reduce)` for every entrance animation.
+- **Do** cap body text lines at 65ch maximum.
 - **Do** use `text-wrap: balance` on all H1–H3 headings.
 - **Do** label every CFDI status with the correct Badge tone: `success` = Timbrada, `warning` = Pendiente, `danger` = Rechazada, `info` = Borrador.
 
 ### Don't:
-- **Don't** imitate Mexican government portals (SAT, IMSS): institutional blue, formless hierarchy, intimidating tables. If a screen looks like the SAT portal, it's wrong.
-- **Don't** replicate generic American SaaS: hero-metric big number, navy/gold gradient, happy-team stock photos, uppercase eyebrow above every section. Kipo has its own identity.
+- **Don't** imitate Mexican government portals (SAT, IMSS): institutional blue, formless hierarchy, intimidating tables.
+- **Don't** replicate generic American SaaS: hero-metric big number, gradient text, happy-team stock photos, uppercase eyebrow above every section.
 - **Don't** use `border-left` greater than 1px as a color accent on cards or alerts. No side-stripe borders.
 - **Don't** use `background-clip: text` with a gradient for decorative text. Kipo red is solid as action, never as effect.
-- **Don't** apply glassmorphism (`backdrop-filter: blur`) as decoration. It only appears for a specific functional reason.
+- **Don't** apply glassmorphism (`backdrop-filter: blur`) as decoration.
 - **Don't** use Viral Green (`#C6F542`) on text smaller than 18px on a light background — contrast fails 3:1.
-- **Don't** show two elements with `shadow-brand` or `shadow-accent` simultaneously. Competing elevation loses both.
-- **Don't** use section numbers (01 / 02 / 03) as default visual scaffolding unless the content IS an ordered sequence where order carries meaning.
-- **Don't** create identical card grids (icon + heading + text × N). If the content is the same shape, the component is wrong.
-- **Don't** use generic neutral grays (e.g. `#888888`) — every neutral in Kipo's palette has warm or slate-blue temperature.
+- **Don't** show two elements with `shadow-brand` or `shadow-accent` simultaneously.
+- **Don't** use section numbers (01 / 02 / 03) as default visual scaffolding unless the content IS an ordered sequence.
+- **Don't** create identical card grids (icon + heading + text × N).
+- **Don't** use generic neutral grays — every neutral in Kipo's palette has a specific tonal identity.
