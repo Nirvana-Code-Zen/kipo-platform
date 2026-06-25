@@ -7,6 +7,11 @@ import MobileIllustration from '../illustrations/MobileIllustration.astro'
 <div class="feat-outer">
   <div class="feat-container">
 
+    <div class="feat-section-head reveal">
+      <p class="feat-kicker">¿Por qué nosotros?</p>
+      <h2 class="feat-headline">Por qué usar Kipo.</h2>
+    </div>
+
     <div class="bento-grid">
 
       <div class="bento-card bento-f1 reveal stagger-1" data-zone="invoice speed">
@@ -119,6 +124,34 @@ import MobileIllustration from '../illustrations/MobileIllustration.astro'
     width: 100%;
   }
 
+  .feat-section-head {
+    margin-bottom: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 0.625rem;
+  }
+
+  .feat-kicker {
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    color: var(--kipo-red);
+    margin: 0;
+  }
+
+  .feat-headline {
+    font-family: var(--font-display);
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 600;
+    letter-spacing: -0.025em;
+    line-height: 1.1;
+    color: var(--text-strong);
+    margin: 0;
+    text-wrap: balance;
+  }
+
   .bento-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
@@ -156,6 +189,8 @@ import MobileIllustration from '../illustrations/MobileIllustration.astro'
   }
 
   .f1-content {
+    flex: 1;
+    min-width: 0;
     display: flex;
     flex-direction: column;
     gap: 0.625rem;
@@ -215,8 +250,33 @@ import MobileIllustration from '../illustrations/MobileIllustration.astro'
     color: rgba(255, 255, 255, 0.7);
   }
 
-  .f-illus {
-    max-width: 20rem;
+  /* F1 and F2: side-by-side flex cards */
+  .bento-f1 .f-illus,
+  .bento-f2 .f-illus {
+    width: 11rem;
+    flex-shrink: 0;
+    align-self: center;
+  }
+
+  /* F3: fills its grid column */
+  .bento-f3 .f-illus {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    overflow: hidden;
+    max-height: 200px;
+  }
+
+  .f-illus :global(svg) {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .bento-f3 .f-illus :global(svg) {
+    width: auto;
+    height: 100%;
+    max-height: 200px;
   }
 
   .bento-f2 {

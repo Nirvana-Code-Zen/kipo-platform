@@ -230,8 +230,7 @@ details[open] .faq-content {
 }
 
 .hero-section {
-  position: relative;
-  z-index: 0;
+  background: var(--bg-base);
 }
 
 [data-theme="dark"] .hero-section {
@@ -253,7 +252,10 @@ details[open] .faq-content {
 }
 
 .cta-section-wrap {
+  position: relative;
+  z-index: 1;
   padding-top: 4rem;
+  margin-bottom: -9rem;
 }
 
 [data-theme="dark"] .cta-section-wrap {
