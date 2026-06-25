@@ -5,7 +5,7 @@
 <svg
   viewBox="0 0 440 360"
   width="100%"
-  
+
   xmlns="http://www.w3.org/2000/svg"
   aria-labelledby="hero-illus-title"
   role="img"
@@ -26,15 +26,31 @@
       <stop offset="0%" stop-color="#EAF6FD"/>
       <stop offset="100%" stop-color="#D4EEFA"/>
     </radialGradient>
+    <!-- Workspace light — makes the scene pop on dark backgrounds -->
+    <radialGradient id="workspace-light" cx="50%" cy="72%" r="52%">
+      <stop offset="0%" stop-color="#f8f6f5" stop-opacity="0.13"/>
+      <stop offset="60%" stop-color="#f8f6f5" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#f8f6f5" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="screen-light-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#C6F542" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#C6F542" stop-opacity="0"/>
+    </radialGradient>
   </defs>
 
-  <!-- Background lime blob -->
-  <ellipse cx="300" cy="175" rx="120" ry="105" fill="#C6F542" fill-opacity="0.10"/>
+  <!-- Workspace atmosphere glow (helps legibility on dark bg) -->
+  <ellipse cx="220" cy="270" rx="200" ry="130" fill="url(#workspace-light)"/>
+
+  <!-- Background lime blob — bumped opacity for more presence -->
+  <ellipse cx="300" cy="175" rx="120" ry="105" fill="#C6F542" fill-opacity="0.22"/>
   <ellipse cx="130" cy="280" rx="60" ry="40" fill="#e00b26" fill-opacity="0.06"/>
 
+  <!-- Screen ambient glow behind laptop -->
+  <ellipse cx="200" cy="205" rx="110" ry="80" fill="url(#screen-light-glow)"/>
+
   <!-- === CHAIR === -->
-  <!-- Chair back -->
-  <rect x="176" y="182" width="58" height="62" rx="12" fill="#032641"/>
+  <!-- Chair back — #1c4f78 so it's distinguishable on dark bg -->
+  <rect x="176" y="182" width="58" height="62" rx="12" fill="#1c4f78"/>
   <!-- Chair back highlight -->
   <rect x="180" y="186" width="20" height="50" rx="8" fill="#3A4C5F" fill-opacity="0.5"/>
   <!-- Chair seat -->
@@ -42,10 +58,10 @@
   <!-- Chair seat shadow -->
   <rect x="152" y="250" width="106" height="6" rx="0" fill="#032641" fill-opacity="0.3"/>
   <!-- Chair legs -->
-  <rect x="163" y="256" width="9" height="52" rx="4" fill="#032641"/>
-  <rect x="238" y="256" width="9" height="52" rx="4" fill="#032641"/>
+  <rect x="163" y="256" width="9" height="52" rx="4" fill="#124066"/>
+  <rect x="238" y="256" width="9" height="52" rx="4" fill="#124066"/>
   <!-- Chair crossbar -->
-  <rect x="163" y="290" width="84" height="5" rx="2" fill="#032641"/>
+  <rect x="163" y="290" width="84" height="5" rx="2" fill="#124066"/>
 
   <!-- === DESK === -->
   <rect x="72" y="258" width="296" height="16" rx="8" fill="#C8BCA8"/>
@@ -64,7 +80,7 @@
   <!-- Laptop hinge line -->
   <rect x="112" y="238" width="176" height="3" rx="2" fill="#032641"/>
   <!-- Keyboard area -->
-  <rect x="118" y="243" width="164" height="12" rx="3" fill="#032641"/>
+  <rect x="118" y="243" width="164" height="12" rx="3" fill="#0a3352"/>
   <!-- Key rows -->
   <rect x="122" y="245" width="50" height="3" rx="1" fill="#3A4C5F"/>
   <rect x="178" y="245" width="50" height="3" rx="1" fill="#3A4C5F"/>
@@ -72,8 +88,8 @@
   <rect x="130" y="250" width="40" height="3" rx="1" fill="#3A4C5F"/>
   <rect x="176" y="250" width="40" height="3" rx="1" fill="#3A4C5F"/>
   <rect x="222" y="250" width="40" height="3" rx="1" fill="#3A4C5F"/>
-  <!-- Laptop lid -->
-  <rect x="116" y="158" width="168" height="84" rx="10" fill="#032641"/>
+  <!-- Laptop lid — #1c4f78 visible against dark bg -->
+  <rect x="116" y="158" width="168" height="84" rx="10" fill="#1c4f78"/>
   <!-- Screen bezel -->
   <rect x="122" y="164" width="156" height="72" rx="7" fill="#1A2530"/>
   <!-- Screen -->
@@ -97,9 +113,9 @@
 
   <!-- === CHARACTER === -->
 
-  <!-- Pants / lower body -->
-  <rect x="182" y="238" width="26" height="58" rx="8" fill="#032641"/>
-  <rect x="204" y="238" width="26" height="58" rx="8" fill="#032641"/>
+  <!-- Pants / lower body — #124066 so visible on dark bg -->
+  <rect x="182" y="238" width="26" height="58" rx="8" fill="#124066"/>
+  <rect x="204" y="238" width="26" height="58" rx="8" fill="#124066"/>
   <!-- Pant crease highlight -->
   <rect x="186" y="242" width="6" height="40" rx="3" fill="#032641" fill-opacity="0.5"/>
   <rect x="208" y="242" width="6" height="40" rx="3" fill="#032641" fill-opacity="0.5"/>
