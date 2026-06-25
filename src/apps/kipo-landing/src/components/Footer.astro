@@ -5,58 +5,190 @@ import kipoLogo from '../assets/kipo-logo@1x.png'
 const year = new Date().getFullYear()
 ---
 
-<footer style="background-color: var(--kipo-slate-900);" data-theme="dark">
-  <div class="mx-auto max-w-6xl px-6 py-16">
-    <div class="grid gap-12 md:grid-cols-3">
+<footer class="site-footer">
+  <div class="footer-inner">
+    <div class="footer-grid">
 
-      <div>
-        <a href="/" class="mb-5 flex items-center gap-2" aria-label="Kipo inicio">
-          <div class="h-8 w-8 shrink-0 overflow-hidden rounded-lg">
-            <Image src={kipoLogo} alt="Kipo Logo" width="32" height="32" class="h-8 w-8 object-cover" aria-hidden="true" />
+      <div class="footer-brand">
+        <a href="/" class="footer-logo-link" aria-label="Kipo inicio">
+          <div class="footer-logo-img">
+            <Image src={kipoLogo} alt="Kipo Logo" width="28" height="28" class="h-7 w-7 object-cover" aria-hidden="true" />
           </div>
-          <span class="text-lg font-bold text-text-strong" style="font-family: var(--font-display);">kipo</span>
+          <span class="footer-logo-name">kipo</span>
         </a>
-        <p class="mb-6 font-body text-sm leading-relaxed text-text-body" style="max-width: 26ch;">
+        <p class="footer-tagline">
           Factura. Sin drama.<br/>
-          CFDI 4.0 para freelancers y pequeños negocios en México.
-        </p>
-        <p class="font-body text-xs text-text-muted">
-          © {year} Kipo. Todos los derechos reservados.
+          CFDI 4.0 para freelancers y<br/>pequeños negocios en México.
         </p>
       </div>
 
       <div>
-        <p class="mb-4 font-body text-xs font-semibold uppercase tracking-widest text-text-muted">Producto</p>
-        <nav class="flex flex-col gap-3" aria-label="Links del producto">
-          <a href="/#como-funciona" class="font-body text-sm text-text-body transition-colors hover:text-text-strong">Cómo funciona</a>
-          <a href="/precios"        class="font-body text-sm text-text-body transition-colors hover:text-text-strong">Precios</a>
+        <p class="footer-col-label">Producto</p>
+        <nav class="footer-nav" aria-label="Links del producto">
+          <a href="/#como-funciona" class="footer-link">Cómo funciona</a>
+          <a href="/precios" class="footer-link">Precios</a>
         </nav>
       </div>
 
       <div>
-        <p class="mb-4 font-body text-xs font-semibold uppercase tracking-widest text-text-muted">Legal</p>
-        <nav class="flex flex-col gap-3" aria-label="Links legales">
-          <a href="/terminos"   class="font-body text-sm text-text-body transition-colors hover:text-text-strong">Términos de uso</a>
-          <a href="/privacidad" class="font-body text-sm text-text-body transition-colors hover:text-text-strong">Aviso de privacidad</a>
+        <p class="footer-col-label">Legal</p>
+        <nav class="footer-nav" aria-label="Links legales">
+          <a href="/terminos" class="footer-link">Términos de uso</a>
+          <a href="/privacidad" class="footer-link">Aviso de privacidad</a>
         </nav>
       </div>
+
     </div>
 
-    <div class="mt-12 border-t border-border-subtle pt-6">
-      <div class="flex flex-wrap items-center gap-2 font-body text-xs text-text-muted">
-        <span>Timbrado certificado por el SAT</span>
+    <div class="footer-bottom">
+      <span class="footer-copy">© {year} Kipo. Todos los derechos reservados.</span>
+      <div class="footer-cert">
+        <span>Timbrado certificado SAT</span>
         <span aria-hidden="true">·</span>
         <a
           href="https://www.facturapi.io"
           target="_blank"
           rel="noopener noreferrer"
-          class="font-semibold text-text-body underline-offset-2 transition-colors hover:text-text-strong hover:underline"
-        >
-          FacturAPI
-        </a>
+          class="footer-cert-link"
+        >FacturAPI</a>
         <span aria-hidden="true">·</span>
         <span>CFDI 4.0</span>
       </div>
     </div>
   </div>
 </footer>
+
+<style>
+  .site-footer {
+    padding:1.5rem;
+  }
+
+  .footer-inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    padding: 2rem 0 0;
+  }
+
+  .footer-grid {
+    display: grid;
+    grid-template-columns: 1.6fr 1fr 1fr;
+    gap: 1.5rem 2rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .footer-brand {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .footer-logo-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    text-decoration: none;
+  }
+
+  .footer-logo-img {
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: 8px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+
+  .footer-logo-name {
+    font-family: var(--font-display);
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--text-strong);
+  }
+
+  .footer-tagline {
+    font-family: var(--font-body);
+    font-size: 0.78rem;
+    line-height: 1.6;
+    color: var(--text-muted);
+    margin: 0;
+  }
+
+  .footer-col-label {
+    font-family: var(--font-body);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    margin: 0 0 0.75rem;
+  }
+
+  .footer-nav {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+  }
+
+  .footer-link {
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    color: var(--text-body);
+    text-decoration: none;
+    transition: color 150ms;
+  }
+
+  .footer-link:hover {
+    color: var(--text-strong);
+  }
+
+  .footer-bottom {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    padding: 1rem 0;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .footer-copy {
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+
+  .footer-cert {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    color: var(--text-muted);
+  }
+
+  .footer-cert-link {
+    font-weight: 600;
+    color: var(--text-body);
+    text-decoration: none;
+    transition: color 150ms;
+  }
+
+  .footer-cert-link:hover {
+    color: var(--text-strong);
+  }
+
+  @media (max-width: 640px) {
+    .site-footer {
+      padding: 0 1rem;
+    }
+    .footer-grid {
+      grid-template-columns: 1fr 1fr;
+    }
+    .footer-brand {
+      grid-column: 1 / -1;
+    }
+    .footer-bottom {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+</style>

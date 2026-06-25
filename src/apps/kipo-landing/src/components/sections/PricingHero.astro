@@ -2,11 +2,7 @@
 import Button from '../Button.astro'
 ---
 
-<section
-  class="py-24 text-center"
-  style="background-color: var(--kipo-slate-900);"
-  data-theme="dark"
->
+<div class="pricing-hero-inner text-center">
   <div class="mx-auto max-w-2xl px-6">
     <h1
       class="font-display mb-5 text-3xl font-bold sm:text-4xl md:text-5xl"
@@ -32,4 +28,10 @@ import Button from '../Button.astro'
       ))}
     </div>
   </div>
-</section>
+</div>
+
+<style>
+  .pricing-hero-inner {
+    padding: 2rem 1.5rem;
+  }
+</style>

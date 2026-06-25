@@ -18,23 +18,8 @@ const { title, description = 'Kipo — Factura. Sin drama. CFDI 4.0 para freelan
     <meta name="theme-color" content="#f8f6f5" />
     <title>{title}</title>
     <link rel="icon" type="image/png" href="/kipo-logo@1x.png" />
-    <script is:inline>
-      (function() {
-        try {
-          var isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          document.documentElement.setAttribute('data-theme', isDark ? 'dark' : 'light');
-        } catch(e) {
-          document.documentElement.setAttribute('data-theme', 'light');
-        }
-        try {
-          window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function(e) {
-            document.documentElement.setAttribute('data-theme', e.matches ? 'dark' : 'light');
-          });
-        } catch(e) {}
-      })();
-    </script>
   </head>
-  <body class="min-h-screen antialiased">
+  <body class="antialiased">
     <slot />
   </body>
 </html>

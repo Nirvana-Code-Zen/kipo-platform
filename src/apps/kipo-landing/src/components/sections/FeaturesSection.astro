@@ -1,52 +1,376 @@
 ---
-import FeatureBlock from '../FeatureBlock.astro'
 import InvoiceIllustration from '../illustrations/InvoiceIllustration.astro'
 import BusinessIllustration from '../illustrations/BusinessIllustration.astro'
 import MobileIllustration from '../illustrations/MobileIllustration.astro'
 ---
 
-<section id="caracteristicas" class="bg-bg-base" style="border-top: 1px solid var(--border-subtle);">
-  <div class="mx-auto max-w-6xl px-6">
+<div class="feat-outer">
+  <div class="feat-container">
 
-    <!-- Feature 1: flagship — full vertical breathing room -->
-    <div class="py-24">
-      <FeatureBlock
-        title="Factura desde el primer minuto"
-        body="Sin instalaciones ni contadores. Abre Kipo desde tu teléfono o computadora y emite tu primer CFDI en menos de dos minutos. Nada que instalar, nada que memorizar."
-        highlights={["RFC validado en tiempo real", "Complemento de pago incluido", "Exporta PDF y XML oficial"]}
-      >
-        <div slot="illustration" class="flex w-full max-w-md items-center justify-center mx-auto">
+    <div class="bento-grid">
+
+      <div class="bento-card bento-f1 reveal stagger-1" data-zone="invoice speed">
+        <div class="f1-content">
+          <div class="f1-body">
+            <h3 class="f1-title">Factura desde el primer minuto</h3>
+            <p class="f1-desc">Sin instalaciones ni contadores. Abre Kipo desde tu teléfono o computadora y emite tu primer CFDI en minutos.</p>
+            <ul class="feat-list">
+              <li class="feat-list-item">
+                <span class="feat-check" aria-hidden="true">
+                  <svg width="8" height="6" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                RFC validado en tiempo real
+              </li>
+              <li class="feat-list-item">
+                <span class="feat-check" aria-hidden="true">
+                  <svg width="8" height="6" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                Complemento de pago incluido
+              </li>
+              <li class="feat-list-item">
+                <span class="feat-check" aria-hidden="true">
+                  <svg width="8" height="6" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </span>
+                Exporta PDF y XML oficial
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="f-illus" aria-hidden="true">
           <InvoiceIllustration />
         </div>
-      </FeatureBlock>
-    </div>
+      </div>
 
-    <!-- Feature 2 -->
-    <div class="border-t py-16" style="border-color: var(--border-subtle);">
-      <FeatureBlock
-        reversed={true}
-        title="Para ti y tu equipo"
-        body="¿Tienes una ferretería, taller, boutique o despacho? Kipo crece contigo. Gestiona clientes, catálogo de servicios y reportes de ventas desde un solo lugar."
-        highlights={["Hasta 3 usuarios sin costo extra", "Catálogo de productos ilimitado", "Reportes de ventas en tiempo real"]}
-      >
-        <div slot="illustration" class="flex w-full max-w-md items-center justify-center mx-auto">
-          <BusinessIllustration />
+      <div class="bento-card bento-f2 reveal stagger-2" data-zone="mobile top right">
+        <div class="f2-content">
+          <h3 class="f2-title">Siempre en tu bolsillo</h3>
+          <p class="f2-desc">Cobra en el mostrador, en una reunión o en tu carro. Kipo funciona en cualquier dispositivo con conexión a internet.</p>
+          <ul class="feat-list">
+            <li class="feat-list-item">
+              <span class="feat-check feat-check--navy" aria-hidden="true">
+                <svg width="8" height="6" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              Funciona en iOS y Android
+            </li>
+            <li class="feat-list-item">
+              <span class="feat-check feat-check--navy" aria-hidden="true">
+                <svg width="8" height="6" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              Sin app que descargar
+            </li>
+            <li class="feat-list-item">
+              <span class="feat-check feat-check--navy" aria-hidden="true">
+                <svg width="8" height="6" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              Modo oscuro disponible
+            </li>
+          </ul>
         </div>
-      </FeatureBlock>
-    </div>
-
-    <!-- Feature 3: closing block — extra bottom space before next section -->
-    <div class="border-t pb-24 pt-16" style="border-color: var(--border-subtle);">
-      <FeatureBlock
-        title="Siempre en tu bolsillo"
-        body="Cobra en el mostrador, en una reunión o en tu carro. Kipo funciona en cualquier dispositivo con conexión a internet — sin apps que actualizar."
-        highlights={["Funciona en iOS y Android", "Sin app que descargar", "Modo oscuro disponible"]}
-      >
-        <div slot="illustration" class="flex w-full max-w-xs items-center justify-center mx-auto">
+        <div class="f-illus" aria-hidden="true">
           <MobileIllustration />
         </div>
-      </FeatureBlock>
-    </div>
+      </div>
 
+      <div class="bento-card bento-f3 reveal stagger-3" data-zone='Team'>
+        <div class="f3-text">
+          <h3 class="f3-title">Para ti y tu equipo</h3>
+          <p class="f3-desc">¿Tienes una ferretería, taller, boutique o despacho? Kipo crece contigo. Gestiona clientes, catálogo de servicios y reportes de ventas desde un solo lugar.</p>
+          <ul class="feat-list">
+            <li class="feat-list-item">
+              <span class="feat-check" aria-hidden="true">
+                <svg width="8" height="6" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              Hasta 3 usuarios sin costo extra
+            </li>
+            <li class="feat-list-item">
+              <span class="feat-check" aria-hidden="true">
+                <svg width="8" height="6" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              Catálogo de productos ilimitado
+            </li>
+            <li class="feat-list-item">
+              <span class="feat-check" aria-hidden="true">
+                <svg width="8" height="6" viewBox="0 0 10 8" fill="none"><path d="M1 4l2.5 2.5L9 1" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </span>
+              Reportes de ventas en tiempo real
+            </li>
+          </ul>
+        </div>
+        <div class="f-illus" aria-hidden="true">
+          <BusinessIllustration />
+        </div>
+      </div>
+
+    </div>
   </div>
-</section>
+</div>
+
+<style>
+  .feat-outer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0 1.5rem;
+  }
+
+  .feat-container {
+    max-width: 72rem;
+    margin: 0 auto;
+    width: 100%;
+  }
+
+  .bento-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+  }
+
+  .bento-card {
+    display: flex;
+    border-radius: 16px;
+    overflow: hidden;
+    transition:
+      transform 240ms var(--ease-quint),
+      box-shadow 240ms var(--ease-quint);
+    will-change: transform;
+  }
+
+  .bento-f1 {
+    background: #032641;
+    border: 1px solid transparent;
+    box-shadow:
+      0 20px 60px rgba(3, 38, 65, 0.22),
+      0 4px 16px rgba(3, 38, 65, 0.12);
+    position: relative;
+    padding: 1.75rem;
+    display: flex;
+    gap: 0.875rem;
+    min-height: 0;
+  }
+
+  .bento-f1:hover {
+    transform: translateY(-5px);
+    box-shadow:
+      0 32px 80px rgba(3, 38, 65, 0.30),
+      0 8px 24px rgba(3, 38, 65, 0.16);
+  }
+
+  .f1-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    position: relative;
+    z-index: 1;
+  }
+
+  .f1-metric {
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    line-height: 1;
+  }
+
+  .f1-num {
+    font-size: clamp(2.25rem, 5vw, 3.25rem);
+    font-weight: 900;
+    letter-spacing: -0.04em;
+    line-height: 1;
+    color: var(--kipo-red);
+    font-family: var(--font-mono);
+  }
+
+  .f1-meta {
+    font-size: 0.7rem;
+    color: rgba(255, 255, 255, 0.45);
+    font-family: var(--font-body);
+    margin-top: 0.125rem;
+  }
+
+  .f1-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.375rem;
+  }
+
+  .f1-title {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .f1-desc {
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    color: rgba(255, 255, 255, 0.6);
+    max-width: 34ch;
+    line-height: 1.5;
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .bento-f1 .feat-list-item {
+    color: rgba(255, 255, 255, 0.7);
+  }
+
+  .f-illus {
+    max-width: 20rem;
+  }
+
+  .bento-f2 {
+    border: 1px solid transparent;
+    box-shadow:
+      0 6px 28px rgba(3, 38, 65, 0.07),
+      0 1px 4px rgba(3, 38, 65, 0.04);
+    padding: 1.75rem;
+    display: flex;
+    gap: 1rem;
+    position: relative;
+    overflow: hidden;
+    align-items: flex-start;
+  }
+
+  .bento-f2:hover {
+    transform: translateY(-5px);
+    box-shadow:
+      0 6px 28px rgba(3, 38, 65, 0.07),
+      0 1px 4px rgba(3, 38, 65, 0.04);
+
+  }
+
+  .f2-content {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 0;
+    position: relative;
+    z-index: 1;
+  }
+
+  .f2-title {
+    font-family: var(--font-display);
+    font-size: 1.0625rem;
+    font-weight: 700;
+    color: #032641;
+    margin: 0;
+    line-height: 1.2;
+  }
+
+  .f2-desc {
+    font-family: var(--font-body);
+    font-size: 0.8125rem;
+    color: rgba(3, 38, 65, 0.72);
+    max-width: 30ch;
+    line-height: 1.45;
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .bento-f2 .feat-list-item {
+    color: rgba(3, 38, 65, 0.78);
+  }
+
+  .bento-f3 {
+    grid-column: 1 / -1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+    padding: 2rem 2.25rem;
+    align-items: center;
+    background: var(--surface-card);
+    border: 1px solid rgba(3, 38, 65, 0.08);
+    box-shadow:
+      0 6px 28px rgba(3, 38, 65, 0.07),
+      0 1px 4px rgba(3, 38, 65, 0.04);
+  }
+
+  .bento-f3:hover {
+    transform: translateY(-3px);
+    box-shadow:
+      0 14px 44px rgba(3, 38, 65, 0.11),
+      0 2px 8px rgba(3, 38, 65, 0.06);
+  }
+
+  .f3-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .f3-title {
+    font-family: var(--font-display);
+    font-size: clamp(1.375rem, 2.5vw, 1.875rem);
+    font-weight: 800;
+    color: var(--text-strong);
+    letter-spacing: -0.025em;
+    margin: 0;
+    line-height: 1.15;
+    text-wrap: balance;
+  }
+
+  .f3-desc {
+    font-family: var(--font-body);
+    font-size: 0.875rem;
+    color: var(--text-body);
+    max-width: 44ch;
+    line-height: 1.55;
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .feat-list {
+    list-style: none;
+    padding: 0;
+    margin: 0.375rem 0 0;
+    display: flex;
+    flex-direction: column;
+    gap: 0.3rem;
+  }
+
+  .feat-list-item {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-family: var(--font-body);
+    font-size: 0.72rem;
+    color: var(--text-body);
+    line-height: 1.3;
+  }
+
+  .feat-check {
+    width: 14px;
+    height: 14px;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--kipo-gradient);
+  }
+
+  /* ── Mobile ── */
+  @media (max-width: 767px) {
+    .feat-outer {
+      padding: 0 1rem;
+    }
+
+    .bento-grid {
+      grid-template-columns: 1fr;
+      gap: 0.875rem;
+    }
+
+    .bento-f3 {
+      grid-column: 1;
+      grid-template-columns: 1fr;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bento-card {
+      transition: none;
+    }
+  }
+</style>

@@ -3,8 +3,7 @@ import Layout from '../layouts/Layout.astro'
 import Nav from '../components/Nav.astro'
 import Footer from '../components/Footer.astro'
 import LandingHero from '../components/sections/LandingHero.astro'
-import TrustStrip from '../components/sections/TrustStrip.astro'
-import HowItWorks from '../components/sections/HowItWorks.astro'
+import ExperienceSection from '../components/sections/ExperienceSection.astro'
 import FeaturesSection from '../components/sections/FeaturesSection.astro'
 import PricingTeaser from '../components/sections/PricingTeaser.astro'
 import LandingCTA from '../components/sections/LandingCTA.astro'
@@ -13,12 +12,25 @@ import LandingCTA from '../components/sections/LandingCTA.astro'
 <Layout title="Kipo — Factura. Sin drama.">
   <Nav />
   <main>
-    <LandingHero />
-    <TrustStrip />
-    <HowItWorks />
-    <FeaturesSection />
-    <PricingTeaser />
-    <LandingCTA />
+    <div class="hero-section">
+      <LandingHero />
+    </div>
+
+    <div class="experience-card-section mx-auto max-w-6xl w-full px-6">
+      <ExperienceSection />
+    </div>
+
+    <section id="caracteristicas" class="py-[5rem]">
+      <FeaturesSection />
+    </section>
+
+    <section class="py-[5rem]">
+      <PricingTeaser />
+    </section>
+
+    <div class="cta-section-wrap">
+      <LandingCTA />
+    </div>
   </main>
   <Footer />
 </Layout>
@@ -35,7 +47,7 @@ import LandingCTA from '../components/sections/LandingCTA.astro'
           }
         });
       },
-      { threshold: 0.15, rootMargin: '0px 0px -48px 0px' }
+      { threshold: 0.1, rootMargin: '0px 0px -48px 0px' }
     );
     reveals.forEach((el) => observer.observe(el));
   } else {

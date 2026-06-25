@@ -8,6 +8,18 @@
         "value": "#0ea5e9",
         "reason": "FacturAPI PAC brand color in trust strip — intentional third-party brand representation",
         "createdAt": "2026-06-24T19:17:32.058Z"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "oklch(0.94 0.07 130)",
+        "reason": "Mint section bg derived from verde-viral for ExperienceSection snap slide",
+        "createdAt": "2026-06-25T21:15:16.540Z"
+      },
+      {
+        "rule": "design-system-color",
+        "value": "oklch(0.22 0.06 130)",
+        "reason": "Mint dark mode variant for ExperienceSection snap slide",
+        "createdAt": "2026-06-25T21:16:33.857Z"
       }
     ]
   }
