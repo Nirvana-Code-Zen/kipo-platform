@@ -231,7 +231,7 @@ import MobileIllustration from '../illustrations/MobileIllustration.astro'
     font-family: var(--font-display);
     font-size: 1.0625rem;
     font-weight: 700;
-    color: #ffffff;
+    color: var(--kipo-cream-0);
     margin: 0;
     line-height: 1.2;
   }
@@ -250,12 +250,18 @@ import MobileIllustration from '../illustrations/MobileIllustration.astro'
     color: rgba(255, 255, 255, 0.7);
   }
 
-  /* F1 and F2: side-by-side flex cards */
+  /* F1 and F2: size by height so both appear visually equal regardless of SVG aspect ratio */
   .bento-f1 .f-illus,
   .bento-f2 .f-illus {
-    width: 11rem;
     flex-shrink: 0;
     align-self: center;
+  }
+
+  .bento-f1 .f-illus :global(svg),
+  .bento-f2 .f-illus :global(svg) {
+    height: 12rem;
+    width: auto;
+    display: block;
   }
 
   /* F3: fills its grid column */
@@ -265,12 +271,6 @@ import MobileIllustration from '../illustrations/MobileIllustration.astro'
     justify-content: flex-end;
     overflow: hidden;
     max-height: 200px;
-  }
-
-  .f-illus :global(svg) {
-    width: 100%;
-    height: auto;
-    display: block;
   }
 
   .bento-f3 .f-illus :global(svg) {
