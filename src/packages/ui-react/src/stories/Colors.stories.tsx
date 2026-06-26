@@ -61,38 +61,38 @@ export const Colors: Story = {
             color: '#fff',
             letterSpacing: '-0.01em',
           }}>
-            --kipo-gradient · #CE0D2F → #9F0824
+            --kipo-gradient · #e00b26 → #bc0921
           </span>
         </div>
       </DocSection>
 
       {/* ── Neutrals: Slate Darks ── */}
       <DocSection
-        title="Neutrals — Slate Darks"
-        subtitle="Slate-blue ink scale for dark surfaces"
+        title="Neutrals — Navy Ink"
+        subtitle="Deep navy scale for dark surfaces and heading text"
         cardStyle={{ background: 'var(--kipo-slate-900)', border: '1px solid var(--kipo-slate-700)' }}
       >
         <SwatchRow>
-          <Swatch step="900" hex="#182230" dark style={{ background: 'var(--kipo-slate-900)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12 }} />
-          <Swatch step="800" hex="#1F2C3A" dark style={{ background: 'var(--kipo-slate-800)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12 }} />
-          <Swatch step="700" hex="#2B3A4B" dark style={{ background: 'var(--kipo-slate-700)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12 }} />
-          <Swatch step="600" hex="#3A4C5F" dark style={{ background: 'var(--kipo-slate-600)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12 }} />
-          <Swatch step="500" hex="#4C6075" dark style={{ background: 'var(--kipo-slate-500)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12 }} />
+          <Swatch step="900" hex="#032641" dark style={{ background: 'var(--kipo-slate-900)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12 }} />
+          <Swatch step="800" hex="#0a3352" dark style={{ background: 'var(--kipo-slate-800)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12 }} />
+          <Swatch step="700" hex="#124066" dark style={{ background: 'var(--kipo-slate-700)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12 }} />
+          <Swatch step="600" hex="#1c4f78" dark style={{ background: 'var(--kipo-slate-600)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12 }} />
+          <Swatch step="500" hex="#2d6a9f" dark style={{ background: 'var(--kipo-slate-500)', border: '1px solid rgba(255,255,255,0.08)', borderRadius: 12 }} />
         </SwatchRow>
       </DocSection>
 
-      {/* ── Neutrals: Warm Cream ── */}
+      {/* ── Neutrals: Near-White ── */}
       <DocSection
-        title="Neutrals — Warm Cream"
+        title="Neutrals — Near-White"
         subtitle="Light app surfaces, borders & text"
       >
         <SwatchRow>
           <Swatch step="0"   hex="#FFFFFF" style={{ background: 'var(--kipo-cream-0)',   border: '1px solid var(--border-subtle)', borderRadius: 12 }} />
-          <Swatch step="100" hex="#F1EAE0" style={{ background: 'var(--kipo-cream-100)', border: '1px solid var(--border-subtle)', borderRadius: 12 }} />
-          <Swatch step="200" hex="#E4D9C9" style={{ background: 'var(--kipo-cream-200)', border: '1px solid var(--border-subtle)', borderRadius: 12 }} />
-          <Swatch step="400" hex="#A99E8C" style={{ background: 'var(--kipo-cream-400)', borderRadius: 12 }} />
-          <Swatch step="600" hex="#574F44" dark style={{ background: 'var(--kipo-cream-600)', borderRadius: 12 }} />
-          <Swatch step="900" hex="#1A150F" dark style={{ background: 'var(--kipo-cream-900)', borderRadius: 12 }} />
+          <Swatch step="100" hex="#f8f6f5" style={{ background: 'var(--kipo-cream-100)', border: '1px solid var(--border-subtle)', borderRadius: 12 }} />
+          <Swatch step="200" hex="#edeae8" style={{ background: 'var(--kipo-cream-200)', border: '1px solid var(--border-subtle)', borderRadius: 12 }} />
+          <Swatch step="400" hex="#aba4a0" style={{ background: 'var(--kipo-cream-400)', borderRadius: 12 }} />
+          <Swatch step="600" hex="#4d4744" dark style={{ background: 'var(--kipo-cream-600)', borderRadius: 12 }} />
+          <Swatch step="900" hex="#0d0c0b" dark style={{ background: 'var(--kipo-cream-900)', borderRadius: 12 }} />
         </SwatchRow>
       </DocSection>
 

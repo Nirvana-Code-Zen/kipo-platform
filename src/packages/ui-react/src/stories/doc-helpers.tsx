@@ -109,8 +109,8 @@ export function Swatch({
   dark?: boolean
   style?: CSSProperties
 }) {
-  const textColor = dark ? '#fff' : '#1A150F'
-  const subColor = dark ? 'rgba(255,255,255,0.55)' : 'rgba(26,21,15,0.45)'
+  const textColor = dark ? '#fff' : '#032641'
+  const subColor = dark ? 'rgba(255,255,255,0.55)' : 'rgba(3,38,65,0.45)'
   return (
     <div style={{
       borderRadius: 12,

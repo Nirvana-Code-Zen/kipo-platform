@@ -1,0 +1,72 @@
+---
+import PricingCard from '../PricingCard.astro'
+---
+
+<section id="timbres" class="py-20" style="background-color: var(--kipo-cream-0); border-top: 1px solid var(--border-subtle);">
+  <div class="mx-auto max-w-6xl px-6">
+    <div class="mb-10 text-center">
+      <h2
+        class="font-display mb-2 text-2xl font-bold text-text-strong"
+        style="font-family: var(--font-display);"
+      >
+        Timbres — compra solo los que necesitas
+      </h2>
+      <p class="font-body text-sm" style="color: var(--text-muted);">
+        Funcionan con cualquier plan. Nunca vencen.
+      </p>
+    </div>
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+      <PricingCard
+        stamps={5}
+        price="$29 MXN"
+        pricePerStamp="$5.80 c/u"
+        ctaLabel="Empezar"
+        ctaHref="/registro"
+      />
+      <PricingCard
+        stamps={10}
+        price="$49 MXN"
+        pricePerStamp="$4.90 c/u"
+        ctaLabel="Empezar"
+        ctaHref="/registro"
+      />
+      <PricingCard
+        stamps={20}
+        price="$89 MXN"
+        pricePerStamp="$4.45 c/u"
+        featured={true}
+        label="Más popular"
+        ctaLabel="Empezar"
+        ctaHref="/registro"
+      />
+      <PricingCard
+        stamps={50}
+        price="$199 MXN"
+        pricePerStamp="$3.98 c/u"
+        ctaLabel="Empezar"
+        ctaHref="/registro"
+      />
+      <PricingCard
+        stamps={100}
+        price="$349 MXN"
+        pricePerStamp="$3.49 c/u"
+        ctaLabel="Empezar"
+        ctaHref="/registro"
+      />
+      <PricingCard
+        stamps={200}
+        price="$599 MXN"
+        pricePerStamp="$2.99 c/u"
+        label="Mejor precio"
+        ctaLabel="Empezar"
+        ctaHref="/registro"
+      />
+    </div>
+    <p class="mt-8 text-center font-body text-sm text-text-muted">
+      ¿Facturas más de 200 al mes?{' '}
+      <a href="mailto:hola@kipo.mx" class="font-semibold text-brand hover:underline">
+        Escríbenos para un plan empresarial.
+      </a>
+    </p>
+  </div>
+</section>

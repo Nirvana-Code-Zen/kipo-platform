@@ -1,4 +1,3 @@
-/* Inter — variable font (weight + optical size) */
 @font-face {
   font-family: 'Inter';
   src: url('../fonts-kipo/Inter/Inter-VariableFont_opsz,wght.ttf') format('truetype');
@@ -15,7 +14,6 @@
   font-display: swap;
 }
 
-/* Plus Jakarta Sans — variable font (weight) */
 @font-face {
   font-family: 'Plus Jakarta Sans';
   src: url('../fonts-kipo/Plus_Jakarta_Sans/PlusJakartaSans-VariableFont_wght.ttf') format('truetype');
@@ -32,7 +30,6 @@
   font-display: swap;
 }
 
-/* Urbanist — variable font (weight) */
 @font-face {
   font-family: 'Urbanist';
   src: url('../fonts-kipo/Urbanist/Urbanist-VariableFont_wght.ttf') format('truetype');
@@ -49,7 +46,6 @@
   font-display: swap;
 }
 
-/* Geist Mono — variable font (weight) */
 @font-face {
   font-family: 'Geist Mono';
   src: url('../fonts-kipo/Geist_Mono/GeistMono-VariableFont_wght.ttf') format('truetype');
@@ -58,7 +54,6 @@
   font-display: swap;
 }
 
-/* Lato — static fonts (no variable font available) */
 @font-face {
   font-family: 'Lato';
   src: url('../fonts-kipo/Lato/Lato-Regular.ttf') format('truetype');

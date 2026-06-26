@@ -1,0 +1,360 @@
+---
+import Button from '../Button.astro'
+---
+
+<section id="planes" class="py-20" style="background-color: var(--kipo-cream-0);">
+  <div class="mx-auto max-w-6xl px-6">
+
+    <div class="mb-12 text-center">
+      <h2
+        class="font-display mb-3 text-3xl font-bold md:text-4xl"
+        style="font-family: var(--font-display); letter-spacing: -0.02em; text-wrap: balance; color: var(--text-strong);"
+      >
+        Elige tus herramientas
+      </h2>
+      <p class="font-body text-base" style="color: var(--text-muted);">
+        Los timbres son aparte. Se compran cuando los necesitas y nunca vencen.
+      </p>
+    </div>
+
+    <!-- Plan grid: Emprendedor first on mobile via order -->
+    <div class="grid grid-cols-1 gap-6 lg:grid-cols-3">
+
+      <!-- Básico -->
+      <div
+        class="reveal stagger-1 card-lift order-2 flex flex-col rounded-kipo-lg border p-7 lg:order-1"
+        style="border-color: var(--border-subtle); background-color: var(--surface-card);"
+      >
+        <div class="mb-6">
+          <p class="font-body mb-1 text-sm font-semibold" style="color: var(--text-muted);">Básico</p>
+          <p
+            class="font-display font-extrabold"
+            style="font-family: var(--font-display); font-size: 2.5rem; line-height: 1; letter-spacing: -0.03em; color: var(--text-strong);"
+          >
+            Gratis
+          </p>
+          <p class="font-body mt-2 text-sm leading-snug" style="color: var(--text-body);">
+            Factura cuando necesites, sin mensualidad.
+          </p>
+        </div>
+
+        <div
+          class="mb-6 flex items-center gap-2 rounded-kipo px-3 py-2 font-body text-xs"
+          style="background-color: var(--bg-subtle); color: var(--text-muted);"
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+          </svg>
+          Timbres desde $5.80 c/u · nunca vencen
+        </div>
+
+        <a
+          href="/registro"
+          class="mb-8 inline-flex w-full items-center justify-center rounded-kipo px-4 py-3 font-body text-sm font-semibold transition-all duration-150 active:scale-[0.97]"
+          style="background-color: var(--bg-subtle); color: var(--text-strong);"
+        >
+          Crear cuenta gratis
+        </a>
+
+        <p class="font-body mb-4 text-xs font-semibold uppercase tracking-wider" style="color: var(--text-muted);">Lo que incluye</p>
+        <ul class="flex flex-col gap-3">
+          {[
+            'Emisión CFDI 4.0: Facturas, Notas de Crédito, Recibos de Honorarios',
+            'Portal para que tu cliente descargue su factura',
+            'PDF personalizado con tu logo y colores',
+            'Historial de facturas hasta 6 meses',
+            'Soporte por base de conocimiento',
+          ].map((item) => (
+            <li class="flex items-start gap-2.5">
+              <svg class="mt-0.5 shrink-0" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <circle cx="7" cy="7" r="7" fill="var(--bg-subtle)" />
+                <path d="M4 7l2 2 4-4" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              <span class="font-body text-sm leading-snug" style="color: var(--text-body);">{item}</span>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      <!-- Emprendedor (highlighted) -->
+      <div
+        class="reveal stagger-2 card-lift-featured order-1 flex flex-col rounded-kipo-lg p-7 lg:order-2"
+        style="background-color: var(--surface-card); border: 2px solid var(--kipo-red); box-shadow: 0 0 0 4px color-mix(in srgb, var(--kipo-red) 8%, transparent);"
+      >
+        <div class="mb-6">
+          <div class="mb-2 flex items-center gap-2">
+            <p class="font-body text-sm font-semibold" style="color: var(--text-strong);">Emprendedor</p>
+            <span
+              class="inline-block rounded-kipo-pill px-2 py-0.5 font-body text-xs font-semibold"
+              style="background-color: var(--kipo-red); color: var(--text-on-brand);"
+            >
+              Más popular
+            </span>
+          </div>
+          <div class="flex items-end gap-1">
+            <p
+              class="font-display font-extrabold"
+              style="font-family: var(--font-display); font-size: 2.5rem; line-height: 1; letter-spacing: -0.03em; color: var(--text-strong);"
+            >
+              $299
+            </p>
+            <p class="font-body mb-1 text-sm" style="color: var(--text-muted);">MXN/mes</p>
+          </div>
+          <p class="font-body mt-2 text-sm leading-snug" style="color: var(--text-body);">
+            Para freelancers y negocios que facturan seguido.
+          </p>
+        </div>
+
+        <div
+          class="mb-6 flex items-center gap-2 rounded-kipo px-3 py-2 font-body text-xs"
+          style="background-color: var(--bg-subtle); color: var(--text-muted);"
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+          </svg>
+          Timbres desde $5.80 c/u · nunca vencen
+        </div>
+
+        <Button href="/registro?trial=emprendedor" variant="accent" size="lg" class="mb-8 w-full">
+          Prueba Kipo 14 días gratis
+        </Button>
+
+        <p class="font-body mb-4 text-xs font-semibold uppercase tracking-wider" style="color: var(--text-muted);">Todo lo de Básico, más:</p>
+
+        <div class="flex flex-col gap-6">
+          <!-- Group: Automatización Fiscal -->
+          <div>
+            <div class="mb-2 flex items-center gap-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--kipo-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <polyline points="23 4 23 10 17 10" /><polyline points="1 20 1 14 7 14" />
+                <path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15" />
+              </svg>
+              <p class="font-body text-xs font-semibold" style="color: var(--text-strong);">Automatización Fiscal</p>
+            </div>
+            <ul class="flex flex-col gap-2 pl-5">
+              {[
+                'Escaneo de Constancia de Situación Fiscal con OCR',
+                'Alerta si un cliente aparece en la lista EFOS/EDOS del SAT',
+                'Validación RFC en tiempo real antes de timbrar',
+              ].map((item) => (
+                <li class="flex items-start gap-2">
+                  <svg class="mt-0.5 shrink-0" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <circle cx="7" cy="7" r="7" style="fill: color-mix(in srgb, var(--kipo-red) 10%, transparent);" />
+                    <path d="M4 7l2 2 4-4" stroke="var(--kipo-red)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  <span class="font-body text-sm leading-snug" style="color: var(--text-body);">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Group: Operación Diaria -->
+          <div>
+            <div class="mb-2 flex items-center gap-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--kipo-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" />
+                <line x1="3" y1="6" x2="3.01" y2="6" /><line x1="3" y1="12" x2="3.01" y2="12" /><line x1="3" y1="18" x2="3.01" y2="18" />
+              </svg>
+              <p class="font-body text-xs font-semibold" style="color: var(--text-strong);">Operación Diaria</p>
+            </div>
+            <ul class="flex flex-col gap-2 pl-5">
+              {[
+                'Facturas recurrentes automáticas para rentas y mensualidades',
+                'Recordatorios por WhatsApp y correo a tus clientes',
+                'Cotizaciones que se convierten en CFDI con 1 click',
+                'Historial completo con búsqueda avanzada',
+              ].map((item) => (
+                <li class="flex items-start gap-2">
+                  <svg class="mt-0.5 shrink-0" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <circle cx="7" cy="7" r="7" style="fill: color-mix(in srgb, var(--kipo-red) 10%, transparent);" />
+                    <path d="M4 7l2 2 4-4" stroke="var(--kipo-red)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  <span class="font-body text-sm leading-snug" style="color: var(--text-body);">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Group: Reportes -->
+          <div>
+            <div class="mb-2 flex items-center gap-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--kipo-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" />
+              </svg>
+              <p class="font-body text-xs font-semibold" style="color: var(--text-strong);">Reportes</p>
+            </div>
+            <ul class="flex flex-col gap-2 pl-5">
+              {[
+                'Resumen mensual de ingresos e IVA cobrado por cliente',
+                'Exportación a Excel y CSV para tu contador',
+              ].map((item) => (
+                <li class="flex items-start gap-2">
+                  <svg class="mt-0.5 shrink-0" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <circle cx="7" cy="7" r="7" style="fill: color-mix(in srgb, var(--kipo-red) 10%, transparent);" />
+                    <path d="M4 7l2 2 4-4" stroke="var(--kipo-red)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  <span class="font-body text-sm leading-snug" style="color: var(--text-body);">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- PyME -->
+      <div
+        class="reveal stagger-3 card-lift order-3 flex flex-col rounded-kipo-lg border p-7 lg:order-3"
+        style="border-color: var(--border-subtle); background-color: var(--surface-card);"
+      >
+        <div class="mb-6">
+          <p class="font-body mb-1 text-sm font-semibold" style="color: var(--text-muted);">PyME</p>
+          <div class="flex items-end gap-1">
+            <p
+              class="font-display font-extrabold"
+              style="font-family: var(--font-display); font-size: 2.5rem; line-height: 1; letter-spacing: -0.03em; color: var(--text-strong);"
+            >
+              $599
+            </p>
+            <p class="font-body mb-1 text-sm" style="color: var(--text-muted);">MXN/mes</p>
+          </div>
+          <p class="font-body mt-2 text-sm leading-snug" style="color: var(--text-body);">
+            Para negocios con equipo y operación contable compleja.
+          </p>
+        </div>
+
+        <div
+          class="mb-6 flex items-center gap-2 rounded-kipo px-3 py-2 font-body text-xs"
+          style="background-color: var(--bg-subtle); color: var(--text-muted);"
+        >
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2" />
+          </svg>
+          Timbres desde $5.80 c/u · nunca vencen
+        </div>
+
+        <a
+          href="/registro?trial=pyme"
+          class="mb-8 inline-flex w-full items-center justify-center rounded-kipo px-4 py-3 font-body text-sm font-semibold transition-all duration-150 active:scale-[0.97]"
+          style="background-color: var(--bg-subtle); color: var(--text-strong);"
+        >
+         Prueba Kipo
+        </a>
+
+        <p class="font-body mb-4 text-xs font-semibold uppercase tracking-wider" style="color: var(--text-muted);">Todo lo de Emprendedor, más:</p>
+
+        <div class="flex flex-col gap-6">
+          <!-- Group: Multi-usuario -->
+          <div>
+            <div class="mb-2 flex items-center gap-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--kipo-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2" /><circle cx="9" cy="7" r="4" />
+                <path d="M23 21v-2a4 4 0 0 0-3-3.87" /><path d="M16 3.13a4 4 0 0 1 0 7.75" />
+              </svg>
+              <p class="font-body text-xs font-semibold" style="color: var(--text-strong);">Multi-usuario</p>
+            </div>
+            <ul class="flex flex-col gap-2 pl-5">
+              {[
+                'Hasta 3 usuarios con roles y permisos diferenciados',
+                'Vendedor factura, contador solo consulta, admin cancela',
+              ].map((item) => (
+                <li class="flex items-start gap-2">
+                  <svg class="mt-0.5 shrink-0" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <circle cx="7" cy="7" r="7" fill="var(--bg-subtle)" />
+                    <path d="M4 7l2 2 4-4" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  <span class="font-body text-sm leading-snug" style="color: var(--text-body);">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Group: Complementos SAT -->
+          <div>
+            <div class="mb-2 flex items-center gap-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--kipo-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" /><polyline points="14 2 14 8 20 8" />
+                <polyline points="9 15 11 17 15 13" />
+              </svg>
+              <p class="font-body text-xs font-semibold" style="color: var(--text-strong);">Complementos SAT Avanzados</p>
+            </div>
+            <ul class="flex flex-col gap-2 pl-5">
+              {[
+                'REP generado automáticamente al registrar el pago',
+                'Nota de Crédito con relación al CFDI original en 1 click',
+                'Cancelaciones guiadas: solicitud → aceptación → confirmación',
+              ].map((item) => (
+                <li class="flex items-start gap-2">
+                  <svg class="mt-0.5 shrink-0" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <circle cx="7" cy="7" r="7" fill="var(--bg-subtle)" />
+                    <path d="M4 7l2 2 4-4" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  <span class="font-body text-sm leading-snug" style="color: var(--text-body);">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Group: Integraciones -->
+          <div>
+            <div class="mb-2 flex items-center gap-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--kipo-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71" />
+                <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71" />
+              </svg>
+              <p class="font-body text-xs font-semibold" style="color: var(--text-strong);">Integraciones</p>
+            </div>
+            <ul class="flex flex-col gap-2 pl-5">
+              {[
+                'Webhook y API básica para Shopify, WooCommerce y más',
+                'Stripe, Clip y Conekta: pago confirmado = CFDI generado',
+              ].map((item) => (
+                <li class="flex items-start gap-2">
+                  <svg class="mt-0.5 shrink-0" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <circle cx="7" cy="7" r="7" fill="var(--bg-subtle)" />
+                    <path d="M4 7l2 2 4-4" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  <span class="font-body text-sm leading-snug" style="color: var(--text-body);">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          <!-- Group: Reportes Contables -->
+          <div>
+            <div class="mb-2 flex items-center gap-2">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--kipo-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                <rect x="2" y="3" width="20" height="14" rx="2" /><line x1="8" y1="21" x2="16" y2="21" /><line x1="12" y1="17" x2="12" y2="21" />
+              </svg>
+              <p class="font-body text-xs font-semibold" style="color: var(--text-strong);">Reportes Contables</p>
+            </div>
+            <ul class="flex flex-col gap-2 pl-5">
+              {[
+                'Reporte pre-DIOT con datos listos para tu contador',
+                'Dashboard de IVA: cuánto cobras vs cuánto pagas (estimado)',
+                'Comparativa de ingresos mes a mes',
+              ].map((item) => (
+                <li class="flex items-start gap-2">
+                  <svg class="mt-0.5 shrink-0" width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                    <circle cx="7" cy="7" r="7" fill="var(--bg-subtle)" />
+                    <path d="M4 7l2 2 4-4" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                  </svg>
+                  <span class="font-body text-sm leading-snug" style="color: var(--text-body);">{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Enterprise note -->
+    <p class="mt-8 text-center font-body text-sm" style="color: var(--text-muted);">
+      ¿Facturas más de 200 CFDI al mes?{' '}
+      <a href="mailto:hola@kipo.mx" class="font-semibold transition-colors hover:opacity-80" style="color: var(--kipo-red);">
+        Escríbenos para un plan empresarial.
+      </a>
+    </p>
+
+  </div>
+</section>

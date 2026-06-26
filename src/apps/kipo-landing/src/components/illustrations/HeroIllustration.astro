@@ -1,0 +1,222 @@
+---
+// Freelancer mexicana timbrando factura desde su laptop
+---
+
+<svg
+  viewBox="0 0 440 360"
+  width="100%"
+
+  xmlns="http://www.w3.org/2000/svg"
+  aria-labelledby="hero-illus-title"
+  role="img"
+>
+  <title id="hero-illus-title">Freelancer timbra su factura desde su laptop</title>
+
+  <defs>
+    <filter id="hero-drop" x="-20%" y="-20%" width="140%" height="140%">
+      <feDropShadow dx="0" dy="2" stdDeviation="3" flood-color="#032641" flood-opacity="0.08"/>
+    </filter>
+    <filter id="hero-glow" x="-30%" y="-30%" width="160%" height="160%">
+      <feGaussianBlur stdDeviation="8" result="blur"/>
+      <feFlood flood-color="#C6F542" flood-opacity="0.18" result="color"/>
+      <feComposite in="color" in2="blur" operator="in" result="glow"/>
+      <feMerge><feMergeNode in="glow"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+    <radialGradient id="screen-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#EAF6FD"/>
+      <stop offset="100%" stop-color="#D4EEFA"/>
+    </radialGradient>
+    <!-- Workspace light — makes the scene pop on dark backgrounds -->
+    <radialGradient id="workspace-light" cx="50%" cy="72%" r="52%">
+      <stop offset="0%" stop-color="#f8f6f5" stop-opacity="0.13"/>
+      <stop offset="60%" stop-color="#f8f6f5" stop-opacity="0.04"/>
+      <stop offset="100%" stop-color="#f8f6f5" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="screen-light-glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#C6F542" stop-opacity="0.10"/>
+      <stop offset="100%" stop-color="#C6F542" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Workspace atmosphere glow (helps legibility on dark bg) -->
+  <ellipse cx="220" cy="270" rx="200" ry="130" fill="url(#workspace-light)"/>
+
+  <!-- Background lime blob — bumped opacity for more presence -->
+  <ellipse cx="300" cy="175" rx="120" ry="105" fill="#C6F542" fill-opacity="0.22"/>
+  <ellipse cx="130" cy="280" rx="60" ry="40" fill="#e00b26" fill-opacity="0.06"/>
+
+  <!-- Screen ambient glow behind laptop -->
+  <ellipse cx="200" cy="205" rx="110" ry="80" fill="url(#screen-light-glow)"/>
+
+  <!-- === CHAIR === -->
+  <!-- Chair back — #1c4f78 so it's distinguishable on dark bg -->
+  <rect x="176" y="182" width="58" height="62" rx="12" fill="#1c4f78"/>
+  <!-- Chair back highlight -->
+  <rect x="180" y="186" width="20" height="50" rx="8" fill="#3A4C5F" fill-opacity="0.5"/>
+  <!-- Chair seat -->
+  <rect x="152" y="238" width="106" height="18" rx="9" fill="#3A4C5F"/>
+  <!-- Chair seat shadow -->
+  <rect x="152" y="250" width="106" height="6" rx="0" fill="#032641" fill-opacity="0.3"/>
+  <!-- Chair legs -->
+  <rect x="163" y="256" width="9" height="52" rx="4" fill="#124066"/>
+  <rect x="238" y="256" width="9" height="52" rx="4" fill="#124066"/>
+  <!-- Chair crossbar -->
+  <rect x="163" y="290" width="84" height="5" rx="2" fill="#124066"/>
+
+  <!-- === DESK === -->
+  <rect x="72" y="258" width="296" height="16" rx="8" fill="#C8BCA8"/>
+  <!-- Desk top highlight -->
+  <rect x="72" y="258" width="296" height="5" rx="4" fill="#D4C9B8"/>
+  <!-- Desk legs -->
+  <rect x="100" y="274" width="12" height="48" rx="5" fill="#A99E8C"/>
+  <rect x="328" y="274" width="12" height="48" rx="5" fill="#A99E8C"/>
+  <!-- Desk foot -->
+  <rect x="90" y="317" width="32" height="5" rx="2" fill="#A99E8C"/>
+  <rect x="318" y="317" width="32" height="5" rx="2" fill="#A99E8C"/>
+
+  <!-- === LAPTOP === -->
+  <!-- Laptop base -->
+  <rect x="112" y="238" width="176" height="22" rx="8" fill="#3A4C5F"/>
+  <!-- Laptop hinge line -->
+  <rect x="112" y="238" width="176" height="3" rx="2" fill="#032641"/>
+  <!-- Keyboard area -->
+  <rect x="118" y="243" width="164" height="12" rx="3" fill="#0a3352"/>
+  <!-- Key rows -->
+  <rect x="122" y="245" width="50" height="3" rx="1" fill="#3A4C5F"/>
+  <rect x="178" y="245" width="50" height="3" rx="1" fill="#3A4C5F"/>
+  <rect x="234" y="245" width="42" height="3" rx="1" fill="#3A4C5F"/>
+  <rect x="130" y="250" width="40" height="3" rx="1" fill="#3A4C5F"/>
+  <rect x="176" y="250" width="40" height="3" rx="1" fill="#3A4C5F"/>
+  <rect x="222" y="250" width="40" height="3" rx="1" fill="#3A4C5F"/>
+  <!-- Laptop lid — #1c4f78 visible against dark bg -->
+  <rect x="116" y="158" width="168" height="84" rx="10" fill="#1c4f78"/>
+  <!-- Screen bezel -->
+  <rect x="122" y="164" width="156" height="72" rx="7" fill="#1A2530"/>
+  <!-- Screen -->
+  <rect x="126" y="167" width="148" height="66" rx="5" fill="url(#screen-glow)"/>
+
+  <!-- Screen content: success state -->
+  <!-- App header bar -->
+  <rect x="126" y="167" width="148" height="16" rx="5" fill="#e00b26"/>
+  <rect x="126" y="176" width="148" height="7" rx="0" fill="#e00b26"/>
+  <!-- Header "Kipo" text mark -->
+  <rect x="131" y="170" width="22" height="8" rx="2" fill="white" fill-opacity="0.9"/>
+
+  <!-- Checkmark success circle -->
+  <circle cx="200" cy="210" r="20" fill="#DCFCE7"/>
+  <circle cx="200" cy="210" r="16" fill="#BBF7D0"/>
+  <path d="M191 210l7 7 11-14" stroke="#16A34A" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+
+  <!-- Invoice lines below checkmark -->
+  <rect x="140" y="234" width="40" height="5" rx="2" fill="#C8BCA8" fill-opacity="0.7"/>
+  <rect x="185" y="234" width="80" height="5" rx="2" fill="#C8BCA8" fill-opacity="0.5"/>
+
+  <!-- === CHARACTER === -->
+
+  <!-- Pants / lower body — #124066 so visible on dark bg -->
+  <rect x="182" y="238" width="26" height="58" rx="8" fill="#124066"/>
+  <rect x="204" y="238" width="26" height="58" rx="8" fill="#124066"/>
+  <!-- Pant crease highlight -->
+  <rect x="186" y="242" width="6" height="40" rx="3" fill="#032641" fill-opacity="0.5"/>
+  <rect x="208" y="242" width="6" height="40" rx="3" fill="#032641" fill-opacity="0.5"/>
+  <!-- Shoes -->
+  <ellipse cx="195" cy="296" rx="17" ry="9" fill="#2C1810"/>
+  <ellipse cx="217" cy="296" rx="17" ry="9" fill="#2C1810"/>
+  <!-- Shoe highlight -->
+  <ellipse cx="191" cy="292" rx="6" ry="3" fill="#3D2518" fill-opacity="0.5"/>
+  <ellipse cx="213" cy="292" rx="6" ry="3" fill="#3D2518" fill-opacity="0.5"/>
+
+  <!-- Torso / red top -->
+  <rect x="172" y="195" width="66" height="55" rx="16" fill="#e00b26"/>
+  <!-- Top collar detail -->
+  <path d="M197 195 L205 205 L213 195" fill="#bc0921" fill-opacity="0.5"/>
+  <!-- Top highlight -->
+  <rect x="176" y="199" width="18" height="30" rx="6" fill="#E01535" fill-opacity="0.4"/>
+
+  <!-- Left arm -->
+  <path d="M172 205 Q150 218 142 242" stroke="#e00b26" stroke-width="15" stroke-linecap="round" fill="none"/>
+  <path d="M172 205 Q150 218 142 242" stroke="#D4935C" stroke-width="11" stroke-linecap="round" fill="none"/>
+  <!-- Left hand -->
+  <ellipse cx="142" cy="246" rx="10" ry="8" fill="#D4935C"/>
+  <!-- Fingers hint -->
+  <ellipse cx="136" cy="243" rx="4" ry="3" fill="#C8854A"/>
+  <ellipse cx="148" cy="243" rx="4" ry="3" fill="#C8854A"/>
+
+  <!-- Right arm -->
+  <path d="M238 205 Q258 218 264 242" stroke="#e00b26" stroke-width="15" stroke-linecap="round" fill="none"/>
+  <path d="M238 205 Q258 218 264 242" stroke="#D4935C" stroke-width="11" stroke-linecap="round" fill="none"/>
+  <!-- Right hand -->
+  <ellipse cx="264" cy="246" rx="10" ry="8" fill="#D4935C"/>
+  <ellipse cx="270" cy="243" rx="4" ry="3" fill="#C8854A"/>
+  <ellipse cx="258" cy="243" rx="4" ry="3" fill="#C8854A"/>
+
+  <!-- Neck -->
+  <rect x="197" y="176" width="16" height="22" rx="8" fill="#D4935C"/>
+
+  <!-- Head -->
+  <ellipse cx="205" cy="158" rx="30" ry="32" fill="#D4935C"/>
+  <!-- Ear left -->
+  <ellipse cx="176" cy="160" rx="6" ry="8" fill="#D4935C"/>
+  <ellipse cx="177" cy="160" rx="3" ry="5" fill="#C8854A" fill-opacity="0.4"/>
+  <!-- Ear right -->
+  <ellipse cx="234" cy="160" rx="6" ry="8" fill="#D4935C"/>
+  <ellipse cx="233" cy="160" rx="3" ry="5" fill="#C8854A" fill-opacity="0.4"/>
+
+  <!-- Hair - bun style -->
+  <ellipse cx="205" cy="134" rx="31" ry="20" fill="#2C1810"/>
+  <!-- Side hair covering forehead -->
+  <path d="M175 145 Q178 128 205 126 Q232 128 235 145" fill="#2C1810"/>
+  <!-- Bun shape top right -->
+  <circle cx="228" cy="125" r="11" fill="#2C1810"/>
+  <!-- Hair band -->
+  <circle cx="228" cy="125" r="6" fill="#e00b26"/>
+  <!-- Hair highlight -->
+  <ellipse cx="195" cy="128" rx="10" ry="6" fill="#4A2C1A" fill-opacity="0.6"/>
+
+  <!-- Eyebrows -->
+  <path d="M192 148 Q196 145 200 147" stroke="#2C1810" stroke-width="2" stroke-linecap="round" fill="none"/>
+  <path d="M210 147 Q214 145 218 148" stroke="#2C1810" stroke-width="2" stroke-linecap="round" fill="none"/>
+
+  <!-- Eyes -->
+  <ellipse cx="196" cy="155" rx="5" ry="5.5" fill="#1A1A1A"/>
+  <ellipse cx="214" cy="155" rx="5" ry="5.5" fill="#1A1A1A"/>
+  <!-- Eye whites highlight -->
+  <circle cx="198" cy="153" r="1.8" fill="white" fill-opacity="0.65"/>
+  <circle cx="216" cy="153" r="1.8" fill="white" fill-opacity="0.65"/>
+  <!-- Eye lower lash hint -->
+  <ellipse cx="196" cy="159" rx="4" ry="1.5" fill="#9B6140" fill-opacity="0.3"/>
+  <ellipse cx="214" cy="159" rx="4" ry="1.5" fill="#9B6140" fill-opacity="0.3"/>
+
+  <!-- Nose -->
+  <ellipse cx="205" cy="165" rx="3" ry="2" fill="#C8854A" fill-opacity="0.7"/>
+
+  <!-- Smile -->
+  <path d="M198 172 Q205 178 212 172" stroke="#9B6140" stroke-width="1.8" fill="none" stroke-linecap="round"/>
+
+  <!-- Small cheek blush -->
+  <ellipse cx="188" cy="163" rx="7" ry="4" fill="#E8805A" fill-opacity="0.2"/>
+  <ellipse cx="222" cy="163" rx="7" ry="4" fill="#E8805A" fill-opacity="0.2"/>
+
+  <!-- === SPEECH BUBBLE "¡Listo!" === -->
+  <rect x="272" y="138" width="88" height="36" rx="12" fill="white" filter="url(#hero-drop)"/>
+  <!-- Tail pointing left-down toward screen -->
+  <path d="M282 174 l-12 14 14-4z" fill="white"/>
+  <!-- Border on bubble -->
+  <rect x="272" y="138" width="88" height="36" rx="12" fill="none" stroke="#DCFCE7" stroke-width="1.5"/>
+  <!-- Checkmark mini -->
+  <circle cx="288" cy="156" r="8" fill="#DCFCE7"/>
+  <path d="M284 156l3 3 5-6" stroke="#16A34A" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+  <!-- Text -->
+  <text x="300" y="160" font-family="'Plus Jakarta Sans', system-ui, sans-serif" font-size="13" font-weight="700" fill="#16A34A">¡Listo!</text>
+
+  <!-- Floating small decorations -->
+  <!-- Sparkle top-left area -->
+  <g opacity="0.6">
+    <path d="M80 100 L82 90 L84 100 L94 102 L84 104 L82 114 L80 104 L70 102z" fill="#e00b26" fill-opacity="0.4"/>
+  </g>
+  <!-- Small dot cluster -->
+  <circle cx="380" cy="80" r="4" fill="#C6F542" fill-opacity="0.5"/>
+  <circle cx="392" cy="88" r="2.5" fill="#C6F542" fill-opacity="0.35"/>
+  <circle cx="374" cy="90" r="2" fill="#C6F542" fill-opacity="0.25"/>
+
+</svg>

@@ -1,0 +1,44 @@
+---
+---
+
+<section class="py-16" style="background-color: var(--kipo-cream-0); border-top: 1px solid var(--border-subtle);">
+  <div class="mx-auto max-w-4xl px-6">
+    <h2
+      class="font-display mb-3 text-center text-2xl font-bold text-text-strong"
+      style="font-family: var(--font-display);"
+    >
+      ¿Qué incluye cada timbre?
+    </h2>
+    <p class="mb-12 text-center font-body text-base text-text-muted">
+      Todo lo que necesitas, sin cobros ocultos.
+    </p>
+    <ul role="list" class="grid gap-4 sm:grid-cols-2">
+      {[
+        'CFDI 4.0 válido ante el SAT',
+        'Timbrado electrónico certificado por PAC',
+        'PDF y XML oficiales incluidos',
+        'Historial de facturas en tu cuenta',
+        'Cancelación CFDI sin costo adicional',
+        'Soporte por WhatsApp y correo',
+      ].map((item, i) => (
+        <li class="reveal flex items-center gap-3 rounded-kipo bg-bg-base p-4" style={`transition-delay: ${i * 60}ms;`}>
+          <span
+            class="flex h-6 w-6 shrink-0 items-center justify-center rounded-full"
+            style="background-color: var(--kipo-red);"
+          >
+            <svg width="10" height="8" viewBox="0 0 10 8" fill="none" aria-hidden="true">
+              <path
+                d="M1 4l2.5 2.5L9 1"
+                stroke="white"
+                stroke-width="1.5"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              />
+            </svg>
+          </span>
+          <span class="font-body text-sm font-medium text-text-body">{item}</span>
+        </li>
+      ))}
+    </ul>
+  </div>
+</section>

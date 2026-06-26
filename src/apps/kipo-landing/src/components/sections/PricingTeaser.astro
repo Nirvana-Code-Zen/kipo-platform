@@ -1,0 +1,163 @@
+---
+---
+
+<div class="pricing-teaser-outer">
+  <div class="mx-auto max-w-6xl w-full px-6">
+
+    <div class="mb-8 text-center">
+      <h2
+        class="font-display mb-3 text-3xl font-bold text-text-strong md:text-4xl"
+        style="font-family: var(--font-display); letter-spacing: -0.02em; text-wrap: balance;"
+      >
+        Elige tus herramientas
+      </h2>
+      <p class="font-body text-base text-text-muted">
+        Los timbres se compran por separado y nunca vencen.
+      </p>
+    </div>
+
+    <div class="grid gap-5 lg:grid-cols-3">
+
+      <!-- Básico -->
+      <div
+        class="reveal stagger-1 card-lift flex flex-col rounded-kipo-lg border p-6"
+        style="border-color: var(--border-subtle); background-color: var(--surface-card);"
+      >
+        <p class="font-body mb-1 text-sm font-semibold" style="color: var(--text-muted);">Básico</p>
+        <p
+          class="font-display mb-4 font-extrabold"
+          style="font-family: var(--font-display); font-size: 2rem; line-height: 1; letter-spacing: -0.03em; color: var(--text-strong);"
+        >
+          Gratis
+        </p>
+        <ul class="mb-6 flex flex-col gap-2.5">
+          {['Emisión CFDI 4.0', 'Portal del cliente', 'Historial 6 meses'].map((item) => (
+            <li class="flex items-center gap-2 font-body text-sm" style="color: var(--text-body);">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <circle cx="7" cy="7" r="7" fill="var(--bg-subtle)" />
+                <path d="M4 7l2 2 4-4" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              {item}
+            </li>
+          ))}
+        </ul>
+        <a
+          href="/registro"
+          class="mt-auto inline-flex w-full items-center justify-center rounded-kipo px-4 py-2.5 font-body text-sm font-semibold transition-all active:scale-[0.97]"
+          style="background-color: var(--bg-subtle); color: var(--text-strong);"
+        >
+          Prueba Kipo
+        </a>
+      </div>
+
+      <!-- Emprendedor -->
+      <div
+        class="reveal stagger-2 card-lift-featured flex flex-col rounded-kipo-lg p-6"
+        style="background-color: var(--surface-card); border: 2px solid var(--kipo-red); box-shadow: 0 0 0 4px color-mix(in srgb, var(--kipo-red) 8%, transparent);"
+      >
+        <div class="mb-1 flex items-center gap-2">
+          <p class="font-body text-sm font-semibold" style="color: var(--text-strong);">Emprendedor</p>
+          <span
+            class="inline-block rounded-kipo-pill px-2 py-0.5 font-body text-xs font-semibold"
+            style="background-color: var(--kipo-red); color: var(--text-on-brand);"
+          >
+            Más popular
+          </span>
+        </div>
+        <div class="mb-4 flex items-end gap-1">
+          <p
+            class="font-display font-extrabold"
+            style="font-family: var(--font-display); font-size: 2rem; line-height: 1; letter-spacing: -0.03em; color: var(--text-strong);"
+          >
+            $299
+          </p>
+          <p class="font-body mb-0.5 text-sm" style="color: var(--text-muted);">MXN/mes</p>
+        </div>
+        <ul class="mb-6 flex flex-col gap-2.5">
+          {[
+            'Facturas recurrentes automáticas',
+            'Escaneo CSF con OCR',
+            'Alerta EFOS/EDOS proactiva',
+          ].map((item) => (
+            <li class="flex items-center gap-2 font-body text-sm" style="color: var(--text-body);">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <circle cx="7" cy="7" r="7" style="fill: color-mix(in srgb, var(--kipo-red) 10%, transparent);" />
+                <path d="M4 7l2 2 4-4" stroke="var(--kipo-red)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              {item}
+            </li>
+          ))}
+        </ul>
+        <a
+          href="/registro?trial=emprendedor"
+          class="mt-auto inline-flex w-full items-center justify-center rounded-kipo px-4 py-2.5 font-body text-sm font-semibold transition-all active:scale-[0.97]"
+          style="background-color: var(--kipo-red); color: var(--text-on-brand);"
+        >
+          Prueba Kipo 14 días gratis
+        </a>
+      </div>
+
+      <!-- PyME -->
+      <div
+        class="reveal stagger-3 card-lift flex flex-col rounded-kipo-lg border p-6"
+        style="border-color: var(--border-subtle); background-color: var(--surface-card);"
+      >
+        <p class="font-body mb-1 text-sm font-semibold" style="color: var(--text-muted);">PyME</p>
+        <div class="mb-4 flex items-end gap-1">
+          <p
+            class="font-display font-extrabold"
+            style="font-family: var(--font-display); font-size: 2rem; line-height: 1; letter-spacing: -0.03em; color: var(--text-strong);"
+          >
+            $599
+          </p>
+          <p class="font-body mb-0.5 text-sm" style="color: var(--text-muted);">MXN/mes</p>
+        </div>
+        <ul class="mb-6 flex flex-col gap-2.5">
+          {[
+            'Hasta 3 usuarios con roles',
+            'REP y complementos SAT auto',
+            'API + Stripe, Clip, Conekta',
+          ].map((item) => (
+            <li class="flex items-center gap-2 font-body text-sm" style="color: var(--text-body);">
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none" aria-hidden="true">
+                <circle cx="7" cy="7" r="7" fill="var(--bg-subtle)" />
+                <path d="M4 7l2 2 4-4" stroke="var(--text-muted)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+              </svg>
+              {item}
+            </li>
+          ))}
+        </ul>
+        <a
+          href="/registro?trial=pyme"
+          class="mt-auto inline-flex w-full items-center justify-center rounded-kipo px-4 py-2.5 font-body text-sm font-semibold transition-all active:scale-[0.97]"
+          style="background-color: var(--bg-subtle); color: var(--text-strong);"
+        >
+          Prueba Kipo
+        </a>
+      </div>
+
+    </div>
+
+    <div class="mt-6 text-center">
+      <p class="mb-2 font-body text-xs" style="color: var(--text-muted);">
+        Timbres desde $5.80 c/u · Se compran por separado · Nunca vencen
+      </p>
+      <a
+        href="/precios"
+        class="font-body text-sm font-semibold transition-colors"
+        style="color: var(--kipo-red);"
+      >
+        Ver precios y features completos →
+      </a>
+    </div>
+
+  </div>
+</div>
+
+<style>
+  .pricing-teaser-outer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+</style>

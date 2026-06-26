@@ -1,22 +1,22 @@
 @import '@kipo/fonts';
 
 :root {
-  --kipo-red-50: #FCEAEA;
-  --kipo-red-100: #F9CBCB;
-  --kipo-red-200: #F19AA0;
-  --kipo-red-300: #E56370;
-  --kipo-red-400: #CE0D2F;
-  --kipo-red-500: #B30A27;
-  --kipo-red-600: #9F0824;
-  --kipo-red-700: #83061C;
-  --kipo-red-800: #680413;
-  --kipo-red-900: #4A030C;
+  --kipo-red-50:  #fff0f1;
+  --kipo-red-100: #fcd5d8;
+  --kipo-red-200: #f9a0a7;
+  --kipo-red-300: #f0606c;
+  --kipo-red-400: #e00b26;
+  --kipo-red-500: #c40a21;
+  --kipo-red-600: #bc0921;
+  --kipo-red-700: #9a071b;
+  --kipo-red-800: #7d0516;
+  --kipo-red-900: #5f0410;
 
-  --kipo-red: #CE0D2F;
-  --kipo-red-dark: #9F0824;
+  --kipo-red: #e00b26;
+  --kipo-red-dark: #bc0921;
 
-  --kipo-gradient: linear-gradient(135deg, #CE0D2F 0%, #9F0824 100%);
-  --kipo-gradient-soft: linear-gradient(135deg, #E56370 0%, #CE0D2F 100%);
+  --kipo-gradient: linear-gradient(135deg, #e00b26 0%, #bc0921 100%);
+  --kipo-gradient-soft: linear-gradient(135deg, #f0606c 0%, #e00b26 100%);
 
   --kipo-lime-300: #E6FF9E;
   --kipo-lime-400: #D7FB63;
@@ -24,28 +24,28 @@
   --kipo-lime-600: #A9D92B;
   --kipo-lime: #C6F542;
 
-  --kipo-slate-900: #182230;
-  --kipo-slate-800: #1F2C3A;
-  --kipo-slate-700: #2B3A4B;
-  --kipo-slate-600: #3A4C5F;
-  --kipo-slate-500: #4C6075;
+  --kipo-slate-900: #032641;
+  --kipo-slate-800: #0a3352;
+  --kipo-slate-700: #124066;
+  --kipo-slate-600: #1c4f78;
+  --kipo-slate-500: #2d6a9f;
 
-  --kipo-cream-0: #FFFFFF;
-  --kipo-cream-100: #F1EAE0;
-  --kipo-cream-200: #E4D9C9;
-  --kipo-cream-300: #C8BCA8;
-  --kipo-cream-400: #A99E8C;
-  --kipo-cream-500: #7E7260;
-  --kipo-cream-600: #574F44;
-  --kipo-cream-700: #3D3530;
-  --kipo-cream-800: #2B2219;
-  --kipo-cream-900: #1A150F;
+  --kipo-cream-0:   #FFFFFF;
+  --kipo-cream-100: #f8f6f5;
+  --kipo-cream-200: #edeae8;
+  --kipo-cream-300: #d5d0cd;
+  --kipo-cream-400: #aba4a0;
+  --kipo-cream-500: #7a7370;
+  --kipo-cream-600: #4d4744;
+  --kipo-cream-700: #332e2b;
+  --kipo-cream-800: #1c1917;
+  --kipo-cream-900: #0d0c0b;
 
   --kipo-success: #16A34A;
   --kipo-success-bg: #DCFCE7;
   --kipo-warning: #CA8A04;
   --kipo-warning-bg: #FEF9C3;
-  --kipo-danger: #9F0824;
+  --kipo-danger: #bc0921;
   --kipo-danger-bg: #FEE2E5;
   --kipo-info: #7C3AED;
   --kipo-info-bg: #EDE9FE;
@@ -59,7 +59,7 @@
   --border-subtle: var(--kipo-cream-200);
   --border-strong: var(--kipo-cream-300);
 
-  --text-strong: var(--kipo-cream-900);
+  --text-strong: var(--kipo-slate-900);
   --text-body: var(--kipo-cream-700);
   --text-muted: var(--kipo-cream-500);
   --text-on-brand: #FFFFFF;
@@ -126,11 +126,11 @@
   --radius-pill: 999px;
   --radius-circle: 50%;
 
-  --shadow-xs: 0 1px 2px rgba(26, 21, 15, 0.06);
-  --shadow-sm: 0 2px 8px rgba(26, 21, 15, 0.07);
-  --shadow-md: 0 6px 20px rgba(26, 21, 15, 0.09);
-  --shadow-lg: 0 16px 40px rgba(26, 21, 15, 0.12);
-  --shadow-brand: 0 10px 30px rgba(206, 13, 47, 0.28);
+  --shadow-xs: 0 1px 2px rgba(3, 38, 65, 0.06);
+  --shadow-sm: 0 2px 8px rgba(3, 38, 65, 0.08);
+  --shadow-md: 0 6px 20px rgba(3, 38, 65, 0.10);
+  --shadow-lg: 0 16px 40px rgba(3, 38, 65, 0.14);
+  --shadow-brand: 0 10px 30px rgba(224, 11, 38, 0.28);
   --shadow-accent: 0 8px 24px rgba(169, 217, 43, 0.35);
 
   --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
@@ -155,9 +155,9 @@
   --border-subtle: var(--kipo-slate-600);
   --border-strong: var(--kipo-slate-500);
 
-  --text-strong: #F8F4EF;
-  --text-body: #D4C9BC;
-  --text-muted: #8C8075;
+  --text-strong: #f8f6f5;
+  --text-body: #c5d5e0;
+  --text-muted: #7a9ab0;
   --text-on-brand: #FFFFFF;
   --text-on-accent: var(--kipo-slate-900);
 

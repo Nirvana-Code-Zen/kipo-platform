@@ -1,0 +1,53 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Nav from '../components/Nav.astro'
+import Footer from '../components/Footer.astro'
+import PricingHero from '../components/sections/PricingHero.astro'
+import ModelExplainer from '../components/sections/ModelExplainer.astro'
+import PlanTiers from '../components/sections/PlanTiers.astro'
+import StampPacks from '../components/sections/StampPacks.astro'
+import WhatIsIncluded from '../components/sections/WhatIsIncluded.astro'
+import VerticalAddons from '../components/sections/VerticalAddons.astro'
+import PricingFAQ from '../components/sections/PricingFAQ.astro'
+import PricingCTA from '../components/sections/PricingCTA.astro'
+---
+
+<Layout
+  title="Precios · Kipo — 14 días gratis, después solo pagas lo que usas"
+  description="Plan Básico gratis. Emprendedor $299/mes. PyME $599/mes. Timbres desde $5.80 c/u, sin vencimiento. 14 días de prueba sin tarjeta."
+>
+  <Nav />
+  <main class="pt-16">
+    <PricingHero />
+    <ModelExplainer />
+    <PlanTiers />
+    <StampPacks />
+    <WhatIsIncluded />
+    <VerticalAddons />
+    <PricingFAQ />
+    <div class="cta-section-wrap">
+      <PricingCTA />
+    </div>
+  </main>
+  <Footer />
+</Layout>
+
+<script>
+  const reveals = document.querySelectorAll('.reveal');
+  if (reveals.length && 'IntersectionObserver' in window) {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' }
+    );
+    reveals.forEach((el) => observer.observe(el));
+  } else {
+    reveals.forEach((el) => el.classList.add('visible'));
+  }
+</script>

@@ -1,0 +1,51 @@
+---
+import Button from '../Button.astro'
+---
+
+<div class="cta-float-wrap">
+  <div class="cta-float-card px-6" data-theme="dark">
+    <h2
+      class="font-display mb-3 text-2xl font-bold text-text-strong"
+      style="font-family: var(--font-display); text-wrap: balance;"
+    >
+      Empieza hoy, sin comprometerte a nada.
+    </h2>
+    <p class="font-body mb-8 text-base" style="color: var(--text-body);">
+      14 días con todo incluido. Después, solo pagas lo que usas.
+    </p>
+    <Button href="/registro?trial=emprendedor" variant="primary" size="lg">
+      Empezar prueba gratis
+    </Button>
+  </div>
+<div>
+
+<style>
+  .cta-float-wrap {
+    padding: 0 1.5rem;
+    margin: auto;
+    max-width: 72rem;
+  }
+
+  .cta-float-card {
+    text-align: center;
+    background-color: var(--kipo-slate-900);
+    border-radius: 24px;
+    padding: 4.75rem 3.5rem;
+    box-shadow:
+      0 8px 48px rgba(3, 38, 65, 0.18),
+    0 2px 8px rgba(3, 38, 65, 0.1);
+  }
+
+  @media (max-width: 640px) {
+    .cta-float-card {
+      grid-template-columns: 1fr;
+      padding: 2rem 1.5rem;
+      gap: 1.5rem;
+      border-radius: 16px;
+    }
+
+    .cta-float-wrap {
+      padding: 0 1rem;
+    }
+  }
+</style>

@@ -1,0 +1,77 @@
+---
+---
+
+<section class="py-24" style="background-color: var(--kipo-cream-0); border-top: 1px solid var(--border-subtle);">
+  <div class="mx-auto max-w-3xl px-6">
+    <h2
+      class="font-display mb-12 text-center text-2xl font-bold text-text-strong"
+      style="font-family: var(--font-display);"
+    >
+      Preguntas frecuentes
+    </h2>
+    <div class="flex flex-col gap-2">
+      {(
+        [
+          {
+            q: '¿Puedo facturar sin suscripción?',
+            a: 'Sí. El plan Básico es gratuito para siempre. Compras timbres y emites CFDI sin pagar mensualidad. La suscripción agrega herramientas de automatización y productividad — no es requisito para facturar.',
+          },
+          {
+            q: '¿Qué pasa con mis timbres si cancelo mi plan?',
+            a: 'Tus timbres son tuyos para siempre. Si cancelas el plan Emprendedor o PyME, bajas al plan Básico y tus timbres siguen disponibles. Los timbres no están atados a ningún plan.',
+          },
+          {
+            q: '¿Cómo funciona el periodo de prueba de 14 días?',
+            a: 'Al registrarte tienes acceso completo al Plan Emprendedor durante 14 días sin tarjeta. Puedes explorar todas las features — facturas recurrentes, escaneo de CSF, alertas EFOS y más. Al terminar, elige el plan que necesites o quédate en Básico.',
+          },
+          {
+            q: '¿Los timbres tienen fecha de vencimiento?',
+            a: 'No. Tus timbres no vencen nunca. Úsalos cuando los necesites, sin presión ni fechas límite. Son tuyos independientemente de tu plan.',
+          },
+          {
+            q: '¿Puedo cambiar de plan en cualquier momento?',
+            a: 'Sí. Subes o bajas de plan cuando quieras desde tu cuenta. El cambio aplica al inicio del siguiente ciclo de facturación. Tus timbres y tu historial siempre se mantienen.',
+          },
+          {
+            q: '¿Puedo tener varios usuarios en mi cuenta?',
+            a: 'El Plan PyME permite hasta 3 usuarios con roles diferenciados: el vendedor factura, el contador consulta sin poder cancelar, y el admin tiene control total. Los planes Básico y Emprendedor son de un solo usuario.',
+          },
+          {
+            q: '¿Qué es un PAC y por qué importa?',
+            a: 'Un PAC (Proveedor Autorizado de Certificación) es la empresa certificada por el SAT para timbrar los CFDI. Kipo usa FacturAPI, uno de los PAC más confiables de México, para garantizar que cada factura sea 100% válida ante el SAT.',
+          },
+          {
+            q: '¿Cómo pago los timbres y el plan?',
+            a: 'Aceptamos tarjeta de crédito, débito, OXXO Pay y transferencia bancaria. Los timbres son un pago único por paquete. El plan se cobra mensualmente y puedes cancelar en cualquier momento.',
+          },
+        ] as { q: string; a: string }[]
+      ).map(({ q, a }) => (
+        <details class="rounded-kipo border border-border-subtle bg-surface-card">
+          <summary class="flex cursor-pointer items-center justify-between px-6 py-5 font-body text-base font-semibold text-text-strong">
+            {q}
+            <span class="faq-icon ml-4 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-bg-subtle text-text-muted">
+              <svg
+                width="12"
+                height="12"
+                viewBox="0 0 12 12"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                aria-hidden="true"
+              >
+                <line x1="6" y1="1" x2="6" y2="11" />
+                <line x1="1" y1="6" x2="11" y2="6" />
+              </svg>
+            </span>
+          </summary>
+          <div class="faq-content px-6 pb-5">
+            <p class="font-body text-base leading-relaxed text-text-body" style="text-wrap: pretty;">
+              {a}
+            </p>
+          </div>
+        </details>
+      ))}
+    </div>
+  </div>
+</section>

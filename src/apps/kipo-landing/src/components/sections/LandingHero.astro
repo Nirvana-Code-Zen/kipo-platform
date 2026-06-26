@@ -1,0 +1,94 @@
+---
+import Button from '../Button.astro'
+import Badge from '../Badge.astro'
+import HeroIllustration from '../illustrations/HeroIllustration.astro'
+---
+
+<div class="hero-inner">
+  <div class="hero-content-wrap hero-grid-bg">
+    <div class="mx-auto grid max-w-6xl w-full items-center gap-10 px-6 md:grid-cols-2">
+
+      <div class="flex flex-col gap-6">
+        <div class="hero-enter anim-d0">
+          <Badge tone="brand">CFDI 4.0 · Certificado SAT</Badge>
+        </div>
+
+        <h1
+          class="hero-enter anim-d80 font-extrabold leading-none text-text-strong"
+          style="font-family: var(--font-display); font-size: clamp(2.2rem, 4vw, 4rem); letter-spacing: -0.03em; text-wrap: balance;"
+        >
+        Factura en segundos.<br /><span>Sin drama, sin SAT.</span>
+        </h1>
+
+        <p
+          class="hero-enter anim-d160 text-lg leading-relaxed"
+          style="font-family: var(--font-body); color: var(--text-body); max-width: 44ch; text-wrap: pretty;"
+        >
+          Timbra CFDI 4.0 desde tu celular o computadora. Para freelancers,
+          talleres, tiendas — cualquier negocio que necesite facturar en México.
+        </p>
+
+        <div class="hero-enter anim-d240 flex flex-col gap-3 sm:flex-row sm:flex-wrap sm:items-start sm:gap-4">
+          <Button href="/registro" variant="primary" size="lg" class="w-full sm:w-auto">Empieza gratis</Button>
+          <a
+            href="#como-funciona"
+            class="inline-flex h-14 w-full items-center justify-center rounded-kipo px-8 font-body text-lg font-semibold transition-all duration-150 active:scale-[0.97] sm:w-auto"
+            style="color: var(--text-strong); border: 1px solid var(--border-strong); background: transparent;"
+          >
+            Ver cómo funciona
+          </a>
+        </div>
+      </div>
+
+      <div class="hero-enter-scale anim-d160 hero-float hidden items-center justify-center md:flex">
+        <HeroIllustration />
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+  .hero-inner {
+    display: flex;
+    flex-direction: column;
+    min-height: 100svh;
+    padding-top: 4rem;
+  }
+
+  .hero-content-wrap {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-top: 1.5rem;
+    padding-bottom: 5rem;
+  }
+
+  .hero-stats {
+    padding: 1.125rem 0;
+    border-top: 1px solid var(--border-subtle);
+  }
+
+  .hero-stat {
+    display: flex;
+    flex-direction: column;
+    gap: 0.125rem;
+  }
+
+  .hero-stat-value {
+    font-family: var(--font-display);
+    font-size: clamp(1.25rem, 2.5vw, 1.625rem);
+    font-weight: 800;
+    letter-spacing: -0.025em;
+    color: var(--text-strong);
+    line-height: 1;
+  }
+
+  .hero-stat-label {
+    font-family: var(--font-body);
+    font-size: 0.7rem;
+    color: var(--text-muted);
+    line-height: 1.3;
+  }
+</style>
+

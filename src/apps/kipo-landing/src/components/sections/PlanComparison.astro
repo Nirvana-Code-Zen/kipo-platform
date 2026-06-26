@@ -1,0 +1,61 @@
+---
+---
+
+<section class="bg-bg-base py-20">
+  <div class="mx-auto max-w-3xl px-6">
+    <h2
+      class="font-display mb-10 text-center text-2xl font-bold text-text-strong"
+      style="font-family: var(--font-display);"
+    >
+      Compara los planes
+    </h2>
+    <div class="overflow-x-auto rounded-kipo-lg border border-border-subtle shadow-kipo-sm">
+      <table class="w-full font-body text-sm">
+        <thead>
+          <tr class="border-b border-border-subtle">
+            <th scope="col" class="bg-bg-base px-6 py-4 text-left font-semibold text-text-muted">
+              Función
+            </th>
+            <th scope="col" class="bg-bg-base px-6 py-4 text-center font-semibold text-text-strong">
+              Gratis
+            </th>
+            <th
+              scope="col"
+              class="px-6 py-4 text-center font-semibold"
+              style="background-color: var(--kipo-red); color: var(--text-on-brand);"
+            >
+              Pro
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          {(
+            [
+              ['Timbres incluidos', '1 de prueba', 'Según paquete'],
+              ['Timbres adicionales', '$5.80 c/u', 'Desde $2.99 c/u'],
+              ['Cotizaciones', '✓', '✓'],
+              ['Gestión de clientes', '✓', '✓'],
+              ['Catálogo de productos', 'Hasta 20', 'Ilimitado'],
+              ['Usuarios', '1', 'Hasta 3'],
+              ['Reportes de ventas', '✗', '✓'],
+              ['Soporte', 'Correo', 'WhatsApp + correo'],
+            ] as [string, string, string][]
+          ).map(([feature, free, pro], i) => {
+            const cell = (val: string, cls: string) => {
+              if (val === '✓') return <td class={cls}><span aria-hidden="true">✓</span><span class="sr-only">Incluido</span></td>
+              if (val === '✗') return <td class={cls}><span aria-hidden="true">✗</span><span class="sr-only">No incluido</span></td>
+              return <td class={cls}>{val}</td>
+            }
+            return (
+              <tr class={`border-b border-border-subtle ${i % 2 === 0 ? 'bg-surface-card' : 'bg-bg-base'}`}>
+                <td class="px-6 py-4 font-medium text-text-body">{feature}</td>
+                {cell(free, 'px-6 py-4 text-center text-text-muted')}
+                {cell(pro, 'px-6 py-4 text-center font-medium text-text-strong')}
+              </tr>
+            )
+          })}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,116 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Nav from '../components/Nav.astro'
+import Footer from '../components/Footer.astro'
+---
+
+<Layout
+  title="Aviso de Privacidad — Kipo"
+  description="Aviso de privacidad de Kipo conforme a la Ley Federal de Protección de Datos Personales en Posesión de los Particulares."
+>
+  <Nav />
+  <main>
+    <article class="mx-auto max-w-3xl px-6 py-20">
+
+      <header class="mb-12">
+        <p class="font-body mb-2 text-xs font-semibold uppercase tracking-widest" style="color: var(--text-muted);">Legal</p>
+        <h1
+          class="font-display mb-4 text-4xl font-bold"
+          style="font-family: var(--font-display); letter-spacing: -0.02em; text-wrap: balance; color: var(--text-strong);"
+        >
+          Aviso de Privacidad
+        </h1>
+        <p class="font-body text-sm" style="color: var(--text-muted);">Última actualización: junio 2025</p>
+      </header>
+
+      <div class="prose-legal font-body text-base leading-relaxed" style="color: var(--text-body);">
+
+        <section class="mb-10">
+          <h2 class="mb-3 text-xl font-bold" style="color: var(--text-strong); font-family: var(--font-display);">1. Responsable del tratamiento</h2>
+          <p>
+            Kipo (en adelante "Kipo") es responsable del uso y protección de tus datos personales. Para consultas relacionadas con el tratamiento de tus datos puedes contactarnos en <a href="mailto:privacidad@kipo.mx" class="font-semibold underline underline-offset-2 transition-colors hover:opacity-80" style="color: var(--kipo-red);">privacidad@kipo.mx</a>.
+          </p>
+        </section>
+
+        <section class="mb-10">
+          <h2 class="mb-3 text-xl font-bold" style="color: var(--text-strong); font-family: var(--font-display);">2. Datos personales que recabamos</h2>
+          <p class="mb-4">Para prestarte el servicio recabamos:</p>
+          <ul class="mb-4 list-disc pl-5 space-y-2">
+            <li><strong>Datos de identificación fiscal:</strong> RFC, nombre o razón social, régimen fiscal, domicilio fiscal.</li>
+            <li><strong>Datos de contacto:</strong> correo electrónico, número de teléfono (opcional).</li>
+            <li><strong>Datos de clientes facturados:</strong> RFC y razón social de los receptores de tus CFDI.</li>
+            <li><strong>Datos de uso:</strong> historial de timbres emitidos, registros de acceso, dirección IP.</li>
+          </ul>
+          <p>
+            No recabamos datos sensibles en los términos del artículo 3, fracción VI de la LFPDPPP.
+          </p>
+        </section>
+
+        <section class="mb-10">
+          <h2 class="mb-3 text-xl font-bold" style="color: var(--text-strong); font-family: var(--font-display);">3. Finalidades del tratamiento</h2>
+          <p class="mb-3 font-semibold" style="color: var(--text-strong);">Finalidades necesarias:</p>
+          <ul class="mb-4 list-disc pl-5 space-y-2">
+            <li>Crear y gestionar tu cuenta en Kipo.</li>
+            <li>Emitir y timbrar CFDI 4.0 ante el SAT a través de un PAC.</li>
+            <li>Procesar pagos y mantener el historial de transacciones.</li>
+            <li>Enviar los comprobantes a los correos indicados.</li>
+            <li>Atender solicitudes de soporte técnico.</li>
+          </ul>
+          <p class="mb-3 font-semibold" style="color: var(--text-strong);">Finalidades secundarias (puedes oponerte):</p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li>Enviarte información sobre nuevas funciones o promociones de Kipo.</li>
+            <li>Realizar encuestas de satisfacción.</li>
+          </ul>
+        </section>
+
+        <section class="mb-10">
+          <h2 class="mb-3 text-xl font-bold" style="color: var(--text-strong); font-family: var(--font-display);">4. Derechos ARCO</h2>
+          <p class="mb-4">
+            Tienes derecho a Acceder, Rectificar, Cancelar u Oponerte al tratamiento de tus datos personales (derechos ARCO). Para ejercerlos envía una solicitud a <a href="mailto:privacidad@kipo.mx" class="font-semibold underline underline-offset-2 transition-colors hover:opacity-80" style="color: var(--kipo-red);">privacidad@kipo.mx</a> indicando:
+          </p>
+          <ul class="mb-4 list-disc pl-5 space-y-2">
+            <li>Tu nombre completo y RFC.</li>
+            <li>El derecho que deseas ejercer y los datos a los que se refiere.</li>
+            <li>Documentos que acrediten tu identidad.</li>
+          </ul>
+          <p>
+            Responderemos en un plazo máximo de 20 días hábiles.
+          </p>
+        </section>
+
+        <section class="mb-10">
+          <h2 class="mb-3 text-xl font-bold" style="color: var(--text-strong); font-family: var(--font-display);">5. Transferencias de datos</h2>
+          <p class="mb-4">Compartimos tus datos únicamente con:</p>
+          <ul class="list-disc pl-5 space-y-2">
+            <li><strong>PAC (Proveedor Autorizado de Certificación):</strong> para timbrar los CFDI ante el SAT. Esta transferencia es necesaria para el servicio y no requiere tu consentimiento.</li>
+            <li><strong>Procesador de pagos:</strong> para gestionar las transacciones de compra de timbres.</li>
+            <li><strong>Servicios de infraestructura:</strong> proveedores en la nube que alojan el servicio bajo acuerdos de confidencialidad.</li>
+          </ul>
+        </section>
+
+        <section class="mb-10">
+          <h2 class="mb-3 text-xl font-bold" style="color: var(--text-strong); font-family: var(--font-display);">6. Cookies y tecnologías de rastreo</h2>
+          <p class="mb-4">
+            Kipo utiliza cookies estrictamente necesarias para el funcionamiento de la sesión. Adicionalmente, podemos usar cookies analíticas para medir el uso del servicio. Puedes desactivar las cookies no esenciales desde la configuración de tu navegador.
+          </p>
+        </section>
+
+        <section class="mb-10">
+          <h2 class="mb-3 text-xl font-bold" style="color: var(--text-strong); font-family: var(--font-display);">7. Cambios a este aviso</h2>
+          <p>
+            Podemos actualizar este aviso en cualquier momento. Notificaremos los cambios relevantes por correo electrónico o mediante un aviso en la plataforma con al menos 30 días de anticipación.
+          </p>
+        </section>
+
+        <section class="mb-10">
+          <h2 class="mb-3 text-xl font-bold" style="color: var(--text-strong); font-family: var(--font-display);">8. Autoridad competente</h2>
+          <p>
+            Si consideras que tu derecho a la protección de datos ha sido vulnerado, puedes presentar una queja ante el Instituto Nacional de Transparencia, Acceso a la Información y Protección de Datos Personales (<a href="https://www.inai.org.mx" target="_blank" rel="noopener noreferrer" class="font-semibold underline underline-offset-2 transition-colors hover:opacity-80" style="color: var(--kipo-red);">INAI</a>).
+          </p>
+        </section>
+
+      </div>
+    </article>
+  </main>
+  <Footer />
+</Layout>

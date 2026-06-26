@@ -1,0 +1,103 @@
+---
+import Layout from '../layouts/Layout.astro'
+import Nav from '../components/Nav.astro'
+import Footer from '../components/Footer.astro'
+---
+
+<Layout
+  title="Términos de Uso — Kipo"
+  description="Términos y condiciones de uso del servicio Kipo para emisión de CFDI 4.0."
+>
+  <Nav />
+  <main>
+    <article class="mx-auto max-w-3xl px-6 py-20">
+
+      <header class="mb-12">
+        <p class="font-body mb-2 text-xs font-semibold uppercase tracking-widest" style="color: var(--text-muted);">Legal</p>
+        <h1
+          class="font-display mb-4 text-4xl font-bold"
+          style="font-family: var(--font-display); letter-spacing: -0.02em; text-wrap: balance; color: var(--text-strong);"
+        >
+          Términos de Uso
+        </h1>
+        <p class="font-body text-sm" style="color: var(--text-muted);">Última actualización: junio 2025</p>
+      </header>
+
+      <div class="prose-legal font-body text-base leading-relaxed" style="color: var(--text-body);">
+
+        <section class="mb-10">
+          <h2 class="mb-3 text-xl font-bold" style="color: var(--text-strong); font-family: var(--font-display);">1. Descripción del servicio</h2>
+          <p class="mb-4">
+            Kipo es un servicio en línea que permite a personas físicas y morales emitir Comprobantes Fiscales Digitales por Internet (CFDI) versión 4.0, conforme a los requisitos establecidos por el Servicio de Administración Tributaria (SAT) de México.
+          </p>
+          <p>
+            El timbrado de los CFDI se realiza a través de un Proveedor Autorizado de Certificación (PAC) registrado ante el SAT. El uso de Kipo no sustituye la asesoría de un contador o experto fiscal.
+          </p>
+        </section>
+
+        <section class="mb-10">
+          <h2 class="mb-3 text-xl font-bold" style="color: var(--text-strong); font-family: var(--font-display);">2. Registro y cuenta</h2>
+          <p class="mb-4">
+            Para usar Kipo debes proporcionar información verídica sobre tu RFC, nombre o razón social, régimen fiscal y demás datos requeridos por el SAT para la emisión de CFDI. Eres responsable de mantener la confidencialidad de tus credenciales de acceso.
+          </p>
+          <p>
+            Kipo se reserva el derecho de suspender cuentas que incumplan estos términos o que sean utilizadas de forma fraudulenta.
+          </p>
+        </section>
+
+        <section class="mb-10">
+          <h2 class="mb-3 text-xl font-bold" style="color: var(--text-strong); font-family: var(--font-display);">3. Timbres y pagos</h2>
+          <p class="mb-4">
+            Los timbres se compran en paquetes prepagados. Cada timbre corresponde a la emisión de un CFDI válido ante el SAT. Los timbres no tienen fecha de vencimiento mientras mantengas tu cuenta activa.
+          </p>
+          <p>
+            Los pagos son procesados por proveedores externos de medios de pago. Kipo no almacena datos de tarjetas bancarias. Los timbres adquiridos no son reembolsables salvo falla técnica atribuible a Kipo.
+          </p>
+        </section>
+
+        <section class="mb-10">
+          <h2 class="mb-3 text-xl font-bold" style="color: var(--text-strong); font-family: var(--font-display);">4. Obligaciones del usuario</h2>
+          <ul class="mb-4 list-disc pl-5 space-y-2">
+            <li>Proporcionar datos fiscales correctos y vigentes.</li>
+            <li>No usar el servicio para emitir comprobantes de operaciones inexistentes o simuladas.</li>
+            <li>Conservar los archivos XML y PDF de los CFDI emitidos, conforme a la legislación fiscal aplicable.</li>
+            <li>Notificar a Kipo de inmediato si detectas acceso no autorizado a tu cuenta.</li>
+          </ul>
+        </section>
+
+        <section class="mb-10">
+          <h2 class="mb-3 text-xl font-bold" style="color: var(--text-strong); font-family: var(--font-display);">5. Limitación de responsabilidad</h2>
+          <p class="mb-4">
+            Kipo no es responsable por errores en los datos fiscales ingresados por el usuario, por cancelaciones de CFDI rechazadas por el SAT, ni por consecuencias fiscales derivadas del uso incorrecto del servicio.
+          </p>
+          <p>
+            La responsabilidad total de Kipo ante el usuario no excederá el valor de los timbres adquiridos en los 30 días previos al evento que origina el reclamo.
+          </p>
+        </section>
+
+        <section class="mb-10">
+          <h2 class="mb-3 text-xl font-bold" style="color: var(--text-strong); font-family: var(--font-display);">6. Modificaciones al servicio</h2>
+          <p>
+            Kipo puede modificar, suspender o discontinuar cualquier parte del servicio en cualquier momento con aviso previo de al menos 15 días naturales por correo electrónico, excepto cuando la suspensión sea requerida por autoridades o por razones de seguridad.
+          </p>
+        </section>
+
+        <section class="mb-10">
+          <h2 class="mb-3 text-xl font-bold" style="color: var(--text-strong); font-family: var(--font-display);">7. Ley aplicable y jurisdicción</h2>
+          <p>
+            Estos términos se rigen por las leyes de los Estados Unidos Mexicanos. Cualquier controversia se somete a la jurisdicción de los tribunales competentes de la Ciudad de México, renunciando las partes a cualquier otro fuero que pudiera corresponderles.
+          </p>
+        </section>
+
+        <section class="mb-10">
+          <h2 class="mb-3 text-xl font-bold" style="color: var(--text-strong); font-family: var(--font-display);">8. Contacto</h2>
+          <p>
+            Para dudas sobre estos términos escríbenos a <a href="mailto:hola@kipo.mx" class="font-semibold underline underline-offset-2 transition-colors hover:opacity-80" style="color: var(--kipo-red);">hola@kipo.mx</a>.
+          </p>
+        </section>
+
+      </div>
+    </article>
+  </main>
+  <Footer />
+</Layout>

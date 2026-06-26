@@ -1,0 +1,52 @@
+---
+interface Props {
+  tone?: 'neutral' | 'brand' | 'success' | 'warning' | 'danger' | 'info'
+  dot?: boolean
+  solid?: boolean
+  class?: string
+}
+
+const { tone = 'neutral', dot = false, solid = false, class: className = '' } = Astro.props
+
+const toneStyles: Record<string, string> = {
+  neutral: 'background-color: var(--bg-subtle); color: var(--text-muted);',
+  brand:   'background: var(--kipo-gradient); color: var(--text-on-brand);',
+  success: 'background-color: var(--kipo-success-bg); color: var(--kipo-success);',
+  warning: 'background-color: var(--kipo-warning-bg); color: var(--kipo-warning);',
+  danger:  'background-color: var(--kipo-danger-bg); color: var(--kipo-danger);',
+  info:    'background-color: var(--kipo-info-bg); color: var(--kipo-info);',
+}
+
+const solidStyles: Record<string, string> = {
+  neutral: 'background-color: var(--text-muted); color: var(--text-on-brand);',
+  brand:   'background: var(--kipo-gradient); color: var(--text-on-brand);',
+  success: 'background-color: var(--kipo-success); color: var(--text-on-brand);',
+  warning: 'background-color: var(--kipo-warning); color: var(--text-on-brand);',
+  danger:  'background-color: var(--kipo-danger); color: var(--text-on-brand);',
+  info:    'background-color: var(--kipo-info); color: var(--text-on-brand);',
+}
+
+const dotColors: Record<string, string> = {
+  neutral: 'var(--text-muted)',
+  brand:   'var(--kipo-red)',
+  success: 'var(--kipo-success)',
+  warning: 'var(--kipo-warning)',
+  danger:  'var(--kipo-danger)',
+  info:    'var(--kipo-info)',
+}
+
+const style = solid ? solidStyles[tone] : toneStyles[tone]
+---
+
+<span
+  class={`inline-flex items-center gap-1.5 rounded-kipo-pill px-3 py-1 font-body text-xs font-semibold ${className}`}
+  style={style}
+>
+  {dot && (
+    <span
+      aria-hidden="true"
+      style={`width: 6px; height: 6px; border-radius: 50%; background-color: ${dotColors[tone]}; flex-shrink: 0; display: inline-block;`}
+    />
+  )}
+  <slot />
+</span>
