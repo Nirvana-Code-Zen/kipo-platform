@@ -34,18 +34,24 @@ jobs:
           pnpm install --frozen-lockfile
 
       - name: Build with Vercel CLI
-        run: vercel build --token=${{ secrets.VERCEL_TOKEN}}--cwd=src/apps/kipo-landing
+        run: vercel build --cwd src/apps/kipo-landing --yes
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Deploy (preview)
         if: github.event_name == 'pull_request'
-        run: vercel deploy --preview --yes --token=${{ secrets.VERCEL_TOKEN}} --cwd=src/apps/kipo-landing
+        run: vercel deploy --prebuilt --cwd src/apps/kipo-landing --yes
         env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
 
       - name: Deploy (production)
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: vercel deploy --preview --yes --token=${{ secrets.VERCEL_TOKEN}} --cwd=src/apps/kipo-landing
+        run: vercel deploy --prebuilt --prod --cwd src/apps/kipo-landing --yes
         env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
