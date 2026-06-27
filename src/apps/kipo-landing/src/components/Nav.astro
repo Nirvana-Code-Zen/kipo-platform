@@ -1,7 +1,7 @@
 ---
 import {Image} from 'astro:assets'
 import Button from './Button.astro'
-import kipoLogo from '../assets/kipo-logo@3x.png'
+import kipoLogo from '../assets/kipo-logo/kipo-logo.svg'
 
 ---
 
@@ -10,16 +10,13 @@ import kipoLogo from '../assets/kipo-logo@3x.png'
 
     <a
       href="/"
-      class="flex items-center gap-2 rounded-kipo-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
+      class="flex items-center focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-brand"
       aria-label="Kipo — inicio"
     >
-      <div class="h-8 w-8 shrink-0 overflow-hidden rounded-lg">
-        <Image src={kipoLogo} alt="" width="32" height="32" class="h-8 w-8 object-cover" aria-hidden="true" />
-      </div>
+      <Image src={kipoLogo} alt="Facturas en segundos. Sin drama. Logo" class="h-12 w-9 object-cover" aria-hidden="true" />
       <span
-        class="text-xl font-bold tracking-tight text-text-strong"
-        style="font-family: var(--font-display);"
-      >kipo</span>
+        class="text-xl font-bold tracking-tight text-text-strong-font-display"
+      >Kipo</span>
     </a>
 
     <nav class="hidden items-center gap-8 md:flex" aria-label="Navegación principal" data-zone="desktop nav">

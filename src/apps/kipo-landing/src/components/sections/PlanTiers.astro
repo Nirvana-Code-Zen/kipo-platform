@@ -76,17 +76,16 @@ import Button from '../Button.astro'
         </ul>
       </div>
 
-      <!-- Emprendedor (highlighted) -->
       <div
-        class="reveal stagger-2 card-lift-featured order-1 flex flex-col rounded-kipo-lg p-7 lg:order-2"
-        style="background-color: var(--surface-card); border: 2px solid var(--kipo-red); box-shadow: 0 0 0 4px color-mix(in srgb, var(--kipo-red) 8%, transparent);"
+        data-zone="Plan Emprendedor (highlighted)"
+        class="reveal stagger-2 card-lift-featured order-1 flex flex-col rounded-kipo-lg p-7 lg:order-2 bg--surface-card"
+        style="border: 2px solid var(--kipo-red); box-shadow: 0 0 0 4px color-mix(in srgb, var(--kipo-red) 8%, transparent);"
       >
         <div class="mb-6">
           <div class="mb-2 flex items-center gap-2">
             <p class="font-body text-sm font-semibold" style="color: var(--text-strong);">Emprendedor</p>
             <span
-              class="inline-block rounded-kipo-pill px-2 py-0.5 font-body text-xs font-semibold"
-              style="background-color: var(--kipo-red); color: var(--text-on-brand);"
+              class="inline-block rounded-kipo-pill px-2 py-0.5 font-body text-xs font-semibold bg-brand text-text-on-brand"
             >
               Más popular
             </span>
@@ -115,15 +114,14 @@ import Button from '../Button.astro'
           Timbres desde $5.80 c/u · nunca vencen
         </div>
 
-        <Button href="/registro?trial=emprendedor" variant="accent" size="lg" class="mb-8 w-full">
+        <Button href="/registro?trial=emprendedor" variant="primary" size="lg" class="mb-8 w-full">
           Prueba Kipo 14 días gratis
         </Button>
 
         <p class="font-body mb-4 text-xs font-semibold uppercase tracking-wider" style="color: var(--text-muted);">Todo lo de Básico, más:</p>
 
         <div class="flex flex-col gap-6">
-          <!-- Group: Automatización Fiscal -->
-          <div>
+          <div role="Group: Automatización Fiscal" >
             <div class="mb-2 flex items-center gap-2">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--kipo-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <polyline points="23 4 23 10 17 10" /><polyline points="1 20 1 14 7 14" />
@@ -148,8 +146,7 @@ import Button from '../Button.astro'
             </ul>
           </div>
 
-          <!-- Group: Operación Diaria -->
-          <div>
+          <div role="Group: Operación Diaria " >
             <div class="mb-2 flex items-center gap-2">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--kipo-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <line x1="8" y1="6" x2="21" y2="6" /><line x1="8" y1="12" x2="21" y2="12" /><line x1="8" y1="18" x2="21" y2="18" />
@@ -175,8 +172,7 @@ import Button from '../Button.astro'
             </ul>
           </div>
 
-          <!-- Group: Reportes -->
-          <div>
+          <div role="group: Reportes">
             <div class="mb-2 flex items-center gap-2">
               <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="var(--kipo-red)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <line x1="18" y1="20" x2="18" y2="10" /><line x1="12" y1="20" x2="12" y2="4" /><line x1="6" y1="20" x2="6" y2="14" />
@@ -201,8 +197,8 @@ import Button from '../Button.astro'
         </div>
       </div>
 
-      <!-- PyME -->
       <div
+        data-zone="Plan PyMe"
         class="reveal stagger-3 card-lift order-3 flex flex-col rounded-kipo-lg border p-7 lg:order-3"
         style="border-color: var(--border-subtle); background-color: var(--surface-card);"
       >

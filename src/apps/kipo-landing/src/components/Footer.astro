@@ -1,6 +1,6 @@
 ---
 import {Image} from 'astro:assets'
-import kipoLogo from '../assets/kipo-logo@1x.png'
+import kipoLogo from '../assets/kipo-slogan/kipo-logo.svg'
 
 const year = new Date().getFullYear()
 ---
@@ -11,10 +11,7 @@ const year = new Date().getFullYear()
 
       <div class="footer-brand">
         <a href="/" class="footer-logo-link" aria-label="Kipo inicio">
-          <div class="footer-logo-img">
-            <Image src={kipoLogo} alt="Kipo Logo" width="28" height="28" class="h-7 w-7 object-cover" aria-hidden="true" />
-          </div>
-          <span class="footer-logo-name">kipo</span>
+          <Image src={kipoLogo} alt="Kipo Logo" class="h-auto w-[10rem]" aria-hidden="true" />
         </a>
         <p class="footer-tagline">
           Factura. Sin drama.<br/>
