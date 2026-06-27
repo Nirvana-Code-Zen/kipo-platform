@@ -1,0 +1,49 @@
+name: Deploy kipo-landing → Vercel
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'src/apps/kipo-landing/**'
+      - 'src/packages/**'
+      - '.github/workflows/deploy-landing.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/apps/kipo-landing/**'
+      - 'src/packages/**'
+
+jobs:
+  deploy:
+    name: Deploy to Vercel
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Deploy (production on main, preview on PR)
+        run: |
+          if [ "${{ github.event_name }}" = "push" ]; then
+            npx vercel --prod --token ${{ secrets.VERCEL_TOKEN }} \
+              --cwd src/apps/kipo-landing \
+              --yes
+          else
+            npx vercel --token ${{ secrets.VERCEL_TOKEN }} \
+              --cwd src/apps/kipo-landing \
+              --yes
+          fi
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
