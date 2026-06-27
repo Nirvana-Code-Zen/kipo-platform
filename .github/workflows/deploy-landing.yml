@@ -29,7 +29,9 @@ jobs:
           cache: pnpm
 
       - name: Install dependencies
-        run: pnpm install --frozen-lockfile
+        run: |
+          pnpm install -g vercel@latest
+          pnpm install --frozen-lockfile
 
       - name: Build with Vercel CLI
         run: vercel build --cwd=src/apps/kipo-landing
