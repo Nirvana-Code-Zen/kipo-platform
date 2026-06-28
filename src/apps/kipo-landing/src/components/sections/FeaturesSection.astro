@@ -101,7 +101,7 @@ import MobileIllustration from '../illustrations/MobileIllustration.astro'
             </li>
           </ul>
         </div>
-        <div class="f-illus" aria-hidden="true">
+        <div class="f-illus">
           <BusinessIllustration />
         </div>
       </div>
@@ -262,6 +262,12 @@ import MobileIllustration from '../illustrations/MobileIllustration.astro'
     height: 12rem;
     width: auto;
     display: block;
+    animation: feat-float 5s ease-in-out infinite;
+  }
+
+  .bento-f2 .f-illus :global(svg) {
+    animation-duration: 5.5s;
+    animation-delay: -1.8s;
   }
 
   /* F3: fills its grid column */
@@ -277,6 +283,29 @@ import MobileIllustration from '../illustrations/MobileIllustration.astro'
     width: auto;
     height: 100%;
     max-height: 200px;
+    animation: feat-float 6s ease-in-out infinite;
+    animation-delay: -3.5s;
+  }
+
+  @keyframes feat-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-8px); }
+  }
+
+  /* List item stagger after card reveals */
+  @keyframes feat-list-in {
+    from { opacity: 0; transform: translateX(-6px); }
+    to { opacity: 1; transform: translateX(0); }
+  }
+
+  .bento-card.visible .feat-list-item:nth-child(1) {
+    animation: feat-list-in 0.38s 310ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .bento-card.visible .feat-list-item:nth-child(2) {
+    animation: feat-list-in 0.38s 390ms cubic-bezier(0.22, 1, 0.36, 1) both;
+  }
+  .bento-card.visible .feat-list-item:nth-child(3) {
+    animation: feat-list-in 0.38s 470ms cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
   .bento-f2 {
@@ -464,6 +493,18 @@ import MobileIllustration from '../illustrations/MobileIllustration.astro'
   @media (prefers-reduced-motion: reduce) {
     .bento-card {
       transition: none;
+    }
+    .bento-f1 .f-illus :global(svg),
+    .bento-f2 .f-illus :global(svg),
+    .bento-f3 .f-illus :global(svg) {
+      animation: none;
+    }
+    .bento-card.visible .feat-list-item:nth-child(1),
+    .bento-card.visible .feat-list-item:nth-child(2),
+    .bento-card.visible .feat-list-item:nth-child(3) {
+      animation: none;
+      opacity: 1;
+      transform: none;
     }
   }
 </style>

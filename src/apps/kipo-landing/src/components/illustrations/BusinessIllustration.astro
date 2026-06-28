@@ -24,6 +24,52 @@
     </clipPath>
   </defs>
 
+  <style>
+    @keyframes biz-bubble-pop {
+      from { opacity: 0; transform: scale(0.82); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    @keyframes biz-timbrada-glow {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.7; }
+    }
+    @keyframes biz-sparkle {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 0.08; }
+    }
+    @keyframes biz-badge-float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-7px); }
+    }
+
+    #biz-bubble {
+      transform-box: fill-box;
+      transform-origin: center bottom;
+      animation: biz-bubble-pop 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-delay: 0.7s;
+    }
+    #biz-timbrada {
+      animation: biz-timbrada-glow 2.4s ease-in-out infinite;
+      animation-delay: 0.9s;
+    }
+    #biz-sparkle-1 { animation: biz-sparkle 2.2s ease-in-out infinite; }
+    #biz-sparkle-2 { animation: biz-sparkle 2.8s ease-in-out infinite; animation-delay: -0.6s; }
+    #biz-sparkle-3 { animation: biz-sparkle 2s ease-in-out infinite; animation-delay: -1.2s; }
+    #biz-kipo-badge {
+      animation: biz-badge-float 5s ease-in-out infinite;
+      animation-delay: -2.5s;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #biz-bubble, #biz-timbrada, #biz-sparkle-1, #biz-sparkle-2,
+      #biz-sparkle-3, #biz-kipo-badge {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+
   <!-- === BACKGROUND / STOREFRONT === -->
 
   <!-- Wall texture / building -->
@@ -170,11 +216,13 @@
   <rect x="218" y="215" width="52" height="8" rx="3" fill="#FEE2E5"/>
   <rect x="222" y="218" width="40" height="4" rx="2" fill="#e00b26" fill-opacity="0.7"/>
   <!-- Timbrada badge -->
-  <rect x="218" y="228" width="52" height="14" rx="5" fill="#DCFCE7"/>
-  <circle cx="228" cy="235" r="5" fill="#16A34A"/>
-  <path d="M225.5 235l2 2 4-4" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <rect x="236" y="232" width="28" height="3" rx="1.5" fill="#16A34A" fill-opacity="0.7"/>
-  <rect x="236" y="237" width="20" height="3" rx="1.5" fill="#16A34A" fill-opacity="0.4"/>
+  <g id="biz-timbrada">
+    <rect x="218" y="228" width="52" height="14" rx="5" fill="#DCFCE7"/>
+    <circle cx="228" cy="235" r="5" fill="#16A34A"/>
+    <path d="M225.5 235l2 2 4-4" stroke="white" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <rect x="236" y="232" width="28" height="3" rx="1.5" fill="#16A34A" fill-opacity="0.7"/>
+    <rect x="236" y="237" width="20" height="3" rx="1.5" fill="#16A34A" fill-opacity="0.4"/>
+  </g>
 
   <!-- === CLIENT CHARACTER (right, lighter skin, lime-green top) === -->
 
@@ -241,20 +289,22 @@
   <ellipse cx="312" cy="141" rx="7" ry="4" fill="#F0A080" fill-opacity="0.22"/>
 
   <!-- === SPEECH BUBBLE from client side === -->
-  <rect x="322" y="98" width="96" height="38" rx="12" fill="white" filter="url(#biz-drop)"/>
-  <path d="M322 124 l-14 14 16-5z" fill="white"/>
-  <rect x="322" y="98" width="96" height="38" rx="12" fill="none" stroke="#DCFCE7" stroke-width="1.5"/>
-  <rect x="333" y="108" width="74" height="5" rx="2" fill="#032641" fill-opacity="0.5"/>
-  <rect x="333" y="116" width="55" height="5" rx="2" fill="#16A34A" fill-opacity="0.7"/>
-  <rect x="333" y="124" width="42" height="4" rx="2" fill="#A99E8C"/>
+  <g id="biz-bubble">
+    <rect x="322" y="98" width="96" height="38" rx="12" fill="white" filter="url(#biz-drop)"/>
+    <path d="M322 124 l-14 14 16-5z" fill="white"/>
+    <rect x="322" y="98" width="96" height="38" rx="12" fill="none" stroke="#DCFCE7" stroke-width="1.5"/>
+    <rect x="333" y="108" width="74" height="5" rx="2" fill="#032641" fill-opacity="0.5"/>
+    <rect x="333" y="116" width="55" height="5" rx="2" fill="#16A34A" fill-opacity="0.7"/>
+    <rect x="333" y="124" width="42" height="4" rx="2" fill="#A99E8C"/>
+  </g>
 
   <!-- Floating lime decorations -->
-  <circle cx="58" cy="104" r="5" fill="#C6F542" fill-opacity="0.4"/>
-  <circle cx="48" cy="116" r="3" fill="#C6F542" fill-opacity="0.25"/>
-  <circle cx="66" cy="118" r="2" fill="#C6F542" fill-opacity="0.2"/>
+  <circle id="biz-sparkle-1" cx="58" cy="104" r="5" fill="#C6F542" fill-opacity="0.4"/>
+  <circle id="biz-sparkle-2" cx="48" cy="116" r="3" fill="#C6F542" fill-opacity="0.25"/>
+  <circle id="biz-sparkle-3" cx="66" cy="118" r="2" fill="#C6F542" fill-opacity="0.2"/>
 
   <!-- Kipo logo badge (floating compositional element) -->
-  <g>
+  <g id="biz-kipo-badge">
     <rect x="382" y="6" width="52" height="52" rx="12" fill="white" fill-opacity="0.96" filter="url(#kipo-badge-shadow)"/>
     <svg x="387" y="11" width="42" height="42" viewBox="348 265 368 368">
       <path d="M 352.087 495.146 C 352.658 473.964 352.294 452.696 352.276 431.503 C 352.247 397.834 352.315 364.165 352.34 330.496 C 352.351 315.663 352.378 300.831 352.343 285.997 C 352.334 282.164 352.324 278.332 352.314 274.499 C 352.31 273.079 351.837 270.744 352.601 269.526 C 357.135 268.942 361.935 269.355 366.503 269.352 C 375.171 269.345 383.838 269.338 392.506 269.369 C 417.338 269.46 442.173 269.42 467.006 269.414 C 476.409 269.412 485.813 269.397 495.216 269.403 C 497.798 269.405 500.535 269.255 503.099 269.511 C 503.834 269.584 504.827 269.444 505.404 269.921 C 499.44 289.219 491.44 307.495 482.377 325.522 C 461.421 367.206 434.305 405.132 404.089 440.548 C 392.948 453.606 381.3 466.125 369.367 478.46 C 365.613 482.34 361.757 486.115 357.985 489.977 C 356.122 491.885 354.237 494.659 351.991 496.089 C 352.051 495.569 352.017 495.883 352.087 495.146 Z" fill="rgb(2,23,76)" fill-rule="evenodd"/>

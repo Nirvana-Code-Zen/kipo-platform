@@ -29,6 +29,44 @@
     </radialGradient>
   </defs>
 
+  <style>
+    @keyframes inv-timbrada-pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.72; }
+    }
+    @keyframes inv-lightning-flicker {
+      0%, 85%, 100% { opacity: 1; }
+      20% { opacity: 0.45; }
+      40% { opacity: 0.85; }
+      55% { opacity: 0.4; }
+    }
+    @keyframes inv-speedlines-in {
+      from { opacity: 0; transform: translateX(10px); }
+      to { opacity: 1; transform: translateX(0); }
+    }
+
+    #inv-timbrada {
+      animation: inv-timbrada-pulse 2.6s ease-in-out infinite;
+      animation-delay: 1.2s;
+    }
+    #inv-lightning {
+      animation: inv-lightning-flicker 3.2s ease-in-out infinite;
+      animation-delay: 0.5s;
+    }
+    #inv-speedlines {
+      animation: inv-speedlines-in 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+      animation-delay: 0.4s;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      #inv-timbrada, #inv-lightning, #inv-speedlines {
+        animation: none;
+        opacity: 1;
+        transform: none;
+      }
+    }
+  </style>
+
   <!-- Background blobs -->
   <ellipse cx="195" cy="155" rx="130" ry="120" fill="url(#bg-lime-blob)"/>
   <ellipse cx="80" cy="230" rx="90" ry="70" fill="url(#red-bg)"/>
@@ -126,11 +164,13 @@
   <rect x="128" y="198" width="84" height="1" rx="0.5" fill="#E4D9C9"/>
 
   <!-- Timbrada badge -->
-  <rect x="128" y="203" width="84" height="22" rx="8" fill="#DCFCE7"/>
-  <circle cx="142" cy="214" r="7" fill="#16A34A"/>
-  <path d="M138.5 214l2.5 2.5 4.5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-  <rect x="153" y="210" width="38" height="5" rx="2" fill="#16A34A" fill-opacity="0.8"/>
-  <rect x="153" y="217" width="28" height="4" rx="2" fill="#16A34A" fill-opacity="0.5"/>
+  <g id="inv-timbrada">
+    <rect x="128" y="203" width="84" height="22" rx="8" fill="#DCFCE7"/>
+    <circle cx="142" cy="214" r="7" fill="#16A34A"/>
+    <path d="M138.5 214l2.5 2.5 4.5-5" stroke="white" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+    <rect x="153" y="210" width="38" height="5" rx="2" fill="#16A34A" fill-opacity="0.8"/>
+    <rect x="153" y="217" width="28" height="4" rx="2" fill="#16A34A" fill-opacity="0.5"/>
+  </g>
 
   <!-- Folio line -->
   <rect x="130" y="232" width="22" height="4" rx="2" fill="#A99E8C"/>
@@ -143,15 +183,17 @@
   <!-- === FLOATING ELEMENTS === -->
 
   <!-- Lightning bolt top-right -->
-  <g transform="translate(244, 55)">
+  <g id="inv-lightning" transform="translate(244, 55)">
     <polygon points="14,0 8,16 14,14 6,32 18,12 12,14" fill="#C6F542"/>
     <polygon points="14,0 8,16 14,14 6,32 18,12 12,14" fill="none" stroke="#A9D92B" stroke-width="0.5"/>
   </g>
 
   <!-- Speed lines from phone -->
-  <line x1="96" y1="130" x2="82" y2="130" stroke="#C6F542" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
-  <line x1="92" y1="142" x2="74" y2="142" stroke="#C6F542" stroke-width="2" stroke-linecap="round" opacity="0.35"/>
-  <line x1="96" y1="154" x2="78" y2="154" stroke="#C6F542" stroke-width="2" stroke-linecap="round" opacity="0.2"/>
+  <g id="inv-speedlines">
+    <line x1="96" y1="130" x2="82" y2="130" stroke="#C6F542" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+    <line x1="92" y1="142" x2="74" y2="142" stroke="#C6F542" stroke-width="2" stroke-linecap="round" opacity="0.35"/>
+    <line x1="96" y1="154" x2="78" y2="154" stroke="#C6F542" stroke-width="2" stroke-linecap="round" opacity="0.2"/>
+  </g>
 
   <!-- SAT stamp decoration -->
   <circle cx="54" cy="82" r="24" fill="none" stroke="#e00b26" stroke-width="1.5" stroke-dasharray="3 3" opacity="0.3"/>
