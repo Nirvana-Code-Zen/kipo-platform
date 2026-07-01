@@ -9,6 +9,7 @@ export default [
       '**/.astro/**',
       '**/storybook-static/**',
       '**/.cache/**',
+      'src/apps/kipo-dashboard/ui/**',
     ],
   },
   {
