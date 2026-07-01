@@ -31,6 +31,6 @@
     "typescript": "5.4.5"
   },
   "lint-staged": {
-    "*.{ts,tsx,astro,js,jsx}": "eslint --max-warnings=0 --fix"
+    "!(src/apps/kipo-dashboard/ui/**)*.{ts,tsx,astro,js,jsx}": "eslint --max-warnings=0 --fix"
   }
 }

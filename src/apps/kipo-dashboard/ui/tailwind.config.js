@@ -8,6 +8,6 @@ module.exports = {
   content: [
     './index.html',
     './src/**/*.{ts,tsx}',
-    '../../packages/ui-react/src/**/*.{ts,tsx}',
-  ],
+    '../../packages/ui-react/src/**/*.{ts,tsx}'
+  ]
 }
