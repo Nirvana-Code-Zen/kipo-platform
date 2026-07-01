@@ -29,8 +29,5 @@
     "lint-staged": "17.0.8",
     "playwright": "1.45.0",
     "typescript": "5.4.5"
-  },
-  "lint-staged": {
-    "!(src/apps/kipo-dashboard/ui/**)*.{ts,tsx,astro,js,jsx}": "eslint --max-warnings=0 --fix"
   }
 }
