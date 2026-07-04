@@ -9,7 +9,8 @@ export default [
       '**/.astro/**',
       '**/storybook-static/**',
       '**/.cache/**',
-      'src/apps/kipo-dashboard/ui/**',
+      // kipo-dashboard has its own eslint.config.mjs — exclude it from the root config
+      'src/apps/kipo-dashboard/**',
     ],
   },
   {

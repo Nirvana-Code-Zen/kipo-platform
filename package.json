@@ -8,9 +8,10 @@
     "pnpm": ">=10.0.0"
   },
   "scripts": {
-    "dev": "pnpm --parallel --filter './src/apps/**' dev",
+    "dev": "pnpm -r --parallel dev",
     "dev:dashboard": "pnpm --filter kipo-dashboard dev",
     "dev:landing": "pnpm --filter Kipo-landing dev",
+    "dev:api": "pnpm --filter kipo-platform dev",
     "build": "pnpm build:packages && pnpm --parallel --filter './src/apps/**' build",
     "build:dashboard": "pnpm build:packages && pnpm --filter kipo-dashboard build",
     "build:landing": "pnpm build:packages && pnpm --filter Kipo-landing build",
@@ -18,6 +19,7 @@
     "storybook": "pnpm --filter @kipo/ui-react storybook",
     "lint": "pnpm -r --parallel lint",
     "typecheck": "pnpm -r --parallel typecheck",
+    "install:py": "uv sync",
     "prepare": "husky"
   },
   "devDependencies": {

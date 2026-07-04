@@ -1,0 +1,9 @@
+{
+  "name": "kipo-platform",
+  "scripts": {
+    "dev": "uv run --package kipo-platform flask run --debug",
+    "lint": "uv run --package kipo-platform ruff check .",
+    "test": "uv run --package kipo-platform pytest",
+    "sync": "uv sync"
+  }
+}
