@@ -9,7 +9,7 @@
   },
   "scripts": {
     "dev": "pnpm -r --parallel dev",
-    "dev:dashboard": "pnpm --filter kipo-dashboard dev",
+    "dev:dashboard": "pnpm --filter kipo-dashboard-ui dev",
     "dev:landing": "pnpm --filter Kipo-landing dev",
     "dev:api": "pnpm --filter kipo-platform dev",
     "build": "pnpm build:packages && pnpm --parallel --filter './src/apps/**' build",

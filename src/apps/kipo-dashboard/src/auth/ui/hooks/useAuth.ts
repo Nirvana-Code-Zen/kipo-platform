@@ -25,7 +25,7 @@ export const useAuth = () => {
     error: store.error,
     pendingOtp: store.pendingOtp,
     isAuthenticated: store.status === 'authenticated' && store.session !== null,
-    isLoading: store.status === 'loading',
+    isLoading: store.status === 'loading' || (store.status === 'idle' && store.persistedSession !== null),
     isOtpPending: store.status === 'otp_pending',
     tenantSlug: store.session?.tenantSlug as TenantSlug | undefined,
 
