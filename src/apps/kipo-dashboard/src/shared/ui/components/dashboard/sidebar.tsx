@@ -22,8 +22,8 @@ const menuItems = [
 ]
 
 const generalItems = [
-  { icon: Settings, label: "Settings", href: "/settings" },
-  { icon: HelpCircle, label: "Help", href: "/help" },
+  { icon: Settings, label: "Ajustes", href: "/settings" },
+  { icon: HelpCircle, label: "Ayuda", href: "/help" },
   { icon: LogOut, label: "Logout", href: "/logout" },
 ]
 

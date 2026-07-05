@@ -2,6 +2,7 @@
 
 import React from 'react'
 
+import { MobileBottomNav } from "../components/dashboard/mobile-bottom-nav"
 import { Sidebar } from "../components/dashboard/sidebar"
 
 export function DashboardShell ({ children }: {children: React.ReactNode}) {
@@ -11,9 +12,11 @@ export function DashboardShell ({ children }: {children: React.ReactNode}) {
         <Sidebar />
       </div>
 
-      <main className="flex-1 p-3 md:p-4 lg:p-5 lg:ml-64">
+      <main className="flex-1 p-3 md:p-4 lg:p-5 lg:ml-64 pb-24 lg:pb-5">
         {children}
       </main>
+
+      <MobileBottomNav />
     </div>
   )
 }

@@ -1,5 +1,5 @@
-import { UsersDashboard } from '@/src/users/ui/views/UsersDashboard'
+import { SettingsView } from '@/src/settings/ui/views/SettingsView'
 
-export default function UsersPage () {
-  return <UsersDashboard />
+export default function SettingsPage() {
+  return <SettingsView />
 }
