@@ -90,7 +90,7 @@ export function Header ({ title, description, actions }: HeaderProps) {
             }}
           >
             <Avatar className='w-9 h-9 ring-2 ring-primary/20'>
-              <AvatarImage src='/profile.jpg' alt='Edgar Figueroa' />
+              <AvatarImage src='/profile.jpeg' alt='Edgar Figueroa' className='object-cover w-full h-full' />
               <AvatarFallback className='bg-primary text-primary-foreground text-xs font-bold'>EF</AvatarFallback>
             </Avatar>
             <div style={{ display: 'flex', flexDirection: 'column' }}>

@@ -7,33 +7,33 @@ import { Card } from "@kipo/ui-react"
 
 const stats = [
   {
-    title: "Total Projects",
+    title: "Total Facturas",
     value: "24",
-    increase: "Increased from last month",
+    increase: "Incremento vs mes anterior",
     bgColor: "bg-primary",
     textColor: "text-primary-foreground",
     delay: "0ms",
   },
   {
-    title: "Ended Projects",
+    title: "Canceladas",
     value: "10",
-    increase: "Increased from last month",
+    increase: "Incremento vs mes anterior",
     bgColor: "bg-card",
     textColor: "text-foreground",
     delay: "100ms",
   },
   {
-    title: "Running Projects",
+    title: "Timbradas",
     value: "12",
-    increase: "Increased from last month",
+    increase: "Incremento vs mes anterior",
     bgColor: "bg-card",
     textColor: "text-foreground",
     delay: "200ms",
   },
   {
-    title: "Pending Project",
+    title: "Borradores",
     value: "2",
-    subtitle: "On Discuss",
+    subtitle: "En revisión",
     bgColor: "bg-card",
     textColor: "text-foreground",
     delay: "300ms",
@@ -50,7 +50,10 @@ export function StatsCards() {
           key={stat.title}
           onMouseEnter={() => setHoveredCard(index)}
           onMouseLeave={() => setHoveredCard(null)}
-          style={{ animationDelay: stat.delay }}
+          style={{
+            animationDelay: stat.delay,
+            ...(stat.bgColor === "bg-primary" ? { background: "var(--color-primary)", color: "var(--color-primary-foreground)" } : {}),
+          }}
           className={`${stat.bgColor} ${stat.textColor} p-4 transition-all duration-500 ease-out animate-slide-in-up cursor-pointer ${
             hoveredCard === index ? "scale-105 shadow-2xl" : "shadow-lg"
           }`}

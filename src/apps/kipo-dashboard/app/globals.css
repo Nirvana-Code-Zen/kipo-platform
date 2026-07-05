@@ -2,33 +2,31 @@
 @import "@kipo/fonts";
 @import "@kipo/theme/index.css";
 
-/* ─── Tailwind v4 → tokens de @kipo/theme (una sola capa) ─── */
 @theme inline {
-  /* Colores semánticos — referencian directamente los vars de @kipo/theme */
-  --color-background:           var(--bg-base);
-  --color-foreground:           var(--text-strong);
-  --color-card:                 var(--surface-card);
-  --color-card-foreground:      var(--text-strong);
-  --color-popover:              var(--surface-card);
-  --color-popover-foreground:   var(--text-strong);
-  --color-primary:              var(--brand);
-  --color-primary-foreground:   var(--text-on-brand);
-  --color-secondary:            var(--bg-subtle);
+  --color-background: var(--bg-base);
+  --color-foreground: var(--text-strong);
+  --color-card: var(--surface-card);
+  --color-card-foreground: var(--text-strong);
+  --color-popover: var(--surface-card);
+  --color-popover-foreground: var(--text-strong);
+  --color-primary: var(--brand);
+  --color-primary-foreground: var(--text-on-brand);
+  --color-secondary: var(--bg-subtle);
   --color-secondary-foreground: var(--text-strong);
-  --color-muted:                var(--bg-subtle);
-  --color-muted-foreground:     var(--text-muted);
-  --color-accent:               var(--bg-subtle);
-  --color-accent-foreground:    var(--text-strong);
-  --color-destructive:          var(--kipo-danger);
+  --color-muted: var(--bg-subtle);
+  --color-muted-foreground: var(--text-muted);
+  --color-accent: var(--bg-subtle);
+  --color-accent-foreground: var(--text-strong);
+  --color-destructive: var(--kipo-danger);
   --color-destructive-foreground: var(--text-on-brand);
-  --color-border:               var(--border-subtle);
-  --color-input:                var(--border-strong);
-  --color-ring:                 var(--focus-ring);
+  --color-border: var(--border-subtle);
+  --color-input: var(--border-strong);
+  --color-ring: var(--focus-ring);
 
   /* Tipografía */
-  --font-sans:    var(--font-body);
+  --font-sans: var(--font-body);
   --font-display: var(--font-display);
-  --font-mono:    var(--font-mono);
+  --font-mono: var(--font-mono);
 
   /* Radios */
   --radius-sm: var(--radius-sm);
