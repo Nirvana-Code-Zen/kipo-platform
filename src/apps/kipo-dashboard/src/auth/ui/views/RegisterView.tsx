@@ -2,7 +2,6 @@
 
 import { useState } from 'react'
 
-import { useRouter } from 'next/navigation'
 import { Button } from '@kipo/ui-react'
 
 import { AuthInput } from '../components/AuthInput'
@@ -58,8 +57,7 @@ const FacebookIcon = () => (
 )
 
 export const RegisterView = () => {
-  const router = useRouter()
-  const { isLoading, isOtpPending, error, pendingOtp, clearError } = useAuth()
+  const { isLoading, isOtpPending, error, pendingOtp, clearError, fakeLogin } = useAuth()
 
   const [tab, setTab] = useState<'email' | 'phone'>('email')
   const [displayName, setDisplayName] = useState('')
@@ -70,11 +68,18 @@ export const RegisterView = () => {
   const [otpCode, setOtpCode] = useState('')
   const [channel, setChannel] = useState<'whatsapp' | 'sms'>('whatsapp')
 
-  // TODO: conectar a Flask API — por ahora navega directo al dashboard
-  const handleEmailRegister = (e: React.FormEvent) => { e.preventDefault(); router.push('/dashboard') }
-  const handleRequestOtp = (e: React.FormEvent) => { e.preventDefault(); router.push('/dashboard') }
-  const handleVerifyOtp = (e: React.FormEvent) => { e.preventDefault(); router.push('/dashboard') }
-  const handleSocial = (_provider?: string) => { router.push('/dashboard') }
+  const handleEmailRegister = (e: React.FormEvent) => {
+    e.preventDefault()
+    fakeLogin(displayName || (email ? email.split('@')[0] : 'Usuario Demo'), email || 'demo@kipo.mx', 'email')
+  }
+  const handleRequestOtp = (e: React.FormEvent) => { e.preventDefault() }
+  const handleVerifyOtp = (e: React.FormEvent) => {
+    e.preventDefault()
+    fakeLogin('Usuario', phone, 'phone')
+  }
+  const handleSocial = (provider?: string) => {
+    fakeLogin(provider ?? 'Usuario', '', (provider as 'google' | 'apple' | 'facebook') ?? 'google')
+  }
 
   return (
     <AuthShell>

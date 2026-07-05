@@ -20,7 +20,7 @@ export const useAuth = () => {
     status: store.status,
     error: store.error,
     pendingOtp: store.pendingOtp,
-    isAuthenticated: true, //store.status === 'authenticated' && store.session !== null,
+    isAuthenticated: store.status === 'authenticated' && store.accessToken !== null && store.persistedSession !== null,
     isLoading: store.status === 'loading' || (store.status === 'idle' && store.persistedSession !== null),
     isOtpPending: store.status === 'otp_pending',
     tenantSlug: store.session?.tenantSlug as TenantSlug | undefined,
@@ -32,5 +32,6 @@ export const useAuth = () => {
     register: store.register,
     logout: store.logout,
     clearError: store.clearError,
+    fakeLogin: store.fakeLogin,
   }
 }

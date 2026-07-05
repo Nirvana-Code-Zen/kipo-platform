@@ -16,6 +16,7 @@ import { refreshSessionUseCase } from '../../core/application/use-cases/refreshS
 import type { AuthError } from '../../core/domain/exceptions/auth.errors'
 import type { OtpToken } from '../../core/domain/value-objects/AccessToken'
 import type { Session, PersistedSession } from '../../core/domain/entities/Session'
+import type { AuthProvider } from '../../core/domain/value-objects/AuthProvider'
 import type {
   LoginWithEmailDTO,
   LoginWithSocialDTO,
@@ -50,6 +51,7 @@ type AuthState = {
   logout: () => Promise<void>
   refresh: () => Promise<void>
   clearError: () => void
+  fakeLogin: (displayName: string, email: string, provider?: AuthProvider) => void
 }
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001'
@@ -139,31 +141,45 @@ export const useAuthStore = create<AuthState>()(
 
       logout: async () => {
         set({ status: 'loading' })
-        await logoutUseCase(repo)()
+        try { await logoutUseCase(repo)() } catch { /* API not connected yet */ }
         set({
           accessToken: null,
           persistedSession: null,
-          status: 'authenticated',
+          status: 'unauthenticated',
           error: null,
           pendingOtp: null,
         })
       },
 
       refresh: async () => {
+        const { persistedSession } = get()
         const result = await refreshSessionUseCase(repo)()
         if (result.ok) {
           applySession(set, result.value)
+        } else if (persistedSession && new Date(persistedSession.expiresAt).getTime() > Date.now()) {
+          // API not connected yet — restore session with a fake token so the user stays logged in
+          set({ accessToken: 'fake-token' as Session['accessToken'], status: 'authenticated', error: null })
         } else {
-          set({
-            accessToken: null,
-            persistedSession: null,
-            status: 'authenticated',
-            error: result.error,
-          })
+          set({ accessToken: null, persistedSession: null, status: 'unauthenticated', error: null })
         }
       },
 
       clearError: () => set({ error: null }),
+
+      fakeLogin: (displayName, email, provider = 'email') => {
+        const slug = email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/^-+|-+$/g, '') || 'demo'
+        const session: Session = {
+          userId: Math.random().toString(36).slice(2),
+          tenantId: Math.random().toString(36).slice(2),
+          tenantSlug: slug as Session['tenantSlug'],
+          displayName,
+          email,
+          provider,
+          accessToken: 'fake-token' as Session['accessToken'],
+          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
+        }
+        applySession(set, session)
+      },
     }),
     {
       name: 'kipo-auth',
