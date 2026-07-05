@@ -108,7 +108,6 @@ export function DashboardShell ({ children }: DashboardShellProps) {
           </span>
         </div>
 
-        {/* Nav */}
         <nav style={{ padding: '16px 10px', flex: 1 }}>
           <p
             style={{
@@ -181,9 +180,7 @@ export function DashboardShell ({ children }: DashboardShellProps) {
         </nav>
       </aside>
 
-      {/* Main column */}
       <div style={{ marginLeft: SIDEBAR_W, flex: 1, display: 'flex', flexDirection: 'column', minWidth: 0 }}>
-        {/* Topbar */}
         <header
           style={{
             height: 64,
@@ -199,7 +196,6 @@ export function DashboardShell ({ children }: DashboardShellProps) {
             flexShrink: 0,
           }}
         >
-          {/* Search */}
           <div
             style={{
               display: 'flex',
@@ -228,9 +224,7 @@ export function DashboardShell ({ children }: DashboardShellProps) {
             />
           </div>
 
-          {/* Right actions */}
           <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            {/* Notifications */}
             <button
               type='button'
               style={{
@@ -263,7 +257,6 @@ export function DashboardShell ({ children }: DashboardShellProps) {
               />
             </button>
 
-            {/* User */}
             <div style={{ display: 'flex', alignItems: 'center', gap: 10 }}>
               <div
                 style={{
