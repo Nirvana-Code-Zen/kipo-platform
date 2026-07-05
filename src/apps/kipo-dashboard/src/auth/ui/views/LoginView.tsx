@@ -69,31 +69,11 @@ export const LoginView = () => {
   const [otpCode, setOtpCode] = useState('')
   const [channel, setChannel] = useState<'whatsapp' | 'sms'>('whatsapp')
 
-  const redirect = () => router.push('/dashboard')
-
-  const handleEmailLogin = async (e: React.FormEvent) => {
-    e.preventDefault()
-    await loginWithEmail({ email, password })
-    if (!error) redirect()
-  }
-
-  const handleSocial = async (provider: 'google' | 'apple' | 'facebook') => {
-    await loginWithSocial({ provider, idToken: '' })
-    if (!error) redirect()
-  }
-
-  const handleRequestOtp = async (e: React.FormEvent) => {
-    e.preventDefault()
-    clearError()
-    await requestOtp({ phone, channel })
-  }
-
-  const handleVerifyOtp = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!pendingOtp) return
-    await verifyOtp({ otpToken: pendingOtp.otpToken, code: otpCode })
-    if (!error) redirect()
-  }
+  // TODO: conectar a Flask API — por ahora navega directo al dashboard
+  const handleEmailLogin = (e: React.FormEvent) => { e.preventDefault(); router.push('/dashboard') }
+  const handleSocial = () => { router.push('/dashboard') }
+  const handleRequestOtp = (e: React.FormEvent) => { e.preventDefault(); router.push('/dashboard') }
+  const handleVerifyOtp = (e: React.FormEvent) => { e.preventDefault(); router.push('/dashboard') }
 
   return (
     <AuthShell>
@@ -181,7 +161,6 @@ export const LoginView = () => {
           <AuthInput
             label='Correo electrónico'
             type='email'
-            required
             autoComplete='email'
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -190,7 +169,6 @@ export const LoginView = () => {
           <AuthInput
             label='Contraseña'
             type={showPassword ? 'text' : 'password'}
-            required
             autoComplete='current-password'
             value={password}
             onChange={(e) => setPassword(e.target.value)}

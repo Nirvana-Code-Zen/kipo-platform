@@ -71,31 +71,11 @@ export const RegisterView = () => {
   const [otpCode, setOtpCode] = useState('')
   const [channel, setChannel] = useState<'whatsapp' | 'sms'>('whatsapp')
 
-  const redirect = () => router.push('/dashboard')
-
-  const handleEmailRegister = async (e: React.FormEvent) => {
-    e.preventDefault()
-    await register({ provider: 'email', displayName, email, password })
-    if (!error) redirect()
-  }
-
-  const handleRequestOtp = async (e: React.FormEvent) => {
-    e.preventDefault()
-    clearError()
-    await requestOtp({ phone, channel })
-  }
-
-  const handleVerifyOtp = async (e: React.FormEvent) => {
-    e.preventDefault()
-    if (!pendingOtp) return
-    await verifyOtp({ otpToken: pendingOtp.otpToken, code: otpCode })
-    if (!error) redirect()
-  }
-
-  const handleSocial = async (provider: Extract<AuthProvider, 'google' | 'apple' | 'facebook'>) => {
-    await loginWithSocial({ provider, idToken: '' })
-    if (!error) redirect()
-  }
+  // TODO: conectar a Flask API — por ahora navega directo al dashboard
+  const handleEmailRegister = (e: React.FormEvent) => { e.preventDefault(); router.push('/dashboard') }
+  const handleRequestOtp = (e: React.FormEvent) => { e.preventDefault(); router.push('/dashboard') }
+  const handleVerifyOtp = (e: React.FormEvent) => { e.preventDefault(); router.push('/dashboard') }
+  const handleSocial = () => { router.push('/dashboard') }
 
   return (
     <AuthShell>
