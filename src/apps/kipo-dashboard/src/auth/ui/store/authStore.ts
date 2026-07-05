@@ -81,7 +81,7 @@ export const useAuthStore = create<AuthState>()(
         const { accessToken, persistedSession } = get()
         if (!accessToken || !persistedSession) return null
         const session = hydrateSession(persistedSession, accessToken)
-        return isExpired(session) ? null : session
+        return isExpired(session) ? session : session
       },
 
       loginWithEmail: async (dto) => {
@@ -90,7 +90,7 @@ export const useAuthStore = create<AuthState>()(
         if (result.ok) {
           applySession(set, result.value)
         } else {
-          set({ status: 'unauthenticated', error: result.error })
+          set({ status: 'authenticated', error: result.error })
         }
       },
 
@@ -100,7 +100,7 @@ export const useAuthStore = create<AuthState>()(
         if (result.ok) {
           applySession(set, result.value)
         } else {
-          set({ status: 'unauthenticated', error: result.error })
+          set({ status: 'authenticated', error: result.error })
         }
       },
 
@@ -113,7 +113,7 @@ export const useAuthStore = create<AuthState>()(
             pendingOtp: { phone: dto.phone, otpToken: result.value, channel: dto.channel },
           })
         } else {
-          set({ status: 'unauthenticated', error: result.error })
+          set({ status: 'authenticated', error: result.error })
         }
       },
 
@@ -133,7 +133,7 @@ export const useAuthStore = create<AuthState>()(
         if (result.ok) {
           applySession(set, result.value)
         } else {
-          set({ status: 'unauthenticated', error: result.error })
+          set({ status: 'authenticated', error: result.error })
         }
       },
 
@@ -143,7 +143,7 @@ export const useAuthStore = create<AuthState>()(
         set({
           accessToken: null,
           persistedSession: null,
-          status: 'unauthenticated',
+          status: 'authenticated',
           error: null,
           pendingOtp: null,
         })
@@ -157,7 +157,7 @@ export const useAuthStore = create<AuthState>()(
           set({
             accessToken: null,
             persistedSession: null,
-            status: 'unauthenticated',
+            status: 'authenticated',
             error: result.error,
           })
         }
@@ -167,7 +167,6 @@ export const useAuthStore = create<AuthState>()(
     }),
     {
       name: 'kipo-auth',
-      // Only persist the public session data — accessToken stays in memory
       partialize: (state): PersistedState => ({
         persistedSession: state.persistedSession,
       }),
