@@ -59,7 +59,7 @@ const FacebookIcon = () => (
 
 export const LoginView = () => {
   const router = useRouter()
-  const { loginWithEmail, loginWithSocial, requestOtp, verifyOtp, isLoading, isOtpPending, error, pendingOtp, clearError } = useAuth()
+  const { isLoading, isOtpPending, error, pendingOtp, clearError } = useAuth()
 
   const [tab, setTab] = useState<'email' | 'phone'>('email')
   const [email, setEmail] = useState('')
@@ -71,13 +71,12 @@ export const LoginView = () => {
 
   // TODO: conectar a Flask API — por ahora navega directo al dashboard
   const handleEmailLogin = (e: React.FormEvent) => { e.preventDefault(); router.push('/dashboard') }
-  const handleSocial = () => { router.push('/dashboard') }
+  const handleSocial = (_provider?: string) => { router.push('/dashboard') }
   const handleRequestOtp = (e: React.FormEvent) => { e.preventDefault(); router.push('/dashboard') }
   const handleVerifyOtp = (e: React.FormEvent) => { e.preventDefault(); router.push('/dashboard') }
 
   return (
     <AuthShell>
-      {/* Heading */}
       <div style={{ marginBottom: 28 }}>
         <h1
           style={{
@@ -103,7 +102,6 @@ export const LoginView = () => {
         </p>
       </div>
 
-      {/* Error banner */}
       {error && (
         <div
           role='alert'
@@ -122,7 +120,6 @@ export const LoginView = () => {
         </div>
       )}
 
-      {/* Underline tabs */}
       <div
         style={{
           display: 'flex',
@@ -155,7 +152,6 @@ export const LoginView = () => {
         ))}
       </div>
 
-      {/* Email form */}
       {tab === 'email' && (
         <form onSubmit={handleEmailLogin} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <AuthInput
@@ -192,7 +188,6 @@ export const LoginView = () => {
         </form>
       )}
 
-      {/* Phone: request OTP */}
       {tab === 'phone' && !isOtpPending && (
         <form onSubmit={handleRequestOtp} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <AuthInput
@@ -247,7 +242,6 @@ export const LoginView = () => {
         </form>
       )}
 
-      {/* Phone: verify OTP */}
       {tab === 'phone' && isOtpPending && (
         <form onSubmit={handleVerifyOtp} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           <p style={{ fontSize: 14, color: 'var(--text-body)', fontFamily: 'var(--font-body)', lineHeight: 1.5, margin: 0 }}>
@@ -255,7 +249,6 @@ export const LoginView = () => {
             vía {pendingOtp?.channel === 'whatsapp' ? 'WhatsApp' : 'SMS'}
           </p>
 
-          {/* OTP input — label sr-only, centered large monospace */}
           <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
             <label htmlFor='otp-code' className='sr-only'>Código de verificación</label>
             <div
@@ -311,7 +304,6 @@ export const LoginView = () => {
         </form>
       )}
 
-      {/* Divider */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '24px 0 20px' }}>
         <div style={{ flex: 1, height: 1, background: 'var(--border-subtle)' }} />
         <span style={{ fontSize: 12, color: 'var(--text-muted)', fontFamily: 'var(--font-body)', whiteSpace: 'nowrap' }}>
@@ -320,7 +312,6 @@ export const LoginView = () => {
         <div style={{ flex: 1, height: 1, background: 'var(--border-subtle)' }} />
       </div>
 
-      {/* Social buttons: Google + Apple side by side, Facebook full-width below */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
           <Button variant='secondary' size='md' full disabled={isLoading} iconLeft={<GoogleIcon />} onClick={() => handleSocial('google')}>

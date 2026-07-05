@@ -10,7 +10,6 @@ import { AuthShell } from '../components/AuthShell'
 import { useAuth } from '../hooks/useAuth'
 
 import type { AuthError } from '../../core/domain/exceptions/auth.errors'
-import type { AuthProvider } from '../../core/domain/value-objects/AuthProvider'
 
 const ERROR_MESSAGE: Record<AuthError['kind'], string> = {
   InvalidCredentials: 'Credenciales incorrectas',
@@ -60,7 +59,7 @@ const FacebookIcon = () => (
 
 export const RegisterView = () => {
   const router = useRouter()
-  const { register, requestOtp, verifyOtp, loginWithSocial, isLoading, isOtpPending, error, pendingOtp, clearError } = useAuth()
+  const { isLoading, isOtpPending, error, pendingOtp, clearError } = useAuth()
 
   const [tab, setTab] = useState<'email' | 'phone'>('email')
   const [displayName, setDisplayName] = useState('')
@@ -75,7 +74,7 @@ export const RegisterView = () => {
   const handleEmailRegister = (e: React.FormEvent) => { e.preventDefault(); router.push('/dashboard') }
   const handleRequestOtp = (e: React.FormEvent) => { e.preventDefault(); router.push('/dashboard') }
   const handleVerifyOtp = (e: React.FormEvent) => { e.preventDefault(); router.push('/dashboard') }
-  const handleSocial = () => { router.push('/dashboard') }
+  const handleSocial = (_provider?: string) => { router.push('/dashboard') }
 
   return (
     <AuthShell>
@@ -105,7 +104,6 @@ export const RegisterView = () => {
         </p>
       </div>
 
-      {/* Error banner */}
       {error && (
         <div
           role='alert'
@@ -151,7 +149,6 @@ export const RegisterView = () => {
         ))}
       </div>
 
-      {/* Email form */}
       {tab === 'email' && (
         <form onSubmit={handleEmailRegister} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <AuthInput
@@ -200,7 +197,6 @@ export const RegisterView = () => {
         </form>
       )}
 
-      {/* Phone: request OTP */}
       {tab === 'phone' && !isOtpPending && (
         <form onSubmit={handleRequestOtp} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <AuthInput
@@ -235,7 +231,6 @@ export const RegisterView = () => {
         </form>
       )}
 
-      {/* Phone: verify OTP */}
       {tab === 'phone' && isOtpPending && (
         <form onSubmit={handleVerifyOtp} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           <p style={{ fontSize: 14, color: 'var(--text-body)', fontFamily: 'var(--font-body)', lineHeight: 1.5, margin: 0 }}>
@@ -298,7 +293,6 @@ export const RegisterView = () => {
         </form>
       )}
 
-      {/* Divider */}
       <div style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '24px 0 20px' }}>
         <div style={{ flex: 1, height: 1, background: 'var(--border-subtle)' }} />
         <span style={{ fontSize: 12, color: 'var(--text-muted)', fontFamily: 'var(--font-body)', whiteSpace: 'nowrap' }}>
@@ -307,7 +301,6 @@ export const RegisterView = () => {
         <div style={{ flex: 1, height: 1, background: 'var(--border-subtle)' }} />
       </div>
 
-      {/* Social: Google + Apple side by side, Facebook full width */}
       <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
         <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
           <Button variant='secondary' size='md' full disabled={isLoading} iconLeft={<GoogleIcon />} onClick={() => handleSocial('google')}>

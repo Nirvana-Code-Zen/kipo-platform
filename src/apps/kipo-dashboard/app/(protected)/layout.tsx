@@ -1,4 +1,5 @@
-// TODO: reactivar guard cuando Flask API esté lista
+import { DashboardShell } from '@/src/shared/ui/layout/DashboardShell'
+
 export default function ProtectedLayout ({ children }: { children: React.ReactNode }) {
-  return <>{children}</>
+  return <DashboardShell>{children}</DashboardShell>
 }
