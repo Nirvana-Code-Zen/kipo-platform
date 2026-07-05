@@ -1,8 +1,7 @@
 export { Button } from './components/Button'
 export type { ButtonProps } from './components/Button'
 
-export { Avatar } from './components/Avatar'
-export type { AvatarProps } from './components/Avatar'
+export { Avatar, AvatarImage, AvatarFallback } from './components/Avatar'
 
 export { Card } from './components/Card'
 export type { CardProps } from './components/Card'

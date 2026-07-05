@@ -1,5 +1,5 @@
-import { CustomersPageClient } from '@/src/customers/ui/views/CustomersPageClient'
+import { CustomersDashboard } from '@/src/customers/ui/views/CustomersDashboard'
 
 export default function CustomersPage () {
-  return <CustomersPageClient />
+  return <CustomersDashboard />
 }

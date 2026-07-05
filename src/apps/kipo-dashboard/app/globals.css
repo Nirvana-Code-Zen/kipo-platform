@@ -2,36 +2,50 @@
 @import "@kipo/fonts";
 @import "@kipo/theme/index.css";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
-}
-
+/* ─── Tailwind v4 → tokens de @kipo/theme (una sola capa) ─── */
 @theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
+  /* Colores semánticos — referencian directamente los vars de @kipo/theme */
+  --color-background:           var(--bg-base);
+  --color-foreground:           var(--text-strong);
+  --color-card:                 var(--surface-card);
+  --color-card-foreground:      var(--text-strong);
+  --color-popover:              var(--surface-card);
+  --color-popover-foreground:   var(--text-strong);
+  --color-primary:              var(--brand);
+  --color-primary-foreground:   var(--text-on-brand);
+  --color-secondary:            var(--bg-subtle);
+  --color-secondary-foreground: var(--text-strong);
+  --color-muted:                var(--bg-subtle);
+  --color-muted-foreground:     var(--text-muted);
+  --color-accent:               var(--bg-subtle);
+  --color-accent-foreground:    var(--text-strong);
+  --color-destructive:          var(--kipo-danger);
+  --color-destructive-foreground: var(--text-on-brand);
+  --color-border:               var(--border-subtle);
+  --color-input:                var(--border-strong);
+  --color-ring:                 var(--focus-ring);
 
-  --font-sans: "Inter", system-ui, sans-serif;
-  --font-display: "Plus Jakarta Sans", system-ui, sans-serif;
-  --font-mono: "Geist Mono", ui-monospace, "SF Mono", monospace;
-}
+  /* Tipografía */
+  --font-sans:    var(--font-body);
+  --font-display: var(--font-display);
+  --font-mono:    var(--font-mono);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+  /* Radios */
+  --radius-sm: var(--radius-sm);
+  --radius-md: var(--radius-md);
+  --radius-lg: var(--radius-lg);
+  --radius-xl: var(--radius-xl);
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
+  background: var(--bg-base);
+  color: var(--text-strong);
+  font-family: var(--font-body);
 }
 
 @layer utilities {
   .font-financial {
-    font-family: "Geist Mono", ui-monospace, monospace;
+    font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
     font-feature-settings: "tnum" 1, "zero" 1;
     letter-spacing: -0.01em;

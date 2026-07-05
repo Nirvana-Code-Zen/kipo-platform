@@ -27,8 +27,11 @@
     "react-dom": "^18.0.0"
   },
   "dependencies": {
+    "@radix-ui/react-avatar": "1.1.2",
     "@headlessui/react": "^2.1.2",
-    "@kipo/theme": "workspace:*"
+    "@kipo/theme": "workspace:*",
+    "clsx": "^2.1.1",
+    "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
     "@storybook/addon-a11y": "^8.6.18",

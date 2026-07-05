@@ -1,41 +1,55 @@
-import { type HTMLAttributes } from 'react'
+import * as AvatarPrimitive from '@radix-ui/react-avatar'
 
-export interface AvatarProps extends HTMLAttributes<HTMLDivElement> {
-  name?: string
-  src?: string | null
-  size?: number
+import { clsx, type ClassValue } from 'clsx'
+import { twMerge } from 'tailwind-merge'
+
+function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs))
 }
 
-export function Avatar({ name = '', src = null, size = 40, style, ...rest }: AvatarProps) {
-  const initials = name
-    .split(' ')
-    .filter(Boolean)
-    .slice(0, 2)
-    .map((w) => w[0])
-    .join('')
-    .toUpperCase()
-
+function Avatar({
+  className,
+  ...props
+}: React.ComponentProps<typeof AvatarPrimitive.Root>) {
   return (
-    <div
-      style={{
-        width: size,
-        height: size,
-        borderRadius: 'var(--radius-circle)',
-        background: src ? `center/cover url(${src})` : 'var(--kipo-gradient)',
-        color: '#fff',
-        display: 'inline-flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        fontFamily: 'var(--font-display)',
-        fontWeight: 700,
-        fontSize: size * 0.4,
-        letterSpacing: '-0.01em',
-        flexShrink: 0,
-        ...style,
-      }}
-      {...rest}
-    >
-      {!src && initials}
-    </div>
+    <AvatarPrimitive.Root
+      data-slot="avatar"
+      className={cn(
+        'relative flex size-8 shrink-0 overflow-hidden rounded-full',
+        className,
+      )}
+      {...props}
+    />
   )
 }
+
+function AvatarImage({
+  className,
+  ...props
+}: React.ComponentProps<typeof AvatarPrimitive.Image>) {
+  return (
+    <AvatarPrimitive.Image
+      data-slot="avatar-image"
+      className={cn('aspect-square size-full', className)}
+      {...props}
+    />
+  )
+}
+
+function AvatarFallback({
+  className,
+  ...props
+}: React.ComponentProps<typeof AvatarPrimitive.Fallback>) {
+  return (
+    <AvatarPrimitive.Fallback
+      data-slot="avatar-fallback"
+      className={cn(
+        'bg-muted flex size-full items-center justify-center rounded-full',
+        className,
+      )}
+      {...props}
+    />
+  )
+}
+
+export { Avatar, AvatarImage, AvatarFallback }
