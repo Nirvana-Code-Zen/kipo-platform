@@ -130,11 +130,13 @@ export function useInvoiceForm() {
 
     const resolvedPaymentForm = paymentMethod === "PPD" ? "99" : paymentForm
 
+    const now = new Date()
     return {
       id: crypto.randomUUID(),
       folio,
       status: "draft",
-      issuedAt: formatDate(new Date()),
+      issuedAt: formatDate(now),
+      issuedAtISO: now.toISOString().slice(0, 10),
       receiverName: receiverName.trim(),
       receiverTaxId: receiverTaxId.trim().toUpperCase(),
       total: totals.total,
