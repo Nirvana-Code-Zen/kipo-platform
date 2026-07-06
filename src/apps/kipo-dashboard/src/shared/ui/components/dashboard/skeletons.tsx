@@ -1,6 +1,5 @@
 import { Card } from '@kipo/ui-react'
 
-// Base primitive — use anywhere
 function Sk({
   className = '',
   dark = false,
@@ -17,8 +16,6 @@ function Sk({
     />
   )
 }
-
-// ─── Stats cards ─────────────────────────────────────────────────────────────
 
 export function StatsCardsSkeleton() {
   return (
@@ -41,14 +38,11 @@ export function StatsCardsSkeleton() {
   )
 }
 
-// ─── Billing analytics ───────────────────────────────────────────────────────
-
 export function BillingAnalyticsSkeleton() {
   const bars = [80, 140, 110, 180, 65, 155, 90]
 
   return (
     <Card className="p-5">
-      {/* header */}
       <div className="flex items-center justify-between mb-5">
         <div className="flex items-center gap-3">
           <Sk className="h-5 w-40" />
@@ -61,7 +55,6 @@ export function BillingAnalyticsSkeleton() {
         </div>
       </div>
 
-      {/* bars */}
       <div className="flex items-end gap-2 h-48 px-1">
         {bars.map((h, i) => (
           <div key={i} className="flex-1 flex flex-col items-center gap-1">
@@ -71,7 +64,6 @@ export function BillingAnalyticsSkeleton() {
         ))}
       </div>
 
-      {/* footer stats */}
       <div className="flex gap-8 mt-4 pt-4 border-t border-border">
         <div className="flex flex-col gap-1.5">
           <Sk className="h-3 w-16" />
@@ -85,8 +77,6 @@ export function BillingAnalyticsSkeleton() {
     </Card>
   )
 }
-
-// ─── Invoice list ─────────────────────────────────────────────────────────────
 
 export function InvoiceListSkeleton() {
   return (
@@ -110,14 +100,11 @@ export function InvoiceListSkeleton() {
   )
 }
 
-// ─── Stamps progress (donut) ──────────────────────────────────────────────────
-
 export function StampsProgressSkeleton() {
   return (
     <Card className="p-4">
       <Sk className="h-5 w-36 mb-4" />
       <div className="flex flex-col items-center">
-        {/* donut circle */}
         <div className="relative w-40 h-40 mb-4">
           <Sk className="w-full h-full rounded-full" />
           <div className="absolute inset-0 flex flex-col items-center justify-center gap-1.5">
@@ -125,7 +112,6 @@ export function StampsProgressSkeleton() {
             <Sk className="h-2.5 w-16 rounded-md" />
           </div>
         </div>
-        {/* legend */}
         <div className="flex flex-wrap justify-center gap-3">
           {[0, 1, 2].map((i) => (
             <div key={i} className="flex items-center gap-1.5">
@@ -138,8 +124,6 @@ export function StampsProgressSkeleton() {
     </Card>
   )
 }
-
-// ─── Recent clients ───────────────────────────────────────────────────────────
 
 export function RecentClientsSkeleton() {
   return (
@@ -164,8 +148,6 @@ export function RecentClientsSkeleton() {
   )
 }
 
-// ─── Declaration countdown (dark card) ───────────────────────────────────────
-
 export function DeclarationCountdownSkeleton() {
   return (
     <Card
@@ -175,7 +157,6 @@ export function DeclarationCountdownSkeleton() {
       <Sk dark className="h-4 w-40 mb-1" />
       <Sk dark className="h-3 w-52 mb-5" />
 
-      {/* countdown boxes */}
       <div className="grid grid-cols-4 gap-2 mb-5">
         {[0, 1, 2, 3].map((i) => (
           <div key={i} className="flex flex-col items-center gap-1.5">
@@ -190,8 +171,6 @@ export function DeclarationCountdownSkeleton() {
   )
 }
 
-// ─── Kipo app card (dark card) ────────────────────────────────────────────────
-
 export function KipoAppCardSkeleton() {
   return (
     <Card
@@ -205,8 +184,6 @@ export function KipoAppCardSkeleton() {
     </Card>
   )
 }
-
-// ─── Reminders ────────────────────────────────────────────────────────────────
 
 export function RemindersSkeleton() {
   return (
@@ -227,28 +204,22 @@ export function RemindersSkeleton() {
   )
 }
 
-// ─── Customer card ────────────────────────────────────────────────────────────
-
 export function CustomerCardSkeleton() {
   return (
     <Card className="p-6">
-      {/* avatar + menu button */}
       <div className="flex items-start justify-between mb-4">
         <Sk className="w-16 h-16 rounded-full flex-shrink-0" />
         <Sk className="w-8 h-8 rounded-lg flex-shrink-0" />
       </div>
 
-      {/* name + regime */}
       <div className="space-y-3">
         <div className="space-y-2">
           <Sk className="h-5 w-36" />
           <Sk className="h-3 w-28" />
         </div>
 
-        {/* badge */}
         <Sk className="h-6 w-16 rounded-full" />
 
-        {/* action button */}
         <Sk className="h-10 w-full rounded-lg mt-2" />
       </div>
     </Card>
@@ -267,8 +238,41 @@ export function CustomersListSkeleton({ count = 6 }: { count?: number }) {
   )
 }
 
-// ─── Full dashboard skeleton ──────────────────────────────────────────────────
-// Drop this in the dashboard view while the initial data loads
+export function InvoiceRowSkeleton() {
+  return (
+    <div className="flex items-center gap-4 px-4 py-3.5">
+      <Sk className="w-8 h-8 rounded-lg flex-shrink-0" />
+      <div className="flex-1 space-y-1.5 min-w-0">
+        <Sk className="h-3.5 w-20" />
+        <Sk className="h-2.5 w-36" />
+      </div>
+      <Sk className="h-2.5 w-20 hidden md:block flex-shrink-0" />
+      <Sk className="h-3.5 w-24 flex-shrink-0" />
+      <Sk className="h-6 w-20 rounded-full hidden sm:block flex-shrink-0" />
+      <Sk className="w-7 h-7 rounded-lg flex-shrink-0" />
+    </div>
+  )
+}
+
+export function InvoicesListSkeleton({ count = 6 }: { count?: number }) {
+  return (
+    <Card className="overflow-hidden">
+      <div className="flex items-center gap-4 px-4 py-2.5 border-b border-border">
+        <Sk className="w-8 h-3 flex-shrink-0" />
+        <Sk className="h-2.5 w-12 flex-1" />
+        <Sk className="h-2.5 w-12 hidden md:block" />
+        <Sk className="h-2.5 w-10" />
+        <Sk className="h-2.5 w-14 hidden sm:block" />
+        <div className="w-7 flex-shrink-0" />
+      </div>
+      <div className="divide-y divide-border/50 px-2 py-1">
+        {Array.from({ length: count }).map((_, i) => (
+          <InvoiceRowSkeleton key={i} />
+        ))}
+      </div>
+    </Card>
+  )
+}
 
 export function DashboardSkeleton() {
   return (

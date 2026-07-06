@@ -8,7 +8,7 @@ import type { ReactNode } from 'react'
 
 interface HeaderProps {
   title: string
-  description: string
+  description?: string
   actions?: ReactNode
 }
 
@@ -134,16 +134,18 @@ export function Header ({ title, description, actions }: HeaderProps) {
         >
           {title}
         </h1>
-        <p
-          style={{
-            fontSize: 13,
-            color: 'var(--text-muted)',
-            fontFamily: 'var(--font-body)',
-            marginTop: 4,
-          }}
-        >
-          {description}
-        </p>
+        {description && (
+          <p
+            style={{
+              fontSize: 13,
+              color: 'var(--text-muted)',
+              fontFamily: 'var(--font-body)',
+              marginTop: 4,
+            }}
+          >
+            {description}
+          </p>
+        )}
       </div>
 
       {actions && (
