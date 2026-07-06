@@ -1,4 +1,5 @@
 import { useState, type InputHTMLAttributes, type ReactNode } from 'react'
+import { cn } from '../../lib/cn'
 
 export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'prefix'> {
   label?: string
@@ -7,9 +8,10 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 
   mono?: boolean
   prefix?: ReactNode
   suffix?: ReactNode
+  wrapperClassName?: string
 }
 
-export function Input({ label, hint, error, mono = false, prefix, suffix, style, id, ...rest }: InputProps) {
+export function Input({ label, hint, error, mono = false, prefix, suffix, style, id, className, wrapperClassName, ...rest }: InputProps) {
   const [focus, setFocus] = useState(false)
   const inputId = id ?? (label ? 'in-' + label.replace(/\s+/g, '-').toLowerCase() : undefined)
 
@@ -20,7 +22,7 @@ export function Input({ label, hint, error, mono = false, prefix, suffix, style,
     : 'var(--border-strong)'
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', gap: 6, ...style }}>
+    <div className={cn(wrapperClassName)} style={{ display: 'flex', flexDirection: 'column', gap: 6, ...style }}>
       {label && (
         <label
           htmlFor={inputId}
@@ -47,6 +49,7 @@ export function Input({ label, hint, error, mono = false, prefix, suffix, style,
         )}
         <input
           id={inputId}
+          className={cn(className)}
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}
           style={{

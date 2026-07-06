@@ -3,7 +3,7 @@ import { CustomerMapper, type CustomerRaw } from '../mappers/CustomerMapper'
 import type { ICustomerRepository } from '../../domain/repositories/ICustomerRepository'
 import type { Customer } from '../../domain/entities/Customer'
 import type { CustomerId } from '../../domain/value-objects/CustomerId'
-import type { Rfc } from '../../domain/value-objects/Rfc'
+import type { TaxId } from '../../domain/value-objects/TaxId'
 import type { TenantId } from '@/src/customers/core/domain/value-objects/TenantId'
 
 export const createHttpCustomerRepository = (baseUrl: string): ICustomerRepository => {
@@ -25,10 +25,10 @@ export const createHttpCustomerRepository = (baseUrl: string): ICustomerReposito
       } catch { return null }
     },
 
-    findByRfc: async (rfc: Rfc, userId: TenantId) => {
+    findByTaxId: async (taxId: TaxId, userId: TenantId) => {
       try {
         const data = await request<CustomerRaw[]>(
-          `?rfc=${encodeURIComponent(rfc)}&userId=${encodeURIComponent(userId)}`
+          `?taxId=${encodeURIComponent(taxId)}&userId=${encodeURIComponent(userId)}`
         )
         return data.length ? CustomerMapper.toDomain(data[0]) : null
       } catch { return null }

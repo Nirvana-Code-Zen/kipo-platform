@@ -6,7 +6,7 @@ import {
   createGeneralPublic,
   createForeignPerson,
 } from '../../domain/entities/Customer'
-import { createRfc } from '../../domain/value-objects/Rfc'
+import { createRfc } from '../../domain/value-objects/TaxId'
 import { createTaxRegime } from '../../domain/value-objects/TaxRegime'
 import { createZipCode } from '../../domain/value-objects/ZipCode'
 import { createLegalName } from '../../domain/value-objects/LegalName'

@@ -1,4 +1,5 @@
 import { type ButtonHTMLAttributes, type ReactNode, type CSSProperties } from 'react'
+import { cn } from '../../lib/cn'
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'accent' | 'secondary' | 'ghost' | 'danger'
@@ -30,6 +31,7 @@ export function Button({
   iconLeft = null,
   iconRight = null,
   children,
+  className,
   style,
   ...rest
 }: ButtonProps) {
@@ -39,6 +41,7 @@ export function Button({
   return (
     <button
       disabled={disabled}
+      className={cn(className)}
       style={{
         display: 'inline-flex',
         alignItems: 'center',

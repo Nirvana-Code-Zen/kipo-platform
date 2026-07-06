@@ -1,4 +1,5 @@
 import { type HTMLAttributes, type ReactNode } from 'react'
+import { cn } from '../../lib/cn'
 
 export interface CardProps extends HTMLAttributes<HTMLDivElement> {
   elevation?: 'none' | 'xs' | 'sm' | 'md' | 'lg'
@@ -22,6 +23,7 @@ export function Card({
   radius = 'var(--radius-lg)',
   interactive = false,
   children,
+  className,
   style,
   ...rest
 }: CardProps) {
@@ -29,6 +31,7 @@ export function Card({
 
   return (
     <div
+      className={cn(className)}
       style={{
         background: 'var(--surface-card)',
         border: '1px solid var(--border-subtle)',

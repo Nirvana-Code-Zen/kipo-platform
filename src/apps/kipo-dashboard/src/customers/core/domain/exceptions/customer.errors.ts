@@ -1,4 +1,4 @@
-import type { RfcError } from '../value-objects/Rfc'
+import type { RfcError } from '../value-objects/TaxId'
 import type { TaxRegimeError } from '../value-objects/TaxRegime'
 import type { ZipCodeError } from '../value-objects/ZipCode'
 import type { LegalNameError } from '../value-objects/LegalName'

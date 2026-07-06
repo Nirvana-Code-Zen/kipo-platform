@@ -1,4 +1,5 @@
 import { type HTMLAttributes, type ReactNode } from 'react'
+import { cn } from '../../lib/cn'
 
 export interface BadgeProps extends HTMLAttributes<HTMLSpanElement> {
   tone?: 'neutral' | 'brand' | 'success' | 'warning' | 'danger' | 'info'
@@ -16,10 +17,11 @@ const tones = {
   info:    { fg: '#5B21B6',               bg: 'var(--kipo-info-bg)',     solidBg: 'var(--kipo-info)' },
 }
 
-export function Badge({ tone = 'neutral', solid = false, dot = false, children, style, ...rest }: BadgeProps) {
+export function Badge({ tone = 'neutral', solid = false, dot = false, children, className, style, ...rest }: BadgeProps) {
   const t = tones[tone]
   return (
     <span
+      className={cn(className)}
       style={{
         display: 'inline-flex',
         alignItems: 'center',

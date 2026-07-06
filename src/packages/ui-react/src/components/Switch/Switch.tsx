@@ -1,18 +1,21 @@
 import { type CSSProperties } from 'react'
+import { cn } from '../../lib/cn'
 
 export interface SwitchProps {
   checked?: boolean
   onChange?: (next: boolean) => void
   disabled?: boolean
   label?: string
+  className?: string
   style?: CSSProperties
 }
 
-export function Switch({ checked = false, onChange, disabled = false, label = '', style }: SwitchProps) {
+export function Switch({ checked = false, onChange, disabled = false, label = '', className, style }: SwitchProps) {
   const toggle = () => { if (!disabled && onChange) onChange(!checked) }
 
   return (
     <label
+      className={cn(className)}
       style={{
         display: 'inline-flex',
         alignItems: 'center',

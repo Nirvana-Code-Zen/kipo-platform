@@ -1,4 +1,5 @@
 import { type CSSProperties } from 'react'
+import { cn } from '../../lib/cn'
 
 export interface StampCardProps {
   qty?: number
@@ -7,6 +8,7 @@ export interface StampCardProps {
   featured?: boolean
   selected?: boolean
   onSelect?: (qty: number) => void
+  className?: string
   style?: CSSProperties
 }
 
@@ -17,6 +19,7 @@ export function StampCard({
   featured = false,
   selected = false,
   onSelect,
+  className,
   style,
 }: StampCardProps) {
   const totalParts = (qty * unitPrice).toLocaleString('es-MX', { minimumFractionDigits: 2 })
@@ -24,6 +27,7 @@ export function StampCard({
   return (
     <button
       onClick={() => onSelect?.(qty)}
+      className={cn(className)}
       style={{
         position: 'relative',
         textAlign: 'left',
