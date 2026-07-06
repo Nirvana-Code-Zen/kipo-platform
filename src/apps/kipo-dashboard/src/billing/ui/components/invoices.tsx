@@ -1,5 +1,7 @@
 "use client"
 
+import { forwardRef, useImperativeHandle } from "react"
+
 import { Card } from "@kipo/ui-react"
 
 import { InvoicesListSkeleton } from "@/src/shared/ui/components/dashboard/skeletons"
@@ -7,16 +9,24 @@ import { InvoicesListSkeleton } from "@/src/shared/ui/components/dashboard/skele
 import { InvoiceRow } from "./InvoiceRow"
 import { InvoiceDetailSheet } from "./InvoiceDetailSheet"
 import { useInvoiceList } from "../hooks/useInvoiceList"
+import { useAddInvoice } from "../hooks/useAddInvoice"
+import { useCancelInvoice } from "../hooks/useCancelInvoice"
+import { useDeleteInvoice } from "../hooks/useDeleteInvoice"
 
-export function Invoices() {
-  const {
-    invoices,
-    isLoading,
-    selectedInvoice,
-    setSelectedInvoice,
-    cancelInvoice,
-    deleteInvoice,
-  } = useInvoiceList()
+import type { UIInvoice } from "./types"
+
+export interface InvoicesHandle {
+  addInvoice: (invoice: UIInvoice) => void
+}
+
+export const Invoices = forwardRef<InvoicesHandle>(function Invoices(_, ref) {
+  const { invoices, setInvoices, isLoading, selectedInvoice, setSelectedInvoice } = useInvoiceList()
+
+  const addInvoice    = useAddInvoice(setInvoices)
+  const cancelInvoice = useCancelInvoice(setInvoices)
+  const deleteInvoice = useDeleteInvoice(setInvoices)
+
+  useImperativeHandle(ref, () => ({ addInvoice }))
 
   if (isLoading) return <InvoicesListSkeleton />
 
@@ -61,4 +71,4 @@ export function Invoices() {
       />
     </>
   )
-}
+})

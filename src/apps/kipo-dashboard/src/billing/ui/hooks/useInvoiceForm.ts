@@ -1,0 +1,166 @@
+"use client"
+
+import { useState, useMemo } from "react"
+
+import type { UIInvoice, VoucherType } from "../components/types"
+
+export type ConceptFormItem = {
+  id: string
+  description: string
+  quantity: string
+  unitPrice: string
+  productServiceCode: string
+  unitCode: string
+  taxObject: string
+  ivaRate: string
+}
+
+export type InvoiceFormErrors = {
+  voucherType?: string
+  paymentMethod?: string
+  paymentForm?: string
+  currency?: string
+  issuerZipCode?: string
+  exportType?: string
+  receiverTaxId?: string
+  receiverName?: string
+  concepts?: string
+  items?: Partial<Record<keyof ConceptFormItem, string>>[]
+}
+
+function emptyConceptItem(): ConceptFormItem {
+  return {
+    id: crypto.randomUUID(),
+    description: "",
+    quantity: "1",
+    unitPrice: "",
+    productServiceCode: "",
+    unitCode: "E48",
+    taxObject: "02",
+    ivaRate: "16",
+  }
+}
+
+function roundMxn(n: number) {
+  return Math.round(n * 100) / 100
+}
+
+function formatDate(d: Date): string {
+  return d.toLocaleDateString("es-MX", { day: "2-digit", month: "short", year: "numeric" })
+}
+
+export function useInvoiceForm() {
+  const [voucherType, setVoucherType] = useState("")
+  const [series, setSeries] = useState("")
+  const [paymentMethod, setPaymentMethod] = useState("")
+  const [paymentForm, setPaymentForm] = useState("")
+  const [currency, setCurrency] = useState("MXN")
+  const [exportType, setExportType] = useState("01")
+  const [issuerZipCode, setIssuerZipCode] = useState("")
+
+  const [receiverTaxId, setReceiverTaxId] = useState("")
+  const [receiverName, setReceiverName] = useState("")
+
+  const [concepts, setConcepts] = useState<ConceptFormItem[]>([emptyConceptItem()])
+
+  const [errors, setErrors] = useState<InvoiceFormErrors>({})
+
+  const addConcept = () => setConcepts((prev) => [...prev, emptyConceptItem()])
+
+  const removeConcept = (id: string) =>
+    setConcepts((prev) => prev.filter((c) => c.id !== id))
+
+  const updateConcept = (id: string, field: keyof ConceptFormItem, value: string) =>
+    setConcepts((prev) =>
+      prev.map((c) => (c.id === id ? { ...c, [field]: value } : c))
+    )
+
+  const totals = useMemo(() => {
+    let subtotal = 0
+    let iva = 0
+    for (const c of concepts) {
+      const qty = parseFloat(c.quantity) || 0
+      const price = parseFloat(c.unitPrice) || 0
+      const amount = roundMxn(qty * price)
+      subtotal += amount
+      if (c.taxObject === "02" && c.ivaRate !== "exento") {
+        iva += roundMxn(amount * (parseFloat(c.ivaRate) / 100))
+      }
+    }
+    return { subtotal: roundMxn(subtotal), iva: roundMxn(iva), total: roundMxn(subtotal + iva) }
+  }, [concepts])
+
+  function validate(): boolean {
+    const next: InvoiceFormErrors = {}
+
+    if (!voucherType) next.voucherType = "Selecciona el tipo de comprobante"
+    if (!paymentMethod) next.paymentMethod = "Selecciona el método de pago"
+    if (paymentMethod === "PUE" && !paymentForm) next.paymentForm = "Selecciona la forma de pago"
+    if (!currency) next.currency = "Selecciona la moneda"
+    if (!/^\d{5}$/.test(issuerZipCode.trim())) next.issuerZipCode = "5 dígitos requeridos"
+    if (!receiverTaxId.trim()) next.receiverTaxId = "RFC del receptor requerido"
+    if (!receiverName.trim()) next.receiverName = "Nombre del receptor requerido"
+
+    if (concepts.length === 0) {
+      next.concepts = "Agrega al menos un concepto"
+    } else {
+      const itemErrors: InvoiceFormErrors["items"] = concepts.map((c) => {
+        const err: Partial<Record<keyof ConceptFormItem, string>> = {}
+        if (!c.description.trim()) err.description = "Requerido"
+        const qty = parseFloat(c.quantity)
+        if (!c.quantity || isNaN(qty) || qty <= 0) err.quantity = "Mayor a 0"
+        const price = parseFloat(c.unitPrice)
+        if (c.unitPrice === "" || isNaN(price) || price < 0) err.unitPrice = "Requerido"
+        if (!c.productServiceCode.trim()) err.productServiceCode = "Requerido"
+        return err
+      })
+      if (itemErrors.some((e) => Object.keys(e).length > 0)) next.items = itemErrors
+    }
+
+    setErrors(next)
+    const itemsOk = !next.items || next.items.every((e) => Object.keys(e).length === 0)
+    return Object.keys(next).filter((k) => k !== "items").length === 0 && itemsOk
+  }
+
+  function buildInvoice(): UIInvoice {
+    const suffix = Date.now().toString(36).toUpperCase().slice(-4)
+    const folio = series.trim()
+      ? `${series.trim().toUpperCase()}-${suffix}`
+      : `${voucherType}-${suffix}`
+
+    const resolvedPaymentForm = paymentMethod === "PPD" ? "99" : paymentForm
+
+    return {
+      id: crypto.randomUUID(),
+      folio,
+      status: "draft",
+      issuedAt: formatDate(new Date()),
+      receiverName: receiverName.trim(),
+      receiverTaxId: receiverTaxId.trim().toUpperCase(),
+      total: totals.total,
+      currency,
+      voucherType: voucherType as VoucherType,
+      paymentMethod: resolvedPaymentForm ? `${paymentMethod}` : paymentMethod,
+    }
+  }
+
+  return {
+    voucherType, setVoucherType,
+    series, setSeries,
+    paymentMethod, setPaymentMethod,
+    paymentForm, setPaymentForm,
+    currency, setCurrency,
+    exportType, setExportType,
+    issuerZipCode, setIssuerZipCode,
+    receiverTaxId, setReceiverTaxId,
+    receiverName, setReceiverName,
+    concepts,
+    addConcept,
+    removeConcept,
+    updateConcept,
+    totals,
+    errors,
+    validate,
+    buildInvoice,
+  }
+}

@@ -2,7 +2,10 @@
 
 import { useEffect, useState } from "react"
 
+import type { Dispatch, SetStateAction } from "react"
 import type { UIInvoice } from "../components/types"
+
+export type { Dispatch, SetStateAction }
 
 const initialInvoices: UIInvoice[] = [
   {
@@ -79,7 +82,15 @@ const initialInvoices: UIInvoice[] = [
   },
 ]
 
-export function useInvoiceList() {
+export type InvoiceListState = {
+  invoices: UIInvoice[]
+  setInvoices: Dispatch<SetStateAction<UIInvoice[]>>
+  isLoading: boolean
+  selectedInvoice: UIInvoice | null
+  setSelectedInvoice: Dispatch<SetStateAction<UIInvoice | null>>
+}
+
+export function useInvoiceList(): InvoiceListState {
   const [invoices, setInvoices] = useState<UIInvoice[]>(initialInvoices)
   const [isLoading, setIsLoading] = useState(true)
   const [selectedInvoice, setSelectedInvoice] = useState<UIInvoice | null>(null)
@@ -89,20 +100,5 @@ export function useInvoiceList() {
     return () => clearTimeout(t)
   }, [])
 
-  const cancelInvoice = (id: string) =>
-    setInvoices((prev) =>
-      prev.map((inv) => (inv.id === id ? { ...inv, status: "cancelled" as const } : inv))
-    )
-
-  const deleteInvoice = (id: string) =>
-    setInvoices((prev) => prev.filter((inv) => inv.id !== id))
-
-  return {
-    invoices,
-    isLoading,
-    selectedInvoice,
-    setSelectedInvoice,
-    cancelInvoice,
-    deleteInvoice,
-  }
+  return { invoices, setInvoices, isLoading, selectedInvoice, setSelectedInvoice }
 }
