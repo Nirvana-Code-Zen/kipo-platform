@@ -7,6 +7,8 @@ export interface Customer {
   status?: CustomerStatus
   legalName: string
   taxRegime: string
+  zipCode?: string
+  cfdiUsage?: string
   avatar: string
   initials: string
 }

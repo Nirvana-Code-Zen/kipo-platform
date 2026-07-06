@@ -15,9 +15,10 @@ interface CustomerCardProps {
   onToggleStatus: (taxId: string) => void
   onDelete: (taxId: string) => void
   onViewDetails: (customer: Customer) => void
+  onEdit: (customer: Customer) => void
 }
 
-export function CustomerCard({ customer, index, onToggleStatus, onDelete, onViewDetails }: CustomerCardProps) {
+export function CustomerCard({ customer, index, onToggleStatus, onDelete, onViewDetails, onEdit }: CustomerCardProps) {
   const [menuOpen, setMenuOpen] = useState(false)
 
   return (
@@ -44,6 +45,7 @@ export function CustomerCard({ customer, index, onToggleStatus, onDelete, onView
             onClose={() => setMenuOpen(false)}
             status={customer.status ?? "inactive"}
             onViewDetails={() => onViewDetails(customer)}
+            onEdit={() => onEdit(customer)}
             onToggleStatus={() => onToggleStatus(customer.taxId)}
             onDelete={() => onDelete(customer.taxId)}
           />

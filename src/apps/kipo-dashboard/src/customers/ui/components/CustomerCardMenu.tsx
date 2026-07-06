@@ -2,7 +2,7 @@
 
 import { useRef } from "react"
 
-import { Trash2, ToggleLeft, ToggleRight, User } from "lucide-react"
+import { Trash2, ToggleLeft, ToggleRight, User, Pencil } from "lucide-react"
 
 import { useClickOutside } from "@/src/shared/ui/hooks/useClickOutside"
 
@@ -13,6 +13,7 @@ interface CustomerCardMenuProps {
   onClose: () => void
   status: CustomerStatus
   onViewDetails: () => void
+  onEdit: () => void
   onToggleStatus: () => void
   onDelete: () => void
 }
@@ -22,6 +23,7 @@ export function CustomerCardMenu({
   onClose,
   status,
   onViewDetails,
+  onEdit,
   onToggleStatus,
   onDelete,
 }: CustomerCardMenuProps) {
@@ -41,6 +43,13 @@ export function CustomerCardMenu({
       >
         <User className="w-4 h-4 text-muted-foreground" />
         Ver detalles
+      </button>
+      <button
+        onClick={() => { onEdit(); onClose() }}
+        className="flex w-full items-center gap-2.5 px-3 py-2.5 text-sm text-foreground hover:bg-muted transition-colors"
+      >
+        <Pencil className="w-4 h-4 text-muted-foreground" />
+        Editar
       </button>
       <div className="my-1 h-px bg-border" />
       <button

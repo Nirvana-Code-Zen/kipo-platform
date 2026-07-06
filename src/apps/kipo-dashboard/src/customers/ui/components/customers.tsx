@@ -1,70 +1,37 @@
 "use client"
 
-import { useState } from "react"
+import { forwardRef, useImperativeHandle } from "react"
+
+import { CustomersListSkeleton } from "@/src/shared/ui/components/dashboard/skeletons"
 
 import { CustomerCard } from "./CustomerCard"
 import { CustomerDetailSheet } from "./CustomerDetailSheet"
+import { EditCustomerSheet } from "./EditCustomerSheet"
+import { useCustomerList } from "../hooks/useCustomerList"
 
 import type { Customer } from "./types"
 
-const initialCustomers: Customer[] = [
-  {
-    taxId: "XXX052SED-1",
-    email: "alexandra@tasko.com",
-    phone: "+52 55 1234 5678",
-    status: "active",
-    legalName: "Maximo coseti",
-    taxRegime: "Régimen Simplificado de Confianza",
-    avatar: "/avatars/avatar-1.jpg",
-    initials: "AD",
-  },
-  {
-    taxId: "XXX052SED-2",
-    email: "edwin@tasko.com",
-    status: "inactive",
-    legalName: "elacond",
-    taxRegime: "Régimen General de Ley",
-    avatar: "/avatars/avatar-2.jpg",
-    initials: "EA",
-  },
-  {
-    taxId: "XXX052SED-3",
-    email: "isaac@tasko.com",
-    phone: "+52 33 9876 5432",
-    status: "active",
-    legalName: "cuate",
-    taxRegime: "Régimen de Incorporación Fiscal",
-    avatar: "/avatars/avatar-3.jpg",
-    initials: "IO",
-  },
-  {
-    taxId: "XXX052SED-4",
-    email: "david@tasko.com",
-    status: "active",
-    taxRegime: "Régimen Simplificado de Confianza",
-    legalName: "cuate",
-    avatar: "/avatars/avatar-4.jpg",
-    initials: "DO",
-  },
-]
+export interface CustomersHandle {
+  addCustomer: (customer: Customer) => void
+}
 
-export function Customers() {
-  const [customers, setCustomers] = useState<Customer[]>(initialCustomers)
-  const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null)
+export const Customers = forwardRef<CustomersHandle>(function Customers(_, ref) {
+  const {
+    customers,
+    isLoading,
+    selectedCustomer,
+    editingCustomer,
+    setSelectedCustomer,
+    setEditingCustomer,
+    addCustomer,
+    toggleStatus,
+    deleteCustomer,
+    updateCustomer,
+  } = useCustomerList()
 
-  const handleToggleStatus = (taxId: string) => {
-    setCustomers((prev) =>
-      prev.map((c) =>
-        c.taxId === taxId
-          ? { ...c, status: c.status === "active" ? "inactive" : "active" }
-          : c
-      )
-    )
-  }
+  useImperativeHandle(ref, () => ({ addCustomer }))
 
-  const handleDelete = (taxId: string) => {
-    setCustomers((prev) => prev.filter((c) => c.taxId !== taxId))
-  }
+  if (isLoading) return <CustomersListSkeleton />
 
   return (
     <>
@@ -75,9 +42,10 @@ export function Customers() {
               key={customer.taxId}
               customer={customer}
               index={index}
-              onToggleStatus={handleToggleStatus}
-              onDelete={handleDelete}
+              onToggleStatus={toggleStatus}
+              onDelete={deleteCustomer}
               onViewDetails={setSelectedCustomer}
+              onEdit={setEditingCustomer}
             />
           ))}
         </div>
@@ -87,6 +55,12 @@ export function Customers() {
         customer={selectedCustomer}
         onClose={() => setSelectedCustomer(null)}
       />
+
+      <EditCustomerSheet
+        customer={editingCustomer}
+        onClose={() => setEditingCustomer(null)}
+        onSubmit={updateCustomer}
+      />
     </>
   )
-}
+})

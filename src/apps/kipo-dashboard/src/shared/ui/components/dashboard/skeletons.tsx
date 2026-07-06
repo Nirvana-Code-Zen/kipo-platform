@@ -227,6 +227,46 @@ export function RemindersSkeleton() {
   )
 }
 
+// ─── Customer card ────────────────────────────────────────────────────────────
+
+export function CustomerCardSkeleton() {
+  return (
+    <Card className="p-6">
+      {/* avatar + menu button */}
+      <div className="flex items-start justify-between mb-4">
+        <Sk className="w-16 h-16 rounded-full flex-shrink-0" />
+        <Sk className="w-8 h-8 rounded-lg flex-shrink-0" />
+      </div>
+
+      {/* name + regime */}
+      <div className="space-y-3">
+        <div className="space-y-2">
+          <Sk className="h-5 w-36" />
+          <Sk className="h-3 w-28" />
+        </div>
+
+        {/* badge */}
+        <Sk className="h-6 w-16 rounded-full" />
+
+        {/* action button */}
+        <Sk className="h-10 w-full rounded-lg mt-2" />
+      </div>
+    </Card>
+  )
+}
+
+export function CustomersListSkeleton({ count = 6 }: { count?: number }) {
+  return (
+    <div className="space-y-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {Array.from({ length: count }).map((_, i) => (
+          <CustomerCardSkeleton key={i} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
 // ─── Full dashboard skeleton ──────────────────────────────────────────────────
 // Drop this in the dashboard view while the initial data loads
 

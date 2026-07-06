@@ -17,8 +17,8 @@ import { cn } from "../../lib/utils"
 
 const menuItems = [
   { label: 'Dashboard',   href: '/dashboard',  icon: LayoutDashboard },
-  { label: 'Clientes',    href: '/customers',  icon: Users },
   { label: 'Facturación', href: '/billing',    icon: WalletCards, badge: "124" },
+  { label: 'Clientes',    href: '/customers',  icon: Users },
 ]
 
 const generalItems = [
