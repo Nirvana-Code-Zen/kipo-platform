@@ -1,9 +1,13 @@
 from dataclasses import dataclass
+from auth.value_objects.user_id import UserId
+from auth.value_objects.email import Email
+from auth.value_objects.phone_number import PhoneNumber
+from auth.value_objects.auth_provider import AuthProvider
 
 
 @dataclass(frozen=True)
 class Identity:
-    id: str
-    email: str | None
-    phone: str | None
-    provider: str  # email | phone | google | facebook
+    id: UserId
+    email: Email | None
+    phone: PhoneNumber | None
+    provider: AuthProvider

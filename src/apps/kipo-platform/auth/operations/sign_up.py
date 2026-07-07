@@ -1,11 +1,10 @@
-from shared import supabase
-from shared.exceptions import BusinessRuleViolation
-from auth import gateway
+from auth.repository import IAuthRepository
 from auth.identity import Identity
+from auth.value_objects.email import Email
+from auth.value_objects.password import Password
 
 
-def with_email(email: str, password: str) -> Identity:
-    if not email or not password:
-        raise BusinessRuleViolation("Email and password are required.")
-    client = supabase.get_client()
-    return gateway.sign_up_with_email(client, email, password)
+def with_email(repo: IAuthRepository, raw_email: str, raw_password: str) -> Identity:
+    email = Email(raw_email or "")
+    password = Password(raw_password or "")
+    return repo.sign_up_with_email(email, password)

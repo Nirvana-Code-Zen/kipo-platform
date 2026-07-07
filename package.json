@@ -19,7 +19,7 @@
     "storybook": "pnpm --filter @kipo/ui-react storybook",
     "lint": "pnpm -r --parallel lint",
     "typecheck": "pnpm -r --parallel typecheck",
-    "install:py": "uv sync",
+    "install:py": "pnpm --filter kipo-api sync",
     "prepare": "husky"
   },
   "devDependencies": {

@@ -1,7 +1,5 @@
-from shared import supabase
-from auth import gateway
+from auth.repository import IAuthRepository
 
 
-def execute(access_token: str) -> None:
-    client = supabase.get_client()
-    gateway.sign_out(client, access_token)
+def execute(repo: IAuthRepository, access_token: str) -> None:
+    repo.sign_out(access_token)

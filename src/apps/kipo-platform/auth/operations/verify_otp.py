@@ -1,10 +1,10 @@
-from shared import supabase
+from auth.repository import IAuthRepository
+from auth.value_objects.phone_number import PhoneNumber
 from shared.exceptions import BusinessRuleViolation
-from auth import gateway
 
 
-def execute(phone: str, token: str) -> dict:
-    if not phone or not token:
-        raise BusinessRuleViolation("Phone and OTP token are required.")
-    client = supabase.get_client()
-    return gateway.verify_phone_otp(client, phone, token)
+def execute(repo: IAuthRepository, raw_phone: str, token: str) -> dict:
+    phone = PhoneNumber(raw_phone or "")
+    if not token or not token.strip():
+        raise BusinessRuleViolation("OTP token is required.")
+    return repo.verify_phone_otp(phone, token.strip())
