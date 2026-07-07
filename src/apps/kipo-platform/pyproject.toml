@@ -1,12 +1,12 @@
 [project]
-name = "kipo-platform"
+name = "kipo-api"
 version = "0.1.0"
-requires-python = ">=3.11"
+requires-python = ">=3.14"
 dependencies = [
   "flask>=3.0.0",
+  "flask-sqlalchemy>=3.1.0",
+  "supabase>=2.0.0",
   "gunicorn>=21.0.0",
+  "python-dotenv>=1.2.2",
+  "ruff>=0.15.20",
 ]
-
-[build-system]
-requires = ["hatchling"]
-build-backend = "hatchling.build"
