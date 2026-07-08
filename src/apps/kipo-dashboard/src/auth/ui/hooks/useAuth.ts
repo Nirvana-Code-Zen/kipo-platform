@@ -15,7 +15,7 @@ export const useAuth = () => {
     if (store.status === 'idle' && store.persistedSession && !store.accessToken) {
       store.refresh()
     }
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [store])
 
   const isAuthenticated = store.status === 'authenticated' && store.accessToken !== null && store.persistedSession !== null
 
