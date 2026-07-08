@@ -3,7 +3,9 @@
 import { createPortal } from "react-dom"
 
 import { Avatar, AvatarFallback, AvatarImage, Badge, Button } from "@kipo/ui-react"
-import { Mail, Phone, X, FileText, AtSign, PhoneCall, ShieldCheck } from "lucide-react"
+import { Mail, Phone, X, FileText, AtSign, PhoneCall, ShieldCheck, User, Building2 } from "lucide-react"
+
+import { detectRfcType, RFC_TYPE_LABEL } from "../hooks/useCustomerForm"
 
 import type { Customer } from "./types"
 
@@ -54,7 +56,12 @@ export function CustomerDetailSheet({ customer, onClose }: CustomerDetailSheetPr
           </div>
 
           <div className="space-y-3">
-            <DetailRow icon={<FileText className="w-4 h-4" />} label="RFC" value={customer.taxId} />
+            <DetailRow
+              icon={<FileText className="w-4 h-4" />}
+              label="RFC"
+              value={customer.taxId}
+              extra={<RfcTypeTag taxId={customer.taxId} />}
+            />
             <DetailRow icon={<ShieldCheck className="w-4 h-4" />} label="Régimen fiscal" value={customer.taxRegime} />
             <DetailRow icon={<AtSign className="w-4 h-4" />} label="Correo" value={customer.email} />
             {customer.phone && (
@@ -88,13 +95,40 @@ export function CustomerDetailSheet({ customer, onClose }: CustomerDetailSheetPr
   )
 }
 
-function DetailRow({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
+function RfcTypeTag({ taxId }: { taxId: string }) {
+  const rfcType = detectRfcType(taxId)
+  if (rfcType !== "natural" && rfcType !== "legal") return null
+
+  const Icon = rfcType === "natural" ? User : Building2
+
+  return (
+    <span style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
+      <Icon size={13} style={{ color: "var(--brand)", flexShrink: 0 }} />
+      <span style={{ fontSize: 12, fontFamily: "var(--font-body)", fontWeight: 600, color: "var(--brand)" }}>
+        {RFC_TYPE_LABEL[rfcType]}
+      </span>
+    </span>
+  )
+}
+
+function DetailRow({
+  icon,
+  label,
+  value,
+  extra,
+}: {
+  icon: React.ReactNode
+  label: string
+  value: string
+  extra?: React.ReactNode
+}) {
   return (
     <div className="flex items-start gap-3">
       <span className="mt-0.5 flex-shrink-0 text-muted-foreground">{icon}</span>
       <div className="min-w-0">
         <p className="text-xs text-muted-foreground leading-none mb-0.5">{label}</p>
         <p className="text-sm font-medium break-all">{value}</p>
+        {extra && <div className="mt-1">{extra}</div>}
       </div>
     </div>
   )

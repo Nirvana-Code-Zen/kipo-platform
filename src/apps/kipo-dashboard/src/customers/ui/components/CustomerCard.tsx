@@ -12,8 +12,8 @@ import type { Customer } from "./types"
 interface CustomerCardProps {
   customer: Customer
   index: number
-  onToggleStatus: (taxId: string) => void
-  onDelete: (taxId: string) => void
+  onToggleStatus: () => void
+  onDelete: (customer: Customer) => void
   onViewDetails: (customer: Customer) => void
   onEdit: (customer: Customer) => void
 }
@@ -28,8 +28,12 @@ export function CustomerCard({ customer, index, onToggleStatus, onDelete, onView
     >
       <div className="flex items-start justify-between mb-4">
         <Avatar className="w-16 h-16 border-2 border-primary/20">
-          <AvatarImage src={customer.avatar || "/placeholder.svg"} alt={customer.legalName} />
-          <AvatarFallback>{customer.initials}</AvatarFallback>
+          {customer.avatar && <AvatarImage src={customer.avatar} alt={customer.legalName} />}
+          <AvatarFallback
+            style={{ background: "var(--surface-brand-soft)", color: "var(--brand)", fontWeight: 700, fontFamily: "var(--font-display)", margin: 'auto' }}
+          >
+            {customer.initials}
+          </AvatarFallback>
         </Avatar>
         <div className="relative">
           <Button
@@ -46,8 +50,8 @@ export function CustomerCard({ customer, index, onToggleStatus, onDelete, onView
             status={customer.status ?? "inactive"}
             onViewDetails={() => onViewDetails(customer)}
             onEdit={() => onEdit(customer)}
-            onToggleStatus={() => onToggleStatus(customer.taxId)}
-            onDelete={() => onDelete(customer.taxId)}
+            onToggleStatus={onToggleStatus}
+            onDelete={() => onDelete(customer)}
           />
         </div>
       </div>

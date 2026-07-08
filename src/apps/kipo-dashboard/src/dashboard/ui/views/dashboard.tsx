@@ -14,7 +14,6 @@ import {
   DeclarationCountdownSkeleton,
   InvoiceListSkeleton,
   KipoAppCardSkeleton,
-  RecentClientsSkeleton,
   RemindersSkeleton,
   StampsProgressSkeleton,
   StatsCardsSkeleton,
@@ -43,7 +42,7 @@ export function Dashboard() {
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-4">
           <div className="lg:col-span-2 space-y-3 md:space-y-4">
             {loading ? <BillingAnalyticsSkeleton /> : <BillingAnalytics />}
-            {loading ? <RecentClientsSkeleton /> : <RecentClients />}
+            <RecentClients />
           </div>
 
           <div className="space-y-3 md:space-y-4">

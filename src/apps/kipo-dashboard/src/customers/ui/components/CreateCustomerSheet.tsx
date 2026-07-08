@@ -1,5 +1,6 @@
 "use client"
 
+import { useState } from "react"
 import { createPortal } from "react-dom"
 
 import { X } from "lucide-react"
@@ -11,11 +12,20 @@ import type { Customer } from "./types"
 interface CreateCustomerSheetProps {
   isOpen: boolean
   onClose: () => void
-  onSubmit: (customer: Customer) => void
+  onSave: (customer: Customer) => Promise<string | null>
 }
 
-export function CreateCustomerSheet({ isOpen, onClose, onSubmit }: CreateCustomerSheetProps) {
+export function CreateCustomerSheet({ isOpen, onClose, onSave }: CreateCustomerSheetProps) {
+  const [apiError, setApiError] = useState<string | null>(null)
+
   if (!isOpen) return null
+
+  async function handleSubmit(customer: Customer) {
+    setApiError(null)
+    const error = await onSave(customer)
+    if (error) setApiError(error)
+    else onClose()
+  }
 
   return createPortal(
     <div className="fixed inset-0 z-[100] flex flex-col justify-end sm:justify-center sm:items-center">
@@ -25,12 +35,10 @@ export function CreateCustomerSheet({ isOpen, onClose, onSubmit }: CreateCustome
       />
 
       <div className="relative z-10 w-full sm:max-w-lg bg-card rounded-t-2xl sm:rounded-2xl shadow-2xl animate-in slide-in-from-bottom-4 sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-300 flex flex-col max-h-[92dvh]">
-        {/* Handle bar mobile */}
         <div className="flex justify-center pt-3 pb-1 sm:hidden flex-shrink-0">
           <div className="w-10 h-1 rounded-full bg-muted-foreground/30" />
         </div>
 
-        {/* Header */}
         <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-border flex-shrink-0">
           <div>
             <h2 className="font-semibold text-base">Nuevo cliente</h2>
@@ -44,10 +52,23 @@ export function CreateCustomerSheet({ isOpen, onClose, onSubmit }: CreateCustome
           </button>
         </div>
 
-        {/* Scrollable body */}
+        {apiError && (
+          <div
+            className="mx-5 mt-4 px-3.5 py-2.5 rounded-md text-[13px] flex-shrink-0"
+            style={{
+              background: "var(--kipo-danger-bg)",
+              border: "1.5px solid var(--kipo-danger)",
+              color: "var(--kipo-danger)",
+              fontFamily: "var(--font-body)",
+            }}
+          >
+            {apiError}
+          </div>
+        )}
+
         <div className="overflow-y-auto flex-1 px-5 py-5">
           <CreateCustomerForm
-            onSubmit={(customer) => { onSubmit(customer); onClose() }}
+            onSubmit={handleSubmit}
             onCancel={onClose}
           />
         </div>

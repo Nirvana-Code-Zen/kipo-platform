@@ -76,7 +76,7 @@ class SupabaseTenantRepository(ITenantRepository):
                     sql.SQL("""
                     CREATE TABLE IF NOT EXISTS {}.customers (
                         id          UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-                        tax_id      TEXT        NOT NULL,
+                        tax_id      TEXT        NOT NULL UNIQUE,
                         legal_name  TEXT        NOT NULL,
                         tax_regime  TEXT        NOT NULL,
                         zip         TEXT        NOT NULL,

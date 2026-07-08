@@ -3,6 +3,7 @@
 @import "@kipo/theme/index.css";
 
 @theme inline {
+  /* shadcn/radix aliases */
   --color-background: var(--bg-base);
   --color-foreground: var(--text-strong);
   --color-card: var(--surface-card);
@@ -22,6 +23,40 @@
   --color-border: var(--border-subtle);
   --color-input: var(--border-strong);
   --color-ring: var(--focus-ring);
+
+  /* Semantic surfaces */
+  --color-surface-card: var(--surface-card);
+  --color-surface-raised: var(--surface-raised);
+  --color-surface-sunken: var(--surface-sunken);
+  --color-surface-muted: var(--bg-subtle);
+  --color-bg-base: var(--bg-base);
+  --color-bg-subtle: var(--bg-subtle);
+
+  /* Semantic text */
+  --color-text-strong: var(--text-strong);
+  --color-text-body: var(--text-body);
+  --color-text-muted: var(--text-muted);
+  --color-text-on-brand: var(--text-on-brand);
+
+  /* Semantic borders */
+  --color-border-subtle: var(--border-subtle);
+  --color-border-strong: var(--border-strong);
+
+  /* Brand */
+  --color-brand: var(--brand);
+  --color-brand-strong: var(--brand-strong);
+  --color-accent-brand: var(--accent);
+  --color-accent-strong: var(--accent-strong);
+
+  /* Semantic states */
+  --color-danger: var(--kipo-danger);
+  --color-danger-soft: var(--kipo-danger-bg);
+  --color-success: var(--kipo-success);
+  --color-success-soft: var(--kipo-success-bg);
+  --color-warning: var(--kipo-warning);
+  --color-warning-soft: var(--kipo-warning-bg);
+  --color-info: var(--kipo-info);
+  --color-info-soft: var(--kipo-info-bg);
 
   /* Tipografía */
   --font-sans: var(--font-body);

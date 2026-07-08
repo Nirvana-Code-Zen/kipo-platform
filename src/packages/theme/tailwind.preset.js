@@ -20,6 +20,18 @@ module.exports = {
         'brand-strong': 'var(--brand-strong)',
         accent: 'var(--accent)',
         'accent-strong': 'var(--accent-strong)',
+        // Semantic state colors
+        'danger':        'var(--kipo-danger)',
+        'danger-soft':   'var(--kipo-danger-bg)',
+        'success':       'var(--kipo-success)',
+        'success-soft':  'var(--kipo-success-bg)',
+        'warning':       'var(--kipo-warning)',
+        'warning-soft':  'var(--kipo-warning-bg)',
+        'info':          'var(--kipo-info)',
+        'info-soft':     'var(--kipo-info-bg)',
+        // Surface extras
+        'surface-muted': 'var(--bg-subtle)',
+        // Raw palette (kept for escape-hatch use)
         kipo: {
           red: '#e00b26',
           'red-dark': '#bc0921',

@@ -1,159 +1,104 @@
 "use client"
 
-import { useEffect, useState } from "react"
+import { useCallback, useEffect, useRef, useState } from "react"
 
+import { useAuthStore } from "@/src/auth/ui/store/authStore"
+import { CustomerApiMapper } from "@/src/customers/core/infrastructure/mappers/CustomerApiMapper"
+
+import type { CustomerApiResponse } from "@/src/customers/core/application/dtos/CustomerApiDTO"
 import type { Customer } from "../components/types"
 
-const initialCustomers: Customer[] = [
-  {
-    taxId: "XXX052SED-1",
-    email: "alexandra@tasko.com",
-    phone: "+52 55 1234 5678",
-    status: "active",
-    legalName: "Maximo coseti",
-    taxRegime: "Régimen Simplificado de Confianza",
-    avatar: "/avatars/avatar-1.jpg",
-    initials: "AD",
-  },
-  {
-    taxId: "XXX052SED-2",
-    email: "edwin@tasko.com",
-    status: "inactive",
-    legalName: "elacond",
-    taxRegime: "Régimen General de Ley",
-    avatar: "/avatars/avatar-2.jpg",
-    initials: "EA",
-  },
-  {
-    taxId: "XXX052SED-3",
-    email: "isaac@tasko.com",
-    phone: "+52 33 9876 5432",
-    status: "active",
-    legalName: "cuate",
-    taxRegime: "Régimen de Incorporación Fiscal",
-    avatar: "/avatars/avatar-3.jpg",
-    initials: "IO",
-  },
-  {
-    taxId: "XXX052SED-4",
-    email: "david@tasko.com",
-    status: "active",
-    taxRegime: "Régimen Simplificado de Confianza",
-    legalName: "cuate",
-    avatar: "/avatars/avatar-4.jpg",
-    initials: "DO",
-  },
-  {
-    taxId: "XXX052SED-4",
-    email: "david@tasko.com",
-    status: "active",
-    taxRegime: "Régimen Simplificado de Confianza",
-    legalName: "cuate",
-    avatar: "/avatars/avatar-4.jpg",
-    initials: "DO",
-  },
-  {
-    taxId: "XXX052SED-4",
-    email: "david@tasko.com",
-    status: "active",
-    taxRegime: "Régimen Simplificado de Confianza",
-    legalName: "cuate",
-    avatar: "/avatars/avatar-4.jpg",
-    initials: "DO",
-  },
-  {
-    taxId: "XXX052SED-1",
-    email: "alexandra@tasko.com",
-    phone: "+52 55 1234 5678",
-    status: "active",
-    legalName: "Maximo coseti",
-    taxRegime: "Régimen Simplificado de Confianza",
-    avatar: "/avatars/avatar-1.jpg",
-    initials: "AD",
-  },
-  {
-    taxId: "XXX052SED-2",
-    email: "edwin@tasko.com",
-    status: "inactive",
-    legalName: "elacond",
-    taxRegime: "Régimen General de Ley",
-    avatar: "/avatars/avatar-2.jpg",
-    initials: "EA",
-  },
-  {
-    taxId: "XXX052SED-3",
-    email: "isaac@tasko.com",
-    phone: "+52 33 9876 5432",
-    status: "active",
-    legalName: "cuate",
-    taxRegime: "Régimen de Incorporación Fiscal",
-    avatar: "/avatars/avatar-3.jpg",
-    initials: "IO",
-  },
-  {
-    taxId: "XXX052SED-4",
-    email: "david@tasko.com",
-    status: "active",
-    taxRegime: "Régimen Simplificado de Confianza",
-    legalName: "cuate",
-    avatar: "/avatars/avatar-4.jpg",
-    initials: "DO",
-  },
-  {
-    taxId: "XXX052SED-4",
-    email: "david@tasko.com",
-    status: "active",
-    taxRegime: "Régimen Simplificado de Confianza",
-    legalName: "cuate",
-    avatar: "/avatars/avatar-4.jpg",
-    initials: "DO",
-  },
-  {
-    taxId: "XXX052SED-4",
-    email: "david@tasko.com",
-    status: "active",
-    taxRegime: "Régimen Simplificado de Confianza",
-    legalName: "cuate",
-    avatar: "/avatars/avatar-4.jpg",
-    initials: "DO",
-  },
-
-]
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"
+const PAGE_SIZE = 12
 
 export function useCustomerList() {
-  const [customers, setCustomers] = useState<Customer[]>(initialCustomers)
+  const [customers, setCustomers] = useState<Customer[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [isFetchingMore, setIsFetchingMore] = useState(false)
+  const [hasMore, setHasMore] = useState(true)
   const [selectedCustomer, setSelectedCustomer] = useState<Customer | null>(null)
   const [editingCustomer, setEditingCustomer] = useState<Customer | null>(null)
 
-  useEffect(() => {
-    const t = setTimeout(() => setIsLoading(false), 1200)
-    return () => clearTimeout(t)
+  const offsetRef = useRef(0)
+  const fetchingRef = useRef(false)
+  const hasMoreRef = useRef(true)
+
+  const loadMore = useCallback(async () => {
+    if (fetchingRef.current || !hasMoreRef.current) return
+    fetchingRef.current = true
+
+    const isInitial = offsetRef.current === 0
+    if (isInitial) setIsLoading(true)
+    else setIsFetchingMore(true)
+
+    try {
+      const token = useAuthStore.getState().accessToken
+      const res = await fetch(
+        `${API_BASE_URL}/api/v1/customers?limit=${PAGE_SIZE}&offset=${offsetRef.current}`,
+        { headers: { Authorization: `Bearer ${token ?? ""}` } }
+      )
+
+      if (!res.ok) {
+        hasMoreRef.current = false
+        setHasMore(false)
+        return
+      }
+
+      const raw = (await res.json()) as CustomerApiResponse[]
+      const mapped = raw.map(CustomerApiMapper.fromApiResponse)
+
+      setCustomers((prev) => (isInitial ? mapped : [...prev, ...mapped]))
+      offsetRef.current += mapped.length
+
+      if (mapped.length < PAGE_SIZE) {
+        hasMoreRef.current = false
+        setHasMore(false)
+      }
+    } catch {
+      hasMoreRef.current = false
+      setHasMore(false)
+    } finally {
+      fetchingRef.current = false
+      setIsLoading(false)
+      setIsFetchingMore(false)
+    }
   }, [])
 
-  const addCustomer = (customer: Customer) =>
-    setCustomers((prev) => [customer, ...prev])
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadMore()
+  }, [loadMore])
 
-  const toggleStatus = (taxId: string) =>
+  const addCustomer = (customer: Customer) => {
+    setCustomers((prev) => [customer, ...prev])
+    offsetRef.current += 1
+  }
+
+  const toggleStatus = (id: string) =>
     setCustomers((prev) =>
       prev.map((c) =>
-        c.taxId === taxId
+        c.id === id
           ? { ...c, status: c.status === "active" ? "inactive" : "active" }
           : c
       )
     )
 
-  const deleteCustomer = (taxId: string) =>
-    setCustomers((prev) => prev.filter((c) => c.taxId !== taxId))
+  const deleteCustomer = (id: string) =>
+    setCustomers((prev) => prev.filter((c) => c.id !== id))
 
-  const updateCustomer = (updated: Customer) =>
+  const updateCustomer = (updated: Customer) => {
+    setEditingCustomer(null)
     setCustomers((prev) =>
-      prev.map((c) => (c.taxId === updated.taxId ? updated : c))
+      prev.map((c) => (c.id === updated.id ? updated : c))
     )
+  }
 
   return {
     customers,
     isLoading,
+    isFetchingMore,
+    hasMore,
+    loadMore,
     selectedCustomer,
     editingCustomer,
     setSelectedCustomer,

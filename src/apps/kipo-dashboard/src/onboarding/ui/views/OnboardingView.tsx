@@ -36,7 +36,6 @@ export const OnboardingView = () => {
 
   const {
     name, setName,
-    schemaName, setSchemaName,
     timezone, setTimezone,
     currency, setCurrency,
     isLoading, error, isValid, submit,

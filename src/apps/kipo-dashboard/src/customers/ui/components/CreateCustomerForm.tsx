@@ -68,7 +68,7 @@ function AvatarPicker({ selected, initials, onChange }: AvatarPickerProps) {
       <span style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 13, color: "var(--text-strong)" }}>
         Avatar <span style={{ color: "var(--text-muted)", fontWeight: 400 }}>(opcional)</span>
       </span>
-      <div style={{ display: "flex", gap: 12, alignItems: "center" }}>
+      <div style={{ display: "flex", gap: 12, alignItems: "center", flexWrap: 'wrap' }}>
         <button
           type="button"
           onClick={() => onChange(null)}
@@ -105,6 +105,7 @@ function AvatarPicker({ selected, initials, onChange }: AvatarPickerProps) {
               background: "none",
             }}
           >
+            {/* eslint-disable-next-line @next/next/no-img-element */}
             <img
               src={url}
               alt="Avatar"
@@ -130,7 +131,6 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
     </div>
   )
 }
-
 
 interface CreateCustomerFormProps {
   onSubmit: (customer: UICustomer) => void

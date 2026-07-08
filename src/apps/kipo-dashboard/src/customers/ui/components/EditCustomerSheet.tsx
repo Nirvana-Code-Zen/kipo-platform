@@ -1,5 +1,6 @@
 "use client"
 
+import { useEffect, useState } from "react"
 import { createPortal } from "react-dom"
 
 import { X } from "lucide-react"
@@ -11,11 +12,27 @@ import type { Customer } from "./types"
 interface EditCustomerSheetProps {
   customer: Customer | null
   onClose: () => void
-  onSubmit: (updated: Customer) => void
+  onSave: (customerId: string, customer: Customer) => Promise<string | null>
 }
 
-export function EditCustomerSheet({ customer, onClose, onSubmit }: EditCustomerSheetProps) {
+export function EditCustomerSheet({ customer, onClose, onSave }: EditCustomerSheetProps) {
+  const [apiError, setApiError] = useState<string | null>(null)
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setApiError(null)
+  }, [customer])
+
   if (!customer) return null
+
+  const customerId = customer.id ?? ""
+
+  async function handleSubmit(updated: Customer) {
+    setApiError(null)
+    const error = await onSave(customerId, updated)
+    if (error) setApiError(error)
+    else onClose()
+  }
 
   return createPortal(
     <div className="fixed inset-0 z-[100] flex flex-col justify-end sm:justify-center sm:items-center">
@@ -32,7 +49,7 @@ export function EditCustomerSheet({ customer, onClose, onSubmit }: EditCustomerS
         <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-border flex-shrink-0">
           <div>
             <h2 className="font-semibold text-base">Editar cliente</h2>
-            <p className="text-xs text-muted-foreground mt-0.5">{customer.legalName}</p>
+            <p className="text-xs text-muted-foreground mt-0.5">Modifica los datos fiscales del cliente</p>
           </div>
           <button
             onClick={onClose}
@@ -42,11 +59,25 @@ export function EditCustomerSheet({ customer, onClose, onSubmit }: EditCustomerS
           </button>
         </div>
 
+        {apiError && (
+          <div
+            className="mx-5 mt-4 px-3.5 py-2.5 rounded-md text-[13px] flex-shrink-0"
+            style={{
+              background: "var(--kipo-danger-bg)",
+              border: "1.5px solid var(--kipo-danger)",
+              color: "var(--kipo-danger)",
+              fontFamily: "var(--font-body)",
+            }}
+          >
+            {apiError}
+          </div>
+        )}
+
         <div className="overflow-y-auto flex-1 px-5 py-5">
           <CreateCustomerForm
             initialValues={customer}
             submitLabel="Guardar cambios"
-            onSubmit={(updated) => { onSubmit(updated); onClose() }}
+            onSubmit={handleSubmit}
             onCancel={onClose}
           />
         </div>

@@ -24,7 +24,7 @@ export const RFC_TYPE_LABEL: Record<RfcType, string | null> = {
   empty:   null,
 }
 
-function detectRfcType(rfc: string): RfcType {
+export function detectRfcType(rfc: string): RfcType {
   const v = rfc.trim().toUpperCase()
   if (!v) return "empty"
   if (v === TaxId_GENERAL) return "general"
@@ -83,12 +83,16 @@ export function useCustomerForm({ initialValues }: UseCustomerFormOptions = {}) 
   function buildCustomer(): UICustomer {
     const regimeLabel = TAX_REGIMES.find((r) => r.code === taxRegime)?.label ?? taxRegime
     return {
+      id: initialValues?.id ?? "",
       taxId: taxId.trim().toUpperCase(),
       email: email.trim().toLowerCase(),
       phone: phone.trim() || undefined,
       status: activeStatus ? "active" : "inactive",
       legalName: legalName.trim(),
       taxRegime: regimeLabel,
+      taxRegimeCode: taxRegime,
+      zipCode,
+      cfdiUsage: cfdiUsage || undefined,
       avatar: avatarUrl ?? "",
       initials,
     }

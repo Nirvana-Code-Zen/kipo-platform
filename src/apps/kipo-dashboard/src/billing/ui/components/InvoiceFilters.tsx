@@ -1,6 +1,6 @@
 "use client"
 
-import { Search, X, SlidersHorizontal } from "lucide-react"
+import { Search, X } from "lucide-react"
 
 import type { StatusFilter } from "../hooks/useInvoiceFilters"
 

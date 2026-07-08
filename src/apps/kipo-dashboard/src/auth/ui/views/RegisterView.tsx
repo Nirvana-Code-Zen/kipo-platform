@@ -61,7 +61,6 @@ export const RegisterView = () => {
   const { isLoading, isOtpPending, error, pendingOtp, clearError, register } = useAuth()
 
   const [tab, setTab] = useState<'email' | 'phone'>('email')
-  const [displayName, setDisplayName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -71,7 +70,7 @@ export const RegisterView = () => {
 
   const handleEmailRegister = (e: React.FormEvent) => {
     e.preventDefault()
-    void register({ provider: 'email', displayName, email, password })
+    void register({ provider: 'email', displayName: '', email, password })
   }
   const handleRequestOtp = (e: React.FormEvent) => { e.preventDefault() }
   const handleVerifyOtp = (e: React.FormEvent) => { e.preventDefault() }
