@@ -7,7 +7,6 @@ import { CheckCircle2, Plus, Trash2, Search, X, User } from "lucide-react"
 
 import { useClickOutside } from "@/src/shared/ui/hooks/useClickOutside"
 
-import { useInvoiceForm } from "../hooks/useInvoiceForm"
 import { useReceiverSearch } from "../hooks/useReceiverSearch"
 import {
   VOUCHER_TYPES,
@@ -20,7 +19,7 @@ import {
   IVA_RATES,
 } from "../data/catalogs"
 
-import type { UIInvoice } from "./types"
+import type { useInvoiceForm } from "../hooks/useInvoiceForm"
 import type { ReceiverSuggestion } from "../hooks/useReceiverSearch"
 
 interface StyledSelectProps {
@@ -98,22 +97,26 @@ const formatMXN = (n: number) =>
 interface ReceiverSearchProps {
   receiverTaxId: string
   receiverName: string
+  receiverZip: string
   errorTaxId?: string
   errorName?: string
   onSelect: (suggestion: ReceiverSuggestion) => void
   onChangeTaxId: (v: string) => void
   onChangeName: (v: string) => void
+  onChangeZip: (v: string) => void
   onClear: () => void
 }
 
 function ReceiverSearch({
   receiverTaxId,
   receiverName,
+  receiverZip,
   errorTaxId,
   errorName,
   onSelect,
   onChangeTaxId,
   onChangeName,
+  onChangeZip,
   onClear,
 }: ReceiverSearchProps) {
   const search = useReceiverSearch()
@@ -142,7 +145,7 @@ function ReceiverSearch({
             {receiverName}
           </p>
           <p style={{ fontSize: 12, fontFamily: "var(--font-mono)", color: "var(--text-muted)", margin: "2px 0 0" }}>
-            {receiverTaxId}
+            {receiverTaxId}{receiverZip ? ` · CP ${receiverZip}` : ""}
           </p>
         </div>
         <button
@@ -162,11 +165,11 @@ function ReceiverSearch({
   }
 
   return (
-    <div ref={dropdownRef} style={{ position: "relative" }}>
-      <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-        <label style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 13, color: "var(--text-strong)" }}>
-          Buscar receptor
-        </label>
+    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
+      <label style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 13, color: "var(--text-strong)" }}>
+        Buscar receptor
+      </label>
+      <div ref={dropdownRef} style={{ position: "relative" }}>
         <div style={{ position: "relative" }}>
           <Search size={15} style={{
             position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)",
@@ -193,11 +196,10 @@ function ReceiverSearch({
             }}
           />
         </div>
-      </div>
 
       {search.isOpen && search.suggestions.length > 0 && (
         <div style={{
-          position: "absolute", top: "calc(100% + 6px)", left: 0, right: 0, zIndex: 50,
+          position: "absolute", top: "calc(100% + 4px)", left: 0, right: 0, zIndex: 50,
           background: "var(--surface-card)",
           border: "1.5px solid var(--border-strong)",
           borderRadius: "var(--radius-md)",
@@ -212,6 +214,7 @@ function ReceiverSearch({
                 onSelect(s)
                 onChangeTaxId(s.taxId)
                 onChangeName(s.name)
+                onChangeZip(s.zip ?? "")
                 search.clear()
               }}
               style={{
@@ -243,6 +246,7 @@ function ReceiverSearch({
           ))}
         </div>
       )}
+      </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 12 }}>
         <Input
@@ -263,6 +267,15 @@ function ReceiverSearch({
           error={errorName}
           autoComplete="off"
         />
+        <Input
+          label="CP receptor"
+          placeholder="00000"
+          value={receiverZip}
+          onChange={(e) => onChangeZip(e.target.value.replace(/\D/g, "").slice(0, 5))}
+          hint="Opcional"
+          mono
+          maxLength={5}
+        />
       </div>
     </div>
   )
@@ -270,21 +283,16 @@ function ReceiverSearch({
 
 
 interface CreateInvoiceFormProps {
-  onSubmit: (invoice: UIInvoice) => void
+  form: ReturnType<typeof useInvoiceForm>
+  onFormSubmit: (e: React.FormEvent) => void
   onCancel: () => void
+  isSubmitting?: boolean
+  submitLabel?: string
 }
 
-export function CreateInvoiceForm({ onSubmit, onCancel }: CreateInvoiceFormProps) {
-  const form = useInvoiceForm()
-
-  function handleSubmit(e: React.FormEvent) {
-    e.preventDefault()
-    if (!form.validate()) return
-    onSubmit(form.buildInvoice())
-  }
-
+export function CreateInvoiceForm({ form, onFormSubmit, onCancel, isSubmitting, submitLabel = "Crear borrador" }: CreateInvoiceFormProps) {
   return (
-    <form onSubmit={handleSubmit} noValidate>
+    <form onSubmit={onFormSubmit} noValidate>
       <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
 
         {/* ── Sección 1: Datos del comprobante ── */}
@@ -371,14 +379,18 @@ export function CreateInvoiceForm({ onSubmit, onCancel }: CreateInvoiceFormProps
           <ReceiverSearch
             receiverTaxId={form.receiverTaxId}
             receiverName={form.receiverName}
+            receiverZip={form.receiverZip}
             errorTaxId={form.errors.receiverTaxId}
             errorName={form.errors.receiverName}
-            onSelect={() => {}}
+            onSelect={(s) => form.setCustomerId(s.id)}
             onChangeTaxId={form.setReceiverTaxId}
             onChangeName={form.setReceiverName}
+            onChangeZip={form.setReceiverZip}
             onClear={() => {
               form.setReceiverTaxId("")
               form.setReceiverName("")
+              form.setReceiverZip("")
+              form.setCustomerId(null)
             }}
           />
         </section>
@@ -542,9 +554,9 @@ export function CreateInvoiceForm({ onSubmit, onCancel }: CreateInvoiceFormProps
           <Button type="button" variant="secondary" size="md" full onClick={onCancel}>
             Cancelar
           </Button>
-          <Button type="submit" variant="primary" size="md" full>
+          <Button type="submit" variant="primary" size="md" full disabled={isSubmitting}>
             <CheckCircle2 size={15} />
-            Crear borrador
+            {isSubmitting ? "Guardando..." : submitLabel}
           </Button>
         </div>
 

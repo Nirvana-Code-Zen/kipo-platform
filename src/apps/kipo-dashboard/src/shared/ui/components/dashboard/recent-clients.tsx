@@ -5,7 +5,8 @@ import { Plus, Users } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage, Button, Card } from "@kipo/ui-react"
 
 import { RecentClientsSkeleton } from "@/src/shared/ui/components/dashboard/skeletons"
-import { useLatestClients } from "@/src/dashboard/ui/hooks/useLatestClients"
+
+import type { RecentClient } from "@/src/dashboard/ui/hooks/useDashboardSummary"
 
 function StatusBadge({ status }: { status?: string }) {
   const isActive = status === "active"
@@ -69,9 +70,8 @@ function EmptyState({ onAdd }: { onAdd: () => void }) {
   )
 }
 
-export function RecentClients() {
+export function RecentClients({ clients, isLoading }: { clients: RecentClient[]; isLoading: boolean }) {
   const router = useRouter()
-  const { clients, isLoading } = useLatestClients()
 
   function handleAdd() {
     router.push("/customers?new=1")
@@ -111,20 +111,20 @@ export function RecentClients() {
         <div className="space-y-4">
           {clients.map((client, index) => (
             <div
-              key={client.taxId}
+              key={client.tax_id}
               className="flex items-center gap-4 p-3 rounded-lg hover:bg-secondary transition-all duration-300 cursor-pointer group"
               style={{ animationDelay: `${650 + index * 100}ms` }}
             >
               <Avatar className="w-12 h-12 ring-2 ring-primary/20 transition-all duration-300 group-hover:ring-primary/40 group-hover:scale-110">
-                {client.avatar && <AvatarImage src={client.avatar} alt={client.legalName} className="object-cover w-full h-full" />}
+                {client.avatar_url && <AvatarImage src={client.avatar_url} alt={client.legal_name} className="object-cover w-full h-full" />}
                 <AvatarFallback
                   style={{ background: "var(--surface-brand-soft)", color: "var(--brand)", fontWeight: 700, fontFamily: "var(--font-display)", margin: 'auto' }}
                 >
-                  {client.initials}
+                  {client.legal_name.split(" ").map((w: string) => w[0]).slice(0, 2).join("").toUpperCase()}
                 </AvatarFallback>
               </Avatar>
               <div className="flex-1 min-w-0">
-                <p className="font-semibold text-foreground text-sm truncate">{client.legalName}</p>
+                <p className="font-semibold text-foreground text-sm truncate">{client.legal_name}</p>
                 <p className="text-xs text-muted-foreground truncate">{client.email}</p>
               </div>
               <StatusBadge status={client.status} />

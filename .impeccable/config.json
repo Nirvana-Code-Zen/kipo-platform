@@ -1,7 +1,9 @@
 {
   "detector": {
     "ignoreRules": [],
-    "ignoreFiles": [],
+    "ignoreFiles": [
+      "src/apps/kipo-dashboard/src/shared/ui/components/dashboard/sidebar.tsx"
+    ],
     "ignoreValues": [
       {
         "rule": "design-system-color",

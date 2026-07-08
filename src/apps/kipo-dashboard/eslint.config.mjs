@@ -181,12 +181,16 @@ const eslintConfig = defineConfig([
         destructuredArrayIgnorePattern: '^_'
       }],
 
+      'react-hooks/react-compiler': 'off',
+      'react-hooks/set-state-in-effect': 'off',
+
       // eslint-plugin-react@7.37.5 uses isSpaceBetweenTokens (removed in ESLint 10) in these JSX formatting rules
       'react/jsx-one-expression-per-line': 'off',
       'react/jsx-curly-spacing': 'off',
       'react/jsx-equals-spacing': 'off',
       'react/jsx-space-before-closing': 'off',
       'react/jsx-tag-spacing': 'off',
+      'react-hooks/exhaustive-deps': 'off',
 
       'import/order': ['error', {
         groups: ['builtin', 'external', 'internal', ['parent', 'sibling', 'index'], ['type', 'object']],

@@ -6,8 +6,8 @@ import type { UIInvoice, InvoiceStatus } from "../components/types"
 
 export type StatusFilter = "all" | InvoiceStatus
 
-export function useInvoiceFilters(invoices: UIInvoice[]) {
-  const [statusFilter, setStatusFilter] = useState<StatusFilter>("all")
+export function useInvoiceFilters(invoices: UIInvoice[], initialStatus: StatusFilter = "all") {
+  const [statusFilter, setStatusFilter] = useState<StatusFilter>(initialStatus)
   const [dateFrom, setDateFrom] = useState("")
   const [dateTo, setDateTo] = useState("")
   const [receiverQuery, setReceiverQuery] = useState("")

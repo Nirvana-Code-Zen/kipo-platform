@@ -11,13 +11,16 @@ import {
   WalletCards
 } from "lucide-react"
 import Link from "next/link"
+import Image from "next/image"
 import { usePathname } from "next/navigation"
+
+import { useStampedInvoiceCount } from "@/src/billing/ui/hooks/useStampedInvoiceCount"
 
 import { cn } from "../../lib/utils"
 
 const menuItems = [
   { label: 'Dashboard',   href: '/dashboard',  icon: LayoutDashboard },
-  { label: 'Facturación', href: '/billing',    icon: WalletCards, badge: "124" },
+  { label: 'Facturación', href: '/billing',    icon: WalletCards },
   { label: 'Clientes',    href: '/customers',  icon: Users },
 ]
 
@@ -30,22 +33,17 @@ const generalItems = [
 export function Sidebar() {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null)
   const pathname = usePathname()
+  const { draft: draftCount } = useStampedInvoiceCount()
 
   return (
     <aside className="fixed top-0 left-0 w-64 bg-card border-r border-border p-4 h-screen overflow-y-auto lg:block">
       <div className="flex items-center gap-2 mb-6 group cursor-pointer">
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center transition-transform group-hover:scale-110 duration-300 relative">
-            <div
-              className="w-1.5 h-1.5 rounded-full bg-primary-foreground absolute"
-              style={{ top: "30%", left: "30%" }}
-            />
-            <div
-              className="w-1.5 h-1.5 rounded-full bg-primary-foreground absolute"
-              style={{ top: "30%", right: "30%" }}
-            />
-            <div className="w-3 h-1.5 border-b-2 border-primary-foreground rounded-full absolute bottom-2.5" />
-          </div>
+          <Image
+            src="/kipo-logo.svg"
+            alt="Kipo"
+            className="h-8 w-8 transition-transform group-hover:scale-110 duration-300"
+          />
           <span className="text-lg font-semibold text-foreground">Kipo</span>
         </Link>
       </div>
@@ -72,9 +70,9 @@ export function Sidebar() {
                 >
                   <item.icon className="w-4 h-4" />
                   <span className="text-sm">{item.label}</span>
-                  {item.badge && (
-                    <span className="ml-auto bg-primary text-primary-foreground text-[10px] font-semibold px-1.5 py-0.5 rounded-full animate-pulse">
-                      {item.badge}
+                  {item.href === '/billing' && draftCount !== null && draftCount > 0 && (
+                    <span className="ml-auto bg-primary text-primary-foreground text-[10px] font-semibold px-1.5 py-0.5 rounded-full">
+                      {draftCount}
                     </span>
                   )}
                 </Link>

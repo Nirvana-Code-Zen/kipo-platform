@@ -2,17 +2,26 @@
 
 import { useCallback } from "react"
 
+import { useAuthStore } from "@/src/auth/ui/store/authStore"
+
 import type { Dispatch, SetStateAction } from "react"
 import type { UIInvoice } from "../components/types"
 
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"
+
 export function useCancelInvoice(setInvoices: Dispatch<SetStateAction<UIInvoice[]>>) {
+  const accessToken = useAuthStore((s) => s.accessToken)
   return useCallback(
-    (id: string) =>
+    async (id: string) => {
+      const res = await fetch(`${API_BASE_URL}/api/v1/invoices/${id}/cancel`, {
+        method: "POST",
+        headers: { Authorization: `Bearer ${accessToken ?? ""}` },
+      })
+      if (!res.ok) return
       setInvoices((prev) =>
-        prev.map((inv) =>
-          inv.id === id ? { ...inv, status: "cancelled" as const } : inv
-        )
-      ),
-    [setInvoices]
+        prev.map((inv) => (inv.id === id ? { ...inv, status: "cancelled" as const } : inv))
+      )
+    },
+    [setInvoices, accessToken]
   )
 }

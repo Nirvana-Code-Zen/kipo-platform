@@ -1,35 +1,69 @@
 "use client"
 
-import { useState, useMemo } from "react"
+import { useCallback, useMemo, useEffect, useState } from "react"
 
-export type ReceiverSuggestion = {
-  taxId: string
-  name: string
-  taxRegime?: string
+import { useAuthStore } from "@/src/auth/ui/store/authStore"
+
+const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"
+
+type CustomerRaw = {
+  id: string
+  tax_id: string
+  legal_name: string
+  zip: string
+  tax_regime: string
+  is_active: boolean
 }
 
-const MOCK_RECEIVERS: ReceiverSuggestion[] = [
-  { taxId: "MCS900101AAA", name: "Maximo Coseti SA de CV",     taxRegime: "Régimen Simplificado de Confianza" },
-  { taxId: "ESE010101BBB", name: "elacond Servicios",          taxRegime: "Régimen General de Ley" },
-  { taxId: "CDS200101CCC", name: "cuate Dev SC",               taxRegime: "Régimen de Incorporación Fiscal" },
-  { taxId: "XXX052SED-1",  name: "Maximo coseti",              taxRegime: "Régimen Simplificado de Confianza" },
-  { taxId: "XXX052SED-2",  name: "elacond",                    taxRegime: "Régimen General de Ley" },
-  { taxId: "XXX052SED-3",  name: "cuate",                      taxRegime: "Régimen de Incorporación Fiscal" },
-]
+export type ReceiverSuggestion = {
+  id: string
+  taxId: string
+  name: string
+  zip: string
+  taxRegime?: string
+}
 
 export function useReceiverSearch() {
   const [query, setQuery] = useState("")
   const [isOpen, setIsOpen] = useState(false)
+  const [receivers, setReceivers] = useState<ReceiverSuggestion[]>([])
+
+  const loadReceivers = useCallback(async () => {
+    try {
+      const token = useAuthStore.getState().accessToken
+      const res = await fetch(`${API_BASE_URL}/api/v1/customers?limit=50&offset=0`, {
+        headers: { Authorization: `Bearer ${token ?? ""}` },
+      })
+      if (!res.ok) return
+      const raw = (await res.json()) as CustomerRaw[]
+      setReceivers(
+        raw
+          .filter((c) => c.is_active)
+          .map((c) => ({
+            id: c.id,
+            taxId: c.tax_id,
+            name: c.legal_name,
+            zip: c.zip,
+            taxRegime: c.tax_regime,
+          }))
+      )
+    } catch {
+      // keep empty on failure
+    }
+  }, [])
 
   const suggestions = useMemo(() => {
     const q = query.trim().toLowerCase()
     if (q.length < 2) return []
-    return MOCK_RECEIVERS.filter(
-      (r) =>
-        r.taxId.toLowerCase().includes(q) ||
-        r.name.toLowerCase().includes(q)
-    ).slice(0, 5)
-  }, [query])
+    return receivers
+      .filter((r) => r.taxId.toLowerCase().includes(q) || r.name.toLowerCase().includes(q))
+      .slice(0, 5)
+  }, [query, receivers])
+
+  useEffect(() => {
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    loadReceivers()
+  }, [loadReceivers])
 
   const clear = () => {
     setQuery("")

@@ -1,6 +1,6 @@
-from dataclasses import asdict
-from datetime import datetime, timezone
+import os
 from flask import Blueprint, request, jsonify, make_response
+from shared.config import config_mapping
 from auth.execute import execute as auth_execute
 from auth.commands import (
     SignUpWithEmailCommand,
@@ -16,6 +16,8 @@ from shared.providers import get_tenant_repo
 
 session_bp = Blueprint("session", __name__, url_prefix="/api/v1/auth")
 
+env_name = os.environ.get("FLASK_ENV", "development")
+config_class = config_mapping[env_name]()
 
 def _session_response(auth_result: dict, user_id: str) -> dict:
     tenant = get_tenant_repo().find_by_auth_id(user_id)
@@ -34,13 +36,14 @@ def _session_response(auth_result: dict, user_id: str) -> dict:
 
 
 def _with_refresh_cookie(response, refresh_token: str):
+    thirdty_days = 60 * 60 * 24 * 30
     response.set_cookie(
         "kipo_refresh_token",
         refresh_token,
         httponly=True,
-        secure=False,   # True in production (HTTPS)
+        secure=config_class.COOKIE_SECURE,
         samesite="Lax",
-        max_age=60 * 60 * 24 * 30,  # 30 days
+        max_age=thirdty_days,
         path="/api/v1/auth",
     )
     return response
@@ -51,17 +54,25 @@ def register():
     data = request.get_json() or {}
     email = data.get("email", "") or ""
     try:
-        identity = auth_execute(SignUpWithEmailCommand(
-            email=email,
-            password=data.get("password", ""),
-        ))
-        return jsonify({
-            "email_pending": True,
-            "email": str(identity.email) if identity.email else None,
-        }), 201
+        identity = auth_execute(
+            SignUpWithEmailCommand(
+                email=email,
+                password=data.get("password", ""),
+            )
+        )
+        return jsonify(
+            {
+                "email_pending": True,
+                "email": str(identity.email) if identity.email else None,
+            }
+        ), 201
     except BusinessRuleViolation as err:
         msg = str(err).lower()
-        if "already registered" in msg or "already exists" in msg or "user already" in msg:
+        if (
+            "already registered" in msg
+            or "already exists" in msg
+            or "user already" in msg
+        ):
             # Don't reveal account existence — same response as a new registration
             return jsonify({"email_pending": True, "email": email or None}), 201
         return jsonify({"error": str(err)}), 400
@@ -71,16 +82,22 @@ def register():
 def login_email():
     data = request.get_json() or {}
     try:
-        result = auth_execute(SignInWithEmailCommand(
-            email=data.get("email", ""),
-            password=data.get("password", ""),
-        ))
+        result = auth_execute(
+            SignInWithEmailCommand(
+                email=data.get("email", ""),
+                password=data.get("password", ""),
+            )
+        )
         user_id = str(result["user"].id)
         resp = make_response(jsonify(_session_response(result, user_id)), 200)
         return _with_refresh_cookie(resp, result["refresh_token"])
     except BusinessRuleViolation as err:
         msg = str(err).lower()
-        status = 401 if "invalid" in msg or "credentials" in msg or "not confirmed" in msg else 400
+        status = (
+            401
+            if "invalid" in msg or "credentials" in msg or "not confirmed" in msg
+            else 400
+        )
         return jsonify({"error": str(err)}), status
 
 
@@ -98,10 +115,12 @@ def login_phone():
 def verify_phone():
     data = request.get_json() or {}
     try:
-        result = auth_execute(VerifyPhoneOtpCommand(
-            phone=data.get("phone", ""),
-            token=data.get("token", ""),
-        ))
+        result = auth_execute(
+            VerifyPhoneOtpCommand(
+                phone=data.get("phone", ""),
+                token=data.get("token", ""),
+            )
+        )
         user_id = str(result["user"].id)
         resp = make_response(jsonify(_session_response(result, user_id)), 200)
         return _with_refresh_cookie(resp, result["refresh_token"])
@@ -113,10 +132,12 @@ def verify_phone():
 def login_oauth():
     data = request.get_json() or {}
     try:
-        url = auth_execute(SignInWithOAuthCommand(
-            provider=data.get("provider", ""),
-            redirect_to=data.get("redirect_to", ""),
-        ))
+        url = auth_execute(
+            SignInWithOAuthCommand(
+                provider=data.get("provider", ""),
+                redirect_to=data.get("redirect_to", ""),
+            )
+        )
         return jsonify({"url": url}), 200
     except BusinessRuleViolation as err:
         return jsonify({"error": str(err)}), 400

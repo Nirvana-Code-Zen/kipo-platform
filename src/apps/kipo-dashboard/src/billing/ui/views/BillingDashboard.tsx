@@ -1,7 +1,8 @@
 'use client'
 
-import { useRef, useState } from "react"
+import { useRef, useState, useEffect } from "react"
 
+import { useSearchParams } from "next/navigation"
 import { FilePlus } from "lucide-react"
 import { Button } from '@kipo/ui-react'
 
@@ -11,10 +12,24 @@ import { Invoices } from '../components/invoices'
 import { CreateInvoiceSheet } from '../components/CreateInvoiceSheet'
 
 import type { InvoicesHandle } from '../components/invoices'
+import type { StatusFilter } from '../hooks/useInvoiceFilters'
+
+const VALID_STATUSES: StatusFilter[] = ["all", "stamped", "draft", "cancelled"]
 
 export const BillingDashboard = () => {
+  const searchParams = useSearchParams()
+  const rawStatus = searchParams.get("status") ?? "all"
+  const initialStatus: StatusFilter = (VALID_STATUSES.includes(rawStatus as StatusFilter) ? rawStatus : "all") as StatusFilter
+
   const [sheetOpen, setSheetOpen] = useState(false)
   const invoicesRef = useRef<InvoicesHandle>(null)
+
+  useEffect(() => {
+    if (searchParams.get("new") === "1") {
+      setSheetOpen(true)
+    }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
 
   return (
     <>
@@ -27,12 +42,12 @@ export const BillingDashboard = () => {
         }
       />
       <div className="mt-6">
-        <Invoices ref={invoicesRef} />
+        <Invoices ref={invoicesRef} initialStatus={initialStatus} />
       </div>
       <CreateInvoiceSheet
         isOpen={sheetOpen}
         onClose={() => setSheetOpen(false)}
-        onSubmit={(invoice) => invoicesRef.current?.addInvoice(invoice)}
+        onCreated={(invoice) => invoicesRef.current?.addInvoice(invoice)}
       />
     </>
   )
