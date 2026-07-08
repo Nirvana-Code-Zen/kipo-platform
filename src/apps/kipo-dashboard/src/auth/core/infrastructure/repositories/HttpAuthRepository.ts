@@ -49,7 +49,7 @@ export const createHttpAuthRepository = (baseUrl: string): IAuthRepository => {
 
   return {
     loginWithEmail: (email: string, password: string) =>
-      sessionResult('/auth/login/email', {
+      sessionResult('/api/v1/auth/sign-in/email', {
         method: 'POST',
         body: JSON.stringify({ email, password }),
       }),
@@ -58,48 +58,47 @@ export const createHttpAuthRepository = (baseUrl: string): IAuthRepository => {
       provider: Extract<AuthProvider, 'google' | 'apple' | 'facebook'>,
       idToken: string
     ) =>
-      sessionResult('/auth/login/social', {
+      sessionResult('/api/v1/auth/sign-in/oauth', {
         method: 'POST',
         body: JSON.stringify({ provider, id_token: idToken }),
       }),
 
     requestOtp: async (phone: string, channel: 'whatsapp' | 'sms'): Promise<Result<OtpToken, AuthError>> => {
-      const result = await request<{ otp_token: string }>('/auth/otp/request', {
+      const result = await request<{ otp_token: string }>('/api/v1/auth/sign-in/phone', {
         method: 'POST',
         body: JSON.stringify({ phone, channel }),
       })
       if (!result.ok) return result
-      return ok(toOtpToken(result.value.otp_token))
+      return ok(toOtpToken(result.value.otp_token ?? ''))
     },
 
     verifyOtp: (otpToken: OtpToken, code: string) =>
-      sessionResult('/auth/otp/verify', {
+      sessionResult('/api/v1/auth/sign-in/phone/verify', {
         method: 'POST',
-        body: JSON.stringify({ otp_token: otpToken, code }),
+        body: JSON.stringify({ phone: otpToken, token: code }),
       }),
 
-    register: (data: {
+    register: async (data: {
       provider: AuthProvider
       displayName: string
       email?: string
       phone?: string
       password?: string
       idToken?: string
-    }) =>
-      sessionResult('/auth/register', {
+    }): Promise<Result<{ emailPending: true; email: string | null }, AuthError>> => {
+      const result = await request<{ email_pending: boolean; email: string | null }>('/api/v1/auth/sign-up', {
         method: 'POST',
         body: JSON.stringify({
-          provider: data.provider,
-          display_name: data.displayName,
           email: data.email,
-          phone: data.phone,
           password: data.password,
-          id_token: data.idToken,
         }),
-      }),
+      })
+      if (!result.ok) return result
+      return ok({ emailPending: true as const, email: result.value.email ?? null })
+    },
 
-    logout: () => request<void>('/auth/logout', { method: 'POST' }),
+    logout: () => request<void>('/api/v1/auth/sign-out', { method: 'POST' }),
 
-    refresh: () => sessionResult('/auth/refresh', { method: 'POST' }),
+    refresh: () => sessionResult('/api/v1/auth/refresh', { method: 'POST' }),
   }
 }

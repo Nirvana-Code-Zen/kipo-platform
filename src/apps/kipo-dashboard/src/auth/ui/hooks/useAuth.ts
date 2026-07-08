@@ -15,15 +15,21 @@ export const useAuth = () => {
     }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
+  const isAuthenticated = store.status === 'authenticated' && store.accessToken !== null && store.persistedSession !== null
+  const hasTenant = isAuthenticated && store.session?.tenantId != null
+
   return {
     session: store.session,
     status: store.status,
     error: store.error,
     pendingOtp: store.pendingOtp,
-    isAuthenticated: store.status === 'authenticated' && store.accessToken !== null && store.persistedSession !== null,
+    pendingEmail: store.pendingEmail,
+    isAuthenticated,
+    hasTenant,
+    isEmailPending: store.status === 'email_pending',
     isLoading: store.status === 'loading' || (store.status === 'idle' && store.persistedSession !== null),
     isOtpPending: store.status === 'otp_pending',
-    tenantSlug: store.session?.tenantSlug as TenantSlug | undefined,
+    tenantSlug: store.session?.tenantSlug as TenantSlug | null | undefined,
 
     loginWithEmail: store.loginWithEmail,
     loginWithSocial: store.loginWithSocial,

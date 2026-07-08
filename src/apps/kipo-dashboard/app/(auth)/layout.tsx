@@ -7,13 +7,16 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/src/auth/ui/hooks/useAuth'
 
 export default function AuthLayout ({ children }: { children: React.ReactNode }) {
-  const { isAuthenticated, isLoading } = useAuth()
+  const { isAuthenticated, hasTenant, isEmailPending, isLoading } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
-    if (!isLoading && isAuthenticated) router.replace('/dashboard')
-  }, [isAuthenticated, isLoading, router])
+    if (isLoading) return
+    if (isEmailPending) { router.replace('/email-confirm'); return }
+    if (isAuthenticated && hasTenant) { router.replace('/dashboard'); return }
+    if (isAuthenticated && !hasTenant) { router.replace('/onboarding'); return }
+  }, [isAuthenticated, hasTenant, isEmailPending, isLoading, router])
 
-  if (isLoading || isAuthenticated) return null
+  if (isAuthenticated) return null
   return <>{children}</>
 }

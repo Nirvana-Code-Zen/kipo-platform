@@ -23,8 +23,8 @@ export function SettingsView() {
   const router = useRouter()
   const [loggingOut, setLoggingOut] = useState(false)
 
-  const displayName = session?.user?.name ?? 'Usuario'
-  const email = session?.user?.email ?? ''
+  const displayName = session?.displayName ?? 'Usuario'
+  const email = session?.email ?? ''
   const initials = displayName.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()
 
   async function handleLogout() {

@@ -1,4 +1,5 @@
 from dataclasses import asdict
+from datetime import datetime, timezone
 from flask import Blueprint, request, jsonify
 from auth.execute import execute as auth_execute
 from auth.commands import (
@@ -10,20 +11,45 @@ from auth.commands import (
     SignOutCommand,
 )
 from shared.exceptions import BusinessRuleViolation
+from shared.providers import get_tenant_repo
 
 session_bp = Blueprint("session", __name__, url_prefix="/api/v1/auth")
+
+
+def _session_response(auth_result: dict, user_id: str) -> dict:
+    tenant = get_tenant_repo().find_by_auth_id(user_id)
+    user = auth_result["user"]
+    return {
+        "user_id": user_id,
+        "access_token": auth_result["access_token"],
+        "expires_at": auth_result.get("expires_at", ""),
+        "display_name": str(user.email or user.phone or ""),
+        "email": str(user.email) if user.email else None,
+        "phone": str(user.phone) if user.phone else None,
+        "provider": str(user.provider),
+        "tenant_id": str(tenant.id) if tenant else None,
+        "tenant_slug": tenant.schema_name if tenant else None,
+    }
 
 
 @session_bp.route("/sign-up", methods=["POST"])
 def register():
     data = request.get_json() or {}
+    email = data.get("email", "") or ""
     try:
         identity = auth_execute(SignUpWithEmailCommand(
-            email=data.get("email", ""),
+            email=email,
             password=data.get("password", ""),
         ))
-        return jsonify(asdict(identity)), 201
+        return jsonify({
+            "email_pending": True,
+            "email": str(identity.email) if identity.email else None,
+        }), 201
     except BusinessRuleViolation as err:
+        msg = str(err).lower()
+        if "already registered" in msg or "already exists" in msg or "user already" in msg:
+            # Don't reveal account existence — same response as a new registration
+            return jsonify({"email_pending": True, "email": email or None}), 201
         return jsonify({"error": str(err)}), 400
 
 
@@ -31,13 +57,16 @@ def register():
 def login_email():
     data = request.get_json() or {}
     try:
-        session = auth_execute(SignInWithEmailCommand(
+        result = auth_execute(SignInWithEmailCommand(
             email=data.get("email", ""),
             password=data.get("password", ""),
         ))
-        return jsonify(session), 200
+        user_id = str(result["user"].id)
+        return jsonify(_session_response(result, user_id)), 200
     except BusinessRuleViolation as err:
-        return jsonify({"error": str(err)}), 400
+        msg = str(err).lower()
+        status = 401 if "invalid" in msg or "credentials" in msg or "not confirmed" in msg else 400
+        return jsonify({"error": str(err)}), status
 
 
 @session_bp.route("/sign-in/phone", methods=["POST"])
@@ -54,11 +83,12 @@ def login_phone():
 def verify_phone():
     data = request.get_json() or {}
     try:
-        session = auth_execute(VerifyPhoneOtpCommand(
+        result = auth_execute(VerifyPhoneOtpCommand(
             phone=data.get("phone", ""),
             token=data.get("token", ""),
         ))
-        return jsonify(session), 200
+        user_id = str(result["user"].id)
+        return jsonify(_session_response(result, user_id)), 200
     except BusinessRuleViolation as err:
         return jsonify({"error": str(err)}), 400
 

@@ -6,8 +6,8 @@ import type { AuthProvider } from '../value-objects/AuthProvider'
 // tenantSlug is the key field consumed by all other contexts (billing, customers, etc.)
 export type Session = Readonly<{
   userId: string
-  tenantId: string
-  tenantSlug: TenantSlug  // mandatory — scopes every API call in other contexts
+  tenantId: string | null   // null until onboarding completes
+  tenantSlug: TenantSlug | null
   displayName: string
   email?: string
   phone?: string

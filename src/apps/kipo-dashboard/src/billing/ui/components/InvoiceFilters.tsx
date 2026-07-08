@@ -85,7 +85,6 @@ export function InvoiceFilters({
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
 
-      {/* Row 1: status pills + result count */}
       <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12, flexWrap: "wrap" }}>
         <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
           {STATUS_PILLS.map((pill) => (
@@ -128,10 +127,8 @@ export function InvoiceFilters({
         </div>
       </div>
 
-      {/* Row 2: search + date range */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr auto auto", gap: 8, alignItems: "end" }}>
 
-        {/* Search by receiver */}
         <div style={{ position: "relative" }}>
           <Search size={14} style={{
             position: "absolute", left: 12, top: "50%", transform: "translateY(-50%)",
@@ -163,7 +160,6 @@ export function InvoiceFilters({
           )}
         </div>
 
-        {/* Date from */}
         <div style={{ display: "flex", flexDirection: "column", gap: 4, minWidth: 130 }}>
           <label style={{ fontSize: 11, fontWeight: 600, color: "var(--text-muted)", fontFamily: "var(--font-body)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
             Desde
@@ -177,7 +173,6 @@ export function InvoiceFilters({
           />
         </div>
 
-        {/* Date to */}
         <div style={{ display: "flex", flexDirection: "column", gap: 4, minWidth: 130 }}>
           <label style={{ fontSize: 11, fontWeight: 600, color: "var(--text-muted)", fontFamily: "var(--font-body)", textTransform: "uppercase", letterSpacing: "0.05em" }}>
             Hasta

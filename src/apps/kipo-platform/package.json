@@ -1,7 +1,7 @@
 {
   "name": "kipo-api",
   "scripts": {
-    "dev": "uv run flask run --debug",
+    "dev": "uv run flask run --debug --port 8000",
     "lint": "uv run ruff check .",
     "test": "uv run pytest",
     "sync": "uv sync"

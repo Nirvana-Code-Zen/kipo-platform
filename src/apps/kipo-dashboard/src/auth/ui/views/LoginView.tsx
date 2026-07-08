@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 
+import { Loader2 } from 'lucide-react'
 import { Button } from '@kipo/ui-react'
 
 import { AuthInput } from '../components/AuthInput'
@@ -57,7 +58,7 @@ const FacebookIcon = () => (
 )
 
 export const LoginView = () => {
-  const { isLoading, isOtpPending, error, pendingOtp, clearError, fakeLogin } = useAuth()
+  const { isLoading, isOtpPending, error, pendingOtp, clearError, loginWithEmail, requestOtp, verifyOtp } = useAuth()
 
   const [tab, setTab] = useState<'email' | 'phone'>('email')
   const [email, setEmail] = useState('')
@@ -69,15 +70,18 @@ export const LoginView = () => {
 
   const handleEmailLogin = (e: React.FormEvent) => {
     e.preventDefault()
-    fakeLogin(email ? email.split('@')[0] : 'Usuario Demo', email || 'demo@kipo.mx', 'email')
+    void loginWithEmail({ email, password })
   }
-  const handleSocial = (provider?: string) => {
-    fakeLogin(provider ?? 'Usuario', '', (provider as 'google' | 'apple' | 'facebook') ?? 'google')
+  const handleSocial = (_provider?: string) => {
+    // OAuth redirect flow — not yet implemented
   }
-  const handleRequestOtp = (e: React.FormEvent) => { e.preventDefault() }
+  const handleRequestOtp = (e: React.FormEvent) => {
+    e.preventDefault()
+    void requestOtp({ phone, channel })
+  }
   const handleVerifyOtp = (e: React.FormEvent) => {
     e.preventDefault()
-    fakeLogin('Usuario', '', 'phone')
+    if (pendingOtp) void verifyOtp({ otpToken: pendingOtp.otpToken, code: otpCode })
   }
 
   return (
@@ -187,7 +191,7 @@ export const LoginView = () => {
           />
           <div style={{ marginTop: 8 }}>
             <Button type='submit' variant='primary' size='md' full disabled={isLoading}>
-              {isLoading ? 'Entrando…' : 'Entrar'}
+              {isLoading ? <><Loader2 size={16} className='animate-spin' /> Entrando…</> : 'Entrar'}
             </Button>
           </div>
         </form>
@@ -241,7 +245,7 @@ export const LoginView = () => {
 
           <div style={{ marginTop: 8 }}>
             <Button type='submit' variant='primary' size='md' full disabled={isLoading}>
-              {isLoading ? 'Enviando…' : 'Enviar código'}
+              {isLoading ? <><Loader2 size={16} className='animate-spin' /> Enviando…</> : 'Enviar código'}
             </Button>
           </div>
         </form>
@@ -295,7 +299,7 @@ export const LoginView = () => {
 
           <div style={{ marginTop: 4 }}>
             <Button type='submit' variant='primary' size='md' full disabled={isLoading || otpCode.length < 6}>
-              {isLoading ? 'Verificando…' : 'Verificar'}
+              {isLoading ? <><Loader2 size={16} className='animate-spin' /> Verificando…</> : 'Verificar'}
             </Button>
           </div>
 

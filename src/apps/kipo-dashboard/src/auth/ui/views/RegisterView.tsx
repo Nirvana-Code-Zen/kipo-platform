@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 
+import { Loader2 } from 'lucide-react'
 import { Button } from '@kipo/ui-react'
 
 import { AuthInput } from '../components/AuthInput'
@@ -57,7 +58,7 @@ const FacebookIcon = () => (
 )
 
 export const RegisterView = () => {
-  const { isLoading, isOtpPending, error, pendingOtp, clearError, fakeLogin } = useAuth()
+  const { isLoading, isOtpPending, error, pendingOtp, clearError, register } = useAuth()
 
   const [tab, setTab] = useState<'email' | 'phone'>('email')
   const [displayName, setDisplayName] = useState('')
@@ -70,15 +71,12 @@ export const RegisterView = () => {
 
   const handleEmailRegister = (e: React.FormEvent) => {
     e.preventDefault()
-    fakeLogin(displayName || (email ? email.split('@')[0] : 'Usuario Demo'), email || 'demo@kipo.mx', 'email')
+    void register({ provider: 'email', displayName, email, password })
   }
   const handleRequestOtp = (e: React.FormEvent) => { e.preventDefault() }
-  const handleVerifyOtp = (e: React.FormEvent) => {
-    e.preventDefault()
-    fakeLogin('Usuario', phone, 'phone')
-  }
-  const handleSocial = (provider?: string) => {
-    fakeLogin(provider ?? 'Usuario', '', (provider as 'google' | 'apple' | 'facebook') ?? 'google')
+  const handleVerifyOtp = (e: React.FormEvent) => { e.preventDefault() }
+  const handleSocial = (_provider?: string) => {
+    // TODO: OAuth redirect flow — not yet implemented
   }
 
   return (
@@ -157,15 +155,6 @@ export const RegisterView = () => {
       {tab === 'email' && (
         <form onSubmit={handleEmailRegister} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
           <AuthInput
-            label='Nombre o empresa'
-            type='text'
-            required
-            autoComplete='name'
-            value={displayName}
-            onChange={(e) => setDisplayName(e.target.value)}
-            placeholder='Refaccionaria López S.A. de C.V.'
-          />
-          <AuthInput
             label='Correo electrónico'
             type='email'
             required
@@ -196,7 +185,7 @@ export const RegisterView = () => {
           />
           <div style={{ marginTop: 8 }}>
             <Button type='submit' variant='primary' size='md' full disabled={isLoading}>
-              {isLoading ? 'Creando cuenta…' : 'Crear cuenta'}
+              {isLoading ? <><Loader2 size={16} className='animate-spin' /> Creando cuenta…</> : 'Crear cuenta'}
             </Button>
           </div>
         </form>
@@ -230,7 +219,7 @@ export const RegisterView = () => {
 
           <div style={{ marginTop: 8 }}>
             <Button type='submit' variant='primary' size='md' full disabled={isLoading}>
-              {isLoading ? 'Enviando…' : 'Enviar código'}
+              {isLoading ? <><Loader2 size={16} className='animate-spin' /> Enviando…</> : 'Enviar código'}
             </Button>
           </div>
         </form>
@@ -284,7 +273,7 @@ export const RegisterView = () => {
 
           <div style={{ marginTop: 4 }}>
             <Button type='submit' variant='primary' size='md' full disabled={isLoading || otpCode.length < 6}>
-              {isLoading ? 'Verificando…' : 'Verificar y registrarse'}
+              {isLoading ? <><Loader2 size={16} className='animate-spin' /> Verificando…</> : 'Verificar y registrarse'}
             </Button>
           </div>
 

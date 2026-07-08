@@ -25,16 +25,18 @@ import type {
   VerifyOtpDTO,
 } from '../../core/application/dtos'
 
-export type AuthStatus = 'idle' | 'loading' | 'authenticated' | 'unauthenticated' | 'otp_pending'
+export type AuthStatus = 'idle' | 'loading' | 'authenticated' | 'unauthenticated' | 'otp_pending' | 'email_pending'
 
 type PersistedState = {
   persistedSession: PersistedSession | null
+  pendingEmail: string | null
 }
 
 type AuthState = {
   // accessToken lives only in memory — not included in PersistedSession
   accessToken: Session['accessToken'] | null
   persistedSession: PersistedSession | null
+  pendingEmail: string | null  // email awaiting confirmation after register
   status: AuthStatus
   error: AuthError | null
   pendingOtp: { phone: string; otpToken: OtpToken; channel: 'whatsapp' | 'sms' } | null
@@ -75,6 +77,7 @@ export const useAuthStore = create<AuthState>()(
     (set, get) => ({
       accessToken: null,
       persistedSession: null,
+      pendingEmail: null,
       status: 'idle',
       error: null,
       pendingOtp: null,
@@ -133,18 +136,19 @@ export const useAuthStore = create<AuthState>()(
         set({ status: 'loading', error: null })
         const result = await registerUseCase(repo)(dto)
         if (result.ok) {
-          applySession(set, result.value)
+          set({ status: 'email_pending', pendingEmail: result.value.email, error: null })
         } else {
-          set({ status: 'authenticated', error: result.error })
+          set({ status: 'unauthenticated', error: result.error })
         }
       },
 
       logout: async () => {
         set({ status: 'loading' })
-        try { await logoutUseCase(repo)() } catch { /* API not connected yet */ }
+        try { await logoutUseCase(repo)() } catch { /* ignore logout errors */ }
         set({
           accessToken: null,
           persistedSession: null,
+          pendingEmail: null,
           status: 'unauthenticated',
           error: null,
           pendingOtp: null,
@@ -185,6 +189,7 @@ export const useAuthStore = create<AuthState>()(
       name: 'kipo-auth',
       partialize: (state): PersistedState => ({
         persistedSession: state.persistedSession,
+        pendingEmail: state.pendingEmail,
       }),
       onRehydrateStorage: () => (state) => {
         if (state && state.persistedSession) {

@@ -23,7 +23,7 @@ export type IAuthRepository = {
     phone?: string
     password?: string
     idToken?: string
-  }) => Promise<Result<Session, AuthError>>
+  }) => Promise<Result<{ emailPending: true; email: string | null }, AuthError>>
   logout: () => Promise<Result<void, AuthError>>
   refresh: () => Promise<Result<Session, AuthError>>
 }

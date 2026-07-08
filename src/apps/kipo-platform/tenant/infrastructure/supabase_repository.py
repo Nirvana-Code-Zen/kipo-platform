@@ -3,7 +3,6 @@ from supabase import Client
 from tenant.repository import ITenantRepository
 from tenant.tenant import Tenant
 from tenant.value_objects.tenant_id import TenantId
-from tenant.value_objects.tenant_name import TenantName
 from tenant.value_objects.plan_type import PlanType
 from tenant.value_objects.tenant_status import TenantStatus
 from shared.db_admin import admin_connection
@@ -17,8 +16,8 @@ class SupabaseTenantRepository(ITenantRepository):
     def save(self, tenant: Tenant) -> Tenant:
         self._client.table("tenants").insert({
             "id": str(tenant.id),
-            "auth_id": str(tenant.auth_id),
-            "tenant_name": str(tenant.tenant_name),
+            "name": tenant.name,
+            "schema_name": tenant.schema_name,
             "plan_type": tenant.plan_type.value,
             "status": tenant.status.value,
             "features_enabled": list(tenant.features_enabled),
@@ -26,10 +25,17 @@ class SupabaseTenantRepository(ITenantRepository):
             "currency": tenant.currency,
             "storage_quota_bytes": tenant.storage_quota_bytes,
         }).execute()
+
+        self._client.table("tenant_users").insert({
+            "tenant_id": str(tenant.id),
+            "user_id": str(tenant.auth_id),
+            "role": "owner",
+        }).execute()
+
         return tenant
 
-    def provision_schema(self, tenant_name: TenantName) -> None:
-        schema = sql.Identifier(tenant_name.schema)
+    def provision_schema(self, schema_name: str) -> None:
+        schema = sql.Identifier(schema_name)
         with admin_connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(sql.SQL("CREATE SCHEMA IF NOT EXISTS {}").format(schema))
@@ -55,21 +61,23 @@ class SupabaseTenantRepository(ITenantRepository):
 
     def find_by_auth_id(self, auth_id: str) -> Tenant | None:
         response = (
-            self._client.table("tenants")
-            .select("*")
-            .eq("auth_id", auth_id)
+            self._client.table("tenant_users")
+            .select("tenant_id, role, tenants(*)")
+            .eq("user_id", auth_id)
+            .eq("role", "owner")
             .maybe_single()
             .execute()
         )
         if not response.data:
             return None
-        return self._to_tenant(response.data)
+        return self._to_tenant(response.data["tenants"], auth_id)
 
-    def _to_tenant(self, row: dict) -> Tenant:
+    def _to_tenant(self, row: dict, auth_id: str = "") -> Tenant:
         return Tenant(
             id=TenantId(row["id"]),
-            auth_id=TenantId(row["auth_id"]),
-            tenant_name=TenantName(row["tenant_name"]),
+            auth_id=TenantId(auth_id),
+            name=row["name"],
+            schema_name=row["schema_name"],
             plan_type=PlanType(row["plan_type"]),
             status=TenantStatus(row["status"]),
             features_enabled=tuple(row.get("features_enabled") or []),

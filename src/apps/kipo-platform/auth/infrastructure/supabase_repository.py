@@ -1,10 +1,23 @@
+from datetime import datetime, timezone
 from supabase import Client
+from supabase_auth.errors import AuthApiError
 from auth.repository import IAuthRepository
 from auth.identity import Identity
 from auth.value_objects.user_id import UserId
 from auth.value_objects.email import Email
 from auth.value_objects.phone_number import PhoneNumber
 from auth.value_objects.auth_provider import AuthProvider
+from shared.exceptions import BusinessRuleViolation
+
+
+def _guard(fn):
+    """Convert Supabase AuthApiError into BusinessRuleViolation so endpoints catch it."""
+    def wrapper(*args, **kwargs):
+        try:
+            return fn(*args, **kwargs)
+        except AuthApiError as e:
+            raise BusinessRuleViolation(str(e)) from e
+    return wrapper
 
 
 class SupabaseAuthRepository(IAuthRepository):
@@ -12,30 +25,42 @@ class SupabaseAuthRepository(IAuthRepository):
     def __init__(self, client: Client) -> None:
         self._client = client
 
+    @_guard
     def sign_up_with_email(self, email: Email, password: str) -> Identity:
         response = self._client.auth.sign_up({"email": str(email), "password": password})
         return self._to_identity(response.user, AuthProvider("email"))
 
+    @_guard
     def sign_in_with_email(self, email: Email, password: str) -> dict:
         response = self._client.auth.sign_in_with_password(
             {"email": str(email), "password": password}
         )
+        expires_at = datetime.fromtimestamp(
+            response.session.expires_at, tz=timezone.utc
+        ).isoformat()
         return {
             "access_token": response.session.access_token,
             "refresh_token": response.session.refresh_token,
+            "expires_at": expires_at,
             "user": self._to_identity(response.user, AuthProvider("email")),
         }
 
+    @_guard
     def send_phone_otp(self, phone: PhoneNumber) -> None:
         self._client.auth.sign_in_with_otp({"phone": str(phone)})
 
+    @_guard
     def verify_phone_otp(self, phone: PhoneNumber, token: str) -> dict:
         response = self._client.auth.verify_otp(
             {"phone": str(phone), "token": token, "type": "sms"}
         )
+        expires_at = datetime.fromtimestamp(
+            response.session.expires_at, tz=timezone.utc
+        ).isoformat()
         return {
             "access_token": response.session.access_token,
             "refresh_token": response.session.refresh_token,
+            "expires_at": expires_at,
             "user": self._to_identity(response.user, AuthProvider("phone")),
         }
 
@@ -47,7 +72,10 @@ class SupabaseAuthRepository(IAuthRepository):
         return response.url
 
     def sign_out(self, access_token: str) -> None:
-        self._client.auth.admin.sign_out(access_token)
+        try:
+            self._client.auth.admin.sign_out(access_token)
+        except AuthApiError:
+            pass
 
     def _to_identity(self, user, provider: AuthProvider) -> Identity:
         return Identity(
