@@ -77,6 +77,21 @@ class SupabaseAuthRepository(IAuthRepository):
         except AuthApiError:
             pass
 
+    @_guard
+    def refresh_session(self, refresh_token: str) -> dict:
+        response = self._client.auth.refresh_session(refresh_token)
+        expires_at = datetime.fromtimestamp(
+            response.session.expires_at, tz=timezone.utc
+        ).isoformat()
+        return {
+            "access_token": response.session.access_token,
+            "refresh_token": response.session.refresh_token,
+            "expires_at": expires_at,
+            "user": self._to_identity(response.user, AuthProvider(
+                response.user.app_metadata.get("provider", "email")
+            )),
+        }
+
     def _to_identity(self, user, provider: AuthProvider) -> Identity:
         return Identity(
             id=UserId(str(user.id)),

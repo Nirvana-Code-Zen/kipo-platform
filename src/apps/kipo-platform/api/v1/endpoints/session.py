@@ -1,6 +1,6 @@
 from dataclasses import asdict
 from datetime import datetime, timezone
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, make_response
 from auth.execute import execute as auth_execute
 from auth.commands import (
     SignUpWithEmailCommand,
@@ -9,6 +9,7 @@ from auth.commands import (
     VerifyPhoneOtpCommand,
     SignInWithOAuthCommand,
     SignOutCommand,
+    RefreshSessionCommand,
 )
 from shared.exceptions import BusinessRuleViolation
 from shared.providers import get_tenant_repo
@@ -30,6 +31,19 @@ def _session_response(auth_result: dict, user_id: str) -> dict:
         "tenant_id": str(tenant.id) if tenant else None,
         "tenant_slug": tenant.schema_name if tenant else None,
     }
+
+
+def _with_refresh_cookie(response, refresh_token: str):
+    response.set_cookie(
+        "kipo_refresh_token",
+        refresh_token,
+        httponly=True,
+        secure=False,   # True in production (HTTPS)
+        samesite="Lax",
+        max_age=60 * 60 * 24 * 30,  # 30 days
+        path="/api/v1/auth",
+    )
+    return response
 
 
 @session_bp.route("/sign-up", methods=["POST"])
@@ -62,7 +76,8 @@ def login_email():
             password=data.get("password", ""),
         ))
         user_id = str(result["user"].id)
-        return jsonify(_session_response(result, user_id)), 200
+        resp = make_response(jsonify(_session_response(result, user_id)), 200)
+        return _with_refresh_cookie(resp, result["refresh_token"])
     except BusinessRuleViolation as err:
         msg = str(err).lower()
         status = 401 if "invalid" in msg or "credentials" in msg or "not confirmed" in msg else 400
@@ -88,7 +103,8 @@ def verify_phone():
             token=data.get("token", ""),
         ))
         user_id = str(result["user"].id)
-        return jsonify(_session_response(result, user_id)), 200
+        resp = make_response(jsonify(_session_response(result, user_id)), 200)
+        return _with_refresh_cookie(resp, result["refresh_token"])
     except BusinessRuleViolation as err:
         return jsonify({"error": str(err)}), 400
 
@@ -110,4 +126,20 @@ def login_oauth():
 def logout():
     token = request.headers.get("Authorization", "").removeprefix("Bearer ").strip()
     auth_execute(SignOutCommand(access_token=token))
-    return jsonify({"message": "Signed out"}), 200
+    resp = make_response(jsonify({"message": "Signed out"}), 200)
+    resp.delete_cookie("kipo_refresh_token", path="/api/v1/auth")
+    return resp
+
+
+@session_bp.route("/refresh", methods=["POST"])
+def refresh():
+    refresh_token = request.cookies.get("kipo_refresh_token")
+    if not refresh_token:
+        return jsonify({"error": "No refresh token"}), 401
+    try:
+        result = auth_execute(RefreshSessionCommand(refresh_token=refresh_token))
+        user_id = str(result["user"].id)
+        resp = make_response(jsonify(_session_response(result, user_id)), 200)
+        return _with_refresh_cookie(resp, result["refresh_token"])
+    except BusinessRuleViolation as err:
+        return jsonify({"error": str(err)}), 401

@@ -33,3 +33,8 @@ class SignInWithOAuthCommand:
 @dataclass(frozen=True)
 class SignOutCommand:
     access_token: str
+
+
+@dataclass(frozen=True)
+class RefreshSessionCommand:
+    refresh_token: str

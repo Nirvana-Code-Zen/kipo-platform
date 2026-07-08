@@ -24,3 +24,6 @@ class IAuthRepository(ABC):
 
     @abstractmethod
     def sign_out(self, access_token: str) -> None: ...
+
+    @abstractmethod
+    def refresh_session(self, refresh_token: str) -> dict: ...

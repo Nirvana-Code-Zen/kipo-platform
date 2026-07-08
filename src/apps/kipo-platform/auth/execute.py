@@ -6,6 +6,7 @@ from auth.commands import (
     VerifyPhoneOtpCommand,
     SignInWithOAuthCommand,
     SignOutCommand,
+    RefreshSessionCommand,
 )
 from auth.operations import sign_up, sign_in, verify_otp, sign_out
 from shared.exceptions import BusinessRuleViolation
@@ -27,6 +28,8 @@ def execute(command: Any) -> Any:
             return sign_in.with_oauth(repo, provider, redirect_to)
         case SignOutCommand(access_token):
             return sign_out.execute(repo, access_token)
+        case RefreshSessionCommand(refresh_token):
+            return repo.refresh_session(refresh_token)
         case _:
             raise BusinessRuleViolation(
                 f"Unknown auth command: {type(command).__name__}"
