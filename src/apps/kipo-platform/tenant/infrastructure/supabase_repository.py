@@ -9,7 +9,6 @@ from shared.db_admin import admin_connection
 
 
 class SupabaseTenantRepository(ITenantRepository):
-
     def __init__(self, client: Client) -> None:
         self._client = client
 
@@ -49,7 +48,8 @@ class SupabaseTenantRepository(ITenantRepository):
         with admin_connection() as conn:
             with conn.cursor() as cur:
                 cur.execute(sql.SQL("CREATE SCHEMA IF NOT EXISTS {}").format(schema))
-                cur.execute(sql.SQL("""
+                cur.execute(
+                    sql.SQL("""
                     CREATE TABLE IF NOT EXISTS {}.employees (
                         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                         name TEXT NOT NULL,
@@ -57,16 +57,38 @@ class SupabaseTenantRepository(ITenantRepository):
                         role TEXT,
                         created_at TIMESTAMPTZ DEFAULT now()
                     )
-                """).format(schema))
-                cur.execute(sql.SQL("""
-                    CREATE TABLE IF NOT EXISTS {}.bills (
-                        id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-                        amount NUMERIC(10, 2) NOT NULL,
-                        status TEXT DEFAULT 'unpaid',
-                        issued_at TIMESTAMPTZ DEFAULT now(),
-                        due_at TIMESTAMPTZ
+                """).format(schema)
+                )
+                cur.execute(
+                    sql.SQL("""
+                    CREATE TABLE IF NOT EXISTS {schema}.bills (
+                        id          UUID            PRIMARY KEY DEFAULT gen_random_uuid(),
+                        customer_id UUID            NOT NULL REFERENCES {schema}.customers(id),
+                        customer    JSONB           NOT NULL,
+                        amount      NUMERIC(10, 2)  NOT NULL,
+                        status      TEXT            DEFAULT 'unpaid',
+                        issued_at   TIMESTAMPTZ     DEFAULT now(),
+                        due_at      TIMESTAMPTZ
                     )
-                """).format(schema))
+                """).format(schema=schema)
+                )
+                cur.execute(
+                    sql.SQL("""
+                    CREATE TABLE IF NOT EXISTS {}.customers (
+                        id          UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+                        tax_id      TEXT        NOT NULL,
+                        legal_name  TEXT        NOT NULL,
+                        tax_regime  TEXT        NOT NULL,
+                        zip         TEXT        NOT NULL,
+                        cfdi_use    TEXT        NOT NULL,
+                        email       TEXT        NOT NULL,
+                        is_active   BOOLEAN     NOT NULL DEFAULT TRUE,
+                        avatar_url  TEXT,
+                        created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+                        updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+                    )
+                """).format(schema)
+                )
             conn.commit()
 
     def find_by_auth_id(self, auth_id: str) -> Tenant | None:
@@ -89,7 +111,17 @@ class SupabaseTenantRepository(ITenantRepository):
         return self._to_tenant_from_row(row, auth_id)
 
     def _to_tenant_from_row(self, row: tuple, auth_id: str) -> Tenant:
-        id_, name, schema_name, plan_type, status, features_enabled, timezone, currency, storage_quota_bytes = row
+        (
+            id_,
+            name,
+            schema_name,
+            plan_type,
+            status,
+            features_enabled,
+            timezone,
+            currency,
+            storage_quota_bytes,
+        ) = row
         return Tenant(
             id=TenantId(str(id_)),
             auth_id=TenantId(auth_id),
