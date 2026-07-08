@@ -9,40 +9,39 @@ from shared.db_admin import admin_connection
 SCHEMA_SQL = """
 -- Run per tenant schema (replace {schema} with actual schema name)
 CREATE TABLE IF NOT EXISTS {schema}.invoices (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    folio_num INTEGER NOT NULL DEFAULT 1,
-    series VARCHAR(10),
-    voucher_type VARCHAR(2) NOT NULL,
-    payment_method VARCHAR(3) NOT NULL,
-    payment_form VARCHAR(2) NOT NULL,
-    currency VARCHAR(3) NOT NULL DEFAULT 'MXN',
-    export_type VARCHAR(2) NOT NULL DEFAULT '01',
-    issuer_zip VARCHAR(5) NOT NULL,
-    receiver_tax_id VARCHAR(13) NOT NULL,
-    receiver_name VARCHAR(254) NOT NULL,
-    receiver_zip VARCHAR(5),
-    subtotal NUMERIC(12,2) NOT NULL DEFAULT 0,
-    iva NUMERIC(12,2) NOT NULL DEFAULT 0,
-    total NUMERIC(12,2) NOT NULL DEFAULT 0,
-    status VARCHAR(20) NOT NULL DEFAULT 'draft',
-    created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-    updated_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    id              UUID            PRIMARY KEY DEFAULT gen_random_uuid(),
+    folio_num       INTEGER         NOT NULL DEFAULT 1,
+    series          VARCHAR(10),
+    voucher_type    VARCHAR(2)      NOT NULL,
+    payment_method  VARCHAR(3)      NOT NULL,
+    payment_form    VARCHAR(2)      NOT NULL,
+    currency        VARCHAR(3)      NOT NULL DEFAULT 'MXN',
+    export_type     VARCHAR(2)      NOT NULL DEFAULT '01',
+    issuer_zip      VARCHAR(5)      NOT NULL,
+    customer_id     UUID            REFERENCES {schema}.customers(id) ON DELETE SET NULL,
+    receiver        JSONB           NOT NULL,
+    subtotal        NUMERIC(12,2)   NOT NULL DEFAULT 0,
+    iva             NUMERIC(12,2)   NOT NULL DEFAULT 0,
+    total           NUMERIC(12,2)   NOT NULL DEFAULT 0,
+    status          VARCHAR(20)     NOT NULL DEFAULT 'draft',
+    created_at      TIMESTAMPTZ     NOT NULL DEFAULT now(),
+    updated_at      TIMESTAMPTZ     NOT NULL DEFAULT now()
 );
 
 CREATE TABLE IF NOT EXISTS {schema}.invoice_concepts (
-    id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
-    invoice_id UUID NOT NULL REFERENCES {schema}.invoices(id) ON DELETE CASCADE,
-    product_service_code VARCHAR(20) NOT NULL,
-    unit_code VARCHAR(10) NOT NULL,
-    description VARCHAR(1000) NOT NULL,
-    quantity NUMERIC(14,6) NOT NULL,
-    unit_price NUMERIC(14,6) NOT NULL,
-    amount NUMERIC(12,2) NOT NULL,
-    tax_object VARCHAR(2) NOT NULL DEFAULT '02',
-    iva_rate NUMERIC(5,2),
-    iva_amount NUMERIC(12,2) NOT NULL DEFAULT 0,
-    ordinal SMALLINT NOT NULL DEFAULT 0,
-    created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    id                   UUID            PRIMARY KEY DEFAULT gen_random_uuid(),
+    invoice_id           UUID            NOT NULL REFERENCES {schema}.invoices(id) ON DELETE CASCADE,
+    product_service_code VARCHAR(20)     NOT NULL,
+    unit_code            VARCHAR(10)     NOT NULL,
+    description          VARCHAR(1000)   NOT NULL,
+    quantity             NUMERIC(14,6)   NOT NULL,
+    unit_price           NUMERIC(14,6)   NOT NULL,
+    amount               NUMERIC(12,2)   NOT NULL,
+    tax_object           VARCHAR(2)      NOT NULL DEFAULT '02',
+    iva_rate             NUMERIC(5,2),
+    iva_amount           NUMERIC(12,2)   NOT NULL DEFAULT 0,
+    ordinal              SMALLINT        NOT NULL DEFAULT 0,
+    created_at           TIMESTAMPTZ     NOT NULL DEFAULT now()
 );
 """
 
