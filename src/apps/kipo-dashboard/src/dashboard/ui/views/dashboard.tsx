@@ -1,7 +1,5 @@
 'use client'
 
-import { useEffect, useState } from "react"
-
 import { BillingAnalytics } from "@/src/shared/ui/components/dashboard/billing-analytics"
 import { DeclarationCountdown } from "@/src/shared/ui/components/dashboard/declaration-countdown"
 import { Header } from "@/src/shared/ui/components/dashboard/header"
@@ -21,13 +19,10 @@ import {
 import { StampsProgress } from "@/src/shared/ui/components/dashboard/stamps-progress"
 import { StatsCards } from "@/src/shared/ui/components/dashboard/stats-cards"
 
-export function Dashboard() {
-  const [loading, setLoading] = useState(true)
+import { useDashboardSummary } from "../hooks/useDashboardSummary"
 
-  useEffect(() => {
-    const t = setTimeout(() => setLoading(false), 1800)
-    return () => clearTimeout(t)
-  }, [])
+export function Dashboard() {
+  const { summary, isLoading } = useDashboardSummary()
 
   return (
     <>
@@ -37,24 +32,30 @@ export function Dashboard() {
       />
 
       <div className="mt-4 md:mt-5 space-y-3 md:space-y-4">
-        {loading ? <StatsCardsSkeleton /> : <StatsCards />}
+        {isLoading ? <StatsCardsSkeleton /> : <StatsCards stats={summary?.stats ?? null} />}
 
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-3 md:gap-4">
           <div className="lg:col-span-2 space-y-3 md:space-y-4">
-            {loading ? <BillingAnalyticsSkeleton /> : <BillingAnalytics />}
-            <RecentClients />
+            {isLoading
+              ? <BillingAnalyticsSkeleton />
+              : <BillingAnalytics />}
+            <RecentClients clients={summary?.recent_clients ?? []} isLoading={isLoading} />
           </div>
 
           <div className="space-y-3 md:space-y-4">
-            {loading ? <RemindersSkeleton /> : <Reminders />}
-            {loading ? <StampsProgressSkeleton /> : <StampsProgress />}
+            {isLoading ? <RemindersSkeleton /> : <Reminders />}
+            {isLoading
+              ? <StampsProgressSkeleton />
+              : <StampsProgress stamps={summary?.stamps ?? null} />}
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3 md:gap-4">
-          {loading ? <InvoiceListSkeleton /> : <InvoiceList />}
-          {loading ? <KipoAppCardSkeleton /> : <KipoAppCard />}
-          {loading ? <DeclarationCountdownSkeleton /> : <DeclarationCountdown />}
+          {isLoading
+            ? <InvoiceListSkeleton />
+            : <InvoiceList invoices={summary?.recent_invoices ?? []} />}
+          {isLoading ? <KipoAppCardSkeleton /> : <KipoAppCard />}
+          {isLoading ? <DeclarationCountdownSkeleton /> : <DeclarationCountdown />}
         </div>
       </div>
     </>

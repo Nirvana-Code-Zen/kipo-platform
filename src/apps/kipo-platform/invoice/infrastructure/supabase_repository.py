@@ -233,6 +233,111 @@ class SupabaseInvoiceRepository(IInvoiceRepository):
                 )
                 return cur.fetchone()[0]
 
+    def get_dashboard_stats(self, schema_name: str) -> dict:
+        schema = sql.Identifier(schema_name)
+        with admin_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    sql.SQL("""
+                        SELECT
+                            status,
+                            COUNT(*) AS all_time,
+                            COUNT(*) FILTER (
+                                WHERE date_trunc('month', created_at) = date_trunc('month', now())
+                            ) AS this_month,
+                            COUNT(*) FILTER (
+                                WHERE date_trunc('month', created_at) = date_trunc('month', now()) - INTERVAL '1 month'
+                            ) AS prev_month
+                        FROM {schema}.invoices
+                        GROUP BY status
+                    """).format(schema=schema)
+                )
+                rows = cur.fetchall()
+
+        all_time = {"stamped": 0, "cancelled": 0, "draft": 0}
+        this_month = {"stamped": 0, "cancelled": 0, "draft": 0}
+        prev_month = {"stamped": 0, "cancelled": 0, "draft": 0}
+        for status, at, tm, pm in rows:
+            if status in all_time:
+                all_time[status] = int(at)
+                this_month[status] = int(tm)
+                prev_month[status] = int(pm)
+
+        total_all = sum(all_time.values())
+        total_this = sum(this_month.values())
+        total_prev = sum(prev_month.values())
+
+        return {
+            "total": total_all,
+            "stamped": all_time["stamped"],
+            "cancelled": all_time["cancelled"],
+            "draft": all_time["draft"],
+            "this_month": {
+                "total": total_this,
+                "stamped": this_month["stamped"],
+                "cancelled": this_month["cancelled"],
+                "draft": this_month["draft"],
+            },
+            "prev_month": {
+                "total": total_prev,
+                "stamped": prev_month["stamped"],
+                "cancelled": prev_month["cancelled"],
+                "draft": prev_month["draft"],
+            },
+        }
+
+    def get_billing_activity(self, schema_name: str, view: str, week_start: str | None) -> list[dict]:
+        from datetime import datetime, timedelta, timezone
+        schema = sql.Identifier(schema_name)
+
+        MONTH_LABELS = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
+        DAY_LABELS = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"]
+
+        with admin_connection() as conn:
+            with conn.cursor() as cur:
+                if view == "monthly":
+                    year = datetime.now(timezone.utc).year
+                    cur.execute(
+                        sql.SQL("""
+                            SELECT EXTRACT(MONTH FROM created_at)::int AS m,
+                                   COALESCE(SUM(total), 0)
+                            FROM {schema}.invoices
+                            WHERE EXTRACT(YEAR FROM created_at) = %s
+                            GROUP BY m
+                        """).format(schema=schema),
+                        (year,),
+                    )
+                    month_map = {row[0]: float(row[1]) for row in cur.fetchall()}
+                    return [
+                        {"label": MONTH_LABELS[m - 1], "total": month_map.get(m, 0.0)}
+                        for m in range(1, 13)
+                    ]
+                else:
+                    if view == "week" and week_start:
+                        ws = datetime.fromisoformat(week_start).replace(tzinfo=timezone.utc)
+                    else:
+                        now = datetime.now(timezone.utc)
+                        days_since_sunday = (now.weekday() + 1) % 7
+                        ws = (now - timedelta(days=days_since_sunday)).replace(
+                            hour=0, minute=0, second=0, microsecond=0
+                        )
+                    we = ws + timedelta(days=7)
+                    cur.execute(
+                        sql.SQL("""
+                            SELECT EXTRACT(DOW FROM created_at)::int AS dow,
+                                   COALESCE(SUM(total), 0)
+                            FROM {schema}.invoices
+                            WHERE created_at >= %s AND created_at < %s
+                            GROUP BY dow
+                        """).format(schema=schema),
+                        (ws, we),
+                    )
+                    dow_map = {row[0]: float(row[1]) for row in cur.fetchall()}
+                    return [
+                        {"label": DAY_LABELS[d], "total": dow_map.get(d, 0.0)}
+                        for d in range(7)
+                    ]
+
     def _build_invoice(self, cur, schema, row) -> Invoice:
         cur.execute(
             sql.SQL("""

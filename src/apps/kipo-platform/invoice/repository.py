@@ -21,3 +21,9 @@ class IInvoiceRepository(ABC):
 
     @abstractmethod
     def count_by_status(self, schema_name: str, status: str) -> int: ...
+
+    @abstractmethod
+    def get_dashboard_stats(self, schema_name: str) -> dict: ...
+
+    @abstractmethod
+    def get_billing_activity(self, schema_name: str, view: str, week_start: str | None) -> list[dict]: ...

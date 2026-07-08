@@ -4,9 +4,13 @@ import { useEffect, useState } from "react"
 
 import { Card } from "@kipo/ui-react"
 
-export function StampsProgress() {
+import type { DashboardStamps } from "@/src/dashboard/ui/hooks/useDashboardSummary"
+
+export function StampsProgress({ stamps }: { stamps: DashboardStamps | null }) {
   const [progress, setProgress] = useState(0)
-  const targetProgress = 41
+  const targetProgress = stamps
+    ? Math.round((stamps.stamped / Math.max(stamps.stamped + stamps.available, 1)) * 100)
+    : 0
 
   useEffect(() => {
     const timer = setTimeout(() => {

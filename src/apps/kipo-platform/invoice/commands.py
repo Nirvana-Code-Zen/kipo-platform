@@ -38,3 +38,15 @@ class DeleteInvoiceCommand:
 @dataclass(frozen=True)
 class GetInvoiceStatsQuery:
     schema_name: str
+
+
+@dataclass(frozen=True)
+class GetInvoiceDashboardStatsQuery:
+    schema_name: str
+
+
+@dataclass(frozen=True)
+class GetBillingActivityQuery:
+    schema_name: str
+    view: str
+    week_start: str | None = None

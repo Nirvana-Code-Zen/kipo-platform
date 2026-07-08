@@ -14,9 +14,8 @@ def execute(
     currency: str,
     export_type: str,
     issuer_zip: str,
-    receiver_tax_id: str,
-    receiver_name: str,
-    receiver_zip: str | None,
+    customer_id: str | None,
+    receiver: dict,
     raw_concepts: list[dict],
 ) -> Invoice:
     invoice_id = str(uuid4())
@@ -66,9 +65,8 @@ def execute(
         currency=currency,
         export_type=export_type,
         issuer_zip=issuer_zip,
-        receiver_tax_id=receiver_tax_id,
-        receiver_name=receiver_name,
-        receiver_zip=receiver_zip,
+        customer_id=customer_id,
+        receiver=receiver,
         subtotal=subtotal,
         iva=iva,
         total=total,

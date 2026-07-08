@@ -5,47 +5,59 @@ import { useState } from "react"
 import { ArrowUpRight, TrendingUp } from "lucide-react"
 import { Card } from "@kipo/ui-react"
 
-const stats = [
-  {
-    title: "Total Facturas",
-    value: "24",
-    increase: "Incremento vs mes anterior",
-    bgColor: "bg-primary",
-    textColor: "text-primary-foreground",
-    delay: "0ms",
-  },
-  {
-    title: "Canceladas",
-    value: "10",
-    increase: "Incremento vs mes anterior",
-    bgColor: "bg-card",
-    textColor: "text-foreground",
-    delay: "100ms",
-  },
-  {
-    title: "Timbradas",
-    value: "12",
-    increase: "Incremento vs mes anterior",
-    bgColor: "bg-card",
-    textColor: "text-foreground",
-    delay: "200ms",
-  },
-  {
-    title: "Borradores",
-    value: "2",
-    subtitle: "En revisión",
-    bgColor: "bg-card",
-    textColor: "text-foreground",
-    delay: "300ms",
-  },
-]
+import type { DashboardStats, MonthStats } from "@/src/dashboard/ui/hooks/useDashboardSummary"
 
-export function StatsCards() {
+function monthDelta(stats: DashboardStats | null, key: keyof MonthStats): string {
+  if (!stats) return "vs mes anterior"
+  const d = stats.this_month[key] - stats.prev_month[key]
+  return `${d >= 0 ? "+" : ""}${d} vs mes anterior`
+}
+
+function buildStats(stats: DashboardStats | null) {
+  return [
+    {
+      title: "Total Facturas",
+      value: stats ? String(stats.total) : "—",
+      increase: monthDelta(stats, "total"),
+      bgColor: "bg-primary",
+      textColor: "text-primary-foreground",
+      delay: "0ms",
+    },
+    {
+      title: "Canceladas",
+      value: stats ? String(stats.cancelled) : "—",
+      increase: monthDelta(stats, "cancelled"),
+      bgColor: "bg-card",
+      textColor: "text-foreground",
+      delay: "100ms",
+    },
+    {
+      title: "Timbradas",
+      value: stats ? String(stats.stamped) : "—",
+      increase: monthDelta(stats, "stamped"),
+      bgColor: "bg-card",
+      textColor: "text-foreground",
+      delay: "200ms",
+    },
+    {
+      title: "Borradores",
+      value: stats ? String(stats.draft) : "—",
+      subtitle: "En revisión",
+      bgColor: "bg-card",
+      textColor: "text-foreground",
+      delay: "300ms",
+    },
+  ]
+}
+
+export function StatsCards({ stats }: { stats: DashboardStats | null }) {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null)
+
+  const cards = buildStats(stats)
 
   return (
     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
-      {stats.map((stat, index) => (
+      {cards.map((stat, index) => (
         <Card
           key={stat.title}
           onMouseEnter={() => setHoveredCard(index)}

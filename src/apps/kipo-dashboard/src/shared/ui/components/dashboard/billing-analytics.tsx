@@ -6,28 +6,13 @@ import { Card } from '@kipo/ui-react'
 import { ChevronLeft, ChevronRight } from "lucide-react"
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer, Cell } from "recharts"
 
+import { useBillingActivity } from "@/src/dashboard/ui/hooks/useBillingActivity"
+
 import type { TooltipProps } from "recharts"
 
 type ViewMode = "monthly" | "current-week" | "custom-week"
 
 const MONTHS = ["Ene", "Feb", "Mar", "Abr", "May", "Jun", "Jul", "Ago", "Sep", "Oct", "Nov", "Dic"]
-const DAYS_SHORT = ["Dom", "Lun", "Mar", "Mié", "Jue", "Vie", "Sáb"]
-const DAYS_LONG = ["Domingo", "Lunes", "Martes", "Miércoles", "Jueves", "Viernes", "Sábado"]
-
-const monthlyData = [
-  { day: "Ene", value: 148200, label: "Enero" },
-  { day: "Feb", value: 221500, label: "Febrero" },
-  { day: "Mar", value: 195800, label: "Marzo" },
-  { day: "Abr", value: 267300, label: "Abril" },
-  { day: "May", value: 312700, label: "Mayo" },
-  { day: "Jun", value: 284100, label: "Junio" },
-  { day: "Jul", value: 225000, label: "Julio" },
-  { day: "Ago", value: 0, label: "Agosto" },
-  { day: "Sep", value: 0, label: "Septiembre" },
-  { day: "Oct", value: 0, label: "Octubre" },
-  { day: "Nov", value: 0, label: "Noviembre" },
-  { day: "Dic", value: 0, label: "Diciembre" },
-]
 
 function getWeekStart(offsetWeeks: number): Date {
   const now = new Date()
@@ -36,20 +21,6 @@ function getWeekStart(offsetWeeks: number): Date {
   sunday.setDate(now.getDate() - dayOfWeek + offsetWeeks * 7)
   sunday.setHours(0, 0, 0, 0)
   return sunday
-}
-
-function generateWeekData(weekOffset: number) {
-  // Seed-based pseudo-random for reproducible demo data per week
-  const seed = 2026070 + weekOffset * 7
-  const seeded = (n: number) => {
-    const x = Math.sin(seed + n) * 10000
-    return Math.abs(x - Math.floor(x))
-  }
-  return DAYS_SHORT.map((day, i) => ({
-    day,
-    value: i === 0 || i === 6 ? Math.round(seeded(i) * 15000 + 5000) : Math.round(seeded(i) * 45000 + 20000),
-    label: DAYS_LONG[i],
-  }))
 }
 
 function formatWeekRange(weekStart: Date): string {
@@ -83,18 +54,14 @@ export function BillingAnalytics() {
   const [hoveredBar, setHoveredBar] = useState<number | null>(null)
   const [viewMode, setViewMode] = useState<ViewMode>("current-week")
   const [weekOffset, setWeekOffset] = useState(0)
-  const [isLoading, setIsLoading] = useState(false)
 
-  function triggerLoad(fn: () => void) {
-    setIsLoading(true)
-    setTimeout(() => { fn(); setIsLoading(false) }, 600)
-  }
+  const backendView = viewMode === "monthly" ? "monthly" : viewMode === "current-week" ? "current_week" : "week"
+  const weekStartParam = viewMode === "custom-week" ? getWeekStart(weekOffset).toISOString().slice(0, 10) : undefined
+  const { data: activityData, isLoading: chartLoading } = useBillingActivity(backendView, weekStartParam)
 
   const chartData = useMemo(() => {
-    if (viewMode === "monthly") return monthlyData
-    if (viewMode === "current-week") return generateWeekData(0)
-    return generateWeekData(weekOffset)
-  }, [viewMode, weekOffset])
+    return activityData.map((p) => ({ day: p.label, value: p.total, label: p.label }))
+  }, [activityData])
 
   const nonZeroData = chartData.filter((d) => d.value > 0)
   const maxValue = nonZeroData.length ? Math.max(...nonZeroData.map((d) => d.value)) : 0
@@ -128,10 +95,10 @@ export function BillingAnalytics() {
           {viewButtons.map(({ key, label }) => (
             <button
               key={key}
-              onClick={() => triggerLoad(() => {
+              onClick={() => {
                 setViewMode(key)
                 if (key !== "custom-week") setWeekOffset(0)
-              })}
+              }}
               className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all duration-200 whitespace-nowrap ${
                 viewMode === key
                   ? "bg-background text-foreground shadow-sm"
@@ -148,7 +115,7 @@ export function BillingAnalytics() {
       {viewMode === "custom-week" && (
         <div className="flex items-center justify-between mb-4 bg-muted/30 rounded-lg px-3 py-2">
           <button
-            onClick={() => triggerLoad(() => setWeekOffset((o) => o - 1))}
+            onClick={() => setWeekOffset((o) => o - 1)}
             className="p-1 rounded-md hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
           >
             <ChevronLeft className="w-4 h-4" />
@@ -157,7 +124,7 @@ export function BillingAnalytics() {
             Sem. del {formatWeekRange(weekStart)}
           </span>
           <button
-            onClick={() => triggerLoad(() => setWeekOffset((o) => Math.min(o + 1, 0)))}
+            onClick={() => setWeekOffset((o) => Math.min(o + 1, 0))}
             disabled={weekOffset === 0}
             className="p-1 rounded-md hover:bg-muted transition-colors text-muted-foreground hover:text-foreground disabled:opacity-30 disabled:cursor-not-allowed"
           >
@@ -168,7 +135,7 @@ export function BillingAnalytics() {
 
       {/* Chart / Skeleton */}
       <div className="h-64 mb-4 relative">
-        {isLoading ? (
+        {chartLoading ? (
           <div className="h-full flex items-end gap-2 pb-6">
             {(viewMode === "monthly"
               ? [90, 140, 110, 160, 180, 130, 100, 40, 40, 40, 40, 40]
@@ -229,7 +196,7 @@ export function BillingAnalytics() {
 
       {/* Footer */}
       <div className="pt-4 border-t border-muted/50 flex items-center justify-between">
-        {isLoading ? (
+        {chartLoading ? (
           <>
             <div className="h-4 w-32 rounded bg-muted animate-pulse" />
             <div className="h-4 w-28 rounded bg-muted animate-pulse" />
