@@ -30,6 +30,7 @@ export function Button({
   disabled = false,
   iconLeft = null,
   iconRight = null,
+  type = 'button',
   children,
   className,
   style,
@@ -40,6 +41,7 @@ export function Button({
 
   return (
     <button
+      type={type}
       disabled={disabled}
       className={cn(className)}
       style={{

@@ -14,24 +14,34 @@ class SupabaseTenantRepository(ITenantRepository):
         self._client = client
 
     def save(self, tenant: Tenant) -> Tenant:
-        self._client.table("tenants").insert({
-            "id": str(tenant.id),
-            "name": tenant.name,
-            "schema_name": tenant.schema_name,
-            "plan_type": tenant.plan_type.value,
-            "status": tenant.status.value,
-            "features_enabled": list(tenant.features_enabled),
-            "timezone": tenant.timezone,
-            "currency": tenant.currency,
-            "storage_quota_bytes": tenant.storage_quota_bytes,
-        }).execute()
-
-        self._client.table("tenant_users").insert({
-            "tenant_id": str(tenant.id),
-            "user_id": str(tenant.auth_id),
-            "role": "owner",
-        }).execute()
-
+        with admin_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    INSERT INTO public.tenants
+                        (id, name, schema_name, plan_type, status, features_enabled, timezone, currency, storage_quota_bytes)
+                    VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                    """,
+                    (
+                        str(tenant.id),
+                        tenant.name,
+                        tenant.schema_name,
+                        tenant.plan_type.value,
+                        tenant.status.value,
+                        list(tenant.features_enabled),
+                        tenant.timezone,
+                        tenant.currency,
+                        tenant.storage_quota_bytes,
+                    ),
+                )
+                cur.execute(
+                    """
+                    INSERT INTO public.tenant_users (tenant_id, user_id, role)
+                    VALUES (%s, %s, %s)
+                    """,
+                    (str(tenant.id), str(tenant.auth_id), "owner"),
+                )
+            conn.commit()
         return tenant
 
     def provision_schema(self, schema_name: str) -> None:
@@ -60,17 +70,38 @@ class SupabaseTenantRepository(ITenantRepository):
             conn.commit()
 
     def find_by_auth_id(self, auth_id: str) -> Tenant | None:
-        response = (
-            self._client.table("tenant_users")
-            .select("tenant_id, role, tenants(*)")
-            .eq("user_id", auth_id)
-            .eq("role", "owner")
-            .maybe_single()
-            .execute()
-        )
-        if not response.data:
+        with admin_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    SELECT t.id, t.name, t.schema_name, t.plan_type, t.status,
+                           t.features_enabled, t.timezone, t.currency, t.storage_quota_bytes
+                    FROM public.tenant_users tu
+                    JOIN public.tenants t ON t.id = tu.tenant_id
+                    WHERE tu.user_id = %s AND tu.role = 'owner'
+                    LIMIT 1
+                    """,
+                    (auth_id,),
+                )
+                row = cur.fetchone()
+        if not row:
             return None
-        return self._to_tenant(response.data["tenants"], auth_id)
+        return self._to_tenant_from_row(row, auth_id)
+
+    def _to_tenant_from_row(self, row: tuple, auth_id: str) -> Tenant:
+        id_, name, schema_name, plan_type, status, features_enabled, timezone, currency, storage_quota_bytes = row
+        return Tenant(
+            id=TenantId(str(id_)),
+            auth_id=TenantId(auth_id),
+            name=name,
+            schema_name=schema_name,
+            plan_type=PlanType(plan_type),
+            status=TenantStatus(status),
+            features_enabled=tuple(features_enabled or []),
+            timezone=timezone,
+            currency=currency,
+            storage_quota_bytes=storage_quota_bytes,
+        )
 
     def _to_tenant(self, row: dict, auth_id: str = "") -> Tenant:
         return Tenant(

@@ -21,15 +21,6 @@ $$;
 REVOKE ALL ON FUNCTION internal.is_email_confirmed() FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION internal.is_email_confirmed() TO authenticated;
 
--- RLS INSERT: solo usuarios con email confirmado pueden crear tenants
-CREATE POLICY "tenants_insert_confirmed" ON public.tenants
-    FOR INSERT TO authenticated
-    WITH CHECK (internal.is_email_confirmed());
-
--- RLS INSERT: solo usuarios con email confirmado pueden vincularse a un tenant
-CREATE POLICY "tenant_users_insert_confirmed" ON public.tenant_users
-    FOR INSERT TO authenticated
-    WITH CHECK (
-        (SELECT auth.uid()) = user_id
-        AND internal.is_email_confirmed()
-    );
+-- INSERT en tenants y tenant_users solo ocurre desde el backend (service_role)
+-- El backend valida email confirmation a nivel aplicación antes de insertar
+-- No se necesitan políticas INSERT — service_role bypasea RLS

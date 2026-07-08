@@ -7,13 +7,14 @@ import { useRouter } from 'next/navigation'
 import { useAuth } from '@/src/auth/ui/hooks/useAuth'
 
 export default function RootPage () {
-  const { isAuthenticated, isLoading } = useAuth()
+  const { isAuthenticated, hasTenant, isLoading } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
     if (isLoading) return
-    router.replace(isAuthenticated ? '/customers' : '/login')
-  }, [isAuthenticated, isLoading, router])
+    if (!isAuthenticated) { router.replace('/login'); return }
+    router.replace(hasTenant ? '/dashboard' : '/onboarding')
+  }, [isAuthenticated, hasTenant, isLoading, router])
 
   return null
 }

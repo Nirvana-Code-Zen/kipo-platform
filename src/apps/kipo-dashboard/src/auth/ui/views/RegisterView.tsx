@@ -2,11 +2,11 @@
 
 import { useState } from 'react'
 
+import Link from 'next/link'
 import { Loader2 } from 'lucide-react'
 import { Button } from '@kipo/ui-react'
 
 import { AuthInput } from '../components/AuthInput'
-import { AuthShell } from '../components/AuthShell'
 import { useAuth } from '../hooks/useAuth'
 
 import type { AuthError } from '../../core/domain/exceptions/auth.errors'
@@ -80,7 +80,7 @@ export const RegisterView = () => {
   }
 
   return (
-    <AuthShell>
+    <>
       {/* Heading */}
       <div style={{ marginBottom: 28 }}>
         <h1
@@ -98,12 +98,12 @@ export const RegisterView = () => {
         </h1>
         <p style={{ fontSize: 14, color: 'var(--text-muted)', fontFamily: 'var(--font-body)' }}>
           ¿Ya tienes cuenta?{' '}
-          <a
+          <Link
             href='/login'
             style={{ color: 'var(--text-strong)', fontWeight: 600, textDecoration: 'underline', textUnderlineOffset: 3 }}
           >
             Inicia sesión
-          </a>
+          </Link>
         </p>
       </div>
 
@@ -308,6 +308,6 @@ export const RegisterView = () => {
           Continuar con Facebook
         </Button>
       </div>
-    </AuthShell>
+    </>
   )
 }

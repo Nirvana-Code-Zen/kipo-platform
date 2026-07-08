@@ -1,15 +1,19 @@
 'use client'
 
-import { AuthShell } from '../components/AuthShell'
+import Link from 'next/link'
+import { MailCheck } from 'lucide-react'
+
 import { useAuth } from '../hooks/useAuth'
 
 export const EmailConfirmView = () => {
   const { pendingEmail } = useAuth()
 
   return (
-    <AuthShell>
+    <>
       <div style={{ textAlign: 'center', padding: '8px 0 24px' }}>
-        <div style={{ fontSize: 48, marginBottom: 24 }}>📬</div>
+        <div style={{ fontSize: 48, marginBottom: 24 }}>
+          <MailCheck />
+        </div>
         <h1
           style={{
             fontFamily: 'var(--font-display)',
@@ -68,7 +72,7 @@ export const EmailConfirmView = () => {
           textAlign: 'center',
         }}
       >
-        <a
+        <Link
           href='/login'
           style={{
             fontSize: 13,
@@ -79,8 +83,8 @@ export const EmailConfirmView = () => {
           }}
         >
           Volver al inicio de sesión
-        </a>
+        </Link>
       </div>
-    </AuthShell>
+    </>
   )
 }

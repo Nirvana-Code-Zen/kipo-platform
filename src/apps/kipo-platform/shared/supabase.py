@@ -8,6 +8,6 @@ def get_client() -> Client:
     global _client
     if _client is None:
         url = os.environ.get("PROJECT_URL", "")
-        key = os.environ.get("AUTH_KEY_PUBLISHABLE", "")
+        key = os.environ.get("AUTH_KEY_SECRET", "")
         _client = create_client(url, key)
     return _client

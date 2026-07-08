@@ -21,6 +21,10 @@ def execute(
     storage_quota_bytes: int,
     features_enabled: tuple[str, ...],
 ) -> Tenant:
+    existing = repo.find_by_auth_id(raw_auth_id)
+    if existing:
+        return existing
+
     if not name or not name.strip():
         raise BusinessRuleViolation("Business name cannot be empty.")
     if not _VALID_SCHEMA.match(schema_name):

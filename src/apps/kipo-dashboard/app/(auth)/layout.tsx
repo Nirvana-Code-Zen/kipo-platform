@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { useAuth } from '@/src/auth/ui/hooks/useAuth'
+import { AuthShell } from '@/src/auth/ui/components/AuthShell'
 
 export default function AuthLayout ({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, hasTenant, isEmailPending, isLoading } = useAuth()
@@ -18,5 +19,5 @@ export default function AuthLayout ({ children }: { children: React.ReactNode })
   }, [isAuthenticated, hasTenant, isEmailPending, isLoading, router])
 
   if (isAuthenticated) return null
-  return <>{children}</>
+  return <AuthShell>{children}</AuthShell>
 }

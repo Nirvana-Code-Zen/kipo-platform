@@ -2,11 +2,11 @@
 
 import { useState } from 'react'
 
+import Link from 'next/link'
 import { Loader2 } from 'lucide-react'
 import { Button } from '@kipo/ui-react'
 
 import { AuthInput } from '../components/AuthInput'
-import { AuthShell } from '../components/AuthShell'
 import { useAuth } from '../hooks/useAuth'
 
 import type { AuthError } from '../../core/domain/exceptions/auth.errors'
@@ -85,7 +85,7 @@ export const LoginView = () => {
   }
 
   return (
-    <AuthShell>
+    <>
       <div style={{ marginBottom: 28 }}>
         <h1
           style={{
@@ -102,12 +102,12 @@ export const LoginView = () => {
         </h1>
         <p style={{ fontSize: 14, color: 'var(--text-muted)', fontFamily: 'var(--font-body)' }}>
           ¿No tienes cuenta?{' '}
-          <a
+          <Link
             href='/register'
             style={{ color: 'var(--text-strong)', fontWeight: 600, textDecoration: 'underline', textUnderlineOffset: 3 }}
           >
             Regístrate
-          </a>
+          </Link>
         </p>
       </div>
 
@@ -334,6 +334,6 @@ export const LoginView = () => {
           Continuar con Facebook
         </Button>
       </div>
-    </AuthShell>
+    </>
   )
 }

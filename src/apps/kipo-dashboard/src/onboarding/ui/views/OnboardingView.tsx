@@ -109,53 +109,6 @@ export const OnboardingView = () => {
             placeholder='Ej. Refaccionaria López S.A.'
           />
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-            <label
-              style={{
-                fontSize: 13,
-                fontWeight: 600,
-                color: 'var(--text-strong)',
-                fontFamily: 'var(--font-body)',
-              }}
-            >
-              Identificador único
-            </label>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                background: 'var(--bg-subtle)',
-                borderRadius: 14,
-                border: '1.5px solid transparent',
-                padding: '0 16px',
-                gap: 4,
-              }}
-            >
-              <span style={{ fontSize: 13, color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', flexShrink: 0 }}>
-                tenant/
-              </span>
-              <input
-                type='text'
-                value={schemaName}
-                onChange={(e) => setSchemaName(e.target.value)}
-                placeholder='mi-empresa'
-                style={{
-                  flex: 1,
-                  border: 'none',
-                  outline: 'none',
-                  background: 'transparent',
-                  padding: '15px 0',
-                  fontSize: 14,
-                  fontFamily: 'var(--font-mono)',
-                  color: 'var(--text-strong)',
-                }}
-              />
-            </div>
-            <p style={{ fontSize: 12, color: 'var(--text-muted)', fontFamily: 'var(--font-body)', margin: 0 }}>
-              Solo letras minúsculas, números y guiones. No se puede cambiar después.
-            </p>
-          </div>
-
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
             <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
               <label style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-strong)', fontFamily: 'var(--font-body)' }}>
