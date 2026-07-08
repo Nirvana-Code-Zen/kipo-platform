@@ -3,6 +3,7 @@
 import { useState, useMemo } from "react"
 
 import type { UIInvoice, VoucherType } from "../components/types"
+import type { CreateInvoiceApiRequest } from "../../core/application/dtos/InvoiceApiDTO"
 
 export type ConceptFormItem = {
   id: string
@@ -60,6 +61,8 @@ export function useInvoiceForm() {
 
   const [receiverTaxId, setReceiverTaxId] = useState("")
   const [receiverName, setReceiverName] = useState("")
+  const [receiverZip, setReceiverZip] = useState("")
+  const [customerId, setCustomerId] = useState<string | null>(null)
 
   const [concepts, setConcepts] = useState<ConceptFormItem[]>([emptyConceptItem()])
 
@@ -146,6 +149,34 @@ export function useInvoiceForm() {
     }
   }
 
+  function buildCreateRequest(): CreateInvoiceApiRequest {
+    const resolvedPaymentForm = paymentMethod === "PPD" ? "99" : paymentForm
+    return {
+      voucher_type: voucherType,
+      series: series.trim() || null,
+      payment_method: paymentMethod,
+      payment_form: resolvedPaymentForm,
+      currency,
+      export_type: exportType,
+      issuer_zip: issuerZipCode.trim(),
+      customer_id: customerId,
+      receiver: {
+        tax_id: receiverTaxId.trim().toUpperCase(),
+        name: receiverName.trim(),
+        zip: receiverZip.trim(),
+      },
+      concepts: concepts.map((c) => ({
+        product_service_code: c.productServiceCode.trim(),
+        unit_code: c.unitCode,
+        description: c.description.trim(),
+        quantity: parseFloat(c.quantity) || 0,
+        unit_price: parseFloat(c.unitPrice) || 0,
+        tax_object: c.taxObject,
+        iva_rate: c.taxObject === "02" && c.ivaRate !== "exento" ? parseFloat(c.ivaRate) : null,
+      })),
+    }
+  }
+
   return {
     voucherType, setVoucherType,
     series, setSeries,
@@ -156,6 +187,8 @@ export function useInvoiceForm() {
     issuerZipCode, setIssuerZipCode,
     receiverTaxId, setReceiverTaxId,
     receiverName, setReceiverName,
+    receiverZip, setReceiverZip,
+    customerId, setCustomerId,
     concepts,
     addConcept,
     removeConcept,
@@ -164,5 +197,6 @@ export function useInvoiceForm() {
     errors,
     validate,
     buildInvoice,
+    buildCreateRequest,
   }
 }

@@ -1,28 +1,15 @@
-from flask import Blueprint, request, jsonify
+from flask import Blueprint, request, jsonify, g
 from tenant.execute import execute as tenant_execute
 from tenant.commands import RegisterTenantCommand
+from shared.auth_decorators import require_auth
 from shared.exceptions import BusinessRuleViolation
-from shared.supabase import get_client
 
 tenants_bp = Blueprint("tenants", __name__, url_prefix="/api/v1/tenants")
 
-
-def _require_user_id() -> tuple[str, None] | tuple[None, tuple]:
-    token = request.headers.get("Authorization", "").removeprefix("Bearer ").strip()
-    if not token:
-        return None, (jsonify({"error": "Unauthorized"}), 401)
-    try:
-        user = get_client().auth.get_user(token)
-        return str(user.user.id), None
-    except Exception:
-        return None, (jsonify({"error": "Invalid or expired token"}), 401)
-
-
 @tenants_bp.route("/register", methods=["POST"])
+@require_auth
 def register():
-    auth_id, error = _require_user_id()
-    if error:
-        return error
+    auth_id, = g.user_id
 
     data = request.get_json() or {}
     try:

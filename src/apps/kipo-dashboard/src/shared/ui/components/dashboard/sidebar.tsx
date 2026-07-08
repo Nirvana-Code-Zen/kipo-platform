@@ -13,11 +13,13 @@ import {
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 
+import { useStampedInvoiceCount } from "@/src/billing/ui/hooks/useStampedInvoiceCount"
+
 import { cn } from "../../lib/utils"
 
 const menuItems = [
   { label: 'Dashboard',   href: '/dashboard',  icon: LayoutDashboard },
-  { label: 'Facturación', href: '/billing',    icon: WalletCards, badge: "124" },
+  { label: 'Facturación', href: '/billing',    icon: WalletCards },
   { label: 'Clientes',    href: '/customers',  icon: Users },
 ]
 
@@ -30,6 +32,7 @@ const generalItems = [
 export function Sidebar() {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null)
   const pathname = usePathname()
+  const { stamped: stampedCount } = useStampedInvoiceCount()
 
   return (
     <aside className="fixed top-0 left-0 w-64 bg-card border-r border-border p-4 h-screen overflow-y-auto lg:block">
@@ -72,9 +75,9 @@ export function Sidebar() {
                 >
                   <item.icon className="w-4 h-4" />
                   <span className="text-sm">{item.label}</span>
-                  {item.badge && (
-                    <span className="ml-auto bg-primary text-primary-foreground text-[10px] font-semibold px-1.5 py-0.5 rounded-full animate-pulse">
-                      {item.badge}
+                  {item.href === '/billing' && stampedCount !== null && stampedCount > 0 && (
+                    <span className="ml-auto bg-primary text-primary-foreground text-[10px] font-semibold px-1.5 py-0.5 rounded-full">
+                      {stampedCount}
                     </span>
                   )}
                 </Link>

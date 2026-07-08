@@ -32,7 +32,7 @@ export const BillingDashboard = () => {
       <CreateInvoiceSheet
         isOpen={sheetOpen}
         onClose={() => setSheetOpen(false)}
-        onSubmit={(invoice) => invoicesRef.current?.addInvoice(invoice)}
+        onCreated={(invoice) => invoicesRef.current?.addInvoice(invoice)}
       />
     </>
   )
