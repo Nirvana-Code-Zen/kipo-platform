@@ -2,6 +2,7 @@
 
 import { useState } from "react"
 
+import { useRouter } from "next/navigation"
 import { ArrowUpRight, TrendingUp } from "lucide-react"
 import { Card } from "@kipo/ui-react"
 
@@ -19,6 +20,7 @@ function buildStats(stats: DashboardStats | null) {
       title: "Total Facturas",
       value: stats ? String(stats.total) : "—",
       increase: monthDelta(stats, "total"),
+      filter: "all",
       bgColor: "bg-primary",
       textColor: "text-primary-foreground",
       delay: "0ms",
@@ -27,6 +29,7 @@ function buildStats(stats: DashboardStats | null) {
       title: "Canceladas",
       value: stats ? String(stats.cancelled) : "—",
       increase: monthDelta(stats, "cancelled"),
+      filter: "cancelled",
       bgColor: "bg-card",
       textColor: "text-foreground",
       delay: "100ms",
@@ -35,6 +38,7 @@ function buildStats(stats: DashboardStats | null) {
       title: "Timbradas",
       value: stats ? String(stats.stamped) : "—",
       increase: monthDelta(stats, "stamped"),
+      filter: "stamped",
       bgColor: "bg-card",
       textColor: "text-foreground",
       delay: "200ms",
@@ -43,6 +47,7 @@ function buildStats(stats: DashboardStats | null) {
       title: "Borradores",
       value: stats ? String(stats.draft) : "—",
       subtitle: "En revisión",
+      filter: "draft",
       bgColor: "bg-card",
       textColor: "text-foreground",
       delay: "300ms",
@@ -52,6 +57,7 @@ function buildStats(stats: DashboardStats | null) {
 
 export function StatsCards({ stats }: { stats: DashboardStats | null }) {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null)
+  const router = useRouter()
 
   const cards = buildStats(stats)
 
@@ -62,6 +68,7 @@ export function StatsCards({ stats }: { stats: DashboardStats | null }) {
           key={stat.title}
           onMouseEnter={() => setHoveredCard(index)}
           onMouseLeave={() => setHoveredCard(null)}
+          onClick={() => router.push(`/billing?status=${stat.filter}`)}
           style={{
             animationDelay: stat.delay,
             ...(stat.bgColor === "bg-primary" ? { background: "var(--color-primary)", color: "var(--color-primary-foreground)" } : {}),

@@ -302,7 +302,8 @@ class SupabaseInvoiceRepository(IInvoiceRepository):
                             SELECT EXTRACT(MONTH FROM created_at)::int AS m,
                                    COALESCE(SUM(total), 0)
                             FROM {schema}.invoices
-                            WHERE EXTRACT(YEAR FROM created_at) = %s
+                            WHERE status = 'stamped'
+                              AND EXTRACT(YEAR FROM created_at) = %s
                             GROUP BY m
                         """).format(schema=schema),
                         (year,),
@@ -327,7 +328,8 @@ class SupabaseInvoiceRepository(IInvoiceRepository):
                             SELECT EXTRACT(DOW FROM created_at)::int AS dow,
                                    COALESCE(SUM(total), 0)
                             FROM {schema}.invoices
-                            WHERE created_at >= %s AND created_at < %s
+                            WHERE status = 'stamped'
+                              AND created_at >= %s AND created_at < %s
                             GROUP BY dow
                         """).format(schema=schema),
                         (ws, we),

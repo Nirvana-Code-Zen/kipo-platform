@@ -7,7 +7,8 @@ import { useAuthStore } from "@/src/auth/ui/store/authStore"
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"
 
 export function useStampedInvoiceCount() {
-  const [count, setCount] = useState<number | null>(null)
+  const [stamped, setStamped] = useState<number | null>(null)
+  const [draft, setDraft] = useState<number | null>(null)
   const [availableStamps, setAvailableStamps] = useState<number | null>(null)
   const accessToken = useAuthStore((s) => s.accessToken)
 
@@ -20,7 +21,8 @@ export function useStampedInvoiceCount() {
       .then((res) => (res.ok ? res.json() : null))
       .then((data) => {
         if (!cancelled && data) {
-          setCount(data.stamped as number)
+          setStamped(data.stamped as number)
+          setDraft(data.draft as number)
           setAvailableStamps(data.available_stamps as number)
         }
       })
@@ -28,5 +30,5 @@ export function useStampedInvoiceCount() {
     return () => { cancelled = true }
   }, [accessToken])
 
-  return { stamped: count, availableStamps }
+  return { stamped, draft, availableStamps }
 }

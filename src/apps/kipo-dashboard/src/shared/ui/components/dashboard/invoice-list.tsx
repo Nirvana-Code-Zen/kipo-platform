@@ -1,5 +1,6 @@
 "use client"
 
+import { useRouter } from "next/navigation"
 import { CheckCircle2, Clock, FileText, Plus, XCircle } from "lucide-react"
 import { Button, Card } from "@kipo/ui-react"
 
@@ -15,6 +16,8 @@ const formatDate = (value: string) =>
   new Date(value).toLocaleDateString("es-MX", { day: "2-digit", month: "short", year: "numeric" })
 
 export function InvoiceList({ invoices }: { invoices: RecentInvoice[] }) {
+  const router = useRouter()
+
   return (
     <Card
       className="p-6 transition-all duration-500 hover:shadow-xl animate-slide-in-up"
@@ -22,7 +25,7 @@ export function InvoiceList({ invoices }: { invoices: RecentInvoice[] }) {
     >
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold text-foreground">Facturas recientes</h2>
-        <Button variant="ghost" size="sm" className="transition-all duration-300 hover:scale-105 bg-transparent">
+        <Button variant="ghost" size="sm" className="transition-all duration-300 hover:scale-105 bg-transparent" onClick={() => router.push("/billing?new=1")}>
           <Plus className="w-4 h-4 mr-1" />
           Nueva
         </Button>

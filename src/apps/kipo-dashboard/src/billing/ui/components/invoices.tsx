@@ -16,19 +16,20 @@ import { useDeleteInvoice } from "../hooks/useDeleteInvoice"
 import { useInvoiceFilters } from "../hooks/useInvoiceFilters"
 
 import type { UIInvoice } from "./types"
+import type { StatusFilter } from "../hooks/useInvoiceFilters"
 
 export interface InvoicesHandle {
   addInvoice: (invoice: UIInvoice) => void
 }
 
-export const Invoices = forwardRef<InvoicesHandle>(function Invoices(_, ref) {
+export const Invoices = forwardRef<InvoicesHandle, { initialStatus?: StatusFilter }>(function Invoices({ initialStatus = "all" }, ref) {
   const { invoices, setInvoices, isLoading, selectedInvoice, setSelectedInvoice } = useInvoiceList()
 
   const addInvoice    = useAddInvoice(setInvoices)
   const cancelInvoice = useCancelInvoice(setInvoices)
   const deleteInvoice = useDeleteInvoice(setInvoices)
 
-  const filters = useInvoiceFilters(invoices)
+  const filters = useInvoiceFilters(invoices, initialStatus)
 
   useImperativeHandle(ref, () => ({ addInvoice }))
 

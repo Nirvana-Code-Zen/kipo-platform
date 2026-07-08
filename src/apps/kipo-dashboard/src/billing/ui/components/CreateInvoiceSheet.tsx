@@ -2,7 +2,7 @@
 
 import { createPortal } from "react-dom"
 
-import { Check, X } from "lucide-react"
+import { AlertTriangle, Check, X } from "lucide-react"
 
 import { useInvoiceForm } from "../hooks/useInvoiceForm"
 import { useCreateInvoice } from "../hooks/useCreateInvoice"
@@ -25,6 +25,7 @@ export function CreateInvoiceSheet({ isOpen, onClose, onCreated }: CreateInvoice
   if (!isOpen) return null
 
   const hasStamps = availableStamps !== null && availableStamps > 0
+  const noStamps = availableStamps !== null && availableStamps === 0
 
   async function handleFormSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -73,6 +74,18 @@ export function CreateInvoiceSheet({ isOpen, onClose, onCreated }: CreateInvoice
             <X className="w-4 h-4" />
           </button>
         </div>
+
+        {noStamps && (
+          <div className="mx-5 mt-4 px-3.5 py-2.5 rounded-md text-[13px] flex-shrink-0 flex items-start gap-2.5 border" style={{
+            background: "var(--kipo-warning-bg)",
+            borderColor: "var(--kipo-warning)",
+            color: "var(--kipo-warning)",
+            fontFamily: "var(--font-body)",
+          }}>
+            <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" />
+            <span>No tienes timbres disponibles. La factura se guardará como borrador y podrás timbrarla cuando adquieras timbres.</span>
+          </div>
+        )}
 
         {apiError && (
           <div className="mx-5 mt-4 px-3.5 py-2.5 rounded-md text-[13px] flex-shrink-0 border" style={{

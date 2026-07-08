@@ -55,7 +55,10 @@ def execute(command: Any) -> Any:
         case DeleteInvoiceCommand(schema_name, invoice_id):
             return delete_.execute(repo, schema_name, invoice_id)
         case GetInvoiceStatsQuery(schema_name):
-            return {"stamped": repo.count_by_status(schema_name, "stamped")}
+            return {
+                "stamped": repo.count_by_status(schema_name, "stamped"),
+                "draft": repo.count_by_status(schema_name, "draft"),
+            }
         case GetInvoiceDashboardStatsQuery(schema_name):
             return dashboard_stats.execute(repo, schema_name)
         case GetBillingActivityQuery(schema_name, view, week_start):
