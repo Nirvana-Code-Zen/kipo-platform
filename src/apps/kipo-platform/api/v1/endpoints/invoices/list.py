@@ -1,7 +1,7 @@
-from api.v1.endpoints.invoices import invoice_requester
 from flask import jsonify, request, g
 
 from . import invoices_bp
+from . import invoice_requester
 from shared.auth_decorators import require_auth
 from invoice.commands import ListInvoicesQuery
 from invoice.execute import execute as invoice_execute
@@ -19,11 +19,11 @@ def list_invoices():
 
     try:
         limit = int(request.args.get("limit", 20))
-    except TypeError, ValueError:
+    except (TypeError, ValueError):
         limit = 20
     try:
         offset = int(request.args.get("offset", 0))
-    except TypeError, ValueError:
+    except (TypeError, ValueError):
         offset = 0
 
     limit = max(1, min(limit, 50))
@@ -36,4 +36,4 @@ def list_invoices():
             offset=offset,
         )
     )
-    return jsonify([invoice_requester(inv) for inv in invoices]), 200
+    return jsonify([invoice_requester.serialize_invoice(inv) for inv in invoices]), 200

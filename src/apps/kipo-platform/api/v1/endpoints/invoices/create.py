@@ -1,12 +1,13 @@
-from api.v1.endpoints.invoices import invoice_requester
 from flask import jsonify, request, g
 
 from . import invoices_bp
+from . import invoice_requester
 from shared.auth_decorators import require_auth
 from invoice.execute import execute as invoice_execute
 from invoice.commands import CreateInvoiceCommand
 from shared.exceptions import BusinessRuleViolation
 from shared.providers import get_tenant_repo
+
 
 @invoices_bp.route("", methods=["POST"])
 @require_auth
@@ -29,12 +30,11 @@ def create_invoice():
                 currency=data.get("currency", "MXN"),
                 export_type=data.get("export_type", "01"),
                 issuer_zip=data.get("issuer_zip", ""),
-                receiver_tax_id=data.get("receiver_tax_id", ""),
-                receiver_name=data.get("receiver_name", ""),
-                receiver_zip=data.get("receiver_zip"),
+                customer_id=data.get("customer_id"),
+                receiver=data.get("receiver", {}),
                 concepts=data.get("concepts", []),
             )
         )
-        return jsonify(invoice_requester(invoice)), 201
+        return jsonify(invoice_requester.serialize_invoice(invoice)), 201
     except BusinessRuleViolation as err:
         return jsonify({"error": str(err)}), 400

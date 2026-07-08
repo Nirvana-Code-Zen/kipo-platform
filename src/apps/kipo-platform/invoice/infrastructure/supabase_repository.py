@@ -1,3 +1,4 @@
+import json
 from psycopg2 import sql
 from supabase import Client
 from invoice.repository import IInvoiceRepository
@@ -76,9 +77,9 @@ class SupabaseInvoiceRepository(IInvoiceRepository):
                     sql.SQL("""
                         INSERT INTO {schema}.invoices
                             (id, folio_num, series, voucher_type, payment_method, payment_form,
-                             currency, export_type, issuer_zip, receiver_tax_id, receiver_name,
-                             receiver_zip, subtotal, iva, total, status)
-                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+                             currency, export_type, issuer_zip, customer_id, receiver,
+                             subtotal, iva, total, status)
+                        VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
                         RETURNING created_at
                     """).format(schema=schema),
                     (
@@ -91,9 +92,8 @@ class SupabaseInvoiceRepository(IInvoiceRepository):
                         invoice.currency,
                         invoice.export_type,
                         invoice.issuer_zip,
-                        invoice.receiver_tax_id,
-                        invoice.receiver_name,
-                        invoice.receiver_zip,
+                        invoice.customer_id,
+                        json.dumps(invoice.receiver),
                         invoice.subtotal,
                         invoice.iva,
                         invoice.total,
@@ -140,9 +140,8 @@ class SupabaseInvoiceRepository(IInvoiceRepository):
             currency=invoice.currency,
             export_type=invoice.export_type,
             issuer_zip=invoice.issuer_zip,
-            receiver_tax_id=invoice.receiver_tax_id,
-            receiver_name=invoice.receiver_name,
-            receiver_zip=invoice.receiver_zip,
+            customer_id=invoice.customer_id,
+            receiver=invoice.receiver,
             subtotal=invoice.subtotal,
             iva=invoice.iva,
             total=invoice.total,
@@ -158,8 +157,8 @@ class SupabaseInvoiceRepository(IInvoiceRepository):
                 cur.execute(
                     sql.SQL("""
                         SELECT id, folio_num, series, voucher_type, payment_method, payment_form,
-                               currency, export_type, issuer_zip, receiver_tax_id, receiver_name,
-                               receiver_zip, subtotal, iva, total, status, created_at
+                               currency, export_type, issuer_zip, customer_id, receiver,
+                               subtotal, iva, total, status, created_at
                         FROM {schema}.invoices
                         ORDER BY created_at DESC
                         LIMIT %s OFFSET %s
@@ -178,8 +177,8 @@ class SupabaseInvoiceRepository(IInvoiceRepository):
                 cur.execute(
                     sql.SQL("""
                         SELECT id, folio_num, series, voucher_type, payment_method, payment_form,
-                               currency, export_type, issuer_zip, receiver_tax_id, receiver_name,
-                               receiver_zip, subtotal, iva, total, status, created_at
+                               currency, export_type, issuer_zip, customer_id, receiver,
+                               subtotal, iva, total, status, created_at
                         FROM {schema}.invoices
                         WHERE id = %s
                     """).format(schema=schema),
@@ -264,6 +263,7 @@ class SupabaseInvoiceRepository(IInvoiceRepository):
             )
             for c in concept_rows
         ]
+        receiver = row[10] if isinstance(row[10], dict) else json.loads(row[10])
         return Invoice(
             id=str(row[0]),
             series=row[2],
@@ -274,13 +274,12 @@ class SupabaseInvoiceRepository(IInvoiceRepository):
             currency=row[6],
             export_type=row[7],
             issuer_zip=row[8],
-            receiver_tax_id=row[9],
-            receiver_name=row[10],
-            receiver_zip=row[11],
-            subtotal=float(row[12]),
-            iva=float(row[13]),
-            total=float(row[14]),
-            status=row[15],
+            customer_id=str(row[9]) if row[9] else None,
+            receiver=receiver,
+            subtotal=float(row[11]),
+            iva=float(row[12]),
+            total=float(row[13]),
+            status=row[14],
             concepts=concepts,
-            created_at=row[16].isoformat(),
+            created_at=row[15].isoformat(),
         )

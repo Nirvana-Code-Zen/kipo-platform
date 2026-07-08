@@ -1,4 +1,4 @@
-from flask import jsonify
+from flask import jsonify, g
 
 from . import invoices_bp
 from shared.auth_decorators import require_auth
