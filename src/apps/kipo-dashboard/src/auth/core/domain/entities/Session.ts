@@ -4,7 +4,7 @@ import type { AuthProvider } from '../value-objects/AuthProvider'
 
 export type Session = Readonly<{
   userId: string
-  tenantId: string | null   // null until onboarding completes
+  tenantId: string | null
   tenantSlug: TenantSlug | null
   tenantName?: string
   displayName: string
@@ -12,11 +12,10 @@ export type Session = Readonly<{
   phone?: string
   avatarUrl?: string
   provider: AuthProvider
-  accessToken: AccessToken  // in-memory only, excluded from localStorage persistence
+  accessToken: AccessToken
   expiresAt: Date
 }>
 
-// Stored in localStorage — public session data without the access token
 export type PersistedSession = Omit<Session, 'accessToken'>
 
 export const isExpired = (session: Session): boolean =>

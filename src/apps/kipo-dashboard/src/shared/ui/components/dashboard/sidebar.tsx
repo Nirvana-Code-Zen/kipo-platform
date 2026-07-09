@@ -35,7 +35,7 @@ export function Sidebar() {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null)
   const pathname = usePathname()
   const { draft: draftCount } = useStampedInvoiceCount()
-  const session = useAuthStore((s) => s.session)
+  const tenantName = useAuthStore((s) => s.persistedSession?.tenantName ?? null)
 
   return (
     <aside className="fixed top-0 left-0 w-64 bg-card border-r border-border p-4 h-screen overflow-y-auto lg:block">
@@ -48,7 +48,7 @@ export function Sidebar() {
             alt="Kipo"
             className="h-10 w-10 transition-transform group-hover:scale-110 duration-300"
           />
-          <span className="text-lg font-semibold text-foreground">{session?.tenantName ?? 'Kipo'}</span>
+          <span className="text-lg font-semibold text-foreground">{tenantName ?? 'Kipo'}</span>
         </Link>
       </div>
 

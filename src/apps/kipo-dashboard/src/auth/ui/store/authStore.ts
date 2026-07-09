@@ -3,7 +3,9 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
-import { toPersistedSession, hydrateSession, isExpired } from '../../core/domain/entities/Session'
+import { AuthState, PersistedState, SessionStatus } from './types'
+import { getAuthSession, setAuthSession } from './sessionStoage'
+import { hydrateSession, isExpired, toPersistedSession } from '../../core/domain/entities/Session'
 import { createHttpAuthRepository } from '../../core/infrastructure/repositories/HttpAuthRepository'
 import { loginWithEmailUseCase } from '../../core/application/use-cases/loginWithEmailUseCase'
 import { loginWithSocialUseCase } from '../../core/application/use-cases/loginWithSocialUseCase'
@@ -13,49 +15,7 @@ import { registerUseCase } from '../../core/application/use-cases/registerUseCas
 import { logoutUseCase } from '../../core/application/use-cases/logoutUseCase'
 import { refreshSessionUseCase } from '../../core/application/use-cases/refreshSessionUseCase'
 
-import type { AuthError } from '../../core/domain/exceptions/auth.errors'
-import type { OtpToken } from '../../core/domain/value-objects/AccessToken'
-import type { Session, PersistedSession } from '../../core/domain/entities/Session'
-import type { AuthProvider } from '../../core/domain/value-objects/AuthProvider'
-import type {
-  LoginWithEmailDTO,
-  LoginWithSocialDTO,
-  RegisterDTO,
-  RequestOtpDTO,
-  VerifyOtpDTO,
-} from '../../core/application/dtos'
-
-export type AuthStatus = 'idle' | 'loading' | 'authenticated' | 'unauthenticated' | 'otp_pending' | 'email_pending'
-
-type PersistedState = {
-  persistedSession: PersistedSession | null
-  pendingEmail: string | null
-}
-
-type AuthState = {
-  // accessToken lives only in memory — not included in PersistedSession
-  accessToken: Session['accessToken'] | null
-  persistedSession: PersistedSession | null
-  pendingEmail: string | null  // email awaiting confirmation after register
-  status: AuthStatus
-  error: AuthError | null
-  pendingOtp: { phone: string; otpToken: OtpToken; channel: 'whatsapp' | 'sms' } | null
-
-  // Computed
-  session: Session | null
-
-  // Actions
-  loginWithEmail: (dto: LoginWithEmailDTO) => Promise<void>
-  loginWithSocial: (dto: LoginWithSocialDTO) => Promise<void>
-  requestOtp: (dto: RequestOtpDTO) => Promise<void>
-  verifyOtp: (dto: VerifyOtpDTO) => Promise<void>
-  register: (dto: RegisterDTO) => Promise<void>
-  logout: () => Promise<void>
-  refresh: () => Promise<void>
-  clearError: () => void
-  fakeLogin: (displayName: string, email: string, provider?: AuthProvider) => void
-  updateProfile: (displayName: string, avatarUrl: string | undefined) => void
-}
+import type { Session } from '../../core/domain/entities/Session'
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001'
 const repo = createHttpAuthRepository(API_BASE_URL)
@@ -67,90 +27,86 @@ const applySession = (
   set({
     accessToken: session.accessToken,
     persistedSession: toPersistedSession(session),
-    status: 'authenticated',
+    status: SessionStatus.authenticated,
     error: null,
     pendingOtp: null,
   })
 }
 
+const auth = getAuthSession()
+
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
-      accessToken: null,
-      persistedSession: null,
+      accessToken: auth.accessToken,
+      persistedSession: toPersistedSession(auth),
       pendingEmail: null,
-      status: 'idle',
+      status: auth ? SessionStatus.authenticated : SessionStatus.idle,
       error: null,
       pendingOtp: null,
 
-      get session () {
-        const { accessToken, persistedSession } = get()
-        if (!accessToken || !persistedSession) return null
-        const session = hydrateSession(persistedSession, accessToken)
-        return isExpired(session) ? session : session
-      },
-
       loginWithEmail: async (dto) => {
-        set({ status: 'loading', error: null })
+        set({ status: SessionStatus.loading, error: null })
         const result = await loginWithEmailUseCase(repo)(dto)
         if (result.ok) {
           applySession(set, result.value)
-        } else {
-          set({ status: 'authenticated', error: result.error })
+          setAuthSession(result.value)
+          return
         }
+        set({ status: SessionStatus.authenticated, error: result.error })
       },
 
       loginWithSocial: async (dto) => {
-        set({ status: 'loading', error: null })
+        set({ status: SessionStatus.loading, error: null })
         const result = await loginWithSocialUseCase(repo)(dto)
         if (result.ok) {
           applySession(set, result.value)
         } else {
-          set({ status: 'authenticated', error: result.error })
+          set({ status: SessionStatus.authenticated, error: result.error })
         }
       },
 
       requestOtp: async (dto) => {
-        set({ status: 'loading', error: null })
+        set({ status: SessionStatus.loading, error: null })
         const result = await requestOtpUseCase(repo)(dto)
         if (result.ok) {
           set({
-            status: 'otp_pending',
+            status: SessionStatus.otp_pending,
             pendingOtp: { phone: dto.phone, otpToken: result.value, channel: dto.channel },
           })
         } else {
-          set({ status: 'authenticated', error: result.error })
+          set({ status: SessionStatus.authenticated, error: result.error })
         }
       },
 
       verifyOtp: async (dto) => {
-        set({ status: 'loading', error: null })
+        set({ status: SessionStatus.loading, error: null })
         const result = await verifyOtpUseCase(repo)(dto)
         if (result.ok) {
           applySession(set, result.value)
         } else {
-          set({ status: 'otp_pending', error: result.error })
+          set({ status: SessionStatus.otp_pending, error: result.error })
         }
       },
 
       register: async (dto) => {
-        set({ status: 'loading', error: null })
+        set({ status: SessionStatus.loading, error: null })
         const result = await registerUseCase(repo)(dto)
         if (result.ok) {
-          set({ status: 'email_pending', pendingEmail: result.value.email, error: null })
+          set({ status: SessionStatus.email_pending, pendingEmail: result.value.email, error: null })
         } else {
-          set({ status: 'unauthenticated', error: result.error })
+          set({ status: SessionStatus.unauthenticated, error: result.error })
         }
       },
 
       logout: async () => {
-        set({ status: 'loading' })
+        set({ status: SessionStatus.loading })
         try { await logoutUseCase(repo)() } catch { /* ignore logout errors */ }
         set({
           accessToken: null,
           persistedSession: null,
           pendingEmail: null,
-          status: 'unauthenticated',
+          status: SessionStatus.unauthenticated,
           error: null,
           pendingOtp: null,
         })
@@ -159,32 +115,21 @@ export const useAuthStore = create<AuthState>()(
       refresh: async () => {
         const { persistedSession } = get()
         const result = await refreshSessionUseCase(repo)()
+
         if (result.ok) {
           applySession(set, result.value)
-        } else if (persistedSession && new Date(persistedSession.expiresAt).getTime() > Date.now()) {
-          // API not connected yet — restore session with a fake token so the user stays logged in
-          set({ accessToken: 'fake-token' as Session['accessToken'], status: 'authenticated', error: null })
-        } else {
-          set({ accessToken: null, persistedSession: null, status: 'unauthenticated', error: null })
+          return
         }
+
+        if (persistedSession && new Date(persistedSession.expiresAt).getTime() > Date.now()) {
+          set({ accessToken: 'fake-token' as Session['accessToken'], status: SessionStatus.authenticated, error: null })
+          return
+        }
+
+        set({ accessToken: null, persistedSession: null, status: SessionStatus.unauthenticated, error: null })
       },
 
       clearError: () => set({ error: null }),
-
-      fakeLogin: (displayName, email, provider = 'email') => {
-        const slug = email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g, '-').replace(/^-+|-+$/g, '') || 'demo'
-        const session: Session = {
-          userId: Math.random().toString(36).slice(2),
-          tenantId: Math.random().toString(36).slice(2),
-          tenantSlug: slug as Session['tenantSlug'],
-          displayName,
-          email,
-          provider,
-          accessToken: 'fake-token' as Session['accessToken'],
-          expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
-        }
-        applySession(set, session)
-      },
 
       updateProfile: (displayName, avatarUrl) => {
         const { persistedSession } = get()
@@ -202,9 +147,7 @@ export const useAuthStore = create<AuthState>()(
       }),
       onRehydrateStorage: () => (state) => {
         if (state && state.persistedSession) {
-          // accessToken is gone after page reload — trigger refresh to get a new one
-          // The refresh will use the httpOnly cookie that the browser sends automatically
-          state.status = 'idle'
+          state.status = SessionStatus.authenticated
         }
       },
     }
