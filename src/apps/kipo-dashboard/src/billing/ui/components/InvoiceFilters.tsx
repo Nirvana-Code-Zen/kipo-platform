@@ -11,8 +11,8 @@ interface InvoiceFiltersProps {
   dateTo: string
   onDateFromChange: (v: string) => void
   onDateToChange: (v: string) => void
-  receiverQuery: string
-  onReceiverQueryChange: (v: string) => void
+  searchQuery: string
+  onSearchQueryChange: (v: string) => void
   activeFilterCount: number
   onClearAll: () => void
   totalCount: number
@@ -75,8 +75,8 @@ export function InvoiceFilters({
   dateTo,
   onDateFromChange,
   onDateToChange,
-  receiverQuery,
-  onReceiverQueryChange,
+  searchQuery,
+  onSearchQueryChange,
   activeFilterCount,
   onClearAll,
   totalCount,
@@ -136,19 +136,19 @@ export function InvoiceFilters({
           }} />
           <input
             type="text"
-            placeholder="Buscar por receptor o RFC..."
-            value={receiverQuery}
-            onChange={(e) => onReceiverQueryChange(e.target.value)}
+            placeholder="Receptor, RFC, folio o folio fiscal..."
+            value={searchQuery}
+            onChange={(e) => onSearchQueryChange(e.target.value)}
             style={{
               ...dateInput,
               paddingLeft: 34,
-              paddingRight: receiverQuery ? 34 : 12,
+              paddingRight: searchQuery ? 34 : 12,
             }}
           />
-          {receiverQuery && (
+          {searchQuery && (
             <button
               type="button"
-              onClick={() => onReceiverQueryChange("")}
+              onClick={() => onSearchQueryChange("")}
               style={{
                 position: "absolute", right: 10, top: "50%", transform: "translateY(-50%)",
                 background: "transparent", border: "none", cursor: "pointer",

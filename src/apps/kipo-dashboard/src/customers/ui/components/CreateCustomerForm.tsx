@@ -243,13 +243,6 @@ export function CreateCustomerForm({ onSubmit, onCancel, initialValues, submitLa
                 options={TAX_REGIMES.map((r) => ({ code: r.code, label: `${r.code} - ${r.label}` }))}
                 error={form.errors.taxRegime}
               />
-              <StyledSelect
-                label="Uso de CFDI"
-                value={form.cfdiUsage}
-                onChange={form.setCfdiUsage}
-                options={CFDI_USAGES}
-                error={form.errors.cfdiUsage}
-              />
             </>
           )}
         </section>

@@ -41,6 +41,8 @@ export function Sidebar() {
         <Link href="/" className="flex items-center gap-2">
           <Image
             src="/kipo-logo.svg"
+            width={20}
+            height={20}
             alt="Kipo"
             className="h-8 w-8 transition-transform group-hover:scale-110 duration-300"
           />
