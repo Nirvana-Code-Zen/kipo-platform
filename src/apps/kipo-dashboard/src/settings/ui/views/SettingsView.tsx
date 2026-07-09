@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 import { Avatar, AvatarFallback, AvatarImage, Button, Card } from '@kipo/ui-react'
 import {
@@ -10,7 +10,7 @@ import {
   LogOut,
   ExternalLink,
 } from 'lucide-react'
-import { useRouter } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 
 import { useAuthStore } from '@/src/auth/ui/store/authStore'
 import { Header } from '@/src/shared/ui/components/dashboard/header'
@@ -29,6 +29,14 @@ export function SettingsView() {
   const [profileSheetOpen, setProfileSheetOpen] = useState(false)
 
   const { data: fiscalData, isLoading: fiscalLoading, setData: setFiscalData } = useFiscalSettings()
+
+  const searchParams = useSearchParams()
+  useEffect(() => {
+    if (searchParams.get('openFiscal') === 'true') {
+      setFiscalSheetOpen(true)
+      router.replace('/settings')
+    }
+  }, [searchParams])
 
   const displayName = persistedSession?.displayName ?? 'Usuario'
   const email = persistedSession?.email ?? ''

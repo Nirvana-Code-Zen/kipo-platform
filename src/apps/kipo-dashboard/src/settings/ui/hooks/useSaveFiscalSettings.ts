@@ -4,6 +4,8 @@ import { useState } from "react"
 
 import { useAuthStore } from "@/src/auth/ui/store/authStore"
 
+import { useEmisorStore } from "../store/emisorStore"
+
 import type { UIFiscalSettings } from "../components/types"
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"
@@ -60,7 +62,9 @@ export function useSaveFiscalSettings() {
         return null
       }
       const raw = (await res.json()) as EmisorApiResponse
-      return mapFromApi(raw)
+      const result = mapFromApi(raw)
+      useEmisorStore.getState().setData(result)
+      return result
     } catch (e) {
       setError(e instanceof Error ? e.message : "Error de red")
       return null

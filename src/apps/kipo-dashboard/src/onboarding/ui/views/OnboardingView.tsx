@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 
 import { useRouter } from 'next/navigation'
 import { Button } from '@kipo/ui-react'
@@ -10,6 +10,7 @@ import { AuthInput } from '@/src/auth/ui/components/AuthInput'
 
 import { useOnboardingDisplayName } from '../hooks/useOnboardingDisplayName'
 import { useOnboardingForm } from '../hooks/useOnboardingForm'
+import { FiscalDataStep } from '../components/FiscalDataStep'
 
 const TIMEZONES = [
   'America/Mexico_City',
@@ -23,16 +24,24 @@ const CURRENCIES = ['MXN', 'USD']
 
 export const OnboardingView = () => {
   const router = useRouter()
-  const [step, setStep] = useState<1 | 2>(1)
+  const [step, setStep] = useState<1 | 2 | 3>(1)
 
   const patchSession = useAuthStore((s) => s.persistedSession)
   const setStore = useAuthStore.setState
 
+  const pendingTenantRef = useRef<{ tenantId: string; schemaName: string } | null>(null)
+
   const onTenantSuccess = (tenantId: string, schemaName: string) => {
-    if (patchSession) {
+    pendingTenantRef.current = { tenantId, schemaName }
+    setStep(3)
+  }
+
+  const onboardingComplete = () => {
+    const pending = pendingTenantRef.current
+    if (pending && patchSession) {
       setStore((prev) => ({
         persistedSession: prev.persistedSession
-          ? { ...prev.persistedSession, tenantId, tenantSlug: schemaName as never }
+          ? { ...prev.persistedSession, tenantId: pending.tenantId, tenantSlug: pending.schemaName as never }
           : prev.persistedSession,
       }))
     }
@@ -133,7 +142,7 @@ export const OnboardingView = () => {
       <div style={containerStyle}>
         <div style={cardStyle}>
           <div style={{ marginBottom: 32 }}>
-            <p style={stepLabelStyle}>Paso 1 de 2</p>
+            <p style={stepLabelStyle}>Paso 1 de 3</p>
             <h1 style={headingStyle}>¿Cómo te llaman?</h1>
             <p style={subtitleStyle}>
               Tu nombre aparecerá en tu perfil y en los documentos que generes.
@@ -202,11 +211,15 @@ export const OnboardingView = () => {
     )
   }
 
+  if (step === 3) {
+    return <FiscalDataStep onSaved={onboardingComplete} onSkip={onboardingComplete} />
+  }
+
   return (
     <div style={containerStyle}>
       <div style={cardStyle}>
         <div style={{ marginBottom: 32 }}>
-          <p style={stepLabelStyle}>Paso 2 de 2</p>
+          <p style={stepLabelStyle}>Paso 2 de 3</p>
           <h1 style={headingStyle}>Configura tu empresa</h1>
           <p style={subtitleStyle}>
             Esta información crea tu espacio de trabajo en Kipo.
