@@ -3,27 +3,24 @@
 import { useState } from "react"
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"
-const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL ?? ""
 
-export async function uploadAvatar(file: File, userId: string, accessToken: string): Promise<string> {
-  const ext = file.name.split(".").pop() ?? "jpg"
-  const filename = `${Date.now()}.${ext}`
-  const objectPath = `${userId}/${filename}`
+export async function uploadAvatar(file: File, accessToken: string): Promise<string> {
+  const formData = new FormData()
+  formData.append("file", file)
 
-  const response = await fetch(`${SUPABASE_URL}/storage/v1/object/profiles/${objectPath}`, {
+  const res = await fetch(`${API_BASE_URL}/api/v1/profile/avatar`, {
     method: "POST",
-    headers: {
-      Authorization: `Bearer ${accessToken}`,
-      "Content-Type": file.type,
-    },
-    body: file,
+    headers: { Authorization: `Bearer ${accessToken}` },
+    body: formData,
   })
 
-  if (!response.ok) {
-    throw new Error("No se pudo subir la imagen")
+  if (!res.ok) {
+    const err = await res.json().catch(() => ({})) as { error?: string }
+    throw new Error(err.error ?? "No se pudo subir la imagen")
   }
 
-  return `${SUPABASE_URL}/storage/v1/object/public/profiles/${objectPath}`
+  const { url } = await res.json() as { url: string }
+  return url
 }
 
 export async function saveProfile(displayName: string, avatarUrl: string | undefined, accessToken: string): Promise<void> {
@@ -60,8 +57,8 @@ export function useProfileEdit() {
   const [isSaving, setIsSaving] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  async function uploadAvatarWithState(file: File, userId: string, accessToken: string): Promise<string> {
-    return uploadAvatar(file, userId, accessToken)
+  async function uploadAvatarWithState(file: File, accessToken: string): Promise<string> {
+    return uploadAvatar(file, accessToken)
   }
 
   async function saveProfileWithState(displayName: string, avatarUrl: string | undefined, accessToken: string): Promise<void> {

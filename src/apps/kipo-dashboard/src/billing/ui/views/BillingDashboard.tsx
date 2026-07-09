@@ -28,7 +28,6 @@ export const BillingDashboard = () => {
     if (searchParams.get("new") === "1") {
       setSheetOpen(true)
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
   return (

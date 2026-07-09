@@ -15,6 +15,13 @@ export function getAuthSession(){
   return auth
 }
 
+export function patchAuthSession(patch: Record<string, unknown>) {
+  if (typeof window === 'undefined') return
+  const raw = sessionStorage.getItem(SESSION_KEY)
+  if (!raw) return
+  sessionStorage.setItem(SESSION_KEY, JSON.stringify({ ...JSON.parse(raw), ...patch }))
+}
+
 export function removeAuthSession() {
   sessionStorage.removeItem(SESSION_KEY)
 }

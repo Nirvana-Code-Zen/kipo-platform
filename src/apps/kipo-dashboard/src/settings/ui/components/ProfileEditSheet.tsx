@@ -16,10 +16,9 @@ interface ProfileEditSheetProps {
 }
 
 export function ProfileEditSheet({ isOpen, onClose }: ProfileEditSheetProps) {
-  const session = useAuthStore((s) => s.session)
+  const session = useAuthStore((s) => s.persistedSession)
   const accessToken = useAuthStore((s) => s.accessToken)
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  const updateProfile = useAuthStore((s) => (s as any).updateProfile as ((displayName: string, avatarUrl: string | undefined) => void) | undefined)
+  const updateProfile = useAuthStore((s) => s.updateProfile)
 
   const { isSaving, setIsSaving, error, setError, uploadAvatar, saveProfile, saveEmail } = useProfileEdit()
 
@@ -77,7 +76,7 @@ export function ProfileEditSheet({ isOpen, onClose }: ProfileEditSheetProps) {
       let finalAvatarUrl: string | undefined = session?.avatarUrl
 
       if (avatarFile && session?.userId) {
-        finalAvatarUrl = await uploadAvatar(avatarFile, session.userId, accessToken)
+        finalAvatarUrl = await uploadAvatar(avatarFile, accessToken)
       }
 
       await saveProfile(finalName, finalAvatarUrl, accessToken)

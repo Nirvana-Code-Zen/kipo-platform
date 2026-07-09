@@ -4,8 +4,8 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 import { AuthState, PersistedState, SessionStatus } from './types'
-import { getAuthSession, setAuthSession } from './sessionStoage'
-import { hydrateSession, isExpired, toPersistedSession } from '../../core/domain/entities/Session'
+import { getAuthSession, setAuthSession, patchAuthSession } from './sessionStoage'
+import { toPersistedSession } from '../../core/domain/entities/Session'
 import { createHttpAuthRepository } from '../../core/infrastructure/repositories/HttpAuthRepository'
 import { loginWithEmailUseCase } from '../../core/application/use-cases/loginWithEmailUseCase'
 import { loginWithSocialUseCase } from '../../core/application/use-cases/loginWithSocialUseCase'
@@ -137,6 +137,7 @@ export const useAuthStore = create<AuthState>()(
         set({
           persistedSession: { ...persistedSession, displayName, avatarUrl },
         })
+        patchAuthSession({ displayName, avatarUrl })
       },
     }),
     {

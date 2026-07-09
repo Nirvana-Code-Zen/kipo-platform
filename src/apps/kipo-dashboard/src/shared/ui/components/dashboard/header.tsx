@@ -4,6 +4,8 @@
 import { Envelope, Bell, MagnifyingGlass } from '@phosphor-icons/react'
 import { Avatar, AvatarFallback, AvatarImage, Button, Input } from '@kipo/ui-react'
 
+import { useAuthStore } from '@/src/auth/ui/store/authStore'
+
 import type { ReactNode } from 'react'
 
 interface HeaderProps {
@@ -13,6 +15,18 @@ interface HeaderProps {
 }
 
 export function Header ({ title, description, actions }: HeaderProps) {
+  const session = useAuthStore(s => s.persistedSession)
+
+  const displayName = session?.displayName ?? ''
+  const email = session?.email ?? session?.phone ?? ''
+  const avatarUrl = session?.avatarUrl
+  const initials = displayName
+    .split(' ')
+    .filter(Boolean)
+    .slice(0, 2)
+    .map(w => w[0].toUpperCase())
+    .join('')
+
   return (
     <header style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
       <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 12 }}>
@@ -90,8 +104,8 @@ export function Header ({ title, description, actions }: HeaderProps) {
             }}
           >
             <Avatar className='w-9 h-9 ring-2 ring-primary/20'>
-              <AvatarImage src='/profile.jpeg' alt='Edgar Figueroa' className='object-cover w-full h-full' />
-              <AvatarFallback className='bg-primary text-primary-foreground text-xs font-bold'>EF</AvatarFallback>
+              {avatarUrl && <AvatarImage src={avatarUrl} alt={displayName} className='object-cover w-full h-full' />}
+              <AvatarFallback className='bg-primary text-primary-foreground text-xs font-bold'>{initials}</AvatarFallback>
             </Avatar>
             <div style={{ display: 'flex', flexDirection: 'column' }}>
               <span
@@ -103,7 +117,7 @@ export function Header ({ title, description, actions }: HeaderProps) {
                   lineHeight: 1.3,
                 }}
               >
-                Edgar Figueroa
+                {displayName}
               </span>
               <span
                 style={{
@@ -113,7 +127,7 @@ export function Header ({ title, description, actions }: HeaderProps) {
                   lineHeight: 1.3,
                 }}
               >
-                edgar@kipo.mx
+                {email}
               </span>
             </div>
           </div>

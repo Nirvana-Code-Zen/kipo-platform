@@ -21,7 +21,8 @@ import { FiscalSettingsSheet } from '../components/FiscalSettingsSheet'
 import { ProfileEditSheet } from '../components/ProfileEditSheet'
 
 export function SettingsView() {
-  const { session, logout } = useAuthStore()
+  const persistedSession = useAuthStore((s) => s.persistedSession)
+  const logout = useAuthStore((s) => s.logout)
   const router = useRouter()
   const [loggingOut, setLoggingOut] = useState(false)
   const [fiscalSheetOpen, setFiscalSheetOpen] = useState(false)
@@ -29,8 +30,8 @@ export function SettingsView() {
 
   const { data: fiscalData, isLoading: fiscalLoading, setData: setFiscalData } = useFiscalSettings()
 
-  const displayName = session?.displayName ?? 'Usuario'
-  const email = session?.email ?? ''
+  const displayName = persistedSession?.displayName ?? 'Usuario'
+  const email = persistedSession?.email ?? ''
   const initials = displayName.split(' ').map((n: string) => n[0]).join('').slice(0, 2).toUpperCase()
 
   async function handleLogout() {
@@ -50,8 +51,8 @@ export function SettingsView() {
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Perfil</p>
           <div className="flex items-center gap-4">
             <Avatar className="w-14 h-14 ring-2 ring-primary/20">
-              {session?.avatarUrl && (
-                <AvatarImage src={session.avatarUrl} alt={displayName} className="object-cover w-full h-full" />
+              {persistedSession?.avatarUrl && (
+                <AvatarImage src={persistedSession.avatarUrl} alt={displayName} className="object-cover w-full h-full" />
               )}
               <AvatarFallback className="bg-primary text-primary-foreground text-lg font-bold">
                 {initials}
