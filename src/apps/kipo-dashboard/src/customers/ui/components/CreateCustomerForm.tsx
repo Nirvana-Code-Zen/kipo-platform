@@ -4,7 +4,7 @@ import { Button, Input, Switch } from "@kipo/ui-react"
 import { CheckCircle2, AlertCircle, Building2, User } from "lucide-react"
 
 import { useCustomerForm, RFC_TYPE_LABEL } from "../hooks/useCustomerForm"
-import { TAX_REGIMES, CFDI_USAGES, AVATARS } from "../data/catalogs"
+import { TAX_REGIMES, AVATARS } from "../data/catalogs"
 
 import type { Customer as UICustomer } from "./types"
 

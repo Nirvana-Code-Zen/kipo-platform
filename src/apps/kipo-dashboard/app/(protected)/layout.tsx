@@ -5,12 +5,15 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { useAuth } from '@/src/auth/ui/hooks/useAuth'
+import { useEmisorInit } from '@/src/settings/ui/hooks/useEmisorInit'
 import { DashboardShell } from '@/src/shared/ui/layout/DashboardShell'
 
 export default function ProtectedLayout ({ children }: { children: React.ReactNode }) {
   const [mounted, setMounted] = useState(false)
   const { isAuthenticated, hasTenant, isLoading } = useAuth()
   const router = useRouter()
+
+  useEmisorInit()
 
   useEffect(() => { setMounted(true) }, [])
 

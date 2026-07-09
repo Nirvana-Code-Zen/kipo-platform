@@ -19,6 +19,7 @@ import {
 import { StampsProgress } from "@/src/shared/ui/components/dashboard/stamps-progress"
 import { StatsCards } from "@/src/shared/ui/components/dashboard/stats-cards"
 
+import { EmisorMissingBanner } from "../components/EmisorMissingBanner"
 import { useDashboardSummary } from "../hooks/useDashboardSummary"
 
 export function Dashboard() {
@@ -30,6 +31,8 @@ export function Dashboard() {
         title="Dashboard"
         description="Resumen de tu actividad fiscal del mes de julio."
       />
+
+      <EmisorMissingBanner />
 
       <div className="mt-4 md:mt-5 space-y-3 md:space-y-4">
         {isLoading ? <StatsCardsSkeleton /> : <StatsCards stats={summary?.stats ?? null} />}

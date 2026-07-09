@@ -20,7 +20,6 @@ export function useBillingActivity(
     if (!accessToken) return
     let cancelled = false
 
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsLoading(true)
     const params = new URLSearchParams({ view })
     if (weekStart) params.set("week_start", weekStart)
