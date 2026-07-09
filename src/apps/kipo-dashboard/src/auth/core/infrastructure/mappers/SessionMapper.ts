@@ -8,6 +8,7 @@ export type SessionRaw = {
   user_id: string
   tenant_id: string | null
   tenant_slug: string | null
+  tenant_name?: string
   display_name: string
   email?: string
   phone?: string
@@ -23,10 +24,11 @@ export const SessionMapper = {
       userId: raw.user_id,
       tenantId: raw.tenant_id ?? null,
       tenantSlug: raw.tenant_slug ? raw.tenant_slug as TenantSlug : null,
+      tenantName: raw.tenant_name ?? undefined,
       displayName: raw.display_name,
       email: raw.email,
       phone: raw.phone,
-      avatarUrl: raw.avatar_url,
+      avatarUrl: raw.avatar_url ?? undefined,
       provider: raw.provider as AuthProvider,
       accessToken: toAccessToken(raw.access_token),
       expiresAt: new Date(raw.expires_at),
@@ -38,10 +40,11 @@ export const SessionMapper = {
       userId: raw.user_id,
       tenantId: raw.tenant_id,
       tenantSlug: raw.tenant_slug as TenantSlug,
+      tenantName: raw.tenant_name ?? undefined,
       displayName: raw.display_name,
       email: raw.email,
       phone: raw.phone,
-      avatarUrl: raw.avatar_url,
+      avatarUrl: raw.avatar_url ?? undefined,
       provider: raw.provider as AuthProvider,
       expiresAt: new Date(raw.expires_at),
     }

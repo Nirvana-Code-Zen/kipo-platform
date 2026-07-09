@@ -5,6 +5,7 @@ from invoice.invoice_concept import InvoiceConcept
 @dataclass(frozen=True)
 class Invoice:
     id: str
+    folio_num: int
     series: str | None
     folio: str
     voucher_type: str

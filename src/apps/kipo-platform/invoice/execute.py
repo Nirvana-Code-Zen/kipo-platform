@@ -14,7 +14,7 @@ from invoice.operations import cancel as cancel_
 from invoice.operations import delete as delete_
 from invoice.operations import dashboard_stats
 from invoice.operations import billing_activity as billing_activity_
-from shared.providers import get_invoice_repo
+from shared.providers import get_invoice_repo, get_emisor_repo
 from shared.exceptions import BusinessRuleViolation
 
 
@@ -24,7 +24,6 @@ def execute(command: Any) -> Any:
         case CreateInvoiceCommand(
             schema_name,
             voucher_type,
-            series,
             payment_method,
             payment_form,
             currency,
@@ -36,9 +35,9 @@ def execute(command: Any) -> Any:
         ):
             return create.execute(
                 repo,
+                get_emisor_repo(),
                 schema_name,
                 voucher_type,
-                series,
                 payment_method,
                 payment_form,
                 currency,

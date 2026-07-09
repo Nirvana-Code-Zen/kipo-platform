@@ -118,6 +118,21 @@ class SupabaseTenantRepository(ITenantRepository):
                     )
                 """).format(schema)
                 )
+                cur.execute(
+                    sql.SQL("""
+                    CREATE TABLE IF NOT EXISTS {schema}.emisor (
+                        id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+                        rfc             VARCHAR(13) NOT NULL,
+                        razon_social    TEXT        NOT NULL,
+                        regimen_fiscal  VARCHAR(3)  NOT NULL,
+                        codigo_postal   VARCHAR(5)  NOT NULL,
+                        series          VARCHAR(10),
+                        folio_siguiente INTEGER     NOT NULL DEFAULT 1,
+                        created_at      TIMESTAMPTZ DEFAULT NOW(),
+                        updated_at      TIMESTAMPTZ DEFAULT NOW()
+                    )
+                """).format(schema=schema)
+                )
             conn.commit()
 
     def find_by_auth_id(self, auth_id: str) -> Tenant | None:

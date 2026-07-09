@@ -5,7 +5,6 @@ from dataclasses import dataclass
 class CreateInvoiceCommand:
     schema_name: str
     voucher_type: str
-    series: str | None
     payment_method: str
     payment_form: str
     currency: str

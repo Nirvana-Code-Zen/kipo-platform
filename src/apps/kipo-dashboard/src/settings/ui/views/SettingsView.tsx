@@ -5,23 +5,29 @@ import { useState } from 'react'
 import { Avatar, AvatarFallback, AvatarImage, Button, Card } from '@kipo/ui-react'
 import {
   User,
-  Building2,
   CreditCard,
   HelpCircle,
   LogOut,
-  ChevronRight,
   ExternalLink,
-  Shield,
 } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 import { useAuthStore } from '@/src/auth/ui/store/authStore'
 import { Header } from '@/src/shared/ui/components/dashboard/header'
 
+import { useFiscalSettings } from '../hooks/useFiscalSettings'
+import { FiscalSettingsSection } from '../components/FiscalSettingsSection'
+import { FiscalSettingsSheet } from '../components/FiscalSettingsSheet'
+import { ProfileEditSheet } from '../components/ProfileEditSheet'
+
 export function SettingsView() {
   const { session, logout } = useAuthStore()
   const router = useRouter()
   const [loggingOut, setLoggingOut] = useState(false)
+  const [fiscalSheetOpen, setFiscalSheetOpen] = useState(false)
+  const [profileSheetOpen, setProfileSheetOpen] = useState(false)
+
+  const { data: fiscalData, isLoading: fiscalLoading, setData: setFiscalData } = useFiscalSettings()
 
   const displayName = session?.displayName ?? 'Usuario'
   const email = session?.email ?? ''
@@ -44,7 +50,9 @@ export function SettingsView() {
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Perfil</p>
           <div className="flex items-center gap-4">
             <Avatar className="w-14 h-14 ring-2 ring-primary/20">
-              <AvatarImage src="/profile.jpeg" alt={displayName} className="object-cover w-full h-full" />
+              {session?.avatarUrl && (
+                <AvatarImage src={session.avatarUrl} alt={displayName} className="object-cover w-full h-full" />
+              )}
               <AvatarFallback className="bg-primary text-primary-foreground text-lg font-bold">
                 {initials}
               </AvatarFallback>
@@ -53,7 +61,12 @@ export function SettingsView() {
               <p className="font-semibold text-foreground">{displayName}</p>
               <p className="text-sm text-muted-foreground truncate">{email}</p>
             </div>
-            <Button variant="ghost" size="sm" className="text-muted-foreground shrink-0">
+            <Button
+              variant="ghost"
+              size="sm"
+              className="text-muted-foreground shrink-0"
+              onClick={() => setProfileSheetOpen(true)}
+            >
               <User className="w-4 h-4 mr-1.5" />
               Editar
             </Button>
@@ -61,24 +74,16 @@ export function SettingsView() {
         </Card>
 
         {/* Datos fiscales */}
-        <Card className="divide-y divide-border overflow-hidden p-0">
-          <div className="flex items-center gap-3 px-5 py-4">
-            <Building2 className="w-4 h-4 text-muted-foreground shrink-0" />
-            <div className="flex-1 min-w-0">
-              <p className="text-xs text-muted-foreground">Razón social</p>
-              <p className="text-sm font-medium text-foreground">— sin configurar —</p>
-            </div>
-            <ChevronRight className="w-4 h-4 text-muted-foreground" />
-          </div>
-          <div className="flex items-center gap-3 px-5 py-4">
-            <Shield className="w-4 h-4 text-muted-foreground shrink-0" />
-            <div className="flex-1 min-w-0">
-              <p className="text-xs text-muted-foreground">RFC</p>
-              <p className="text-sm font-medium text-foreground">— sin configurar —</p>
-            </div>
-            <ChevronRight className="w-4 h-4 text-muted-foreground" />
-          </div>
-        </Card>
+        <div>
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-1">
+            Datos fiscales
+          </p>
+          <FiscalSettingsSection
+            data={fiscalData}
+            isLoading={fiscalLoading}
+            onEdit={() => setFiscalSheetOpen(true)}
+          />
+        </div>
 
         {/* Plan */}
         <Card className="p-5">
@@ -131,6 +136,18 @@ export function SettingsView() {
         </Card>
 
       </div>
+
+      <FiscalSettingsSheet
+        isOpen={fiscalSheetOpen}
+        onClose={() => setFiscalSheetOpen(false)}
+        initial={fiscalData}
+        onSaved={(updated) => setFiscalData(updated)}
+      />
+
+      <ProfileEditSheet
+        isOpen={profileSheetOpen}
+        onClose={() => setProfileSheetOpen(false)}
+      />
     </>
   )
 }

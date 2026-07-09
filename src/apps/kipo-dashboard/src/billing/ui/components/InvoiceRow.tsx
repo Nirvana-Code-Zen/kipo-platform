@@ -64,6 +64,10 @@ export function InvoiceRow({ invoice, index, onViewDetails, onCancel, onDelete }
         <p className="text-xs text-muted-foreground truncate mt-0.5">{invoice.receiverName}</p>
       </div>
 
+      <span className="text-xs text-muted-foreground hidden md:block">
+        {invoice.id}
+      </span>
+
       <span className="text-xs text-muted-foreground flex-shrink-0 hidden md:block w-24 text-right">
         {invoice.issuedAt}
       </span>

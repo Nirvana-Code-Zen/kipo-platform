@@ -54,6 +54,7 @@ type AuthState = {
   refresh: () => Promise<void>
   clearError: () => void
   fakeLogin: (displayName: string, email: string, provider?: AuthProvider) => void
+  updateProfile: (displayName: string, avatarUrl: string | undefined) => void
 }
 
 const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001'
@@ -183,6 +184,14 @@ export const useAuthStore = create<AuthState>()(
           expiresAt: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000),
         }
         applySession(set, session)
+      },
+
+      updateProfile: (displayName, avatarUrl) => {
+        const { persistedSession } = get()
+        if (!persistedSession) return
+        set({
+          persistedSession: { ...persistedSession, displayName, avatarUrl },
+        })
       },
     }),
     {

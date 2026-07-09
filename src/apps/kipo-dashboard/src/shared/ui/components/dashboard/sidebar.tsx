@@ -15,6 +15,7 @@ import Image from "next/image"
 import { usePathname } from "next/navigation"
 
 import { useStampedInvoiceCount } from "@/src/billing/ui/hooks/useStampedInvoiceCount"
+import { useAuthStore } from "@/src/auth/ui/store/authStore"
 
 import { cn } from "../../lib/utils"
 
@@ -34,6 +35,7 @@ export function Sidebar() {
   const [hoveredItem, setHoveredItem] = useState<string | null>(null)
   const pathname = usePathname()
   const { draft: draftCount } = useStampedInvoiceCount()
+  const session = useAuthStore((s) => s.session)
 
   return (
     <aside className="fixed top-0 left-0 w-64 bg-card border-r border-border p-4 h-screen overflow-y-auto lg:block">
@@ -41,10 +43,12 @@ export function Sidebar() {
         <Link href="/" className="flex items-center gap-2">
           <Image
             src="/kipo-logo.svg"
+            width={20}
+            height={20}
             alt="Kipo"
-            className="h-8 w-8 transition-transform group-hover:scale-110 duration-300"
+            className="h-10 w-10 transition-transform group-hover:scale-110 duration-300"
           />
-          <span className="text-lg font-semibold text-foreground">Kipo</span>
+          <span className="text-lg font-semibold text-foreground">{session?.tenantName ?? 'Kipo'}</span>
         </Link>
       </div>
 

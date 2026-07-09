@@ -2,13 +2,14 @@ from uuid import uuid4
 from invoice.repository import IInvoiceRepository
 from invoice.invoice import Invoice
 from invoice.invoice_concept import InvoiceConcept
+from emisor.repository import IEmisorRepository
 
 
 def execute(
     repo: IInvoiceRepository,
+    emisor_repo: IEmisorRepository,
     schema_name: str,
     voucher_type: str,
-    series: str | None,
     payment_method: str,
     payment_form: str,
     currency: str,
@@ -18,6 +19,9 @@ def execute(
     receiver: dict,
     raw_concepts: list[dict],
 ) -> Invoice:
+    folio_num, series = emisor_repo.next_folio(schema_name)
+    folio = f"{series}-{folio_num:04d}" if series else f"F-{folio_num:04d}"
+
     invoice_id = str(uuid4())
     concepts: list[InvoiceConcept] = []
     subtotal = 0.0
@@ -57,8 +61,9 @@ def execute(
     total = round(subtotal + iva, 2)
     invoice = Invoice(
         id=invoice_id,
+        folio_num=folio_num,
         series=series,
-        folio="",
+        folio=folio,
         voucher_type=voucher_type,
         payment_method=payment_method,
         payment_form=payment_form,

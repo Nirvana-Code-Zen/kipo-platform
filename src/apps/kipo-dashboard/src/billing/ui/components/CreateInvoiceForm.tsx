@@ -299,24 +299,13 @@ export function CreateInvoiceForm({ form, onFormSubmit, onCancel, isSubmitting, 
         <section style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <SectionTitle>Datos del comprobante</SectionTitle>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
-            <StyledSelect
-              label="Tipo de comprobante"
-              value={form.voucherType}
-              onChange={form.setVoucherType}
-              options={VOUCHER_TYPES}
-              error={form.errors.voucherType}
-            />
-            <Input
-              label="Serie"
-              placeholder="A"
-              value={form.series}
-              onChange={(e) => form.setSeries(e.target.value.toUpperCase().slice(0, 10))}
-              hint="Opcional"
-              mono
-              autoComplete="off"
-            />
-          </div>
+          <StyledSelect
+            label="Tipo de comprobante"
+            value={form.voucherType}
+            onChange={form.setVoucherType}
+            options={VOUCHER_TYPES}
+            error={form.errors.voucherType}
+          />
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12 }}>
             <StyledSelect
