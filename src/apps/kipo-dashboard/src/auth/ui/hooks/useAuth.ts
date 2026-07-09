@@ -4,6 +4,7 @@ import { useEffect } from 'react'
 
 import { hydrateSession } from '../../core/domain/entities/Session'
 import { useAuthStore } from '../store/authStore'
+import { SessionStatus } from '../store/types'
 
 import type { TenantSlug } from '../../core/domain/value-objects/TenantSlug'
 import type { Session } from '../../core/domain/entities/Session'
@@ -12,12 +13,12 @@ export const useAuth = () => {
   const store = useAuthStore()
 
   useEffect(() => {
-    if (store.status === 'idle' && store.persistedSession && !store.accessToken) {
+    if (store.status === SessionStatus.idle && store.persistedSession && !store.accessToken) {
       store.refresh()
     }
   }, [store])
 
-  const isAuthenticated = store.status === 'authenticated' && store.accessToken !== null && store.persistedSession !== null
+  const isAuthenticated = store.status === SessionStatus.authenticated && store.accessToken !== null && store.persistedSession !== null
 
   const session: Session | null = (store.accessToken && store.persistedSession)
     ? hydrateSession(store.persistedSession, store.accessToken)
@@ -34,9 +35,9 @@ export const useAuth = () => {
     pendingEmail: store.pendingEmail,
     isAuthenticated,
     hasTenant,
-    isEmailPending: store.status === 'email_pending',
-    isLoading: store.status === 'loading' || (store.status === 'idle' && store.persistedSession !== null),
-    isOtpPending: store.status === 'otp_pending',
+    isEmailPending: store.status === SessionStatus.email_pending,
+    isLoading: store.status === SessionStatus.loading || (store.status === SessionStatus.idle && store.persistedSession !== null),
+    isOtpPending: store.status === SessionStatus.otp_pending,
     tenantSlug,
 
     loginWithEmail: store.loginWithEmail,
@@ -46,6 +47,5 @@ export const useAuth = () => {
     register: store.register,
     logout: store.logout,
     clearError: store.clearError,
-    fakeLogin: store.fakeLogin,
   }
 }
