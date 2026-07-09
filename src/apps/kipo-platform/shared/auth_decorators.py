@@ -13,6 +13,7 @@ def require_auth(f):
         try:
             user = get_client().auth.get_user(token)
             g.user_id = str(user.user.id)
+            g.access_token = token
         except Exception:
             return jsonify({"error": "Invalid or expired token"}), 401
 

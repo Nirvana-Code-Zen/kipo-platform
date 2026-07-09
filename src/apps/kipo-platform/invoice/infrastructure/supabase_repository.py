@@ -67,12 +67,6 @@ class SupabaseInvoiceRepository(IInvoiceRepository):
                 available = row[0] if row else 0
                 status = "stamped" if available > 0 else "draft"
                 cur.execute(
-                    sql.SQL(
-                        "SELECT COALESCE(MAX(t.folio_num), 0) + 1 FROM (SELECT folio_num FROM {schema}.invoices FOR UPDATE) AS t"
-                    ).format(schema=schema)
-                )
-                folio_num = cur.fetchone()[0]
-                cur.execute(
                     sql.SQL("""
                         INSERT INTO {schema}.invoices
                             (id, folio_num, series, voucher_type, payment_method, payment_form,
@@ -83,7 +77,7 @@ class SupabaseInvoiceRepository(IInvoiceRepository):
                     """).format(schema=schema),
                     (
                         invoice.id,
-                        folio_num,
+                        invoice.folio_num,
                         invoice.series,
                         invoice.voucher_type,
                         invoice.payment_method,
@@ -131,8 +125,9 @@ class SupabaseInvoiceRepository(IInvoiceRepository):
             conn.commit()
         return Invoice(
             id=invoice.id,
+            folio_num=invoice.folio_num,
             series=invoice.series,
-            folio=_format_folio(invoice.series, folio_num),
+            folio=invoice.folio,
             voucher_type=invoice.voucher_type,
             payment_method=invoice.payment_method,
             payment_form=invoice.payment_form,
@@ -372,6 +367,7 @@ class SupabaseInvoiceRepository(IInvoiceRepository):
         receiver = row[10] if isinstance(row[10], dict) else json.loads(row[10])
         return Invoice(
             id=str(row[0]),
+            folio_num=row[1],
             series=row[2],
             folio=_format_folio(row[2], row[1]),
             voucher_type=row[3],

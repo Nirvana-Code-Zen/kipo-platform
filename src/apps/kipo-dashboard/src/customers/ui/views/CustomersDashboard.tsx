@@ -20,7 +20,6 @@ export function CustomersDashboard() {
 
   useEffect(() => {
     if (searchParams.get('new') === '1') {
-      // eslint-disable-next-line react-hooks/set-state-in-effect
       setSheetOpen(true)
       router.replace('/customers')
     }

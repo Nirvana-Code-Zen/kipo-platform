@@ -18,7 +18,7 @@ export type ReceiverPayload = {
 
 export type CreateInvoiceApiRequest = {
   voucher_type: string
-  series: string | null
+  series?: string | null
   payment_method: string
   payment_form: string
   currency: string

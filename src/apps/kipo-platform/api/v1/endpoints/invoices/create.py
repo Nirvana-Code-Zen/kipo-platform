@@ -24,7 +24,6 @@ def create_invoice():
             CreateInvoiceCommand(
                 schema_name=tenant.schema_name,
                 voucher_type=data.get("voucher_type", ""),
-                series=data.get("series"),
                 payment_method=data.get("payment_method", ""),
                 payment_form=data.get("payment_form", ""),
                 currency=data.get("currency", "MXN"),

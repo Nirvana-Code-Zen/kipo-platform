@@ -2,12 +2,11 @@ import type { TenantSlug } from '../value-objects/TenantSlug'
 import type { AccessToken } from '../value-objects/AccessToken'
 import type { AuthProvider } from '../value-objects/AuthProvider'
 
-// The central artifact of this bounded context.
-// tenantSlug is the key field consumed by all other contexts (billing, customers, etc.)
 export type Session = Readonly<{
   userId: string
   tenantId: string | null   // null until onboarding completes
   tenantSlug: TenantSlug | null
+  tenantName?: string
   displayName: string
   email?: string
   phone?: string

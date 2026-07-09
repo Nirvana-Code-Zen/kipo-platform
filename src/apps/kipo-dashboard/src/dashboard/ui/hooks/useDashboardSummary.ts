@@ -41,7 +41,6 @@ export function useDashboardSummary() {
   useEffect(() => {
     if (!accessToken) return
     let cancelled = false
-    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIsLoading(true)
     fetch(`${API_BASE_URL}/api/v1/dashboard/summary`, {
       headers: { Authorization: `Bearer ${accessToken}` },

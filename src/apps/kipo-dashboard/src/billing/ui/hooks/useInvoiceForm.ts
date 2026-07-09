@@ -52,7 +52,6 @@ function formatDate(d: Date): string {
 
 export function useInvoiceForm() {
   const [voucherType, setVoucherType] = useState("")
-  const [series, setSeries] = useState("")
   const [paymentMethod, setPaymentMethod] = useState("")
   const [paymentForm, setPaymentForm] = useState("")
   const [currency, setCurrency] = useState("MXN")
@@ -126,17 +125,12 @@ export function useInvoiceForm() {
   }
 
   function buildInvoice(): UIInvoice {
-    const suffix = Date.now().toString(36).toUpperCase().slice(-4)
-    const folio = series.trim()
-      ? `${series.trim().toUpperCase()}-${suffix}`
-      : `${voucherType}-${suffix}`
-
     const resolvedPaymentForm = paymentMethod === "PPD" ? "99" : paymentForm
 
     const now = new Date()
     return {
       id: crypto.randomUUID(),
-      folio,
+      folio: "—",
       status: "draft",
       issuedAt: formatDate(now),
       issuedAtISO: now.toISOString().slice(0, 10),
@@ -153,7 +147,6 @@ export function useInvoiceForm() {
     const resolvedPaymentForm = paymentMethod === "PPD" ? "99" : paymentForm
     return {
       voucher_type: voucherType,
-      series: series.trim() || null,
       payment_method: paymentMethod,
       payment_form: resolvedPaymentForm,
       currency,
@@ -179,7 +172,6 @@ export function useInvoiceForm() {
 
   return {
     voucherType, setVoucherType,
-    series, setSeries,
     paymentMethod, setPaymentMethod,
     paymentForm, setPaymentForm,
     currency, setCurrency,
