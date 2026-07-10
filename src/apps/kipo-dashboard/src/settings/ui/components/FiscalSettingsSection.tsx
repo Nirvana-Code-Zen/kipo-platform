@@ -15,17 +15,12 @@ interface FiscalSettingsSectionProps {
 
 function SkeletonRow() {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 12, padding: "14px 20px", borderTop: "1px solid var(--border-soft)" }}>
-      <div style={{
-        width: 80, height: 11, borderRadius: 4,
-        background: "var(--surface-muted)",
-        animation: "pulse 1.5s ease-in-out infinite",
-      }} />
-      <div style={{
-        width: 140, height: 11, borderRadius: 4,
-        background: "var(--surface-muted)",
-        animation: "pulse 1.5s ease-in-out infinite",
-      }} />
+    <div
+      className="flex items-center gap-3 px-5 py-3.5"
+      style={{ borderTop: "1px solid var(--border-soft)" }}
+    >
+      <div className="w-20 h-[11px] rounded animate-pulse" style={{ background: "var(--surface-muted)" }} />
+      <div className="w-[140px] h-[11px] rounded animate-pulse" style={{ background: "var(--surface-muted)" }} />
     </div>
   )
 }
@@ -37,26 +32,20 @@ interface DataRowProps {
 
 function DataRow({ label, value }: DataRowProps) {
   return (
-    <div style={{
-      display: "flex", alignItems: "baseline", gap: 8,
-      padding: "10px 20px",
-      borderTop: "1px solid var(--border-soft)",
-    }}>
-      <span style={{
-        fontSize: 12,
-        color: "var(--text-muted)",
-        fontFamily: "var(--font-body)",
-        minWidth: 110,
-        flexShrink: 0,
-      }}>
+    <div
+      className="flex items-baseline gap-2 px-5 py-2.5"
+      style={{ borderTop: "1px solid var(--border-soft)" }}
+    >
+      <span
+        className="text-xs shrink-0 min-w-[110px]"
+        style={{ color: "var(--text-muted)", fontFamily: "var(--font-body)" }}
+      >
         {label}
       </span>
-      <span style={{
-        fontSize: 13,
-        fontWeight: 500,
-        color: "var(--text-strong)",
-        fontFamily: "var(--font-body)",
-      }}>
+      <span
+        className="text-sm font-medium"
+        style={{ color: "var(--text-strong)", fontFamily: "var(--font-body)" }}
+      >
         {value}
       </span>
     </div>
@@ -68,18 +57,16 @@ export function FiscalSettingsSection({ data, isLoading, onEdit }: FiscalSetting
 
   if (isLoading) {
     return (
-      <div style={{
-        background: "var(--surface-card)",
-        borderRadius: "var(--radius-lg)",
-        border: "1px solid var(--border-soft)",
-        overflow: "hidden",
-      }}>
-        <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 20px" }}>
-          <div style={{
-            width: 120, height: 11, borderRadius: 4,
-            background: "var(--surface-muted)",
-            animation: "pulse 1.5s ease-in-out infinite",
-          }} />
+      <div
+        className="overflow-hidden"
+        style={{
+          background: "var(--surface-card)",
+          borderRadius: "var(--radius-lg)",
+          border: "1px solid var(--border-soft)",
+        }}
+      >
+        <div className="flex items-center justify-between px-5 py-3.5">
+          <div className="w-[120px] h-[11px] rounded animate-pulse" style={{ background: "var(--surface-muted)" }} />
         </div>
         <SkeletonRow />
         <SkeletonRow />
@@ -90,29 +77,25 @@ export function FiscalSettingsSection({ data, isLoading, onEdit }: FiscalSetting
 
   if (data === null) {
     return (
-      <div style={{
-        background: "var(--surface-card)",
-        borderRadius: "var(--radius-lg)",
-        border: "1px solid var(--border-soft)",
-        padding: "24px 20px",
-        display: "flex",
-        alignItems: "center",
-        gap: 16,
-      }}>
-        <div style={{
-          width: 40, height: 40,
-          borderRadius: "var(--radius-md)",
-          background: "var(--surface-muted)",
-          display: "flex", alignItems: "center", justifyContent: "center",
-          flexShrink: 0,
-        }}>
+      <div
+        className="flex items-center gap-4 px-5 py-6"
+        style={{
+          background: "var(--surface-card)",
+          borderRadius: "var(--radius-lg)",
+          border: "1px solid var(--border-soft)",
+        }}
+      >
+        <div
+          className="w-10 h-10 flex items-center justify-center shrink-0"
+          style={{ borderRadius: "var(--radius-md)", background: "var(--surface-muted)" }}
+        >
           <Building2 size={18} style={{ color: "var(--text-muted)" }} />
         </div>
-        <div style={{ flex: 1 }}>
-          <p style={{ fontSize: 14, fontWeight: 600, color: "var(--text-strong)", margin: 0 }}>
+        <div className="flex-1">
+          <p className="text-sm font-semibold m-0" style={{ color: "var(--text-strong)" }}>
             Datos fiscales sin configurar
           </p>
-          <p style={{ fontSize: 12, color: "var(--text-muted)", margin: "4px 0 0", fontFamily: "var(--font-body)" }}>
+          <p className="text-xs mt-1" style={{ color: "var(--text-muted)", fontFamily: "var(--font-body)" }}>
             Configura tu RFC y datos del emisor para poder timbrar facturas.
           </p>
         </div>
@@ -128,28 +111,17 @@ export function FiscalSettingsSection({ data, isLoading, onEdit }: FiscalSetting
   const regimenLabel = regimenFiscal.find((r) => r.code === data.regimenFiscal)?.description ?? data.regimenFiscal
 
   return (
-    <div style={{
-      background: "var(--surface-card)",
-      borderRadius: "var(--radius-lg)",
-      border: "1px solid var(--border-soft)",
-      overflow: "hidden",
-    }}>
-      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "14px 20px" }}>
-        <p style={{
-          fontSize: 11,
-          fontWeight: 700,
-          color: "var(--text-muted)",
-          textTransform: "uppercase",
-          letterSpacing: "0.08em",
-          margin: 0,
-          fontFamily: "var(--font-body)",
-        }}>
-          Datos del emisor
-        </p>
-        <Button variant="ghost" size="sm" onClick={onEdit} className="text-muted-foreground shrink-0">
-          Editar
-        </Button>
-      </div>
+    <div
+      className="overflow-hidden"
+      style={{
+        background: "var(--surface-card)",
+        borderRadius: "var(--radius-lg)",
+        border: "1px solid var(--border-soft)",
+      }}
+    >
+      <Button variant="ghost" size="sm" onClick={onEdit} className="text-muted-foreground shrink-0">
+        Editar
+      </Button>
       <DataRow label="RFC" value={data.rfc} />
       <DataRow label="Razón social" value={data.razonSocial} />
       <DataRow label="Régimen fiscal" value={`${data.regimenFiscal} · ${regimenLabel}`} />

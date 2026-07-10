@@ -22,10 +22,7 @@ import { useFiscalSettings } from '../hooks/useFiscalSettings'
 import { FiscalSettingsSection } from '../components/FiscalSettingsSection'
 import { FiscalSettingsSheet } from '../components/FiscalSettingsSheet'
 import { ProfileEditSheet } from '../components/ProfileEditSheet'
-import { CSDSettingsSection } from '../components/CSDSettingsSection'
-import { CSDSettingsSheet } from '../components/CSDSettingsSheet'
-import { ManifiestoSettingsSection } from '../components/ManifiestoSettingsSection'
-import { InvoiceCustomizationSection } from '../components/InvoiceCustomizationSection'
+import { CSDSection } from '../components/CSDSection'
 
 export function SettingsView() {
   const persistedSession = useAuthStore((s) => s.persistedSession)
@@ -99,7 +96,7 @@ export function SettingsView() {
           </div>
         </Card>
 
-        <div>
+        <Card className='p-5'>
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-1">
             Datos fiscales
           </p>
@@ -108,39 +105,16 @@ export function SettingsView() {
             isLoading={fiscalLoading}
             onEdit={() => setFiscalSheetOpen(true)}
           />
-        </div>
+        </Card>
 
-        <div>
+        <Card className='p-5'>
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-1">
-            Certificado de Sello Digital
+            Certificados de sello digital
           </p>
-          <CSDSettingsSection
-            data={fiscalData}
-            isLoading={fiscalLoading}
-            onEdit={() => setCsdSheetOpen(true)}
-          />
-        </div>
+          <CSDSection />
+        </Card>
 
-        <div>
-          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-1">
-            Carta Manifiesto
-          </p>
-          <ManifiestoSettingsSection
-            data={fiscalData}
-          />
-        </div>
-
-        <div>
-          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-1">
-            Personalización de factura
-          </p>
-          <InvoiceCustomizationSection
-            data={fiscalData}
-            onEdit={() => router.push('/settings/personalizacion-factura')}
-          />
-        </div>
-
-        <Card className="p-5 space-y-4">
+        <Card className="p-5">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <CreditCard className="w-4 h-4 text-muted-foreground" />
@@ -166,6 +140,27 @@ export function SettingsView() {
               Comprar timbres
             </Button>
           </div>
+        </Card>
+
+        <Card className="divide-y divide-border overflow-hidden p-0">
+          <a
+            href="https://kipo.com.mx/ayuda"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-3 px-5 py-4 hover:bg-secondary transition-colors cursor-pointer"
+          >
+            <HelpCircle className="w-4 h-4 text-muted-foreground shrink-0" />
+            <span className="flex-1 text-sm font-medium text-foreground">Centro de ayuda</span>
+            <ExternalLink className="w-3.5 h-3.5 text-muted-foreground" />
+          </a>
+          <a
+            href="mailto:soporte@kipo.com.mx"
+            className="flex items-center gap-3 px-5 py-4 hover:bg-secondary transition-colors cursor-pointer"
+          >
+            <HelpCircle className="w-4 h-4 text-muted-foreground shrink-0" />
+            <span className="flex-1 text-sm font-medium text-foreground">Contactar soporte</span>
+            <ExternalLink className="w-3.5 h-3.5 text-muted-foreground" />
+          </a>
         </Card>
 
         <Card className="p-5">
