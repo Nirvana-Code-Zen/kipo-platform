@@ -11,3 +11,5 @@ class Identity:
     email: Email | None
     phone: PhoneNumber | None
     provider: AuthProvider
+    display_name: str | None = None
+    avatar_url: str | None = None

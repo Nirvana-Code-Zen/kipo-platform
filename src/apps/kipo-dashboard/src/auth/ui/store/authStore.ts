@@ -100,6 +100,7 @@ export const useAuthStore = create<AuthState>()(
         const result = await verifyOtpUseCase(repo)(dto)
         if (result.ok) {
           applySession(set, result.value)
+          setAuthSession(result.value)
         } else {
           set({ status: SessionStatus.otp_pending, error: result.error })
         }

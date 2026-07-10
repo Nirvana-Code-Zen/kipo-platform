@@ -107,9 +107,12 @@ class SupabaseAuthRepository(IAuthRepository):
         }
 
     def _to_identity(self, user, provider: AuthProvider) -> Identity:
+        metadata = (user.user_metadata or {}) if user.user_metadata else {}
         return Identity(
             id=UserId(str(user.id)),
             email=Email(user.email) if user.email else None,
             phone=PhoneNumber(user.phone) if user.phone else None,
             provider=provider,
+            display_name=metadata.get("display_name"),
+            avatar_url=metadata.get("avatar_url"),
         )

@@ -189,7 +189,7 @@ export function ProfileEditSheet({ isOpen, onClose }: ProfileEditSheetProps) {
               <input
                 type="text"
                 value={displayName}
-                onChange={(e) => setDisplayName(e.target.value)}
+                onChange={(e) => setDisplayName(e.target.value.replace(/\b\w/g, (c) => c.toUpperCase()))}
                 autoComplete="name"
                 style={{
                   width: "100%",
