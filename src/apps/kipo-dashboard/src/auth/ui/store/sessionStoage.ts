@@ -9,8 +9,10 @@ export function setAuthSession(session: Session) {
 export function getAuthSession(){
   if (typeof window === 'undefined') return {}
   const session = sessionStorage.getItem(SESSION_KEY)
-  const auth = JSON.parse(session)
 
+  if (!session) return null
+
+  const auth = JSON.parse(session)
   auth.expiresAt = new Date(auth.expiresAt)
   return auth
 }

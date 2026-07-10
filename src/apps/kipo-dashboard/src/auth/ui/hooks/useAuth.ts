@@ -42,6 +42,7 @@ export const useAuth = () => {
 
     loginWithEmail: store.loginWithEmail,
     loginWithSocial: store.loginWithSocial,
+    completeOAuth: store.completeOAuth,
     requestOtp: store.requestOtp,
     verifyOtp: store.verifyOtp,
     register: store.register,

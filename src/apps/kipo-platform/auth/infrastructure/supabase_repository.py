@@ -71,6 +71,20 @@ class SupabaseAuthRepository(IAuthRepository):
         })
         return response.url
 
+    @_guard
+    def validate_oauth_session(self, access_token: str, refresh_token: str) -> dict:
+        from datetime import timedelta
+        user_resp = self._client.auth.get_user(access_token)
+        user = user_resp.user
+        provider = user.app_metadata.get("provider", "email")
+        expires_at = (datetime.now(timezone.utc) + timedelta(seconds=3600)).isoformat()
+        return {
+            "access_token": access_token,
+            "refresh_token": refresh_token,
+            "expires_at": expires_at,
+            "user": self._to_identity(user, AuthProvider(provider)),
+        }
+
     def sign_out(self, access_token: str) -> None:
         try:
             self._client.auth.admin.sign_out(access_token)
@@ -93,9 +107,12 @@ class SupabaseAuthRepository(IAuthRepository):
         }
 
     def _to_identity(self, user, provider: AuthProvider) -> Identity:
+        metadata = (user.user_metadata or {}) if user.user_metadata else {}
         return Identity(
             id=UserId(str(user.id)),
             email=Email(user.email) if user.email else None,
             phone=PhoneNumber(user.phone) if user.phone else None,
             provider=provider,
+            display_name=metadata.get("display_name"),
+            avatar_url=metadata.get("avatar_url"),
         )

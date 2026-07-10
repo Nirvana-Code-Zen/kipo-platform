@@ -27,3 +27,6 @@ class IAuthRepository(ABC):
 
     @abstractmethod
     def refresh_session(self, refresh_token: str) -> dict: ...
+
+    @abstractmethod
+    def validate_oauth_session(self, access_token: str, refresh_token: str) -> dict: ...

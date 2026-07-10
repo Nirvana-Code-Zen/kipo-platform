@@ -9,7 +9,7 @@ tenants_bp = Blueprint("tenants", __name__, url_prefix="/api/v1/tenants")
 @tenants_bp.route("/register", methods=["POST"])
 @require_auth
 def register():
-    auth_id, = g.user_id
+    auth_id = g.user_id
 
     data = request.get_json() or {}
     try:

@@ -4,11 +4,12 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 import { AuthState, PersistedState, SessionStatus } from './types'
-import { getAuthSession, setAuthSession, patchAuthSession } from './sessionStoage'
+import { getAuthSession, setAuthSession, patchAuthSession, removeAuthSession } from './sessionStoage'
 import { toPersistedSession } from '../../core/domain/entities/Session'
 import { createHttpAuthRepository } from '../../core/infrastructure/repositories/HttpAuthRepository'
 import { loginWithEmailUseCase } from '../../core/application/use-cases/loginWithEmailUseCase'
 import { loginWithSocialUseCase } from '../../core/application/use-cases/loginWithSocialUseCase'
+import { completeOAuthUseCase } from '../../core/application/use-cases/completeOAuthUseCase'
 import { requestOtpUseCase } from '../../core/application/use-cases/requestOtpUseCase'
 import { verifyOtpUseCase } from '../../core/application/use-cases/verifyOtpUseCase'
 import { registerUseCase } from '../../core/application/use-cases/registerUseCase'
@@ -38,8 +39,8 @@ const auth = getAuthSession()
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
-      accessToken: auth.accessToken,
-      persistedSession: toPersistedSession(auth),
+      accessToken: auth?.accessToken,
+      persistedSession: auth && toPersistedSession(auth),
       pendingEmail: null,
       status: auth ? SessionStatus.authenticated : SessionStatus.idle,
       error: null,
@@ -56,23 +57,38 @@ export const useAuthStore = create<AuthState>()(
         set({ status: SessionStatus.authenticated, error: result.error })
       },
 
-      loginWithSocial: async (dto) => {
+      loginWithSocial: async (dto: { provider: 'google' | 'apple' | 'facebook' }) => {
         set({ status: SessionStatus.loading, error: null })
-        const result = await loginWithSocialUseCase(repo)(dto)
+        const redirectTo = typeof window !== 'undefined'
+          ? `${window.location.origin}/auth/callback`
+          : 'http://localhost:3000/auth/callback'
+        const result = await loginWithSocialUseCase(repo)({ ...dto, redirectTo })
+        if (result.ok) {
+          window.location.href = result.value
+        } else {
+          set({ status: SessionStatus.unauthenticated, error: result.error })
+        }
+      },
+
+      completeOAuth: async (accessToken: string, refreshToken: string) => {
+        set({ status: SessionStatus.loading, error: null })
+        const result = await completeOAuthUseCase(repo)({ accessToken, refreshToken })
         if (result.ok) {
           applySession(set, result.value)
+          setAuthSession(result.value)
         } else {
-          set({ status: SessionStatus.authenticated, error: result.error })
+          set({ status: SessionStatus.unauthenticated, error: result.error })
         }
       },
 
       requestOtp: async (dto) => {
         set({ status: SessionStatus.loading, error: null })
-        const result = await requestOtpUseCase(repo)(dto)
+        const phone = dto.phone.startsWith('+') ? dto.phone : `+52${dto.phone.replace(/\D/g, '')}`
+        const result = await requestOtpUseCase(repo)({ phone })
         if (result.ok) {
           set({
             status: SessionStatus.otp_pending,
-            pendingOtp: { phone: dto.phone, otpToken: result.value, channel: dto.channel },
+            pendingOtp: { phone, otpToken: result.value },
           })
         } else {
           set({ status: SessionStatus.authenticated, error: result.error })
@@ -84,6 +100,7 @@ export const useAuthStore = create<AuthState>()(
         const result = await verifyOtpUseCase(repo)(dto)
         if (result.ok) {
           applySession(set, result.value)
+          setAuthSession(result.value)
         } else {
           set({ status: SessionStatus.otp_pending, error: result.error })
         }
@@ -102,6 +119,7 @@ export const useAuthStore = create<AuthState>()(
       logout: async () => {
         set({ status: SessionStatus.loading })
         try { await logoutUseCase(repo)() } catch { /* ignore logout errors */ }
+        removeAuthSession()
         set({
           accessToken: null,
           persistedSession: null,
@@ -147,6 +165,10 @@ export const useAuthStore = create<AuthState>()(
         pendingEmail: state.pendingEmail,
       }),
       onRehydrateStorage: () => (state) => {
+        if (state && !auth) {
+          state.status = SessionStatus.unauthenticated
+          return
+        }
         if (state && state.persistedSession) {
           state.status = SessionStatus.authenticated
         }

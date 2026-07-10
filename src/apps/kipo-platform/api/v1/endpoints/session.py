@@ -10,6 +10,7 @@ from auth.commands import (
     SignInWithOAuthCommand,
     SignOutCommand,
     RefreshSessionCommand,
+    OAuthCallbackCommand,
 )
 from shared.exceptions import BusinessRuleViolation
 from shared.providers import get_tenant_repo
@@ -19,11 +20,11 @@ session_bp = Blueprint("session", __name__, url_prefix="/api/v1/auth")
 env_name = os.environ.get("FLASK_ENV", "development")
 config_class = config_mapping[env_name]()
 
+
 def _session_response(auth_result: dict, user_id: str) -> dict:
     tenant = get_tenant_repo().find_by_auth_id(user_id)
     user = auth_result["user"]
-    metadata = (user.user_metadata or {}) if hasattr(user, "user_metadata") else {}
-    display_name = metadata.get("display_name") or str(user.email or user.phone or "")
+    display_name = user.display_name or str(user.email or user.phone or "")
     return {
         "user_id": user_id,
         "access_token": auth_result["access_token"],
@@ -35,7 +36,7 @@ def _session_response(auth_result: dict, user_id: str) -> dict:
         "tenant_id": str(tenant.id) if tenant else None,
         "tenant_slug": tenant.schema_name if tenant else None,
         "tenant_name": tenant.name if tenant else None,
-        "avatar_url": metadata.get("avatar_url"),
+        "avatar_url": user.avatar_url,
     }
 
 
@@ -144,6 +145,23 @@ def login_oauth():
         return jsonify({"url": url}), 200
     except BusinessRuleViolation as err:
         return jsonify({"error": str(err)}), 400
+
+
+@session_bp.route("/oauth/callback", methods=["POST"])
+def oauth_callback():
+    data = request.get_json() or {}
+    try:
+        result = auth_execute(
+            OAuthCallbackCommand(
+                access_token=data.get("access_token", ""),
+                refresh_token=data.get("refresh_token", ""),
+            )
+        )
+        user_id = str(result["user"].id)
+        resp = make_response(jsonify(_session_response(result, user_id)), 200)
+        return _with_refresh_cookie(resp, result["refresh_token"])
+    except BusinessRuleViolation as err:
+        return jsonify({"error": str(err)}), 401
 
 
 @session_bp.route("/sign-out", methods=["POST"])

@@ -1,54 +1,27 @@
 'use client'
 
-import { useState, useRef } from 'react'
-
 import { useRouter } from 'next/navigation'
 import { Button } from '@kipo/ui-react'
 
-import { useAuthStore } from '@/src/auth/ui/store/authStore'
 import { AuthInput } from '@/src/auth/ui/components/AuthInput'
 
+import { TIMEZONES, CURRENCIES } from '../data/constants'
 import { useOnboardingDisplayName } from '../hooks/useOnboardingDisplayName'
 import { useOnboardingForm } from '../hooks/useOnboardingForm'
+import { useOnboardingProgress } from '../hooks/useOnboardingProgress'
 import { FiscalDataStep } from '../components/FiscalDataStep'
-
-const TIMEZONES = [
-  'America/Mexico_City',
-  'America/Monterrey',
-  'America/Tijuana',
-  'America/Hermosillo',
-  'America/Cancun',
-]
-
-const CURRENCIES = ['MXN', 'USD']
 
 export const OnboardingView = () => {
   const router = useRouter()
-  const [step, setStep] = useState<1 | 2 | 3>(1)
 
-  const patchSession = useAuthStore((s) => s.persistedSession)
-  const setStore = useAuthStore.setState
-
-  const pendingTenantRef = useRef<{ tenantId: string; schemaName: string } | null>(null)
-
-  const onTenantSuccess = (tenantId: string, schemaName: string) => {
-    pendingTenantRef.current = { tenantId, schemaName }
-    setStep(3)
-  }
+  const { step, onTenantCreated, advanceTo, complete } = useOnboardingProgress()
 
   const onboardingComplete = () => {
-    const pending = pendingTenantRef.current
-    if (pending && patchSession) {
-      setStore((prev) => ({
-        persistedSession: prev.persistedSession
-          ? { ...prev.persistedSession, tenantId: pending.tenantId, tenantSlug: pending.schemaName as never }
-          : prev.persistedSession,
-      }))
-    }
+    complete()
     router.replace('/dashboard')
   }
 
-  const nameHook = useOnboardingDisplayName(() => setStep(2))
+  const nameHook = useOnboardingDisplayName(() => advanceTo(2))
 
   const {
     name, setName,
@@ -58,7 +31,7 @@ export const OnboardingView = () => {
     error: tenantError,
     isValid: tenantValid,
     submit: submitTenant,
-  } = useOnboardingForm(onTenantSuccess)
+  } = useOnboardingForm(onTenantCreated)
 
   const initials = nameHook.displayName
     .split(' ')
@@ -77,128 +50,56 @@ export const OnboardingView = () => {
     void submitTenant()
   }
 
-  const containerStyle: React.CSSProperties = {
-    minHeight: '100dvh',
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    background: 'var(--bg-base)',
-    padding: '24px 16px',
-  }
-
-  const cardStyle: React.CSSProperties = { width: '100%', maxWidth: 480 }
-
-  const stepLabelStyle: React.CSSProperties = {
-    fontSize: 13,
-    color: 'var(--brand)',
-    fontFamily: 'var(--font-body)',
-    fontWeight: 600,
-    marginBottom: 8,
-  }
-
-  const headingStyle: React.CSSProperties = {
-    fontFamily: 'var(--font-display)',
-    fontWeight: 700,
-    fontSize: 32,
-    color: 'var(--text-strong)',
-    letterSpacing: '-0.03em',
-    lineHeight: 1.15,
-    marginBottom: 10,
-  }
-
-  const subtitleStyle: React.CSSProperties = {
-    fontSize: 14,
-    color: 'var(--text-muted)',
-    fontFamily: 'var(--font-body)',
-    lineHeight: 1.5,
-  }
-
-  const errorBannerStyle: React.CSSProperties = {
-    background: 'var(--kipo-danger-bg)',
-    border: '1.5px solid var(--kipo-danger)',
-    borderRadius: 12,
-    padding: '10px 14px',
-    fontSize: 13,
-    color: 'var(--kipo-danger)',
-    fontFamily: 'var(--font-body)',
-    marginBottom: 20,
-  }
-
-  const selectStyle: React.CSSProperties = {
-    background: 'var(--bg-subtle)',
-    border: '1.5px solid transparent',
-    borderRadius: 14,
-    padding: '14px 16px',
-    fontSize: 14,
-    fontFamily: 'var(--font-body)',
-    color: 'var(--text-strong)',
-    outline: 'none',
-    cursor: 'pointer',
-    width: '100%',
-  }
-
   if (step === 1) {
     return (
-      <div style={containerStyle}>
-        <div style={cardStyle}>
-          <div style={{ marginBottom: 32 }}>
-            <p style={stepLabelStyle}>Paso 1 de 3</p>
-            <h1 style={headingStyle}>¿Cómo te llaman?</h1>
-            <p style={subtitleStyle}>
+      <div className="min-h-dvh flex items-center justify-center bg-background px-4 py-6">
+        <div className="w-full max-w-[480px]">
+          <div className="mb-8">
+            <p className="text-[13px] text-primary font-sans font-semibold mb-2">Paso 1 de 3</p>
+            <h1 className="font-display font-bold text-[32px] text-foreground tracking-[-0.03em] leading-[1.15] mb-2.5">
+              ¿Cómo te llaman?
+            </h1>
+            <p className="text-sm text-muted-foreground font-sans leading-relaxed">
               Tu nombre aparecerá en tu perfil y en los documentos que generes.
             </p>
           </div>
 
-          <div style={{ display: 'flex', justifyContent: 'center', marginBottom: 32 }}>
+          <div className="flex justify-center mb-8">
             <div
-              style={{
-                width: 80,
-                height: 80,
-                borderRadius: '50%',
-                background: 'var(--surface-brand-soft)',
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                border: '2px solid var(--brand)',
-              }}
+              className="w-20 h-20 rounded-full flex items-center justify-center border-2 border-primary"
+              style={{ background: 'var(--surface-brand-soft)' }}
             >
-              <span
-                style={{
-                  fontSize: 28,
-                  fontWeight: 700,
-                  color: 'var(--brand)',
-                  fontFamily: 'var(--font-display)',
-                  letterSpacing: '-0.02em',
-                  lineHeight: 1,
-                }}
-              >
+              <span className="text-[28px] font-bold text-primary font-display tracking-[-0.02em] leading-none">
                 {initials || '?'}
               </span>
             </div>
           </div>
 
           {nameHook.error && (
-            <div role='alert' style={errorBannerStyle}>
+            <div
+              role="alert"
+              className="bg-danger-soft border-destructive rounded-xl px-3.5 py-2.5 text-[13px] text-destructive font-sans mb-5"
+              style={{ borderWidth: '1.5px', borderStyle: 'solid' }}
+            >
               {nameHook.error}
             </div>
           )}
 
-          <form onSubmit={handleStep1} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+          <form onSubmit={handleStep1} className="flex flex-col gap-4">
             <AuthInput
-              label='Tu nombre completo'
-              type='text'
+              label="Tu nombre completo"
+              type="text"
               required
               value={nameHook.displayName}
               onChange={(e) => nameHook.setDisplayName(e.target.value)}
-              placeholder='Ej. Ana García'
+              placeholder="Ej. Ana García"
               autoFocus
             />
-
-            <div style={{ marginTop: 8 }}>
+            <div className="mt-2">
               <Button
-                type='submit'
-                variant='primary'
-                size='md'
+                type="submit"
+                variant="primary"
+                size="md"
                 full
                 disabled={nameHook.isLoading || !nameHook.isValid}
               >
@@ -216,56 +117,72 @@ export const OnboardingView = () => {
   }
 
   return (
-    <div style={containerStyle}>
-      <div style={cardStyle}>
-        <div style={{ marginBottom: 32 }}>
-          <p style={stepLabelStyle}>Paso 2 de 3</p>
-          <h1 style={headingStyle}>Configura tu empresa</h1>
-          <p style={subtitleStyle}>
+    <div className="min-h-dvh flex items-center justify-center bg-background px-4 py-6">
+      <div className="w-full max-w-[480px]">
+        <div className="mb-8">
+          <p className="text-[13px] text-primary font-sans font-semibold mb-2">Paso 2 de 3</p>
+          <h1 className="font-display font-bold text-[32px] text-foreground tracking-[-0.03em] leading-[1.15] mb-2.5">
+            Configura tu empresa
+          </h1>
+          <p className="text-sm text-muted-foreground font-sans leading-relaxed">
             Esta información crea tu espacio de trabajo en Kipo.
           </p>
         </div>
 
         {tenantError && (
-          <div role='alert' style={errorBannerStyle}>
+          <div
+            role="alert"
+            className="bg-danger-soft border-destructive rounded-xl px-3.5 py-2.5 text-[13px] text-destructive font-sans mb-5"
+            style={{ borderWidth: '1.5px', borderStyle: 'solid' }}
+          >
             {tenantError.message}
           </div>
         )}
 
-        <form onSubmit={handleStep2} style={{ display: 'flex', flexDirection: 'column', gap: 16 }}>
+        <form onSubmit={handleStep2} className="flex flex-col gap-4">
           <AuthInput
-            label='Nombre de la empresa'
-            type='text'
+            label="Nombre de la empresa"
+            type="text"
             required
             value={name}
             onChange={(e) => setName(e.target.value)}
-            placeholder='Ej. Refaccionaria López S.A.'
+            placeholder="Ej. Refaccionaria López S.A."
           />
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <label style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-strong)', fontFamily: 'var(--font-body)' }}>
+          <div className="grid grid-cols-2 gap-3">
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[13px] font-semibold text-foreground font-sans">
                 Zona horaria
               </label>
-              <select value={timezone} onChange={(e) => setTimezone(e.target.value)} style={selectStyle}>
+              <select
+                value={timezone}
+                onChange={(e) => setTimezone(e.target.value)}
+                className="bg-muted border-transparent rounded-[14px] px-4 py-3.5 text-sm font-sans text-foreground outline-none cursor-pointer w-full"
+                style={{ borderWidth: '1.5px', borderStyle: 'solid' }}
+              >
                 {TIMEZONES.map((tz) => (
                   <option key={tz} value={tz}>{tz.split('/')[1].replace(/_/g, ' ')}</option>
                 ))}
               </select>
             </div>
 
-            <div style={{ display: 'flex', flexDirection: 'column', gap: 6 }}>
-              <label style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-strong)', fontFamily: 'var(--font-body)' }}>
+            <div className="flex flex-col gap-1.5">
+              <label className="text-[13px] font-semibold text-foreground font-sans">
                 Moneda
               </label>
-              <select value={currency} onChange={(e) => setCurrency(e.target.value)} style={selectStyle}>
+              <select
+                value={currency}
+                onChange={(e) => setCurrency(e.target.value)}
+                className="bg-muted border-transparent rounded-[14px] px-4 py-3.5 text-sm font-sans text-foreground outline-none cursor-pointer w-full"
+                style={{ borderWidth: '1.5px', borderStyle: 'solid' }}
+              >
                 {CURRENCIES.map((c) => <option key={c} value={c}>{c}</option>)}
               </select>
             </div>
           </div>
 
-          <div style={{ marginTop: 8 }}>
-            <Button type='submit' variant='primary' size='md' full disabled={tenantLoading || !tenantValid}>
+          <div className="mt-2">
+            <Button type="submit" variant="primary" size="md" full disabled={tenantLoading || !tenantValid}>
               {tenantLoading ? 'Creando empresa…' : 'Crear empresa y continuar →'}
             </Button>
           </div>

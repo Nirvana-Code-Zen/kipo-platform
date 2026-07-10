@@ -50,6 +50,23 @@ class SupabaseTenantRepository(ITenantRepository):
                 cur.execute(sql.SQL("CREATE SCHEMA IF NOT EXISTS {}").format(schema))
                 cur.execute(
                     sql.SQL("""
+                    CREATE TABLE IF NOT EXISTS {}.customers (
+                        id          UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+                        tax_id      TEXT        NOT NULL UNIQUE,
+                        legal_name  TEXT        NOT NULL,
+                        tax_regime  TEXT        NOT NULL,
+                        zip         TEXT        NOT NULL,
+                        cfdi_use    TEXT        NOT NULL,
+                        email       TEXT        NOT NULL,
+                        is_active   BOOLEAN     NOT NULL DEFAULT TRUE,
+                        avatar_url  TEXT,
+                        created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
+                        updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+                    )
+                """).format(schema)
+                )
+                cur.execute(
+                    sql.SQL("""
                     CREATE TABLE IF NOT EXISTS {}.employees (
                         id UUID PRIMARY KEY DEFAULT gen_random_uuid(),
                         name TEXT NOT NULL,
@@ -58,6 +75,21 @@ class SupabaseTenantRepository(ITenantRepository):
                         created_at TIMESTAMPTZ DEFAULT now()
                     )
                 """).format(schema)
+                )
+                cur.execute(
+                    sql.SQL("""
+                    CREATE TABLE IF NOT EXISTS {schema}.emisor (
+                        id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+                        rfc             VARCHAR(13) NOT NULL,
+                        razon_social    TEXT        NOT NULL,
+                        regimen_fiscal  VARCHAR(3)  NOT NULL,
+                        codigo_postal   VARCHAR(5)  NOT NULL,
+                        series          VARCHAR(10),
+                        folio_siguiente INTEGER     NOT NULL DEFAULT 1,
+                        created_at      TIMESTAMPTZ DEFAULT NOW(),
+                        updated_at      TIMESTAMPTZ DEFAULT NOW()
+                    )
+                """).format(schema=schema)
                 )
                 cur.execute(
                     sql.SQL("""
@@ -98,38 +130,6 @@ class SupabaseTenantRepository(ITenantRepository):
                         iva_amount           NUMERIC(12,2)   NOT NULL DEFAULT 0,
                         ordinal              SMALLINT        NOT NULL DEFAULT 0,
                         created_at           TIMESTAMPTZ     NOT NULL DEFAULT now()
-                    )
-                """).format(schema=schema)
-                )
-                cur.execute(
-                    sql.SQL("""
-                    CREATE TABLE IF NOT EXISTS {}.customers (
-                        id          UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-                        tax_id      TEXT        NOT NULL UNIQUE,
-                        legal_name  TEXT        NOT NULL,
-                        tax_regime  TEXT        NOT NULL,
-                        zip         TEXT        NOT NULL,
-                        cfdi_use    TEXT        NOT NULL,
-                        email       TEXT        NOT NULL,
-                        is_active   BOOLEAN     NOT NULL DEFAULT TRUE,
-                        avatar_url  TEXT,
-                        created_at  TIMESTAMPTZ NOT NULL DEFAULT now(),
-                        updated_at  TIMESTAMPTZ NOT NULL DEFAULT now()
-                    )
-                """).format(schema)
-                )
-                cur.execute(
-                    sql.SQL("""
-                    CREATE TABLE IF NOT EXISTS {schema}.emisor (
-                        id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-                        rfc             VARCHAR(13) NOT NULL,
-                        razon_social    TEXT        NOT NULL,
-                        regimen_fiscal  VARCHAR(3)  NOT NULL,
-                        codigo_postal   VARCHAR(5)  NOT NULL,
-                        series          VARCHAR(10),
-                        folio_siguiente INTEGER     NOT NULL DEFAULT 1,
-                        created_at      TIMESTAMPTZ DEFAULT NOW(),
-                        updated_at      TIMESTAMPTZ DEFAULT NOW()
                     )
                 """).format(schema=schema)
                 )

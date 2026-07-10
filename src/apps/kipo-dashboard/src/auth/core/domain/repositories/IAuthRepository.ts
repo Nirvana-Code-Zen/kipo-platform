@@ -9,12 +9,10 @@ export type IAuthRepository = {
   loginWithEmail: (email: string, password: string) => Promise<Result<Session, AuthError>>
   loginWithSocial: (
     provider: Extract<AuthProvider, 'google' | 'apple' | 'facebook'>,
-    idToken: string
-  ) => Promise<Result<Session, AuthError>>
-  requestOtp: (
-    phone: string,
-    channel: 'whatsapp' | 'sms'
-  ) => Promise<Result<OtpToken, AuthError>>
+    redirectTo: string
+  ) => Promise<Result<string, AuthError>>
+  completeOAuth: (accessToken: string, refreshToken: string) => Promise<Result<Session, AuthError>>
+  requestOtp: (phone: string) => Promise<Result<OtpToken, AuthError>>
   verifyOtp: (otpToken: OtpToken, code: string) => Promise<Result<Session, AuthError>>
   register: (data: {
     provider: AuthProvider

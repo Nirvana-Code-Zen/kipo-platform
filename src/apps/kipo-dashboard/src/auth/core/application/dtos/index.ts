@@ -8,12 +8,16 @@ export type LoginWithEmailDTO = {
 
 export type LoginWithSocialDTO = {
   provider: Extract<AuthProvider, 'google' | 'apple' | 'facebook'>
-  idToken: string
+  redirectTo: string
 }
 
 export type RequestOtpDTO = {
   phone: string
-  channel: 'whatsapp' | 'sms'
+}
+
+export type OAuthCallbackDTO = {
+  accessToken: string
+  refreshToken: string
 }
 
 export type VerifyOtpDTO = {

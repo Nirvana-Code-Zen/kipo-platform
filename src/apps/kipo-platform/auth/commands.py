@@ -38,3 +38,9 @@ class SignOutCommand:
 @dataclass(frozen=True)
 class RefreshSessionCommand:
     refresh_token: str
+
+
+@dataclass(frozen=True)
+class OAuthCallbackCommand:
+    access_token: str
+    refresh_token: str

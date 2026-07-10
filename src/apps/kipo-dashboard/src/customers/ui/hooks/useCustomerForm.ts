@@ -2,7 +2,8 @@
 
 import { useState } from "react"
 
-import { createTaxId, TaxId_GENERAL, TaxId_FOREIGN } from "../../core/domain/value-objects/TaxId"
+import { detectRfcType, RFC_TYPE_LABEL } from "@/src/shared/domain/rfc"
+
 import { createLegalName } from "../../core/domain/value-objects/LegalName"
 import { createTaxRegime } from "../../core/domain/value-objects/TaxRegime"
 import { createZipCode } from "../../core/domain/value-objects/ZipCode"
@@ -13,27 +14,9 @@ import { TAX_REGIMES } from "../data/catalogs"
 
 import type { Customer as UICustomer } from "../components/types"
 
-export type RfcType = "natural" | "legal" | "general" | "foreign" | "invalid" | "empty"
+export type { RfcType } from "@/src/shared/domain/rfc"
 
-export const RFC_TYPE_LABEL: Record<RfcType, string | null> = {
-  natural: "Persona Física",
-  legal:   "Persona Moral",
-  general: "Público General",
-  foreign: "Extranjero",
-  invalid: "RFC inválido",
-  empty:   null,
-}
-
-export function detectRfcType(rfc: string): RfcType {
-  const v = rfc.trim().toUpperCase()
-  if (!v) return "empty"
-  if (v === TaxId_GENERAL) return "general"
-  if (v === TaxId_FOREIGN) return "foreign"
-  const result = createTaxId(v)
-  if (result.ok) return result.value.type as "natural" | "legal"
-  if (v.length < 12) return "empty"
-  return "invalid"
-}
+export { detectRfcType, RFC_TYPE_LABEL }
 
 export interface CustomerFormErrors {
   legalName?: string

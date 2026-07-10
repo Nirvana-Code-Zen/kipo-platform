@@ -3,101 +3,23 @@
 import { useState } from "react"
 
 import { Button } from "@kipo/ui-react"
+import { AlertCircle, Building2, User } from "lucide-react"
 
 import { AuthInput } from "@/src/auth/ui/components/AuthInput"
 import { TAX_REGIMES } from "@/src/settings/ui/data/catalogs"
 import { useSaveFiscalSettings } from "@/src/settings/ui/hooks/useSaveFiscalSettings"
+import { detectRfcType, RFC_TYPE_LABEL } from "@/src/shared/domain/rfc"
 
 interface FiscalDataStepProps {
   onSaved: () => void
   onSkip: () => void
 }
 
-const containerStyle: React.CSSProperties = {
-  minHeight: "100dvh",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-  background: "var(--bg-base)",
-  padding: "24px 16px",
-}
-
-const cardStyle: React.CSSProperties = {
-  width: "100%",
-  maxWidth: 480,
-}
-
-const stepLabelStyle: React.CSSProperties = {
-  fontSize: 13,
-  color: "var(--brand)",
-  fontFamily: "var(--font-body)",
-  fontWeight: 600,
-  marginBottom: 8,
-}
-
-const headingStyle: React.CSSProperties = {
-  fontFamily: "var(--font-display)",
-  fontWeight: 700,
-  fontSize: 32,
-  color: "var(--text-strong)",
-  letterSpacing: "-0.03em",
-  lineHeight: 1.15,
-  marginBottom: 10,
-}
-
-const subtitleStyle: React.CSSProperties = {
-  fontSize: 14,
-  color: "var(--text-muted)",
-  fontFamily: "var(--font-body)",
-  lineHeight: 1.5,
-}
-
-const errorBannerStyle: React.CSSProperties = {
-  background: "var(--kipo-danger-bg)",
-  border: "1.5px solid var(--kipo-danger)",
-  borderRadius: 12,
-  padding: "10px 14px",
-  fontSize: 13,
-  color: "var(--kipo-danger)",
-  fontFamily: "var(--font-body)",
-  marginBottom: 20,
-}
-
-const selectStyle: React.CSSProperties = {
-  background: "var(--bg-subtle)",
-  border: "1.5px solid transparent",
-  borderRadius: 14,
-  padding: "14px 16px",
-  fontSize: 14,
-  fontFamily: "var(--font-body)",
-  color: "var(--text-strong)",
-  outline: "none",
-  cursor: "pointer",
-  width: "100%",
-}
-
-const sectionLabelStyle: React.CSSProperties = {
-  fontSize: 11,
-  fontWeight: 700,
-  letterSpacing: "0.08em",
-  color: "var(--text-muted)",
-  fontFamily: "var(--font-body)",
-  marginBottom: 12,
-  textTransform: "uppercase",
-}
-
-const hintStyle: React.CSSProperties = {
-  fontSize: 12,
-  color: "var(--text-muted)",
-  fontFamily: "var(--font-body)",
-  marginTop: 4,
-}
-
-const RFC_REGEX = /^[A-ZÑ&]{3,4}[0-9]{6}[A-Z0-9]{3}$/
 const CP_REGEX = /^\d{5}$/
 
 export function FiscalDataStep({ onSaved, onSkip }: FiscalDataStepProps) {
   const [rfc, setRfc] = useState("")
+  const [rfcBlurred, setRfcBlurred] = useState(false)
   const [razonSocial, setRazonSocial] = useState("")
   const [regimenFiscal, setRegimenFiscal] = useState("")
   const [codigoPostal, setCodigoPostal] = useState("")
@@ -107,11 +29,13 @@ export function FiscalDataStep({ onSaved, onSkip }: FiscalDataStepProps) {
 
   const { save, isSaving, error } = useSaveFiscalSettings()
 
+  const rfcType = detectRfcType(rfc)
+  const rfcValid = rfcType === "natural" || rfcType === "legal"
+  const showRfcIndicator = rfcType !== "empty" && (rfcValid || rfcBlurred)
+  const canSubmit = rfcValid && razonSocial.trim().length > 0 && regimenFiscal.length > 0
+
   async function handleSubmit() {
-    if (!RFC_REGEX.test(rfc)) {
-      setValidationError("El RFC no tiene un formato válido.")
-      return
-    }
+    if (!rfcValid) return
     if (!razonSocial.trim()) {
       setValidationError("La razón social es requerida.")
       return
@@ -120,7 +44,7 @@ export function FiscalDataStep({ onSaved, onSkip }: FiscalDataStepProps) {
       setValidationError("Selecciona un régimen fiscal.")
       return
     }
-    if (!CP_REGEX.test(codigoPostal)) {
+    if (codigoPostal && !CP_REGEX.test(codigoPostal)) {
       setValidationError("El código postal debe tener 5 dígitos.")
       return
     }
@@ -136,40 +60,77 @@ export function FiscalDataStep({ onSaved, onSkip }: FiscalDataStepProps) {
   const displayError = validationError ?? error
 
   return (
-    <div style={containerStyle}>
-      <div style={cardStyle}>
-        <p style={stepLabelStyle}>Paso 3 de 3</p>
-        <h1 style={headingStyle}>Configura tu perfil fiscal</h1>
-        <p style={{ ...subtitleStyle, marginBottom: 32 }}>
+    <div className="min-h-dvh flex items-center justify-center bg-background px-4 py-6">
+      <div className="w-full max-w-[480px]">
+        <p className="text-[13px] text-primary font-sans font-semibold mb-2">Paso 3 de 3</p>
+        <h1 className="font-display font-bold text-[32px] text-foreground tracking-[-0.03em] leading-[1.15] mb-2.5">
+          Configura tu perfil fiscal
+        </h1>
+        <p className="text-sm text-muted-foreground font-sans leading-relaxed mb-8">
           Podrás editarlos en cualquier momento desde Ajustes.
         </p>
 
-        {displayError && <div style={errorBannerStyle}>{displayError}</div>}
+        {displayError && (
+          <div
+            className="bg-danger-soft border-destructive rounded-xl px-3.5 py-2.5 text-[13px] text-destructive font-sans mb-5"
+            style={{ borderWidth: "1.5px", borderStyle: "solid" }}
+          >
+            {displayError}
+          </div>
+        )}
 
-        <p style={{ ...sectionLabelStyle, marginTop: 0 }}>Datos del emisor</p>
+        <p className="text-[11px] font-bold tracking-[0.08em] text-muted-foreground font-sans mb-3 uppercase">
+          Datos del emisor
+        </p>
 
-        <div style={{ marginBottom: 16 }}>
+        <div className="mb-4">
           <AuthInput
             label="RFC"
+            showLabel
             value={rfc}
-            onChange={(e) => setRfc(e.target.value.toUpperCase())}
+            onChange={(e) => setRfc(e.target.value.toUpperCase().replace(/[^A-ZÑ&0-9]/g, "").slice(0, 13))}
+            onBlur={() => setRfcBlurred(true)}
             maxLength={13}
           />
-          <p style={hintStyle}>12 caracteres (moral) o 13 (física)</p>
+          {showRfcIndicator ? (
+            <div className="flex items-center gap-1.5 mt-1">
+              {rfcType === "invalid"
+                ? <AlertCircle size={13} style={{ color: "var(--kipo-danger)", flexShrink: 0 }} />
+                : rfcType === "natural"
+                  ? <User size={13} style={{ color: "var(--brand)", flexShrink: 0 }} />
+                  : <Building2 size={13} style={{ color: "var(--brand)", flexShrink: 0 }} />
+              }
+              <span
+                className="text-[12px] font-semibold font-sans"
+                style={{ color: rfcType === "invalid" ? "var(--kipo-danger)" : "var(--brand)" }}
+              >
+                {RFC_TYPE_LABEL[rfcType]}
+              </span>
+            </div>
+          ) : (
+            <p className="text-xs text-muted-foreground font-sans mt-1">
+              12 caracteres (moral) o 13 (física)
+            </p>
+          )}
         </div>
 
-        <div style={{ marginBottom: 16 }}>
+        <div className="mb-4">
           <AuthInput
             label="Razón social"
+            showLabel
             value={razonSocial}
-            onChange={(e) => setRazonSocial(e.target.value)}
+            onChange={(e) => setRazonSocial(e.target.value.replace(/\b\w/g, (c) => c.toUpperCase()))}
             placeholder="Como aparece en la CSF"
           />
         </div>
 
-        <div style={{ marginBottom: 16 }}>
+        <div className="mb-4">
+          <label className="text-[13px] font-semibold text-muted-foreground font-sans mb-1 block">
+            Régimen fiscal
+          </label>
           <select
-            style={selectStyle}
+            className="bg-muted border-transparent rounded-[14px] px-4 py-3.5 text-sm font-sans text-foreground outline-none cursor-pointer w-full"
+            style={{ borderWidth: "1.5px", borderStyle: "solid" }}
             value={regimenFiscal}
             onChange={(e) => setRegimenFiscal(e.target.value)}
           >
@@ -184,58 +145,51 @@ export function FiscalDataStep({ onSaved, onSkip }: FiscalDataStepProps) {
           </select>
         </div>
 
-        <div style={{ marginBottom: 16 }}>
+        <div className="mb-4">
           <AuthInput
             label="Código postal"
+            showLabel
             value={codigoPostal}
-            onChange={(e) => {
-              const val = e.target.value.replace(/\D/g, "")
-              setCodigoPostal(val)
-            }}
+            onChange={(e) => setCodigoPostal(e.target.value.replace(/\D/g, ""))}
             maxLength={5}
           />
         </div>
 
-        <p style={{ ...sectionLabelStyle, marginTop: 24 }}>Configuración de folio</p>
+        <p className="text-[11px] font-bold tracking-[0.08em] text-muted-foreground font-sans mb-3 uppercase mt-6">
+          Configuración de folio
+        </p>
 
-        <div style={{ marginBottom: 16 }}>
+        <div className="mb-4">
           <AuthInput
             label="Serie"
+            showLabel
             value={series}
             onChange={(e) => setSeries(e.target.value.toUpperCase())}
             placeholder="ej. A, FAC, 2026"
           />
-          <p style={hintStyle}>Opcional</p>
+          <p className="text-xs text-muted-foreground font-sans mt-1">Opcional</p>
         </div>
 
-        <div style={{ marginBottom: 32 }}>
+        <div className="mb-8">
           <AuthInput
             label="Folio inicial"
+            showLabel
             type="number"
             value={String(folioSiguiente)}
             onChange={(e) => setFolioSiguiente(Math.max(1, Number(e.target.value)))}
             min={1}
           />
-          <p style={hintStyle}>El número con el que arrancará tu primera factura</p>
+          <p className="text-xs text-muted-foreground font-sans mt-1">El número con el que arrancará tu primera factura</p>
         </div>
 
-        <Button onClick={handleSubmit} disabled={isSaving} style={{ width: "100%" }}>
+        <Button onClick={handleSubmit} disabled={isSaving || !canSubmit} full>
           {isSaving ? "Guardando..." : "Guardar y continuar"}
         </Button>
 
-        <div style={{ textAlign: "center", marginTop: 16 }}>
+        <div className="text-center mt-4">
           <button
             onClick={onSkip}
-            style={{
-              background: "none",
-              border: "none",
-              padding: 0,
-              fontSize: 13,
-              color: "var(--text-muted)",
-              fontFamily: "var(--font-body)",
-              textDecoration: "underline",
-              cursor: "pointer",
-            }}
+            className="bg-transparent border-0 p-0 text-[13px] text-muted-foreground font-sans underline cursor-pointer"
           >
             Omitir por ahora
           </button>
