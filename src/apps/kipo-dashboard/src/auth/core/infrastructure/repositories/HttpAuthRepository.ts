@@ -54,22 +54,31 @@ export const createHttpAuthRepository = (baseUrl: string): IAuthRepository => {
         body: JSON.stringify({ email, password }),
       }),
 
-    loginWithSocial: (
+    loginWithSocial: async (
       provider: Extract<AuthProvider, 'google' | 'apple' | 'facebook'>,
-      idToken: string
-    ) =>
-      sessionResult('/api/v1/auth/sign-in/oauth', {
+      redirectTo: string
+    ): Promise<Result<string, AuthError>> => {
+      const result = await request<{ url: string }>('/api/v1/auth/sign-in/oauth', {
         method: 'POST',
-        body: JSON.stringify({ provider, id_token: idToken }),
-      }),
-
-    requestOtp: async (phone: string, channel: 'whatsapp' | 'sms'): Promise<Result<OtpToken, AuthError>> => {
-      const result = await request<{ otp_token: string }>('/api/v1/auth/sign-in/phone', {
-        method: 'POST',
-        body: JSON.stringify({ phone, channel }),
+        body: JSON.stringify({ provider, redirect_to: redirectTo }),
       })
       if (!result.ok) return result
-      return ok(toOtpToken(result.value.otp_token ?? ''))
+      return ok(result.value.url)
+    },
+
+    completeOAuth: (accessToken: string, refreshToken: string) =>
+      sessionResult('/api/v1/auth/oauth/callback', {
+        method: 'POST',
+        body: JSON.stringify({ access_token: accessToken, refresh_token: refreshToken }),
+      }),
+
+    requestOtp: async (phone: string): Promise<Result<OtpToken, AuthError>> => {
+      const result = await request<{ message: string }>('/api/v1/auth/sign-in/phone', {
+        method: 'POST',
+        body: JSON.stringify({ phone }),
+      })
+      if (!result.ok) return result
+      return ok(toOtpToken(phone))
     },
 
     verifyOtp: (otpToken: OtpToken, code: string) =>

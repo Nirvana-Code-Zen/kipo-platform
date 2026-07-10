@@ -7,4 +7,4 @@ import type { AuthError } from '../../domain/exceptions/auth.errors'
 export const requestOtpUseCase =
   (repo: IAuthRepository) =>
     (dto: RequestOtpDTO): Promise<Result<OtpToken, AuthError>> =>
-      repo.requestOtp(dto.phone, dto.channel)
+      repo.requestOtp(dto.phone)

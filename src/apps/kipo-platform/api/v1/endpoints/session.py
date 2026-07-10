@@ -10,6 +10,7 @@ from auth.commands import (
     SignInWithOAuthCommand,
     SignOutCommand,
     RefreshSessionCommand,
+    OAuthCallbackCommand,
 )
 from shared.exceptions import BusinessRuleViolation
 from shared.providers import get_tenant_repo
@@ -144,6 +145,21 @@ def login_oauth():
         return jsonify({"url": url}), 200
     except BusinessRuleViolation as err:
         return jsonify({"error": str(err)}), 400
+
+
+@session_bp.route("/oauth/callback", methods=["POST"])
+def oauth_callback():
+    data = request.get_json() or {}
+    try:
+        result = auth_execute(OAuthCallbackCommand(
+            access_token=data.get("access_token", ""),
+            refresh_token=data.get("refresh_token", ""),
+        ))
+        user_id = str(result["user"].id)
+        resp = make_response(jsonify(_session_response(result, user_id)), 200)
+        return _with_refresh_cookie(resp, result["refresh_token"])
+    except BusinessRuleViolation as err:
+        return jsonify({"error": str(err)}), 401
 
 
 @session_bp.route("/sign-out", methods=["POST"])

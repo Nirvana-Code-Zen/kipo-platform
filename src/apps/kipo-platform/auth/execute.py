@@ -7,6 +7,7 @@ from auth.commands import (
     SignInWithOAuthCommand,
     SignOutCommand,
     RefreshSessionCommand,
+    OAuthCallbackCommand,
 )
 from auth.operations import sign_up, sign_in, verify_otp, sign_out
 from shared.exceptions import BusinessRuleViolation
@@ -26,6 +27,8 @@ def execute(command: Any) -> Any:
             return verify_otp.execute(repo, phone, token)
         case SignInWithOAuthCommand(provider, redirect_to):
             return sign_in.with_oauth(repo, provider, redirect_to)
+        case OAuthCallbackCommand(access_token, refresh_token):
+            return sign_in.with_oauth_session(repo, access_token, refresh_token)
         case SignOutCommand(access_token):
             return sign_out.execute(repo, access_token)
         case RefreshSessionCommand(refresh_token):

@@ -19,3 +19,7 @@ def with_phone_otp(repo: IAuthRepository, raw_phone: str) -> None:
 def with_oauth(repo: IAuthRepository, raw_provider: str, redirect_to: str) -> str:
     provider = AuthProvider(raw_provider or "")
     return repo.get_oauth_url(provider, redirect_to)
+
+
+def with_oauth_session(repo: IAuthRepository, access_token: str, refresh_token: str) -> dict:
+    return repo.validate_oauth_session(access_token, refresh_token)

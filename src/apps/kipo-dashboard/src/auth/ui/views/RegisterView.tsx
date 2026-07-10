@@ -58,7 +58,7 @@ const FacebookIcon = () => (
 )
 
 export const RegisterView = () => {
-  const { isLoading, isOtpPending, error, pendingOtp, clearError, register } = useAuth()
+  const { isLoading, isOtpPending, error, pendingOtp, clearError, register, loginWithSocial, requestOtp, verifyOtp } = useAuth()
 
   const [tab, setTab] = useState<'email' | 'phone'>('email')
   const [email, setEmail] = useState('')
@@ -66,16 +66,21 @@ export const RegisterView = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [phone, setPhone] = useState('')
   const [otpCode, setOtpCode] = useState('')
-  const [channel, setChannel] = useState<'whatsapp' | 'sms'>('whatsapp')
 
   const handleEmailRegister = (e: React.FormEvent) => {
     e.preventDefault()
     void register({ provider: 'email', displayName: '', email, password })
   }
-  const handleRequestOtp = (e: React.FormEvent) => { e.preventDefault() }
-  const handleVerifyOtp = (e: React.FormEvent) => { e.preventDefault() }
-  const handleSocial = (_provider?: string) => {
-    // TODO: OAuth redirect flow — not yet implemented
+  const handleRequestOtp = (e: React.FormEvent) => {
+    e.preventDefault()
+    void requestOtp({ phone })
+  }
+  const handleVerifyOtp = (e: React.FormEvent) => {
+    e.preventDefault()
+    if (pendingOtp) void verifyOtp({ otpToken: pendingOtp.otpToken, code: otpCode })
+  }
+  const handleSocial = (provider: string) => {
+    void loginWithSocial({ provider: provider as 'google' | 'apple' | 'facebook' })
   }
 
   return (
@@ -202,23 +207,9 @@ export const RegisterView = () => {
             placeholder='+52 55 1234 5678'
           />
 
-          <div>
-            <p style={{ fontSize: 13, fontWeight: 600, color: 'var(--text-strong)', fontFamily: 'var(--font-body)', marginBottom: 8 }}>
-              Recibir código por
-            </p>
-            <div style={{ display: 'flex', gap: 8 }}>
-              <Button type='button' variant={channel === 'whatsapp' ? 'primary' : 'secondary'} size='sm' full onClick={() => setChannel('whatsapp')}>
-                WhatsApp
-              </Button>
-              <Button type='button' variant={channel === 'sms' ? 'primary' : 'secondary'} size='sm' full onClick={() => setChannel('sms')}>
-                SMS
-              </Button>
-            </div>
-          </div>
-
           <div style={{ marginTop: 8 }}>
             <Button type='submit' variant='primary' size='md' full disabled={isLoading}>
-              {isLoading ? <><Loader2 size={16} className='animate-spin' /> Enviando…</> : 'Enviar código'}
+              {isLoading ? <><Loader2 size={16} className='animate-spin' /> Enviando…</> : 'Enviar código SMS'}
             </Button>
           </div>
         </form>
@@ -227,8 +218,7 @@ export const RegisterView = () => {
       {tab === 'phone' && isOtpPending && (
         <form onSubmit={handleVerifyOtp} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           <p style={{ fontSize: 14, color: 'var(--text-body)', fontFamily: 'var(--font-body)', lineHeight: 1.5, margin: 0 }}>
-            Código enviado a <strong style={{ color: 'var(--text-strong)' }}>{pendingOtp?.phone}</strong>{' '}
-            vía {pendingOtp?.channel === 'whatsapp' ? 'WhatsApp' : 'SMS'}
+            Código enviado a <strong style={{ color: 'var(--text-strong)' }}>{pendingOtp?.phone}</strong> vía SMS
           </p>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
@@ -304,7 +294,7 @@ export const RegisterView = () => {
           </Button>
         </div>
         <Button variant='secondary' size='md' full disabled={isLoading} iconLeft={<FacebookIcon />} onClick={() => handleSocial('facebook')}>
-          Continuar con Facebook
+          Facebook
         </Button>
       </div>
     </>

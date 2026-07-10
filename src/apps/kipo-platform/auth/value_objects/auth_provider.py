@@ -1,6 +1,6 @@
 from shared.exceptions import BusinessRuleViolation
 
-_SUPPORTED = frozenset({"email", "phone", "google", "facebook"})
+_SUPPORTED = frozenset({"email", "phone", "google", "facebook", "apple"})
 
 
 class AuthProvider(str):

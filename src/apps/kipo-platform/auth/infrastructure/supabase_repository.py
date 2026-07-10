@@ -71,6 +71,20 @@ class SupabaseAuthRepository(IAuthRepository):
         })
         return response.url
 
+    @_guard
+    def validate_oauth_session(self, access_token: str, refresh_token: str) -> dict:
+        from datetime import timedelta
+        user_resp = self._client.auth.get_user(access_token)
+        user = user_resp.user
+        provider = user.app_metadata.get("provider", "email")
+        expires_at = (datetime.now(timezone.utc) + timedelta(seconds=3600)).isoformat()
+        return {
+            "access_token": access_token,
+            "refresh_token": refresh_token,
+            "expires_at": expires_at,
+            "user": self._to_identity(user, AuthProvider(provider)),
+        }
+
     def sign_out(self, access_token: str) -> None:
         try:
             self._client.auth.admin.sign_out(access_token)

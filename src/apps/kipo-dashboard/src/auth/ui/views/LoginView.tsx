@@ -58,7 +58,7 @@ const FacebookIcon = () => (
 )
 
 export const LoginView = () => {
-  const { isLoading, isOtpPending, error, pendingOtp, clearError, loginWithEmail, requestOtp, verifyOtp } = useAuth()
+  const { isLoading, isOtpPending, error, pendingOtp, clearError, loginWithEmail, loginWithSocial, requestOtp, verifyOtp } = useAuth()
 
   const [tab, setTab] = useState<'email' | 'phone'>('email')
   const [email, setEmail] = useState('')
@@ -66,18 +66,17 @@ export const LoginView = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [phone, setPhone] = useState('')
   const [otpCode, setOtpCode] = useState('')
-  const [channel, setChannel] = useState<'whatsapp' | 'sms'>('whatsapp')
 
   const handleEmailLogin = (e: React.FormEvent) => {
     e.preventDefault()
     void loginWithEmail({ email, password })
   }
-  const handleSocial = (_provider?: string) => {
-    // OAuth redirect flow — not yet implemented
+  const handleSocial = (provider: string) => {
+    void loginWithSocial({ provider: provider as 'google' | 'apple' | 'facebook' })
   }
   const handleRequestOtp = (e: React.FormEvent) => {
     e.preventDefault()
-    void requestOtp({ phone, channel })
+    void requestOtp({ phone })
   }
   const handleVerifyOtp = (e: React.FormEvent) => {
     e.preventDefault()
@@ -209,40 +208,6 @@ export const LoginView = () => {
             placeholder='+52 55 1234 5678'
           />
 
-          <div>
-            <p
-              style={{
-                fontSize: 13,
-                fontWeight: 600,
-                color: 'var(--text-strong)',
-                fontFamily: 'var(--font-body)',
-                marginBottom: 8,
-              }}
-            >
-              Recibir código por
-            </p>
-            <div style={{ display: 'flex', gap: 8 }}>
-              <Button
-                type='button'
-                variant={channel === 'whatsapp' ? 'primary' : 'secondary'}
-                size='sm'
-                full
-                onClick={() => setChannel('whatsapp')}
-              >
-                WhatsApp
-              </Button>
-              <Button
-                type='button'
-                variant={channel === 'sms' ? 'primary' : 'secondary'}
-                size='sm'
-                full
-                onClick={() => setChannel('sms')}
-              >
-                SMS
-              </Button>
-            </div>
-          </div>
-
           <div style={{ marginTop: 8 }}>
             <Button type='submit' variant='primary' size='md' full disabled={isLoading}>
               {isLoading ? <><Loader2 size={16} className='animate-spin' /> Enviando…</> : 'Enviar código'}
@@ -255,7 +220,7 @@ export const LoginView = () => {
         <form onSubmit={handleVerifyOtp} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
           <p style={{ fontSize: 14, color: 'var(--text-body)', fontFamily: 'var(--font-body)', lineHeight: 1.5, margin: 0 }}>
             Código enviado a <strong style={{ color: 'var(--text-strong)' }}>{pendingOtp?.phone}</strong>{' '}
-            vía {pendingOtp?.channel === 'whatsapp' ? 'WhatsApp' : 'SMS'}
+            vía SMS
           </p>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
