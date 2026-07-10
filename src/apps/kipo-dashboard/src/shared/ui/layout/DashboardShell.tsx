@@ -7,7 +7,7 @@ import { Sidebar } from "../components/dashboard/sidebar"
 
 export function DashboardShell ({ children }: {children: React.ReactNode}) {
   return (
-    <div className="flex min-h-screen bg-background">
+    <div className="flex min-h-screen bg-app">
       <div className="hidden lg:block">
         <Sidebar />
       </div>

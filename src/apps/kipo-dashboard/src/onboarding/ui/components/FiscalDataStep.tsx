@@ -85,7 +85,7 @@ export function FiscalDataStep({ onSaved, onSkip }: FiscalDataStepProps) {
   const displayError = validationError ?? error
 
   return (
-    <div className="min-h-dvh flex items-center justify-center bg-background px-4 py-6">
+    <div className="min-h-dvh flex items-center justify-center bg-app px-4 py-6">
       <div className="w-full max-w-[480px]">
         <p className="text-[13px] text-primary font-sans font-semibold mb-2">Paso 3 de 3</p>
         <h1 className="font-display font-bold text-[32px] text-foreground tracking-[-0.03em] leading-[1.15] mb-2.5">

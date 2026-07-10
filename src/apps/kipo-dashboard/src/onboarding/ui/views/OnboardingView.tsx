@@ -83,7 +83,7 @@ export const OnboardingView = () => {
 
   if (step === 2) {
     return (
-      <div className="min-h-dvh flex items-center justify-center bg-background px-4 py-6">
+      <div className="min-h-dvh flex items-center justify-center bg-app px-4 py-6">
         <div className="w-full max-w-[480px]">
           <div className="mb-8">
             <p className="text-[13px] text-primary font-sans font-semibold mb-2">Paso 2 de 3</p>
@@ -173,7 +173,7 @@ export const OnboardingView = () => {
   }
 
   return (
-    <div className="min-h-dvh flex items-center justify-center bg-background px-4 py-6">
+    <div className="min-h-dvh flex items-center justify-center bg-app px-4 py-6">
       <div className="w-full max-w-[480px]">
         <div className="mb-8">
           <p className="text-[13px] text-primary font-sans font-semibold mb-2">Paso 1 de 3</p>
