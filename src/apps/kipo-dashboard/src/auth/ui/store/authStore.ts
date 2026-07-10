@@ -4,7 +4,7 @@ import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
 import { AuthState, PersistedState, SessionStatus } from './types'
-import { getAuthSession, setAuthSession, patchAuthSession } from './sessionStoage'
+import { getAuthSession, setAuthSession, patchAuthSession, removeAuthSession } from './sessionStoage'
 import { toPersistedSession } from '../../core/domain/entities/Session'
 import { createHttpAuthRepository } from '../../core/infrastructure/repositories/HttpAuthRepository'
 import { loginWithEmailUseCase } from '../../core/application/use-cases/loginWithEmailUseCase'
@@ -36,7 +36,6 @@ const applySession = (
 
 const auth = getAuthSession()
 
-debugger
 export const useAuthStore = create<AuthState>()(
   persist(
     (set, get) => ({
@@ -119,6 +118,7 @@ export const useAuthStore = create<AuthState>()(
       logout: async () => {
         set({ status: SessionStatus.loading })
         try { await logoutUseCase(repo)() } catch { /* ignore logout errors */ }
+        removeAuthSession()
         set({
           accessToken: null,
           persistedSession: null,
