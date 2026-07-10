@@ -4,7 +4,9 @@ import { useState, useEffect } from "react"
 import { createPortal } from "react-dom"
 
 import { Button, Input } from "@kipo/ui-react"
-import { X, CheckCircle2 } from "lucide-react"
+import { X, CheckCircle2, AlertCircle, Building2, User } from "lucide-react"
+
+import { detectRfcType, RFC_TYPE_LABEL } from "@/src/shared/domain/rfc"
 
 import { useSaveFiscalSettings } from "../hooks/useSaveFiscalSettings"
 import { TAX_REGIMES } from "../data/catalogs"
@@ -46,7 +48,12 @@ export function FiscalSettingsSheet({ isOpen, onClose, initial, onSaved }: Fisca
   const [series, setSeries] = useState("")
   const [folioInicial, setFolioInicial] = useState("1")
 
+  const [rfcBlurred, setRfcBlurred] = useState(false)
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<string, string>>>({})
+
+  const rfcType = detectRfcType(rfc)
+  const rfcValid = rfcType === "natural" || rfcType === "legal"
+  const showRfcIndicator = rfcType !== "empty" && (rfcValid || rfcBlurred)
 
   const isNew = initial === null || initial.folioSiguiente === 1
 
@@ -59,6 +66,7 @@ export function FiscalSettingsSheet({ isOpen, onClose, initial, onSaved }: Fisca
       setSeries(initial?.series ?? "")
       setFolioInicial(initial?.folioSiguiente?.toString() ?? "1")
       setFieldErrors({})
+      setRfcBlurred(false)
     }
   }, [isOpen, initial])
 
@@ -139,23 +147,42 @@ export function FiscalSettingsSheet({ isOpen, onClose, initial, onSaved }: Fisca
               <section style={{ display: "flex", flexDirection: "column", gap: 16 }}>
                 <SectionTitle>Datos del emisor</SectionTitle>
 
-                <Input
-                  label="RFC"
-                  placeholder="XAXX010101000"
-                  value={rfc}
-                  onChange={(e) => setRfc(e.target.value.toUpperCase().slice(0, 13))}
-                  error={fieldErrors.rfc}
-                  mono
-                  maxLength={13}
-                  autoComplete="off"
-                  hint="12 caracteres (moral) o 13 (física)"
-                />
+                <div>
+                  <Input
+                    label="RFC"
+                    placeholder="XAXX010101000"
+                    value={rfc}
+                    onChange={(e) => setRfc(e.target.value.toUpperCase().replace(/[^A-ZÑ&0-9]/g, "").slice(0, 13))}
+                    onBlur={() => setRfcBlurred(true)}
+                    error={fieldErrors.rfc}
+                    mono
+                    maxLength={13}
+                    autoComplete="off"
+                    hint={showRfcIndicator ? undefined : "12 caracteres (moral) o 13 (física)"}
+                  />
+                  {showRfcIndicator && (
+                    <div className="flex items-center gap-1.5 mt-1">
+                      {rfcType === "invalid"
+                        ? <AlertCircle size={13} style={{ color: "var(--kipo-danger)", flexShrink: 0 }} />
+                        : rfcType === "natural"
+                          ? <User size={13} style={{ color: "var(--brand)", flexShrink: 0 }} />
+                          : <Building2 size={13} style={{ color: "var(--brand)", flexShrink: 0 }} />
+                      }
+                      <span
+                        className="text-[12px] font-semibold font-sans"
+                        style={{ color: rfcType === "invalid" ? "var(--kipo-danger)" : "var(--brand)" }}
+                      >
+                        {RFC_TYPE_LABEL[rfcType]}
+                      </span>
+                    </div>
+                  )}
+                </div>
 
                 <Input
                   label="Razón social"
                   placeholder="Como aparece en la CSF"
                   value={razonSocial}
-                  onChange={(e) => setRazonSocial(e.target.value)}
+                  onChange={(e) => setRazonSocial(e.target.value.replace(/\b\w/g, (c) => c.toUpperCase()))}
                   error={fieldErrors.razonSocial}
                   autoComplete="off"
                 />
