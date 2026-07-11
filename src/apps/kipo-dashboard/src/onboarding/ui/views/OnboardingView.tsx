@@ -10,6 +10,7 @@ import { useOnboardingDisplayName } from '../hooks/useOnboardingDisplayName'
 import { useOnboardingForm } from '../hooks/useOnboardingForm'
 import { useOnboardingProgress } from '../hooks/useOnboardingProgress'
 import { FiscalDataStep } from '../components/FiscalDataStep'
+import { CsdStep } from '../components/CsdStep'
 
 export const OnboardingView = () => {
   const router = useRouter()
@@ -113,7 +114,11 @@ export const OnboardingView = () => {
   }
 
   if (step === 3) {
-    return <FiscalDataStep onSaved={onboardingComplete} onSkip={onboardingComplete} />
+    return <FiscalDataStep onSaved={() => advanceTo(4)} onSkip={onboardingComplete} />
+  }
+
+  if (step === 4) {
+    return <CsdStep onFinish={onboardingComplete} />
   }
 
   return (

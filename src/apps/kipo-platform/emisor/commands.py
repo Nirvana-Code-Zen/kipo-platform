@@ -14,3 +14,16 @@ class UpsertEmisorCommand:
     regimen_fiscal: str
     codigo_postal: str
     series: str | None
+
+
+@dataclass(frozen=True)
+class UploadCsdCommand:
+    schema_name: str
+    cer_bytes: bytes
+    key_bytes: bytes
+    password: str
+
+
+@dataclass(frozen=True)
+class ConfirmManifiestoCommand:
+    schema_name: str

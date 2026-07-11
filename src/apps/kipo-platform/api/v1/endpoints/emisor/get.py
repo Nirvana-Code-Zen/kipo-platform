@@ -34,4 +34,8 @@ def _serialize(emisor) -> dict:
         "folio_siguiente": emisor.folio_siguiente,
         "created_at": emisor.created_at,
         "updated_at": emisor.updated_at,
+        "csd_configured": emisor.csd_configured,
+        "csd_configured_at": emisor.csd_configured_at,
+        "manifiesto_signed": emisor.manifiesto_signed,
+        "manifiesto_signed_at": emisor.manifiesto_signed_at,
     }

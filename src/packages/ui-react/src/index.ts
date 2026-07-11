@@ -19,3 +19,6 @@ export type { SwitchProps } from './components/Switch'
 
 export { StampCard } from './components/billing'
 export type { StampCardProps } from './components/billing'
+
+export { Tooltip } from './components/Tooltip'
+export type { TooltipProps } from './components/Tooltip'

@@ -19,6 +19,9 @@ import { useFiscalSettings } from '../hooks/useFiscalSettings'
 import { FiscalSettingsSection } from '../components/FiscalSettingsSection'
 import { FiscalSettingsSheet } from '../components/FiscalSettingsSheet'
 import { ProfileEditSheet } from '../components/ProfileEditSheet'
+import { CSDSettingsSection } from '../components/CSDSettingsSection'
+import { CSDSettingsSheet } from '../components/CSDSettingsSheet'
+import { ManifiestoSettingsSection } from '../components/ManifiestoSettingsSection'
 
 export function SettingsView() {
   const persistedSession = useAuthStore((s) => s.persistedSession)
@@ -27,6 +30,7 @@ export function SettingsView() {
   const [loggingOut, setLoggingOut] = useState(false)
   const [fiscalSheetOpen, setFiscalSheetOpen] = useState(false)
   const [profileSheetOpen, setProfileSheetOpen] = useState(false)
+  const [csdSheetOpen, setCsdSheetOpen] = useState(false)
 
   const { data: fiscalData, isLoading: fiscalLoading, setData: setFiscalData } = useFiscalSettings()
 
@@ -34,6 +38,10 @@ export function SettingsView() {
   useEffect(() => {
     if (searchParams.get('openFiscal') === 'true') {
       setFiscalSheetOpen(true)
+      router.replace('/settings')
+    }
+    if (searchParams.get('openCsd') === 'true') {
+      setCsdSheetOpen(true)
       router.replace('/settings')
     }
   }, [searchParams])
@@ -91,6 +99,29 @@ export function SettingsView() {
             data={fiscalData}
             isLoading={fiscalLoading}
             onEdit={() => setFiscalSheetOpen(true)}
+          />
+        </div>
+
+        {/* CSD */}
+        <div>
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-1">
+            Certificado de Sello Digital
+          </p>
+          <CSDSettingsSection
+            data={fiscalData}
+            isLoading={fiscalLoading}
+            onEdit={() => setCsdSheetOpen(true)}
+          />
+        </div>
+
+        {/* Carta Manifiesto */}
+        <div>
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-1">
+            Carta Manifiesto
+          </p>
+          <ManifiestoSettingsSection
+            data={fiscalData}
+            onConfirmed={(updated) => setFiscalData(updated)}
           />
         </div>
 
@@ -156,6 +187,12 @@ export function SettingsView() {
       <ProfileEditSheet
         isOpen={profileSheetOpen}
         onClose={() => setProfileSheetOpen(false)}
+      />
+
+      <CSDSettingsSheet
+        isOpen={csdSheetOpen}
+        onClose={() => setCsdSheetOpen(false)}
+        onSaved={(updated) => setFiscalData(updated)}
       />
     </>
   )

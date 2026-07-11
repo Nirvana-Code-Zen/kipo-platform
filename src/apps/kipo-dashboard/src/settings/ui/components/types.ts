@@ -5,4 +5,8 @@ export interface UIFiscalSettings {
   codigoPostal: string
   series: string
   folioSiguiente: number
+  csdConfigured?: boolean
+  csdConfiguredAt?: string | null
+  manifiestoSigned?: boolean
+  manifiestoSignedAt?: string | null
 }

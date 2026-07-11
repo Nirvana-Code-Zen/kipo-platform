@@ -20,3 +20,9 @@ class IEmisorRepository(ABC):
 
     @abstractmethod
     def next_folio(self, schema_name: str) -> tuple[int, str | None]: ...
+
+    @abstractmethod
+    def update_csd(self, schema_name: str, organization_id: str | None) -> Emisor: ...
+
+    @abstractmethod
+    def update_manifiesto(self, schema_name: str) -> Emisor: ...

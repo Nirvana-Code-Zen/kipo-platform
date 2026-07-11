@@ -17,7 +17,9 @@ class SupabaseEmisorRepository(IEmisorRepository):
                 cur.execute(
                     sql.SQL("""
                         SELECT id, rfc, razon_social, regimen_fiscal, codigo_postal,
-                               series, folio_siguiente, created_at, updated_at
+                               series, folio_siguiente, created_at, updated_at,
+                               facturapi_organization_id, csd_configured, csd_configured_at,
+                               manifiesto_signed, manifiesto_signed_at
                         FROM {schema}.emisor
                         LIMIT 1
                     """).format(schema=schema)
@@ -55,7 +57,9 @@ class SupabaseEmisorRepository(IEmisorRepository):
                                 updated_at = NOW()
                             WHERE id = %s
                             RETURNING id, rfc, razon_social, regimen_fiscal, codigo_postal,
-                                      series, folio_siguiente, created_at, updated_at
+                                      series, folio_siguiente, created_at, updated_at,
+                                      facturapi_organization_id, csd_configured, csd_configured_at,
+                                      manifiesto_signed, manifiesto_signed_at
                         """).format(schema=schema),
                         (rfc, razon_social, regimen_fiscal, codigo_postal, series, str(existing[0])),
                     )
@@ -66,10 +70,56 @@ class SupabaseEmisorRepository(IEmisorRepository):
                                 (rfc, razon_social, regimen_fiscal, codigo_postal, series)
                             VALUES (%s, %s, %s, %s, %s)
                             RETURNING id, rfc, razon_social, regimen_fiscal, codigo_postal,
-                                      series, folio_siguiente, created_at, updated_at
+                                      series, folio_siguiente, created_at, updated_at,
+                                      facturapi_organization_id, csd_configured, csd_configured_at,
+                                      manifiesto_signed, manifiesto_signed_at
                         """).format(schema=schema),
                         (rfc, razon_social, regimen_fiscal, codigo_postal, series),
                     )
+                row = cur.fetchone()
+            conn.commit()
+        return self._build_emisor(row)
+
+    def update_csd(self, schema_name: str, organization_id: str | None) -> Emisor:
+        schema = sql.Identifier(schema_name)
+        with admin_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    sql.SQL("""
+                        UPDATE {schema}.emisor
+                        SET csd_configured = TRUE,
+                            csd_configured_at = NOW(),
+                            facturapi_organization_id = %s,
+                            updated_at = NOW()
+                        WHERE id = (SELECT id FROM {schema}.emisor LIMIT 1)
+                        RETURNING id, rfc, razon_social, regimen_fiscal, codigo_postal,
+                                  series, folio_siguiente, created_at, updated_at,
+                                  facturapi_organization_id, csd_configured, csd_configured_at,
+                                  manifiesto_signed, manifiesto_signed_at
+                    """).format(schema=schema),
+                    (organization_id,),
+                )
+                row = cur.fetchone()
+            conn.commit()
+        return self._build_emisor(row)
+
+    def update_manifiesto(self, schema_name: str) -> Emisor:
+        schema = sql.Identifier(schema_name)
+        with admin_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    sql.SQL("""
+                        UPDATE {schema}.emisor
+                        SET manifiesto_signed = TRUE,
+                            manifiesto_signed_at = NOW(),
+                            updated_at = NOW()
+                        WHERE id = (SELECT id FROM {schema}.emisor LIMIT 1)
+                        RETURNING id, rfc, razon_social, regimen_fiscal, codigo_postal,
+                                  series, folio_siguiente, created_at, updated_at,
+                                  facturapi_organization_id, csd_configured, csd_configured_at,
+                                  manifiesto_signed, manifiesto_signed_at
+                    """).format(schema=schema)
+                )
                 row = cur.fetchone()
             conn.commit()
         return self._build_emisor(row)
@@ -105,4 +155,9 @@ class SupabaseEmisorRepository(IEmisorRepository):
             folio_siguiente=row[6],
             created_at=row[7].isoformat(),
             updated_at=row[8].isoformat(),
+            facturapi_organization_id=row[9],
+            csd_configured=row[10],
+            csd_configured_at=row[11].isoformat() if row[11] else None,
+            manifiesto_signed=row[12],
+            manifiesto_signed_at=row[13].isoformat() if row[13] else None,
         )

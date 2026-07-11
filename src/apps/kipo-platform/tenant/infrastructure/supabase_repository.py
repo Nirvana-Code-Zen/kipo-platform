@@ -79,15 +79,20 @@ class SupabaseTenantRepository(ITenantRepository):
                 cur.execute(
                     sql.SQL("""
                     CREATE TABLE IF NOT EXISTS {schema}.emisor (
-                        id              UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
-                        rfc             VARCHAR(13) NOT NULL,
-                        razon_social    TEXT        NOT NULL,
-                        regimen_fiscal  VARCHAR(3)  NOT NULL,
-                        codigo_postal   VARCHAR(5)  NOT NULL,
-                        series          VARCHAR(10),
-                        folio_siguiente INTEGER     NOT NULL DEFAULT 1,
-                        created_at      TIMESTAMPTZ DEFAULT NOW(),
-                        updated_at      TIMESTAMPTZ DEFAULT NOW()
+                        id                          UUID        PRIMARY KEY DEFAULT gen_random_uuid(),
+                        rfc                         VARCHAR(13) NOT NULL,
+                        razon_social                TEXT        NOT NULL,
+                        regimen_fiscal              VARCHAR(3)  NOT NULL,
+                        codigo_postal               VARCHAR(5)  NOT NULL,
+                        series                      VARCHAR(10),
+                        folio_siguiente             INTEGER     NOT NULL DEFAULT 1,
+                        facturapi_organization_id   TEXT,
+                        csd_configured              BOOLEAN     NOT NULL DEFAULT FALSE,
+                        csd_configured_at           TIMESTAMPTZ,
+                        manifiesto_signed           BOOLEAN     NOT NULL DEFAULT FALSE,
+                        manifiesto_signed_at        TIMESTAMPTZ,
+                        created_at                  TIMESTAMPTZ DEFAULT NOW(),
+                        updated_at                  TIMESTAMPTZ DEFAULT NOW()
                     )
                 """).format(schema=schema)
                 )
