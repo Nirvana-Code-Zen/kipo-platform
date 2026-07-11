@@ -6,7 +6,7 @@ import { useAuthStore } from '@/src/auth/ui/store/authStore'
 import { patchAuthSession } from '@/src/auth/ui/store/sessionStoage'
 
 type OnboardingProgress = {
-  step: 1 | 2 | 3
+  step: 1 | 2 | 3 | 4
   pendingTenant?: { tenantId: string; schemaName: string }
 }
 
@@ -27,12 +27,12 @@ export function useOnboardingProgress() {
   const setStore = useAuthStore.setState
 
   const [initialProgress] = useState<OnboardingProgress | null>(() => loadProgress(userId))
-  const [step, setStep] = useState<1 | 2 | 3>(initialProgress?.step ?? 1)
+  const [step, setStep] = useState<1 | 2 | 3 | 4>(initialProgress?.step ?? 1)
   const pendingTenantRef = useRef<{ tenantId: string; schemaName: string } | null>(
     initialProgress?.pendingTenant ?? null
   )
 
-  function advanceTo(nextStep: 1 | 2 | 3, pendingTenant?: { tenantId: string; schemaName: string }) {
+  function advanceTo(nextStep: 1 | 2 | 3 | 4, pendingTenant?: { tenantId: string; schemaName: string }) {
     if (typeof window !== 'undefined' && userId) {
       localStorage.setItem(progressKey(userId), JSON.stringify({ step: nextStep, pendingTenant }))
     }

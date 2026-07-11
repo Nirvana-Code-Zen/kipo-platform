@@ -5,6 +5,8 @@ from tenant.infrastructure.supabase_repository import SupabaseTenantRepository
 from customer.infrastructure.supabase_repository import SupabaseCustomerRepository
 from invoice.infrastructure.supabase_repository import SupabaseInvoiceRepository
 from emisor.infrastructure.supabase_repository import SupabaseEmisorRepository
+from emisor.pac_client import IPacClient
+from shared.infrastructure.facturapi_pac_client import FakeFacturapiPacClient
 
 
 def get_auth_repo() -> SupabaseAuthRepository:
@@ -35,3 +37,9 @@ def get_emisor_repo() -> SupabaseEmisorRepository:
     if "emisor_repo" not in g:
         g.emisor_repo = SupabaseEmisorRepository(supabase.get_client())
     return g.emisor_repo
+
+
+def get_pac_client() -> IPacClient:
+    if "pac_client" not in g:
+        g.pac_client = FakeFacturapiPacClient()
+    return g.pac_client

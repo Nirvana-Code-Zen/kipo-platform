@@ -19,6 +19,10 @@ interface EmisorApiResponse {
   folio_siguiente: number
   created_at: string
   updated_at: string
+  csd_configured: boolean
+  csd_configured_at: string | null
+  manifiesto_signed: boolean
+  manifiesto_signed_at: string | null
 }
 
 export function mapFromApi(raw: EmisorApiResponse): UIFiscalSettings {
@@ -29,6 +33,10 @@ export function mapFromApi(raw: EmisorApiResponse): UIFiscalSettings {
     codigoPostal: raw.codigo_postal,
     series: raw.series ?? '',
     folioSiguiente: raw.folio_siguiente,
+    csdConfigured: raw.csd_configured,
+    csdConfiguredAt: raw.csd_configured_at,
+    manifiestoSigned: raw.manifiesto_signed,
+    manifiestoSignedAt: raw.manifiesto_signed_at,
   }
 }
 
