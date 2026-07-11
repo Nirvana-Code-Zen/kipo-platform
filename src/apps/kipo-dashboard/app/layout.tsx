@@ -1,5 +1,6 @@
 import { Analytics } from "@vercel/analytics/next"
 
+import { AuthSessionManager } from "@/src/auth/ui/components/AuthSessionManager"
 import { PwaInstaller } from "@/src/shared/ui/components/PwaInstaller"
 
 import type { Metadata, Viewport } from 'next'
@@ -30,6 +31,7 @@ export default function RootLayout({
     <html lang="es" data-theme="light">
       <body className="font-sans antialiased">
         {children}
+        <AuthSessionManager />
         <PwaInstaller />
         <Analytics />
       </body>

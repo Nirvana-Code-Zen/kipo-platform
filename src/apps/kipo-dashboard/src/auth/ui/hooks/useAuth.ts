@@ -2,6 +2,8 @@
 
 import { useEffect } from 'react'
 
+import { useShallow } from 'zustand/react/shallow'
+
 import { hydrateSession } from '../../core/domain/entities/Session'
 import { useAuthStore } from '../store/authStore'
 import { SessionStatus } from '../store/types'
@@ -10,7 +12,23 @@ import type { TenantSlug } from '../../core/domain/value-objects/TenantSlug'
 import type { Session } from '../../core/domain/entities/Session'
 
 export const useAuth = () => {
-  const store = useAuthStore()
+  const store = useAuthStore(useShallow((s) => ({
+    status: s.status,
+    persistedSession: s.persistedSession,
+    accessToken: s.accessToken,
+    error: s.error,
+    pendingOtp: s.pendingOtp,
+    pendingEmail: s.pendingEmail,
+    refresh: s.refresh,
+    loginWithEmail: s.loginWithEmail,
+    loginWithSocial: s.loginWithSocial,
+    completeOAuth: s.completeOAuth,
+    requestOtp: s.requestOtp,
+    verifyOtp: s.verifyOtp,
+    register: s.register,
+    logout: s.logout,
+    clearError: s.clearError,
+  })))
 
   useEffect(() => {
     if (store.status === SessionStatus.idle && store.persistedSession && !store.accessToken) {

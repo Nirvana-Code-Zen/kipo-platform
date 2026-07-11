@@ -36,7 +36,8 @@ export type AuthState = {
   verifyOtp: (dto: VerifyOtpDTO) => Promise<void>
   register: (dto: RegisterDTO) => Promise<void>
   logout: () => Promise<void>
-  refresh: () => Promise<void>
+  refresh: () => Promise<boolean>
+  forceUnauthenticated: () => void
   clearError: () => void
   updateProfile: (displayName: string, avatarUrl: string | undefined) => void
 }

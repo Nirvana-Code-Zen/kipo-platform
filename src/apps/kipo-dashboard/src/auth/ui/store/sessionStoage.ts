@@ -7,7 +7,7 @@ export function setAuthSession(session: Session) {
 }
 
 export function getAuthSession(){
-  if (typeof window === 'undefined') return {}
+  if (typeof window === 'undefined') return null
   const session = sessionStorage.getItem(SESSION_KEY)
 
   if (!session) return null
