@@ -22,6 +22,28 @@ import type { Session } from '../../core/domain/entities/Session'
 
 const repo = createHttpAuthRepository(API_BASE_URL)
 
+// Refreshes this many ms before the access token actually expires.
+const REFRESH_LEAD_MS = 60_000
+const REFRESH_MIN_DELAY_MS = 5_000
+
+let refreshTimer: ReturnType<typeof setTimeout> | null = null
+
+const clearRefreshTimer = () => {
+  if (refreshTimer) {
+    clearTimeout(refreshTimer)
+    refreshTimer = null
+  }
+}
+
+// expiresAt may arrive as a string after a round-trip through localStorage/sessionStorage.
+const scheduleRefresh = (expiresAt: Date | string) => {
+  clearRefreshTimer()
+  const delay = Math.max(new Date(expiresAt).getTime() - Date.now() - REFRESH_LEAD_MS, REFRESH_MIN_DELAY_MS)
+  refreshTimer = setTimeout(() => {
+    useAuthStore.getState().refresh()
+  }, delay)
+}
+
 const applySession = (
   set: (partial: Partial<AuthState>) => void,
   session: Session
@@ -33,6 +55,15 @@ const applySession = (
     error: null,
     pendingOtp: null,
   })
+  scheduleRefresh(session.expiresAt)
+}
+
+const CLEARED_STATE: Partial<AuthState> = {
+  accessToken: null,
+  persistedSession: null,
+  status: SessionStatus.unauthenticated,
+  error: null,
+  pendingOtp: null,
 }
 
 const auth = getAuthSession()
@@ -120,32 +151,28 @@ export const useAuthStore = create<AuthState>()(
       logout: async () => {
         set({ status: SessionStatus.loading })
         try { await logoutUseCase(repo)() } catch { /* ignore logout errors */ }
+        clearRefreshTimer()
         removeAuthSession()
-        set({
-          accessToken: null,
-          persistedSession: null,
-          pendingEmail: null,
-          status: SessionStatus.unauthenticated,
-          error: null,
-          pendingOtp: null,
-        })
+        set({ ...CLEARED_STATE, pendingEmail: null })
       },
 
       refresh: async () => {
-        const { persistedSession } = get()
         const result = await refreshSessionUseCase(repo)()
 
         if (result.ok) {
           applySession(set, result.value)
-          return
+          setAuthSession(result.value)
+          return true
         }
 
-        if (persistedSession && new Date(persistedSession.expiresAt).getTime() > Date.now()) {
-          set({ accessToken: 'fake-token' as Session['accessToken'], status: SessionStatus.authenticated, error: null })
-          return
-        }
+        get().forceUnauthenticated()
+        return false
+      },
 
-        set({ accessToken: null, persistedSession: null, status: SessionStatus.unauthenticated, error: null })
+      forceUnauthenticated: () => {
+        clearRefreshTimer()
+        removeAuthSession()
+        set(CLEARED_STATE)
       },
 
       clearError: () => set({ error: null }),
@@ -177,3 +204,13 @@ export const useAuthStore = create<AuthState>()(
     }
   )
 )
+
+// Schedules the proactive refresh for a session hydrated at module load
+// (e.g. sessionStorage surviving a page reload) — applySession() already
+// schedules it for sessions applied via login/refresh/OTP actions.
+export const scheduleRefreshForCurrentSession = () => {
+  const { persistedSession, accessToken } = useAuthStore.getState()
+  if (persistedSession && accessToken) {
+    scheduleRefresh(persistedSession.expiresAt)
+  }
+}
