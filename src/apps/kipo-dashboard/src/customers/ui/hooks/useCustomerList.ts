@@ -4,11 +4,11 @@ import { useCallback, useEffect, useRef, useState } from "react"
 
 import { useAuthStore } from "@/src/auth/ui/store/authStore"
 import { CustomerApiMapper } from "@/src/customers/core/infrastructure/mappers/CustomerApiMapper"
+import { API_BASE_URL } from "@/src/shared/infrastructure/config"
 
 import type { CustomerApiResponse } from "@/src/customers/core/application/dtos/CustomerApiDTO"
 import type { Customer } from "../components/types"
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"
 const PAGE_SIZE = 12
 
 export function useCustomerList() {

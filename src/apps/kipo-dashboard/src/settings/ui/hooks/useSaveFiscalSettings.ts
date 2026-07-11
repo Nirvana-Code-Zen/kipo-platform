@@ -3,12 +3,11 @@
 import { useState } from "react"
 
 import { useAuthStore } from "@/src/auth/ui/store/authStore"
+import { API_BASE_URL } from "@/src/shared/infrastructure/config"
 
 import { useEmisorStore } from "../store/emisorStore"
 
 import type { UIFiscalSettings } from "../components/types"
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"
 
 interface EmisorApiResponse {
   id: string

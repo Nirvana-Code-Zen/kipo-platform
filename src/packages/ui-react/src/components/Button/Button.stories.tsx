@@ -7,6 +7,7 @@ const meta: Meta<typeof Button> = {
   parameters: { layout: 'centered' },
   argTypes: {
     variant: { control: 'select', options: ['primary', 'accent', 'secondary', 'ghost', 'danger'] },
+    tone:    { control: 'select', options: ['brand', 'accent', 'danger'], if: { arg: 'variant', eq: 'ghost' } },
     size:    { control: 'select', options: ['sm', 'md', 'lg'] },
     full:     { control: 'boolean' },
     disabled: { control: 'boolean' },
@@ -35,6 +36,16 @@ export const Secondary: Story = {
 
 export const Ghost: Story = {
   args: { variant: 'ghost', children: 'View details' },
+}
+
+export const GhostTones: Story = {
+  render: () => (
+    <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+      <Button variant="ghost" tone="brand">Brand</Button>
+      <Button variant="ghost" tone="accent">Accent</Button>
+      <Button variant="ghost" tone="danger">Danger</Button>
+    </div>
+  ),
 }
 
 export const Danger: Story = {

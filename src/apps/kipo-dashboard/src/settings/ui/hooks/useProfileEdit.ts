@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"
+import { API_BASE_URL } from "@/src/shared/infrastructure/config"
 
 export async function uploadAvatar(file: File, accessToken: string): Promise<string> {
   const formData = new FormData()

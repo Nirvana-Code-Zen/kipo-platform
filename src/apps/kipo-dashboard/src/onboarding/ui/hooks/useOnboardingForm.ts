@@ -3,13 +3,13 @@
 import { useState } from 'react'
 
 import { useAuthStore } from '@/src/auth/ui/store/authStore'
+import { API_BASE_URL } from "@/src/shared/infrastructure/config"
 
 import { createTenantUseCase } from '../../core/application/use-cases/createTenantUseCase'
 import { createHttpTenantOnboardingRepository } from '../../core/infrastructure/repositories/HttpTenantOnboardingRepository'
 
 import type { TenantOnboardingError } from '../../core/domain/repositories/ITenantOnboardingRepository'
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5000'
 const repo = createHttpTenantOnboardingRepository(API_BASE_URL)
 
 const toSchemaSlug = (value: string) =>

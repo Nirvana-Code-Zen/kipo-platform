@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react"
 
 import { useAuthStore } from "@/src/auth/ui/store/authStore"
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"
+import { API_BASE_URL } from "@/src/shared/infrastructure/config"
 
 export type ChartActivityPoint = { label: string; total: number }
 

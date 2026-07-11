@@ -3,8 +3,7 @@
 import { useEffect, useState } from "react"
 
 import { useAuthStore } from "@/src/auth/ui/store/authStore"
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"
+import { API_BASE_URL } from "@/src/shared/infrastructure/config"
 
 export type MonthStats = { total: number; stamped: number; cancelled: number; draft: number }
 export type DashboardStats = MonthStats & { this_month: MonthStats; prev_month: MonthStats }

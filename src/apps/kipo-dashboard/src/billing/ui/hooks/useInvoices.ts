@@ -3,6 +3,7 @@
 import { useReducer, useState, useCallback } from 'react'
 
 import { isErr } from '@/src/shared/domain/result'
+import { API_BASE_URL } from '@/src/shared/infrastructure/config'
 
 import { createHttpInvoiceRepository } from '../../core/infrastructure/repositories/HttpInvoiceRepository'
 import { createInvoiceUseCase } from '../../core/application/use-cases/createInvoiceUseCase'
@@ -39,7 +40,7 @@ const reducer = (state: State, action: Action): State => {
   }
 }
 
-const invoiceRepo = createHttpInvoiceRepository(process.env.NEXT_PUBLIC_API_URL ?? '')
+const invoiceRepo = createHttpInvoiceRepository(API_BASE_URL)
 
 export const useInvoices = () => {
   const [state, dispatch] = useReducer(reducer, { invoices: [], loading: false, error: null })

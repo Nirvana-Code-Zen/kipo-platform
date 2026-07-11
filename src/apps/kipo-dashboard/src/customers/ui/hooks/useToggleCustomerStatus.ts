@@ -3,8 +3,7 @@
 import { useState } from "react"
 
 import { useAuthStore } from "@/src/auth/ui/store/authStore"
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"
+import { API_BASE_URL } from "@/src/shared/infrastructure/config"
 
 export function useToggleCustomerStatus(onToggled: (id: string) => void) {
   const accessToken = useAuthStore((s) => s.accessToken)

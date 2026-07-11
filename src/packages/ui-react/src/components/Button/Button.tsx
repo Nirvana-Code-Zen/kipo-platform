@@ -3,6 +3,7 @@ import { cn } from '../../lib/cn'
 
 export interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: 'primary' | 'accent' | 'secondary' | 'ghost' | 'danger'
+  tone?: 'brand' | 'accent' | 'danger'
   size?: 'sm' | 'md' | 'lg'
   full?: boolean
   iconLeft?: ReactNode
@@ -23,8 +24,15 @@ const variants = {
   danger:    { background: 'var(--kipo-danger)',    color: '#fff', border: 'none', boxShadow: 'none' },
 } satisfies Record<string, CSSProperties>
 
+const ghostTones = {
+  brand:  'var(--brand)',
+  accent: 'var(--accent-strong)',
+  danger: 'var(--kipo-danger)',
+} satisfies Record<NonNullable<ButtonProps['tone']>, string>
+
 export function Button({
   variant = 'primary',
+  tone = 'brand',
   size = 'md',
   full = false,
   disabled = false,
@@ -61,6 +69,7 @@ export function Button({
         opacity: disabled ? 0.45 : 1,
         transition: 'transform var(--dur-fast) var(--ease-out), filter var(--dur-fast) var(--ease-out)',
         ...v,
+        ...(variant === 'ghost' ? { color: ghostTones[tone] } : {}),
         ...style,
       }}
       onMouseDown={(e) => { if (!disabled) e.currentTarget.style.transform = 'scale(0.97)' }}

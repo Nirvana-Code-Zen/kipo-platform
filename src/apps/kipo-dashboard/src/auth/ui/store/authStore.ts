@@ -3,6 +3,8 @@
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
+import { API_BASE_URL } from "@/src/shared/infrastructure/config"
+
 import { AuthState, PersistedState, SessionStatus } from './types'
 import { getAuthSession, setAuthSession, patchAuthSession, removeAuthSession } from './sessionStoage'
 import { toPersistedSession } from '../../core/domain/entities/Session'
@@ -18,7 +20,6 @@ import { refreshSessionUseCase } from '../../core/application/use-cases/refreshS
 
 import type { Session } from '../../core/domain/entities/Session'
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:3001'
 const repo = createHttpAuthRepository(API_BASE_URL)
 
 const applySession = (

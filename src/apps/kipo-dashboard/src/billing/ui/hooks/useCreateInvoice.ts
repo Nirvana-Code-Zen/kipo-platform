@@ -3,13 +3,12 @@
 import { useState } from "react"
 
 import { useAuthStore } from "@/src/auth/ui/store/authStore"
+import { API_BASE_URL } from "@/src/shared/infrastructure/config"
 
 import { fromApiResponse } from "../../core/application/dtos/InvoiceApiDTO"
 
 import type { CreateInvoiceApiRequest, InvoiceApiResponse } from "../../core/application/dtos/InvoiceApiDTO"
 import type { UIInvoice } from "../components/types"
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"
 
 export function useCreateInvoice(onCreated: (invoice: UIInvoice) => void) {
   const accessToken = useAuthStore((s) => s.accessToken)

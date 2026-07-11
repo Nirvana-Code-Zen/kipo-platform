@@ -3,11 +3,10 @@
 import { useCallback } from "react"
 
 import { useAuthStore } from "@/src/auth/ui/store/authStore"
+import { API_BASE_URL } from "@/src/shared/infrastructure/config"
 
 import type { Dispatch, SetStateAction } from "react"
 import type { UIInvoice } from "../components/types"
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8000"
 
 export function useDeleteInvoice(setInvoices: Dispatch<SetStateAction<UIInvoice[]>>) {
   const accessToken = useAuthStore((s) => s.accessToken)

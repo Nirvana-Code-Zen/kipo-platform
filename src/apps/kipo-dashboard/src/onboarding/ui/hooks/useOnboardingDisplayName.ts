@@ -3,8 +3,7 @@
 import { useState } from 'react'
 
 import { useAuthStore } from '@/src/auth/ui/store/authStore'
-
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:5000'
+import { API_BASE_URL } from "@/src/shared/infrastructure/config"
 
 export const useOnboardingDisplayName = (onSuccess: () => void) => {
   const accessToken = useAuthStore(s => s.accessToken)
