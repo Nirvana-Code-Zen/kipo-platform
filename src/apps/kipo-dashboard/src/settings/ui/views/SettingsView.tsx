@@ -14,6 +14,8 @@ import { useRouter, useSearchParams } from 'next/navigation'
 
 import { useAuthStore } from '@/src/auth/ui/store/authStore'
 import { Header } from '@/src/shared/ui/components/dashboard/header'
+import { useStampedInvoiceCount } from '@/src/billing/ui/hooks/useStampedInvoiceCount'
+import { BuyStampsSheet } from '@/src/stamp-packs/ui/components/BuyStampsSheet'
 
 import { useFiscalSettings } from '../hooks/useFiscalSettings'
 import { FiscalSettingsSection } from '../components/FiscalSettingsSection'
@@ -31,8 +33,10 @@ export function SettingsView() {
   const [fiscalSheetOpen, setFiscalSheetOpen] = useState(false)
   const [profileSheetOpen, setProfileSheetOpen] = useState(false)
   const [csdSheetOpen, setCsdSheetOpen] = useState(false)
+  const [buySheetOpen, setBuySheetOpen] = useState(false)
 
   const { data: fiscalData, isLoading: fiscalLoading, setData: setFiscalData } = useFiscalSettings()
+  const { availableStamps, addAvailableStamps } = useStampedInvoiceCount()
 
   const searchParams = useSearchParams()
   useEffect(() => {
@@ -126,7 +130,7 @@ export function SettingsView() {
         </div>
 
         {/* Plan */}
-        <Card className="p-5">
+        <Card className="p-5 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <CreditCard className="w-4 h-4 text-muted-foreground" />
@@ -137,6 +141,17 @@ export function SettingsView() {
             </div>
             <Button size="sm" className="shrink-0">
               Mejorar plan
+            </Button>
+          </div>
+          <div className="flex items-center justify-between pt-4 border-t border-border">
+            <div>
+              <p className="text-sm font-medium text-foreground">Timbres disponibles</p>
+              <p className="text-xs text-muted-foreground">
+                {availableStamps !== null ? `${availableStamps} timbres` : 'Cargando...'}
+              </p>
+            </div>
+            <Button size="sm" variant="secondary" className="shrink-0" onClick={() => setBuySheetOpen(true)}>
+              Comprar timbres
             </Button>
           </div>
         </Card>
@@ -193,6 +208,12 @@ export function SettingsView() {
         isOpen={csdSheetOpen}
         onClose={() => setCsdSheetOpen(false)}
         onSaved={(updated) => setFiscalData(updated)}
+      />
+
+      <BuyStampsSheet
+        isOpen={buySheetOpen}
+        onClose={() => setBuySheetOpen(false)}
+        onPurchased={addAvailableStamps}
       />
     </>
   )

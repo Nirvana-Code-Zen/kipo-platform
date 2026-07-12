@@ -6,7 +6,13 @@ import { Card } from "@kipo/ui-react"
 
 import type { DashboardStamps } from "@/src/dashboard/ui/hooks/useDashboardSummary"
 
-export function StampsProgress({ stamps }: { stamps: DashboardStamps | null }) {
+export function StampsProgress({
+  stamps,
+  onBuyClick,
+}: {
+  stamps: DashboardStamps | null
+  onBuyClick?: () => void
+}) {
   const [progress, setProgress] = useState(0)
   const targetProgress = stamps
     ? Math.round((stamps.stamped / Math.max(stamps.stamped + stamps.available, 1)) * 100)
@@ -87,6 +93,15 @@ export function StampsProgress({ stamps }: { stamps: DashboardStamps | null }) {
             <span className="text-muted-foreground whitespace-nowrap">Borradores</span>
           </div>
         </div>
+        {onBuyClick && (
+          <button
+            onClick={onBuyClick}
+            className="mt-4 text-xs font-medium transition-opacity hover:opacity-80"
+            style={{ color: "var(--brand)" }}
+          >
+            Comprar timbres
+          </button>
+        )}
       </div>
     </Card>
   )

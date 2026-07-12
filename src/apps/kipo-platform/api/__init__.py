@@ -6,6 +6,7 @@ from api.v1.endpoints.invoices import invoices_bp
 from api.v1.endpoints.dashboard import dashboard_bp
 from api.v1.endpoints.emisor import emisor_bp
 from api.v1.endpoints.profile import profile_bp
+from api.v1.endpoints.catalogs import catalogs_bp
 
 
 def register_blueprints(app):
@@ -17,3 +18,4 @@ def register_blueprints(app):
     app.register_blueprint(dashboard_bp)
     app.register_blueprint(emisor_bp)
     app.register_blueprint(profile_bp)
+    app.register_blueprint(catalogs_bp)

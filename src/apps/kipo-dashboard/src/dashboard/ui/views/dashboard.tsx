@@ -1,5 +1,7 @@
 'use client'
 
+import { useState } from "react"
+
 import { BillingAnalytics } from "@/src/shared/ui/components/dashboard/billing-analytics"
 import { DeclarationCountdown } from "@/src/shared/ui/components/dashboard/declaration-countdown"
 import { Header } from "@/src/shared/ui/components/dashboard/header"
@@ -18,12 +20,14 @@ import {
 } from "@/src/shared/ui/components/dashboard/skeletons"
 import { StampsProgress } from "@/src/shared/ui/components/dashboard/stamps-progress"
 import { StatsCards } from "@/src/shared/ui/components/dashboard/stats-cards"
+import { BuyStampsSheet } from "@/src/stamp-packs/ui/components/BuyStampsSheet"
 
 import { EmisorMissingBanner } from "../components/EmisorMissingBanner"
 import { useDashboardSummary } from "../hooks/useDashboardSummary"
 
 export function Dashboard() {
-  const { summary, isLoading } = useDashboardSummary()
+  const { summary, isLoading, addAvailableStamps } = useDashboardSummary()
+  const [buySheetOpen, setBuySheetOpen] = useState(false)
 
   return (
     <>
@@ -49,7 +53,7 @@ export function Dashboard() {
             {isLoading ? <RemindersSkeleton /> : <Reminders />}
             {isLoading
               ? <StampsProgressSkeleton />
-              : <StampsProgress stamps={summary?.stamps ?? null} />}
+              : <StampsProgress stamps={summary?.stamps ?? null} onBuyClick={() => setBuySheetOpen(true)} />}
           </div>
         </div>
 
@@ -61,6 +65,12 @@ export function Dashboard() {
           {isLoading ? <DeclarationCountdownSkeleton /> : <DeclarationCountdown />}
         </div>
       </div>
+
+      <BuyStampsSheet
+        isOpen={buySheetOpen}
+        onClose={() => setBuySheetOpen(false)}
+        onPurchased={addAvailableStamps}
+      />
     </>
   )
 }
