@@ -6,20 +6,6 @@ export const VOUCHER_TYPES = [
   { code: "P", label: "P - Complemento de pago" },
 ] as const
 
-export const PAYMENT_METHODS = [
-  { code: "PUE", label: "PUE - Pago en una sola exhibición" },
-  { code: "PPD", label: "PPD - Pago en parcialidades o diferido" },
-] as const
-
-export const PAYMENT_FORMS = [
-  { code: "01", label: "01 - Efectivo" },
-  { code: "02", label: "02 - Cheque nominativo" },
-  { code: "03", label: "03 - Transferencia electrónica" },
-  { code: "04", label: "04 - Tarjeta de crédito" },
-  { code: "28", label: "28 - Tarjeta de débito" },
-  { code: "99", label: "99 - Por definir" },
-] as const
-
 export const CURRENCIES = [
   { code: "MXN", label: "MXN - Peso Mexicano" },
   { code: "USD", label: "USD - Dólar Americano" },

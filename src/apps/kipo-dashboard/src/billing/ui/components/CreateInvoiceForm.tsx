@@ -5,13 +5,12 @@ import { useRef } from "react"
 import { Button, Input } from "@kipo/ui-react"
 import { CheckCircle2, Plus, Trash2, Search, X, User } from "lucide-react"
 
+import { useCatalogs } from "@/src/catalogs/ui/hooks/useCatalogs"
 import { useClickOutside } from "@/src/shared/ui/hooks/useClickOutside"
 
 import { useReceiverSearch } from "../hooks/useReceiverSearch"
 import {
   VOUCHER_TYPES,
-  PAYMENT_METHODS,
-  PAYMENT_FORMS,
   CURRENCIES,
   EXPORT_TYPES,
   UNIT_CODES,
@@ -291,6 +290,8 @@ interface CreateInvoiceFormProps {
 }
 
 export function CreateInvoiceForm({ form, onFormSubmit, onCancel, isSubmitting, submitLabel = "Crear borrador" }: CreateInvoiceFormProps) {
+  const { metodoPago, formaPago } = useCatalogs()
+
   return (
     <form onSubmit={onFormSubmit} noValidate>
       <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
@@ -312,24 +313,26 @@ export function CreateInvoiceForm({ form, onFormSubmit, onCancel, isSubmitting, 
               label="Método de pago"
               value={form.paymentMethod}
               onChange={form.setPaymentMethod}
-              options={PAYMENT_METHODS}
+              options={metodoPago.map((m) => ({ code: m.code, label: `${m.code} - ${m.description}` }))}
               error={form.errors.paymentMethod}
             />
-            {form.paymentMethod === "PUE" ? (
-              <StyledSelect
-                label="Forma de pago"
-                value={form.paymentForm}
-                onChange={form.setPaymentForm}
-                options={PAYMENT_FORMS}
-                error={form.errors.paymentForm}
-              />
-            ) : (
+            {form.paymentMethod === "PPD" ? (
               <StyledSelect
                 label="Forma de pago"
                 value="99"
                 onChange={() => {}}
-                options={[{ code: "99", label: "99 - Por definir" }]}
+                options={formaPago
+                  .filter((f) => f.code === "99")
+                  .map((f) => ({ code: f.code, label: `${f.code} - ${f.description}` }))}
                 hint="Automático para PPD"
+              />
+            ) : (
+              <StyledSelect
+                label="Forma de pago"
+                value={form.paymentForm}
+                onChange={form.setPaymentForm}
+                options={formaPago.map((f) => ({ code: f.code, label: `${f.code} - ${f.description}` }))}
+                error={form.errors.paymentForm}
               />
             )}
           </div>

@@ -5,6 +5,7 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { useAuth } from '@/src/auth/ui/hooks/useAuth'
+import { CatalogsProvider } from '@/src/catalogs/ui/context/CatalogsContext'
 
 export default function OnboardingLayout ({ children }: { children: React.ReactNode }) {
   const { isAuthenticated, hasTenant, isLoading } = useAuth()
@@ -17,5 +18,5 @@ export default function OnboardingLayout ({ children }: { children: React.ReactN
   }, [isAuthenticated, hasTenant, isLoading, router])
 
   if (isLoading || !isAuthenticated || hasTenant) return null
-  return <>{children}</>
+  return <CatalogsProvider>{children}</CatalogsProvider>
 }

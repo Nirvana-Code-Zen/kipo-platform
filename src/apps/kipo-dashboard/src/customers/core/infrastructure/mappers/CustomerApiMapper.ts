@@ -1,10 +1,9 @@
-import { TAX_REGIMES } from '@/src/customers/ui/data/catalogs'
-
+import type { CatalogItem } from '@/src/catalogs/ui/data/catalogTypes'
 import type { CustomerCreateRequest, CustomerUpdateRequest, CustomerApiResponse } from '../../application/dtos/CustomerApiDTO'
 import type { Customer as UICustomer } from '@/src/customers/ui/components/types'
 
-function getRegimeLabel(code: string): string {
-  return TAX_REGIMES.find((r) => r.code === code)?.label ?? code
+function getRegimeLabel(code: string, regimenFiscal: CatalogItem[]): string {
+  return regimenFiscal.find((r) => r.code === code)?.description ?? code
 }
 
 function getInitials(legalName: string): string {
@@ -42,12 +41,12 @@ export const CustomerApiMapper = {
     }
   },
 
-  fromApiResponse(raw: CustomerApiResponse): UICustomer {
+  fromApiResponse(raw: CustomerApiResponse, regimenFiscal: CatalogItem[]): UICustomer {
     return {
       id: raw.id,
       taxId: raw.tax_id,
       legalName: raw.legal_name,
-      taxRegime: getRegimeLabel(raw.tax_regime),
+      taxRegime: getRegimeLabel(raw.tax_regime, regimenFiscal),
       taxRegimeCode: raw.tax_regime,
       zipCode: raw.zip,
       cfdiUsage: raw.cfdi_use,

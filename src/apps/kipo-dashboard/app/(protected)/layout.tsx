@@ -5,6 +5,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { useAuth } from '@/src/auth/ui/hooks/useAuth'
+import { CatalogsProvider } from '@/src/catalogs/ui/context/CatalogsContext'
 import { useEmisorInit } from '@/src/settings/ui/hooks/useEmisorInit'
 import { DashboardShell } from '@/src/shared/ui/layout/DashboardShell'
 
@@ -24,5 +25,9 @@ export default function ProtectedLayout ({ children }: { children: React.ReactNo
   }, [mounted, isAuthenticated, hasTenant, isLoading, router])
 
   if (!mounted || isLoading || !isAuthenticated || !hasTenant) return null
-  return <DashboardShell>{children}</DashboardShell>
+  return (
+    <CatalogsProvider>
+      <DashboardShell>{children}</DashboardShell>
+    </CatalogsProvider>
+  )
 }

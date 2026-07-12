@@ -5,6 +5,8 @@ import { createPortal } from "react-dom"
 import { Badge } from "@kipo/ui-react"
 import { X, Hash, Calendar, User, FileText, CreditCard, DollarSign } from "lucide-react"
 
+import { useCatalogs } from "@/src/catalogs/ui/hooks/useCatalogs"
+
 import type { UIInvoice } from "./types"
 
 interface InvoiceDetailSheetProps {
@@ -18,11 +20,6 @@ const VOUCHER_TYPE_LABEL: Record<string, string> = {
   T: "Traslado",
   N: "Nómina",
   P: "Complemento de pago",
-}
-
-const PAYMENT_METHOD_LABEL: Record<string, string> = {
-  PUE: "PUE - Pago en una sola exhibición",
-  PPD: "PPD - Pago en parcialidades o diferido",
 }
 
 const statusTone = {
@@ -41,7 +38,19 @@ const formatMXN = (amount: number) =>
   new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(amount)
 
 export function InvoiceDetailSheet({ invoice, onClose }: InvoiceDetailSheetProps) {
+  const { metodoPago, formaPago } = useCatalogs()
+
   if (!invoice) return null
+
+  const paymentMethod = metodoPago.find((m) => m.code === invoice.paymentMethod)
+  const paymentMethodLabel = paymentMethod
+    ? `${paymentMethod.code} - ${paymentMethod.description}`
+    : invoice.paymentMethod
+
+  const paymentForm = formaPago.find((f) => f.code === invoice.paymentForm)
+  const paymentFormLabel = paymentForm
+    ? `${paymentForm.code} - ${paymentForm.description}`
+    : invoice.paymentForm
 
   return createPortal(
     <div className="fixed inset-0 z-[100] flex flex-col justify-end sm:justify-center sm:items-center">
@@ -81,7 +90,12 @@ export function InvoiceDetailSheet({ invoice, onClose }: InvoiceDetailSheetProps
           <DetailRow
             icon={<CreditCard className="w-4 h-4" />}
             label="Método de pago"
-            value={PAYMENT_METHOD_LABEL[invoice.paymentMethod] ?? invoice.paymentMethod}
+            value={paymentMethodLabel}
+          />
+          <DetailRow
+            icon={<CreditCard className="w-4 h-4" />}
+            label="Forma de pago"
+            value={paymentFormLabel}
           />
           <DetailRow
             icon={<DollarSign className="w-4 h-4" />}

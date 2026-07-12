@@ -3,6 +3,7 @@
 import { useState } from "react"
 
 import { useAuthStore } from "@/src/auth/ui/store/authStore"
+import { useCatalogs } from "@/src/catalogs/ui/hooks/useCatalogs"
 import { CustomerApiMapper } from "@/src/customers/core/infrastructure/mappers/CustomerApiMapper"
 import { API_BASE_URL } from "@/src/shared/infrastructure/config"
 
@@ -11,6 +12,7 @@ import type { Customer } from "../components/types"
 
 export function useAddCustomer(onAdded: (customer: Customer) => void) {
   const accessToken = useAuthStore((s) => s.accessToken)
+  const { regimenFiscal } = useCatalogs()
   const [isSaving, setIsSaving] = useState(false)
   const [saveError, setSaveError] = useState<string | null>(null)
 
@@ -35,7 +37,7 @@ export function useAddCustomer(onAdded: (customer: Customer) => void) {
       }
 
       const raw = await res.json() as CustomerApiResponse
-      onAdded(CustomerApiMapper.fromApiResponse(raw))
+      onAdded(CustomerApiMapper.fromApiResponse(raw, regimenFiscal))
       return null
     } catch (e) {
       const msg = e instanceof Error ? e.message : "Error de red"

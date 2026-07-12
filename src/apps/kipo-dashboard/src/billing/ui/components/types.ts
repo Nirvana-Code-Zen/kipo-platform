@@ -14,4 +14,5 @@ export interface UIInvoice {
   currency: string
   voucherType: VoucherType
   paymentMethod: string
+  paymentForm: string
 }

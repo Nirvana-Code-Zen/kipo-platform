@@ -6,7 +6,7 @@ import { Button } from "@kipo/ui-react"
 import { AlertCircle, Building2, User } from "lucide-react"
 
 import { AuthInput } from "@/src/auth/ui/components/AuthInput"
-import { TAX_REGIMES } from "@/src/settings/ui/data/catalogs"
+import { useCatalogs } from "@/src/catalogs/ui/hooks/useCatalogs"
 import { useSaveFiscalSettings } from "@/src/settings/ui/hooks/useSaveFiscalSettings"
 import { detectRfcType, RFC_TYPE_LABEL } from "@/src/shared/domain/rfc"
 
@@ -28,6 +28,7 @@ export function FiscalDataStep({ onSaved, onSkip }: FiscalDataStepProps) {
   const [validationError, setValidationError] = useState<string | null>(null)
 
   const { save, isSaving, error } = useSaveFiscalSettings()
+  const { regimenFiscal: regimenFiscalCatalog } = useCatalogs()
 
   const rfcType = detectRfcType(rfc)
   const rfcValid = rfcType === "natural" || rfcType === "legal"
@@ -137,9 +138,9 @@ export function FiscalDataStep({ onSaved, onSkip }: FiscalDataStepProps) {
             <option value="" disabled>
               Seleccionar...
             </option>
-            {TAX_REGIMES.map((regime) => (
+            {regimenFiscalCatalog.map((regime) => (
               <option key={regime.code} value={regime.code}>
-                {regime.label}
+                {regime.description}
               </option>
             ))}
           </select>

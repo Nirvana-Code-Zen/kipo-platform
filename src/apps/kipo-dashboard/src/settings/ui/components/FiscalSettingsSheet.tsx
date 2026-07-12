@@ -6,10 +6,10 @@ import { createPortal } from "react-dom"
 import { Button, Input } from "@kipo/ui-react"
 import { X, CheckCircle2, AlertCircle, Building2, User } from "lucide-react"
 
+import { useCatalogs } from "@/src/catalogs/ui/hooks/useCatalogs"
 import { detectRfcType, RFC_TYPE_LABEL } from "@/src/shared/domain/rfc"
 
 import { useSaveFiscalSettings } from "../hooks/useSaveFiscalSettings"
-import { TAX_REGIMES } from "../data/catalogs"
 
 import type { UIFiscalSettings } from "./types"
 
@@ -40,6 +40,7 @@ function rfcIsValid(rfc: string): boolean {
 
 export function FiscalSettingsSheet({ isOpen, onClose, initial, onSaved }: FiscalSettingsSheetProps) {
   const { save, isSaving, error } = useSaveFiscalSettings()
+  const { regimenFiscal: regimenFiscalCatalog } = useCatalogs()
 
   const [rfc, setRfc] = useState("")
   const [razonSocial, setRazonSocial] = useState("")
@@ -215,9 +216,9 @@ export function FiscalSettingsSheet({ isOpen, onClose, initial, onSaved }: Fisca
                       <option value="" disabled style={{ color: "var(--text-muted)" }}>
                         Seleccionar...
                       </option>
-                      {TAX_REGIMES.map((r) => (
+                      {regimenFiscalCatalog.map((r) => (
                         <option key={r.code} value={r.code}>
-                          {r.code} · {r.label}
+                          {r.code} · {r.description}
                         </option>
                       ))}
                     </select>

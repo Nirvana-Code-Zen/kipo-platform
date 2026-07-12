@@ -3,6 +3,7 @@
 import { useCallback, useEffect, useRef, useState } from "react"
 
 import { useAuthStore } from "@/src/auth/ui/store/authStore"
+import { useCatalogs } from "@/src/catalogs/ui/hooks/useCatalogs"
 import { CustomerApiMapper } from "@/src/customers/core/infrastructure/mappers/CustomerApiMapper"
 import { API_BASE_URL } from "@/src/shared/infrastructure/config"
 
@@ -12,6 +13,7 @@ import type { Customer } from "../components/types"
 const PAGE_SIZE = 12
 
 export function useCustomerList() {
+  const { regimenFiscal } = useCatalogs()
   const [customers, setCustomers] = useState<Customer[]>([])
   const [isLoading, setIsLoading] = useState(true)
   const [isFetchingMore, setIsFetchingMore] = useState(false)
@@ -45,7 +47,7 @@ export function useCustomerList() {
       }
 
       const raw = (await res.json()) as CustomerApiResponse[]
-      const mapped = raw.map(CustomerApiMapper.fromApiResponse)
+      const mapped = raw.map((r) => CustomerApiMapper.fromApiResponse(r, regimenFiscal))
 
       setCustomers((prev) => (isInitial ? mapped : [...prev, ...mapped]))
       offsetRef.current += mapped.length
@@ -62,7 +64,7 @@ export function useCustomerList() {
       setIsLoading(false)
       setIsFetchingMore(false)
     }
-  }, [])
+  }, [regimenFiscal])
 
   useEffect(() => {
     loadMore()

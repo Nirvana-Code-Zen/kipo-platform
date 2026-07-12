@@ -61,5 +61,6 @@ export function fromApiResponse(raw: InvoiceApiResponse): UIInvoice {
     currency: raw.currency,
     voucherType: raw.voucher_type as UIInvoice["voucherType"],
     paymentMethod: raw.payment_method,
+    paymentForm: raw.payment_form,
   }
 }

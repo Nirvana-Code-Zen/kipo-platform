@@ -3,7 +3,7 @@
 import { Building2 } from "lucide-react"
 import { Button } from "@kipo/ui-react"
 
-import { REGIMEN_FISCAL_LABELS } from "../data/catalogs"
+import { useCatalogs } from "@/src/catalogs/ui/hooks/useCatalogs"
 
 import type { UIFiscalSettings } from "./types"
 
@@ -64,6 +64,8 @@ function DataRow({ label, value }: DataRowProps) {
 }
 
 export function FiscalSettingsSection({ data, isLoading, onEdit }: FiscalSettingsSectionProps) {
+  const { regimenFiscal } = useCatalogs()
+
   if (isLoading) {
     return (
       <div style={{
@@ -123,7 +125,7 @@ export function FiscalSettingsSection({ data, isLoading, onEdit }: FiscalSetting
 
   const lastFolio = data.folioSiguiente - 1
   const lastFolioDisplay = lastFolio > 0 ? lastFolio.toString().padStart(4, "0") : "—"
-  const regimenLabel = REGIMEN_FISCAL_LABELS[data.regimenFiscal] ?? data.regimenFiscal
+  const regimenLabel = regimenFiscal.find((r) => r.code === data.regimenFiscal)?.description ?? data.regimenFiscal
 
   return (
     <div style={{

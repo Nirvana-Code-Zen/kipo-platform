@@ -3,8 +3,10 @@
 import { Button, Input, Switch } from "@kipo/ui-react"
 import { CheckCircle2, AlertCircle, Building2, User } from "lucide-react"
 
+import { useCatalogs } from "@/src/catalogs/ui/hooks/useCatalogs"
+
 import { useCustomerForm, RFC_TYPE_LABEL } from "../hooks/useCustomerForm"
-import { TAX_REGIMES, AVATARS } from "../data/catalogs"
+import { AVATARS } from "../data/catalogs"
 
 import type { Customer as UICustomer } from "./types"
 
@@ -141,6 +143,7 @@ interface CreateCustomerFormProps {
 
 export function CreateCustomerForm({ onSubmit, onCancel, initialValues, submitLabel }: CreateCustomerFormProps) {
   const form = useCustomerForm({ initialValues })
+  const { regimenFiscal } = useCatalogs()
 
   function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -240,7 +243,7 @@ export function CreateCustomerForm({ onSubmit, onCancel, initialValues, submitLa
                 label="Régimen fiscal"
                 value={form.taxRegime}
                 onChange={form.setTaxRegime}
-                options={TAX_REGIMES.map((r) => ({ code: r.code, label: `${r.code} - ${r.label}` }))}
+                options={regimenFiscal.map((r) => ({ code: r.code, label: `${r.code} - ${r.description}` }))}
                 error={form.errors.taxRegime}
               />
             </>

@@ -97,7 +97,7 @@ export function useInvoiceForm() {
 
     if (!voucherType) next.voucherType = "Selecciona el tipo de comprobante"
     if (!paymentMethod) next.paymentMethod = "Selecciona el método de pago"
-    if (paymentMethod === "PUE" && !paymentForm) next.paymentForm = "Selecciona la forma de pago"
+    if (paymentMethod && paymentMethod !== "PPD" && !paymentForm) next.paymentForm = "Selecciona la forma de pago"
     if (!currency) next.currency = "Selecciona la moneda"
     if (!/^\d{5}$/.test(issuerZipCode.trim())) next.issuerZipCode = "5 dígitos requeridos"
     if (!receiverTaxId.trim()) next.receiverTaxId = "RFC del receptor requerido"
@@ -139,7 +139,8 @@ export function useInvoiceForm() {
       total: totals.total,
       currency,
       voucherType: voucherType as VoucherType,
-      paymentMethod: resolvedPaymentForm ? `${paymentMethod}` : paymentMethod,
+      paymentMethod,
+      paymentForm: resolvedPaymentForm,
     }
   }
 
