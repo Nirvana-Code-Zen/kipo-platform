@@ -8,7 +8,6 @@ import { detectRfcType, RFC_TYPE_LABEL } from "@/src/shared/domain/rfc"
 import { createLegalName } from "../../core/domain/value-objects/LegalName"
 import { createTaxRegime } from "../../core/domain/value-objects/TaxRegime"
 import { createZipCode } from "../../core/domain/value-objects/ZipCode"
-import { createCfdiUsage } from "../../core/domain/value-objects/CfdiUsage"
 import { createEmail } from "../../core/domain/value-objects/Email"
 import { getInitials } from "../../core/domain/value-objects/AvatarUrl"
 
@@ -24,7 +23,6 @@ export interface CustomerFormErrors {
   email?: string
   taxRegime?: string
   zipCode?: string
-  cfdiUsage?: string
 }
 
 interface UseCustomerFormOptions {
@@ -39,7 +37,6 @@ export function useCustomerForm({ initialValues }: UseCustomerFormOptions = {}) 
   const [phone, setPhone] = useState(initialValues?.phone ?? "")
   const [taxRegime, setTaxRegime] = useState(() => initialValues?.taxRegimeCode ?? "")
   const [zipCode, setZipCode] = useState(initialValues?.zipCode ?? "")
-  const [cfdiUsage, setCfdiUsage] = useState(initialValues?.cfdiUsage ?? "")
   const [avatarUrl, setAvatarUrl] = useState<string | null>(initialValues?.avatar || null)
   const [activeStatus, setActiveStatus] = useState(initialValues?.status !== "inactive")
   const [errors, setErrors] = useState<CustomerFormErrors>({})
@@ -56,7 +53,6 @@ export function useCustomerForm({ initialValues }: UseCustomerFormOptions = {}) 
     if (!createEmail(email).ok) next.email = "Correo inválido"
     if (!isGenericRfc && !createTaxRegime(taxRegime).ok) next.taxRegime = "Selecciona un régimen"
     if (!createZipCode(zipCode).ok) next.zipCode = "Código postal inválido (5 dígitos)"
-    if (!isGenericRfc && !createCfdiUsage(cfdiUsage).ok) next.cfdiUsage = "Selecciona un uso de CFDI"
     setErrors(next)
     return Object.keys(next).length === 0
   }
@@ -73,7 +69,6 @@ export function useCustomerForm({ initialValues }: UseCustomerFormOptions = {}) 
       taxRegime: regimeLabel,
       taxRegimeCode: taxRegime,
       zipCode,
-      cfdiUsage: cfdiUsage || undefined,
       avatar: avatarUrl ?? "",
       initials,
     }
@@ -86,7 +81,6 @@ export function useCustomerForm({ initialValues }: UseCustomerFormOptions = {}) 
     phone,        setPhone,
     taxRegime,    setTaxRegime,
     zipCode,      setZipCode,
-    cfdiUsage,    setCfdiUsage,
     avatarUrl,    setAvatarUrl,
     activeStatus, setActiveStatus,
     rfcType,

@@ -166,7 +166,7 @@ function ReceiverSearch({
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
       <label style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 13, color: "var(--text-strong)" }}>
-        Buscar receptor
+        Buscar Cliente
       </label>
       <div ref={dropdownRef} style={{ position: "relative" }}>
         <div style={{ position: "relative" }}>
@@ -249,7 +249,7 @@ function ReceiverSearch({
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 12 }}>
         <Input
-          label="RFC receptor"
+          label="RFC"
           placeholder="XAXX010101000"
           value={receiverTaxId}
           onChange={(e) => onChangeTaxId(e.target.value.toUpperCase())}
@@ -267,7 +267,7 @@ function ReceiverSearch({
           autoComplete="off"
         />
         <Input
-          label="CP receptor"
+          label="C.P. Receptor"
           placeholder="00000"
           value={receiverZip}
           onChange={(e) => onChangeZip(e.target.value.replace(/\D/g, "").slice(0, 5))}
@@ -460,7 +460,7 @@ export function CreateInvoiceForm({ form, onFormSubmit, onCancel, isSubmitting, 
               error={form.errors.currency}
             />
             <Input
-              label="CP emisor"
+              label="C.P. Emisor"
               placeholder="00000"
               value={form.issuerZipCode}
               onChange={(e) => form.setIssuerZipCode(e.target.value.replace(/\D/g, "").slice(0, 5))}
@@ -478,7 +478,6 @@ export function CreateInvoiceForm({ form, onFormSubmit, onCancel, isSubmitting, 
           />
         </section>
 
-        {/* ── Sección 2: Receptor ── */}
         <section style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <SectionTitle>Receptor</SectionTitle>
 
@@ -501,7 +500,6 @@ export function CreateInvoiceForm({ form, onFormSubmit, onCancel, isSubmitting, 
           />
         </section>
 
-        {/* ── Sección 3: Conceptos ── */}
         <section style={{ display: "flex", flexDirection: "column", gap: 16 }}>
           <SectionTitle>Conceptos</SectionTitle>
 

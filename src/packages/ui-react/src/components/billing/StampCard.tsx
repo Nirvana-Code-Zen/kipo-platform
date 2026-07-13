@@ -90,7 +90,7 @@ export function StampCard({
       >
         <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 600, fontSize: 22 }}>${totalParts}</span>
         <span style={{ fontSize: 12, opacity: 0.7, fontFamily: 'var(--font-mono)' }}>
-          ${unitPrice.toFixed(2)}/u
+          ${unitPrice.toFixed(2)} c/u
         </span>
       </div>
     </button>

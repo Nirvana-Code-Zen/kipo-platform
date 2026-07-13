@@ -8,7 +8,6 @@ class CreateCustomerCommand:
     legal_name: str
     tax_regime: str
     zip: str
-    cfdi_use: str
     email: str
     avatar_url: str | None = None
 
@@ -21,7 +20,6 @@ class UpdateCustomerCommand:
     legal_name: str
     tax_regime: str
     zip: str
-    cfdi_use: str
     email: str
     avatar_url: str | None = None
 

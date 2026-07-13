@@ -56,7 +56,6 @@ class SupabaseTenantRepository(ITenantRepository):
                         legal_name  TEXT        NOT NULL,
                         tax_regime  TEXT        NOT NULL,
                         zip         TEXT        NOT NULL,
-                        cfdi_use    TEXT        NOT NULL,
                         email       TEXT        NOT NULL,
                         is_active   BOOLEAN     NOT NULL DEFAULT TRUE,
                         avatar_url  TEXT,

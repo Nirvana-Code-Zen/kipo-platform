@@ -42,11 +42,11 @@ export function Sidebar() {
       <div className="flex items-center gap-2 mb-6 group cursor-pointer">
         <Link href="/" className="flex items-center gap-2">
           <Image
-            src="/kipo-logo.svg"
+            src="/logo.svg"
             width={20}
             height={20}
             alt="Kipo"
-            className="h-10 w-10 transition-transform group-hover:scale-110 duration-300"
+            className="h-15 w-15 transition-transform group-hover:scale-110 duration-300"
           />
           <span className="text-lg font-semibold text-foreground">{tenantName ?? 'Kipo'}</span>
         </Link>

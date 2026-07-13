@@ -66,7 +66,6 @@ export function SettingsView() {
 
       <div className="mt-4 md:mt-5 max-w-2xl space-y-4">
 
-        {/* Perfil */}
         <Card className="p-5">
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-4">Perfil</p>
           <div className="flex items-center gap-4">
@@ -94,7 +93,6 @@ export function SettingsView() {
           </div>
         </Card>
 
-        {/* Datos fiscales */}
         <div>
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-1">
             Datos fiscales
@@ -106,7 +104,6 @@ export function SettingsView() {
           />
         </div>
 
-        {/* CSD */}
         <div>
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-1">
             Certificado de Sello Digital
@@ -118,18 +115,15 @@ export function SettingsView() {
           />
         </div>
 
-        {/* Carta Manifiesto */}
         <div>
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-1">
             Carta Manifiesto
           </p>
           <ManifiestoSettingsSection
             data={fiscalData}
-            onConfirmed={(updated) => setFiscalData(updated)}
           />
         </div>
 
-        {/* Plan */}
         <Card className="p-5 space-y-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
@@ -156,7 +150,6 @@ export function SettingsView() {
           </div>
         </Card>
 
-        {/* Soporte */}
         <Card className="divide-y divide-border overflow-hidden p-0">
           <a
             href="https://kipo.com.mx/ayuda"
@@ -178,7 +171,6 @@ export function SettingsView() {
           </a>
         </Card>
 
-        {/* Logout */}
         <Card className="p-5">
           <Button
             onClick={handleLogout}

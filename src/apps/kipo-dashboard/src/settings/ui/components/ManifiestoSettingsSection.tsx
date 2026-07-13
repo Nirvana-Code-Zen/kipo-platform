@@ -11,23 +11,14 @@ import type { UIFiscalSettings } from "./types"
 
 interface ManifiestoSettingsSectionProps {
   data: UIFiscalSettings | null
-  onConfirmed: (data: UIFiscalSettings) => void
 }
 
-export function ManifiestoSettingsSection({ data, onConfirmed }: ManifiestoSettingsSectionProps) {
-  const { confirm, isConfirming, error } = useConfirmManifiesto()
+export function ManifiestoSettingsSection({ data }: ManifiestoSettingsSectionProps) {
+  const { error } = useConfirmManifiesto()
   const [expanded, setExpanded] = useState(false)
 
   const noFiscalData = data === null
   const signed = data?.manifiestoSigned ?? false
-
-  async function handleConfirm() {
-    const result = await confirm()
-    if (result) {
-      onConfirmed(result)
-      setExpanded(false)
-    }
-  }
 
   return (
     <div style={{
@@ -81,9 +72,6 @@ export function ManifiestoSettingsSection({ data, onConfirmed }: ManifiestoSetti
             style={{ width: "100%", height: 480, border: "1px solid var(--border-soft)", borderRadius: "var(--radius-md)" }}
             title="Firma de Carta Manifiesto"
           />
-          <Button variant="primary" size="md" full onClick={handleConfirm} disabled={isConfirming}>
-            {isConfirming ? "Confirmando..." : "Ya firmé, marcar como completado"}
-          </Button>
         </div>
       )}
     </div>

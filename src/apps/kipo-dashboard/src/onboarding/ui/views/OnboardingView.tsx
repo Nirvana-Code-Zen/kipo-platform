@@ -1,9 +1,14 @@
 'use client'
 
+import { useRef, useState } from 'react'
+
 import { useRouter } from 'next/navigation'
 import { Button } from '@kipo/ui-react'
+import { Camera } from 'lucide-react'
 
 import { AuthInput } from '@/src/auth/ui/components/AuthInput'
+import { useAuthStore } from '@/src/auth/ui/store/authStore'
+import { uploadAvatar } from '@/src/settings/ui/hooks/useProfileEdit'
 
 import { TIMEZONES, CURRENCIES } from '../data/constants'
 import { useOnboardingDisplayName } from '../hooks/useOnboardingDisplayName'
@@ -14,6 +19,7 @@ import { CsdStep } from '../components/CsdStep'
 
 export const OnboardingView = () => {
   const router = useRouter()
+  const accessToken = useAuthStore((s) => s.accessToken)
 
   const { step, onTenantCreated, advanceTo, complete } = useOnboardingProgress()
 
@@ -22,7 +28,7 @@ export const OnboardingView = () => {
     router.replace('/dashboard')
   }
 
-  const nameHook = useOnboardingDisplayName(() => advanceTo(2))
+  const nameHook = useOnboardingDisplayName(() => advanceTo(3))
 
   const {
     name, setName,
@@ -34,6 +40,12 @@ export const OnboardingView = () => {
     submit: submitTenant,
   } = useOnboardingForm(onTenantCreated)
 
+  const [avatarFile, setAvatarFile] = useState<File | null>(null)
+  const [avatarPreview, setAvatarPreview] = useState<string | null>(null)
+  const [isUploadingAvatar, setIsUploadingAvatar] = useState(false)
+  const [avatarUploadError, setAvatarUploadError] = useState<string | null>(null)
+  const avatarInputRef = useRef<HTMLInputElement>(null)
+
   const initials = nameHook.displayName
     .split(' ')
     .filter(Boolean)
@@ -41,9 +53,30 @@ export const OnboardingView = () => {
     .map(w => w[0].toUpperCase())
     .join('')
 
-  const handleStep1 = (e: React.FormEvent) => {
+  const handleAvatarChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
+    if (!file) return
+    setAvatarFile(file)
+    setAvatarPreview(URL.createObjectURL(file))
+    e.target.value = ''
+  }
+
+  const handleStep1 = async (e: React.FormEvent) => {
     e.preventDefault()
-    void nameHook.submit()
+    setAvatarUploadError(null)
+    let avatarUrl: string | undefined
+    if (avatarFile && accessToken) {
+      setIsUploadingAvatar(true)
+      try {
+        avatarUrl = await uploadAvatar(avatarFile, accessToken)
+      } catch (err) {
+        setAvatarUploadError(err instanceof Error ? err.message : 'No se pudo subir la imagen')
+        setIsUploadingAvatar(false)
+        return
+      }
+      setIsUploadingAvatar(false)
+    }
+    void nameHook.submit(avatarUrl)
   }
 
   const handleStep2 = (e: React.FormEvent) => {
@@ -51,12 +84,12 @@ export const OnboardingView = () => {
     void submitTenant()
   }
 
-  if (step === 1) {
+  if (step === 2) {
     return (
       <div className="min-h-dvh flex items-center justify-center bg-background px-4 py-6">
         <div className="w-full max-w-[480px]">
           <div className="mb-8">
-            <p className="text-[13px] text-primary font-sans font-semibold mb-2">Paso 1 de 3</p>
+            <p className="text-[13px] text-primary font-sans font-semibold mb-2">Paso 2 de 3</p>
             <h1 className="font-display font-bold text-[32px] text-foreground tracking-[-0.03em] leading-[1.15] mb-2.5">
               ¿Cómo te llaman?
             </h1>
@@ -66,23 +99,44 @@ export const OnboardingView = () => {
           </div>
 
           <div className="flex justify-center mb-8">
-            <div
-              className="w-20 h-20 rounded-full flex items-center justify-center border-2 border-primary"
-              style={{ background: 'var(--surface-brand-soft)' }}
+            <button
+              type="button"
+              onClick={() => avatarInputRef.current?.click()}
+              className="relative group focus:outline-none"
+              aria-label="Subir foto de perfil"
             >
-              <span className="text-[28px] font-bold text-primary font-display tracking-[-0.02em] leading-none">
-                {initials || '?'}
-              </span>
-            </div>
+              <div
+                className="w-20 h-20 rounded-full overflow-hidden flex items-center justify-center border-2 border-primary"
+                style={{ background: 'var(--surface-brand-soft)' }}
+              >
+                {avatarPreview ? (
+                  <img src={avatarPreview} alt="" className="w-full h-full object-cover" />
+                ) : (
+                  <span className="text-[28px] font-bold text-primary font-display tracking-[-0.02em] leading-none">
+                    {initials || '?'}
+                  </span>
+                )}
+              </div>
+              <div className="absolute bottom-0 right-0 w-6 h-6 rounded-full flex items-center justify-center shadow-md bg-primary group-hover:scale-110 transition-transform">
+                <Camera className="w-3 h-3 text-white" />
+              </div>
+            </button>
+            <input
+              ref={avatarInputRef}
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              className="hidden"
+              onChange={handleAvatarChange}
+            />
           </div>
 
-          {nameHook.error && (
+          {(nameHook.error || avatarUploadError) && (
             <div
               role="alert"
               className="bg-danger-soft border-destructive rounded-xl px-3.5 py-2.5 text-[13px] text-destructive font-sans mb-5"
               style={{ borderWidth: '1.5px', borderStyle: 'solid' }}
             >
-              {nameHook.error}
+              {avatarUploadError ?? nameHook.error}
             </div>
           )}
 
@@ -102,9 +156,9 @@ export const OnboardingView = () => {
                 variant="primary"
                 size="md"
                 full
-                disabled={nameHook.isLoading || !nameHook.isValid}
+                disabled={nameHook.isLoading || isUploadingAvatar || !nameHook.isValid}
               >
-                {nameHook.isLoading ? 'Guardando…' : 'Continuar →'}
+                {isUploadingAvatar ? 'Subiendo foto…' : nameHook.isLoading ? 'Guardando…' : 'Continuar →'}
               </Button>
             </div>
           </form>
@@ -125,7 +179,7 @@ export const OnboardingView = () => {
     <div className="min-h-dvh flex items-center justify-center bg-background px-4 py-6">
       <div className="w-full max-w-[480px]">
         <div className="mb-8">
-          <p className="text-[13px] text-primary font-sans font-semibold mb-2">Paso 2 de 3</p>
+          <p className="text-[13px] text-primary font-sans font-semibold mb-2">Paso 1 de 3</p>
           <h1 className="font-display font-bold text-[32px] text-foreground tracking-[-0.03em] leading-[1.15] mb-2.5">
             Configura tu empresa
           </h1>

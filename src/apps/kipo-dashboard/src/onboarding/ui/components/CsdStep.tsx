@@ -7,7 +7,8 @@ import { Eye, EyeOff, FileUp, HelpCircle } from "lucide-react"
 
 import { AuthInput } from "@/src/auth/ui/components/AuthInput"
 import { useUploadCsd } from "@/src/settings/ui/hooks/useUploadCsd"
-import { useConfirmManifiesto } from "@/src/settings/ui/hooks/useConfirmManifiesto"
+
+import { ManifiestoSignPortal } from "./ManifiestoSignPortal"
 
 interface CsdStepProps {
   onFinish: () => void
@@ -55,17 +56,16 @@ function FilePicker({ label, accept, file, onSelect }: FilePickerProps) {
 
 export function CsdStep({ onFinish }: CsdStepProps) {
   const { upload, isUploading, error: uploadError } = useUploadCsd()
-  const { confirm, isConfirming, error: confirmError } = useConfirmManifiesto()
 
   const [cerFile, setCerFile] = useState<File | null>(null)
   const [keyFile, setKeyFile] = useState<File | null>(null)
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
-  const [csdDone, setCsdDone] = useState(false)
   const [manifiestoDone, setManifiestoDone] = useState(false)
+  const [manifiestoPortalOpen, setManifiestoPortalOpen] = useState(false)
   const [validationError, setValidationError] = useState<string | null>(null)
 
-  async function handleUploadCsd() {
+  async function handleContinue() {
     if (!cerFile || !cerFile.name.toLowerCase().endsWith(".cer")) {
       setValidationError("Selecciona un archivo .cer válido.")
       return
@@ -80,18 +80,10 @@ export function CsdStep({ onFinish }: CsdStepProps) {
     }
     setValidationError(null)
     const result = await upload({ cerFile, keyFile, password })
-    if (result) {
-      setCsdDone(true)
-      setPassword("")
-    }
+    if (result) onFinish()
   }
 
-  async function handleConfirmManifiesto() {
-    const result = await confirm()
-    if (result) setManifiestoDone(true)
-  }
-
-  const displayError = validationError ?? uploadError ?? confirmError
+  const displayError = validationError ?? uploadError
 
   return (
     <div className="min-h-dvh flex items-center justify-center bg-background px-4 py-6">
@@ -147,33 +139,49 @@ export function CsdStep({ onFinish }: CsdStepProps) {
           />
         </div>
 
-        <Button onClick={handleUploadCsd} disabled={isUploading || csdDone} full>
-          {csdDone ? "CSD configurado ✓" : isUploading ? "Subiendo..." : "Subir certificado"}
-        </Button>
-
-        <div className="mt-8">
+        <div className="mt-8 mb-4">
           <p className="text-[11px] font-bold tracking-[0.08em] text-muted-foreground font-sans mb-3 uppercase">
             Carta Manifiesto
           </p>
-          <iframe
-            src="https://www.facturapi.io/embedded/manifiesto"
-            className="w-full rounded-xl"
-            style={{ height: 360, border: "1px solid var(--border-strong)" }}
-            title="Firma de Carta Manifiesto"
-          />
-          <div className="mt-3">
-            <Button onClick={handleConfirmManifiesto} disabled={isConfirming || manifiestoDone} full variant="secondary">
-              {manifiestoDone ? "Manifiesto firmado ✓" : isConfirming ? "Confirmando..." : "Ya firmé, marcar como completado"}
-            </Button>
+          <div className="flex items-center justify-between gap-3 bg-muted rounded-xl px-4 py-3.5">
+            <div>
+              <p className="text-sm font-semibold text-foreground font-sans">
+                {manifiestoDone ? "Manifiesto firmado ✓" : "Aún no la has firmado"}
+              </p>
+              <p className="text-xs text-muted-foreground font-sans mt-0.5">
+                Firma con tu e.firma (FIEL) desde el portal de Facturapi.
+              </p>
+            </div>
+            {!manifiestoDone && (
+              <Button variant="secondary" size="sm" onClick={() => setManifiestoPortalOpen(true)}>
+                Firmar
+              </Button>
+            )}
           </div>
         </div>
 
-        <div className="mt-8">
-          <Button onClick={onFinish} full>
-            Finalizar
-          </Button>
+        <Button onClick={handleContinue} disabled={isUploading} full>
+          {isUploading ? "Subiendo..." : "Continuar →"}
+        </Button>
+
+        <div className="text-center mt-4">
+          <button
+            onClick={onFinish}
+            className="bg-transparent border-0 p-0 text-[13px] text-muted-foreground font-sans underline cursor-pointer"
+          >
+            Omitir por ahora
+          </button>
         </div>
       </div>
+
+      <ManifiestoSignPortal
+        isOpen={manifiestoPortalOpen}
+        onClose={() => setManifiestoPortalOpen(false)}
+        onSigned={() => {
+          setManifiestoDone(true)
+          setManifiestoPortalOpen(false)
+        }}
+      />
     </div>
   )
 }

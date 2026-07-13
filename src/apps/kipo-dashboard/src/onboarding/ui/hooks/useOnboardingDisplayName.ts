@@ -14,7 +14,7 @@ export const useOnboardingDisplayName = (onSuccess: () => void) => {
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
-  const submit = async () => {
+  const submit = async (avatarUrl?: string) => {
     if (!accessToken || !displayName.trim()) return
     setIsLoading(true)
     setError(null)
@@ -22,10 +22,10 @@ export const useOnboardingDisplayName = (onSuccess: () => void) => {
       const res = await fetch(`${API_BASE_URL}/api/v1/profile`, {
         method: 'PUT',
         headers: { Authorization: `Bearer ${accessToken}`, 'Content-Type': 'application/json' },
-        body: JSON.stringify({ display_name: displayName.trim() }),
+        body: JSON.stringify({ display_name: displayName.trim(), avatar_url: avatarUrl ?? session?.avatarUrl }),
       })
       if (!res.ok) throw new Error('No se pudo guardar el nombre')
-      updateProfile(displayName.trim(), session?.avatarUrl)
+      updateProfile(displayName.trim(), avatarUrl ?? session?.avatarUrl)
       onSuccess()
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Error al guardar')

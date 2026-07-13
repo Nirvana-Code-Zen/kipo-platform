@@ -1,7 +1,7 @@
-@import '@kipo/fonts';
+@import "@kipo/fonts";
 
 :root {
-  --kipo-red-50:  #fff0f1;
+  --kipo-red-50: #fff0f1;
   --kipo-red-100: #fcd5d8;
   --kipo-red-200: #f9a0a7;
   --kipo-red-300: #f0606c;
@@ -18,11 +18,11 @@
   --kipo-gradient: linear-gradient(135deg, #e00b26 0%, #bc0921 100%);
   --kipo-gradient-soft: linear-gradient(135deg, #f0606c 0%, #e00b26 100%);
 
-  --kipo-lime-300: #E6FF9E;
-  --kipo-lime-400: #D7FB63;
-  --kipo-lime-500: #C6F542;
-  --kipo-lime-600: #A9D92B;
-  --kipo-lime: #C6F542;
+  --kipo-lime-300: #e6ff9e;
+  --kipo-lime-400: #d7fb63;
+  --kipo-lime-500: #c6f542;
+  --kipo-lime-600: #a9d92b;
+  --kipo-lime: #c6f542;
 
   --kipo-slate-900: #032641;
   --kipo-slate-800: #0a3352;
@@ -30,7 +30,7 @@
   --kipo-slate-600: #1c4f78;
   --kipo-slate-500: #2d6a9f;
 
-  --kipo-cream-0:   #FFFFFF;
+  --kipo-cream-0: #ffffff;
   --kipo-cream-100: #f8f6f5;
   --kipo-cream-200: #edeae8;
   --kipo-cream-300: #d5d0cd;
@@ -41,14 +41,14 @@
   --kipo-cream-800: #1c1917;
   --kipo-cream-900: #0d0c0b;
 
-  --kipo-success: #16A34A;
-  --kipo-success-bg: #DCFCE7;
-  --kipo-warning: #CA8A04;
-  --kipo-warning-bg: #FEF9C3;
+  --kipo-success: #16a34a;
+  --kipo-success-bg: #dcfce7;
+  --kipo-warning: #ca8a04;
+  --kipo-warning-bg: #fef9c3;
   --kipo-danger: #bc0921;
-  --kipo-danger-bg: #FEE2E5;
-  --kipo-info: #7C3AED;
-  --kipo-info-bg: #EDE9FE;
+  --kipo-danger-bg: #fee2e5;
+  --kipo-info: #7c3aed;
+  --kipo-info-bg: #ede9fe;
 
   --bg-base: var(--kipo-cream-100);
   --bg-subtle: var(--kipo-cream-200);
@@ -62,7 +62,7 @@
   --text-strong: var(--kipo-slate-900);
   --text-body: var(--kipo-cream-700);
   --text-muted: var(--kipo-cream-500);
-  --text-on-brand: #FFFFFF;
+  --text-on-brand: #ffffff;
   --text-on-accent: var(--kipo-slate-900);
 
   --brand: var(--kipo-red);
@@ -128,7 +128,7 @@
 
   --shadow-xs: 0 1px 2px rgba(3, 38, 65, 0.06);
   --shadow-sm: 0 2px 8px rgba(3, 38, 65, 0.08);
-  --shadow-md: 0 6px 20px rgba(3, 38, 65, 0.10);
+  --shadow-md: 0 6px 20px rgba(3, 38, 65, 0.1);
   --shadow-lg: 0 16px 40px rgba(3, 38, 65, 0.14);
   --shadow-brand: 0 10px 30px rgba(224, 11, 38, 0.28);
   --shadow-accent: 0 8px 24px rgba(169, 217, 43, 0.35);
@@ -158,7 +158,7 @@
   --text-strong: #f8f6f5;
   --text-body: #c5d5e0;
   --text-muted: #7a9ab0;
-  --text-on-brand: #FFFFFF;
+  --text-on-brand: #ffffff;
   --text-on-accent: var(--kipo-slate-900);
 
   --brand: var(--kipo-red-400);
@@ -171,5 +171,7 @@
   font-family: var(--font-mono);
   font-variant-numeric: tabular-nums;
   letter-spacing: var(--ls-mono);
-  font-feature-settings: "tnum" 1, "zero" 1;
+  font-feature-settings:
+    "tnum" 1,
+    "zero" 1;
 }

@@ -21,16 +21,16 @@ def execute(command: Any) -> Any:
     repo = get_customer_repo()
     match command:
         case CreateCustomerCommand(
-            schema_name, tax_id, legal_name, tax_regime, zip_, cfdi_use, email, avatar_url
+            schema_name, tax_id, legal_name, tax_regime, zip_, email, avatar_url
         ):
             return create.execute(
-                repo, schema_name, tax_id, legal_name, tax_regime, zip_, cfdi_use, email, avatar_url
+                repo, schema_name, tax_id, legal_name, tax_regime, zip_, email, avatar_url
             )
         case UpdateCustomerCommand(
-            schema_name, customer_id, tax_id, legal_name, tax_regime, zip_, cfdi_use, email, avatar_url
+            schema_name, customer_id, tax_id, legal_name, tax_regime, zip_, email, avatar_url
         ):
             return update_.execute(
-                repo, schema_name, customer_id, tax_id, legal_name, tax_regime, zip_, cfdi_use, email, avatar_url
+                repo, schema_name, customer_id, tax_id, legal_name, tax_regime, zip_, email, avatar_url
             )
         case DeactivateCustomerCommand(schema_name, customer_id):
             return deactivate_.execute(repo, schema_name, customer_id)

@@ -5,9 +5,11 @@ import { useState, useRef } from 'react'
 import { useAuthStore } from '@/src/auth/ui/store/authStore'
 import { patchAuthSession } from '@/src/auth/ui/store/sessionStoage'
 
+type PendingTenant = { tenantId: string; schemaName: string; name: string }
+
 type OnboardingProgress = {
   step: 1 | 2 | 3 | 4
-  pendingTenant?: { tenantId: string; schemaName: string }
+  pendingTenant?: PendingTenant
 }
 
 function progressKey(userId: string) {
@@ -28,21 +30,21 @@ export function useOnboardingProgress() {
 
   const [initialProgress] = useState<OnboardingProgress | null>(() => loadProgress(userId))
   const [step, setStep] = useState<1 | 2 | 3 | 4>(initialProgress?.step ?? 1)
-  const pendingTenantRef = useRef<{ tenantId: string; schemaName: string } | null>(
+  const pendingTenantRef = useRef<PendingTenant | null>(
     initialProgress?.pendingTenant ?? null
   )
 
-  function advanceTo(nextStep: 1 | 2 | 3 | 4, pendingTenant?: { tenantId: string; schemaName: string }) {
+  function advanceTo(nextStep: 1 | 2 | 3 | 4, pendingTenant?: PendingTenant) {
     if (typeof window !== 'undefined' && userId) {
       localStorage.setItem(progressKey(userId), JSON.stringify({ step: nextStep, pendingTenant }))
     }
     setStep(nextStep)
   }
 
-  function onTenantCreated(tenantId: string, schemaName: string) {
-    pendingTenantRef.current = { tenantId, schemaName }
-    patchAuthSession({ tenantId, tenantSlug: schemaName })
-    advanceTo(3, { tenantId, schemaName })
+  function onTenantCreated(tenantId: string, schemaName: string, name: string) {
+    pendingTenantRef.current = { tenantId, schemaName, name }
+    patchAuthSession({ tenantId, tenantSlug: schemaName, tenantName: name })
+    advanceTo(2, { tenantId, schemaName, name })
   }
 
   function complete() {
@@ -50,7 +52,7 @@ export function useOnboardingProgress() {
     if (pending) {
       setStore((prev) => ({
         persistedSession: prev.persistedSession
-          ? { ...prev.persistedSession, tenantId: pending.tenantId, tenantSlug: pending.schemaName as never }
+          ? { ...prev.persistedSession, tenantId: pending.tenantId, tenantSlug: pending.schemaName as never, tenantName: pending.name }
           : prev.persistedSession,
       }))
     }

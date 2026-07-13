@@ -62,7 +62,7 @@ export function CreateInvoiceSheet({ isOpen, onClose, onCreated }: CreateInvoice
                   }}
                 >
                   <Check className="w-3 h-3" />
-                  {availableStamps} stamps disponibles
+                  {availableStamps} timbres disponibles
                 </span>
               )}
             </div>

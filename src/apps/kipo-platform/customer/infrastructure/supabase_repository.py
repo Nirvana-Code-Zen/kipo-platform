@@ -7,7 +7,6 @@ from customer.value_objects.tax_id import TaxId
 from customer.value_objects.legal_name import LegalName
 from customer.value_objects.tax_regime import TaxRegime
 from customer.value_objects.zip_code import ZipCode
-from customer.value_objects.cfdi_use import CfdiUse
 from shared.db_admin import admin_connection
 
 
@@ -25,8 +24,8 @@ class SupabaseCustomerRepository(ICustomerRepository):
                     cur.execute(
                         sql.SQL("""
                             INSERT INTO {schema}.customers
-                                (id, tax_id, legal_name, tax_regime, zip, cfdi_use, email, is_active, avatar_url)
-                            VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s)
+                                (id, tax_id, legal_name, tax_regime, zip, email, is_active, avatar_url)
+                            VALUES (%s, %s, %s, %s, %s, %s, %s, %s)
                             RETURNING id
                         """).format(schema=schema),
                         (
@@ -35,7 +34,6 @@ class SupabaseCustomerRepository(ICustomerRepository):
                             str(customer.legal_name),
                             str(customer.tax_regime),
                             str(customer.zip),
-                            str(customer.cfdi_use),
                             customer.email,
                             customer.is_active,
                             customer.avatar_url,
@@ -54,7 +52,6 @@ class SupabaseCustomerRepository(ICustomerRepository):
             legal_name=customer.legal_name,
             tax_regime=customer.tax_regime,
             zip=customer.zip,
-            cfdi_use=customer.cfdi_use,
             email=customer.email,
             is_active=customer.is_active,
             avatar_url=customer.avatar_url,
@@ -66,7 +63,7 @@ class SupabaseCustomerRepository(ICustomerRepository):
             with conn.cursor() as cur:
                 cur.execute(
                     sql.SQL("""
-                        SELECT id, tax_id, legal_name, tax_regime, zip, cfdi_use, email, is_active, avatar_url
+                        SELECT id, tax_id, legal_name, tax_regime, zip, email, is_active, avatar_url
                         FROM {schema}.customers
                         ORDER BY created_at DESC
                         LIMIT %s OFFSET %s
@@ -81,10 +78,9 @@ class SupabaseCustomerRepository(ICustomerRepository):
                 legal_name=LegalName(row[2]),
                 tax_regime=TaxRegime(row[3]),
                 zip=ZipCode(row[4]),
-                cfdi_use=CfdiUse(row[5]),
-                email=row[6],
-                is_active=row[7],
-                avatar_url=row[8],
+                email=row[5],
+                is_active=row[6],
+                avatar_url=row[7],
             )
             for row in rows
         ]
@@ -102,19 +98,17 @@ class SupabaseCustomerRepository(ICustomerRepository):
                                 legal_name = %s,
                                 tax_regime = %s,
                                 zip = %s,
-                                cfdi_use = %s,
                                 email = %s,
                                 avatar_url = %s,
                                 updated_at = now()
                             WHERE id = %s
-                            RETURNING id, tax_id, legal_name, tax_regime, zip, cfdi_use, email, is_active, avatar_url
+                            RETURNING id, tax_id, legal_name, tax_regime, zip, email, is_active, avatar_url
                         """).format(schema=schema),
                         (
                             fields["tax_id"],
                             fields["legal_name"],
                             fields["tax_regime"],
                             fields["zip"],
-                            fields["cfdi_use"],
                             fields["email"],
                             fields["avatar_url"],
                             customer_id,
@@ -136,10 +130,9 @@ class SupabaseCustomerRepository(ICustomerRepository):
             legal_name=LegalName(row[2]),
             tax_regime=TaxRegime(row[3]),
             zip=ZipCode(row[4]),
-            cfdi_use=CfdiUse(row[5]),
-            email=row[6],
-            is_active=row[7],
-            avatar_url=row[8],
+            email=row[5],
+            is_active=row[6],
+            avatar_url=row[7],
         )
 
     def deactivate(self, customer_id: str, schema_name: str) -> None:

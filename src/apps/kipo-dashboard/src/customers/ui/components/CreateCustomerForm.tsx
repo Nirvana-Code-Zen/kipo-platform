@@ -10,6 +10,10 @@ import { AVATARS } from "../data/catalogs"
 
 import type { Customer as UICustomer } from "./types"
 
+function capitalizeWords(value: string): string {
+  return value.replace(/(^|\s)(\p{L})/gu, (_, boundary, letter) => boundary + letter.toUpperCase())
+}
+
 interface StyledSelectProps {
   label: string
   value: string
@@ -168,7 +172,7 @@ export function CreateCustomerForm({ onSubmit, onCancel, initialValues, submitLa
             label="Nombre o razón social"
             placeholder="Como aparece en la Constancia de Situación Fiscal"
             value={form.legalName}
-            onChange={(e) => form.setLegalName(e.target.value)}
+            onChange={(e) => form.setLegalName(capitalizeWords(e.target.value))}
             error={form.errors.legalName}
             autoComplete="off"
           />
