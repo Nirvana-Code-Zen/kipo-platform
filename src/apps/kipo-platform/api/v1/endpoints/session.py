@@ -14,6 +14,7 @@ from auth.commands import (
 )
 from shared.exceptions import BusinessRuleViolation
 from shared.providers import get_tenant_repo
+from tenant.value_objects.tenant_slug import public_slug
 
 session_bp = Blueprint("session", __name__, url_prefix="/api/v1/auth")
 
@@ -21,8 +22,7 @@ env_name = os.environ.get("FLASK_ENV", "development")
 config_class = config_mapping[env_name]()
 
 
-def _session_response(auth_result: dict, user_id: str) -> dict:
-    tenant = get_tenant_repo().find_by_auth_id(user_id)
+def _session_response(auth_result: dict, user_id: str, tenant) -> dict:
     user = auth_result["user"]
     display_name = user.display_name or str(user.email or user.phone or "")
     return {
@@ -34,10 +34,25 @@ def _session_response(auth_result: dict, user_id: str) -> dict:
         "phone": str(user.phone) if user.phone else None,
         "provider": str(user.provider),
         "tenant_id": str(tenant.id) if tenant else None,
-        "tenant_slug": tenant.schema_name if tenant else None,
+        "tenant_slug": public_slug(tenant.schema_name) if tenant else None,
         "tenant_name": tenant.name if tenant else None,
         "avatar_url": user.avatar_url,
     }
+
+
+def _slug_matches(tenant, expected_slug: str | None) -> bool:
+    if not expected_slug:
+        return True
+    return tenant is not None and public_slug(tenant.schema_name) == expected_slug
+
+
+def _resolve_session(result: dict, expected_slug: str | None):
+    user_id = str(result["user"].id)
+    tenant = get_tenant_repo().find_by_auth_id(user_id)
+    if not _slug_matches(tenant, expected_slug):
+        return None, (jsonify({"error": "wrong_tenant"}), 403)
+    resp = make_response(jsonify(_session_response(result, user_id, tenant)), 200)
+    return resp, None
 
 
 def _with_refresh_cookie(response, refresh_token: str):
@@ -92,8 +107,9 @@ def login_email():
                 password=data.get("password", ""),
             )
         )
-        user_id = str(result["user"].id)
-        resp = make_response(jsonify(_session_response(result, user_id)), 200)
+        resp, error = _resolve_session(result, data.get("tenant_slug"))
+        if error:
+            return error
         return _with_refresh_cookie(resp, result["refresh_token"])
     except BusinessRuleViolation as err:
         msg = str(err).lower()
@@ -125,8 +141,9 @@ def verify_phone():
                 token=data.get("token", ""),
             )
         )
-        user_id = str(result["user"].id)
-        resp = make_response(jsonify(_session_response(result, user_id)), 200)
+        resp, error = _resolve_session(result, data.get("tenant_slug"))
+        if error:
+            return error
         return _with_refresh_cookie(resp, result["refresh_token"])
     except BusinessRuleViolation as err:
         return jsonify({"error": str(err)}), 400
@@ -157,8 +174,9 @@ def oauth_callback():
                 refresh_token=data.get("refresh_token", ""),
             )
         )
-        user_id = str(result["user"].id)
-        resp = make_response(jsonify(_session_response(result, user_id)), 200)
+        resp, error = _resolve_session(result, data.get("tenant_slug"))
+        if error:
+            return error
         return _with_refresh_cookie(resp, result["refresh_token"])
     except BusinessRuleViolation as err:
         return jsonify({"error": str(err)}), 401
@@ -180,8 +198,10 @@ def refresh():
         return jsonify({"error": "No refresh token"}), 401
     try:
         result = auth_execute(RefreshSessionCommand(refresh_token=refresh_token))
-        user_id = str(result["user"].id)
-        resp = make_response(jsonify(_session_response(result, user_id)), 200)
+        data = request.get_json(silent=True) or {}
+        resp, error = _resolve_session(result, data.get("tenant_slug"))
+        if error:
+            return error
         return _with_refresh_cookie(resp, result["refresh_token"])
     except BusinessRuleViolation as err:
         return jsonify({"error": str(err)}), 401

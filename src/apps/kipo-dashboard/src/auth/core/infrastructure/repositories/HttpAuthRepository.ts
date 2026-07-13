@@ -1,4 +1,6 @@
 import { ok, err } from '@/src/shared/domain/result'
+import { getTenantSlugFromHost } from '@/src/shared/host/tenantSlug'
+import { APP_DOMAIN } from '@/src/shared/infrastructure/config'
 
 import { toOtpToken } from '../../domain/value-objects/AccessToken'
 import { authError } from '../../domain/exceptions/auth.errors'
@@ -11,6 +13,14 @@ import type { Session } from '../../domain/entities/Session'
 import type { OtpToken } from '../../domain/value-objects/AccessToken'
 import type { AuthProvider } from '../../domain/value-objects/AuthProvider'
 import type { AuthError } from '../../domain/exceptions/auth.errors'
+
+// Attaches the current subdomain's tenant slug (if any) so the backend can
+// reject a login/refresh whose session belongs to a different tenant.
+const withTenantSlug = (body: Record<string, unknown>): Record<string, unknown> => {
+  if (typeof window === 'undefined') return body
+  const slug = getTenantSlugFromHost(window.location.hostname, APP_DOMAIN)
+  return slug ? { ...body, tenant_slug: slug } : body
+}
 
 export const createHttpAuthRepository = (baseUrl: string): IAuthRepository => {
   const request = async <T>(
@@ -26,6 +36,7 @@ export const createHttpAuthRepository = (baseUrl: string): IAuthRepository => {
 
       if (!res.ok) {
         if (res.status === 401) return err(authError.invalidCredentials())
+        if (res.status === 403) return err(authError.wrongTenant())
         if (res.status === 409) return err(authError.userAlreadyExists(''))
         const body = await res.json().catch(() => ({ message: res.statusText })) as { message?: string }
         return err(authError.server(res.status, body.message ?? res.statusText))
@@ -51,7 +62,7 @@ export const createHttpAuthRepository = (baseUrl: string): IAuthRepository => {
     loginWithEmail: (email: string, password: string) =>
       sessionResult('/api/v1/auth/sign-in/email', {
         method: 'POST',
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify(withTenantSlug({ email, password })),
       }),
 
     loginWithSocial: async (
@@ -69,7 +80,7 @@ export const createHttpAuthRepository = (baseUrl: string): IAuthRepository => {
     completeOAuth: (accessToken: string, refreshToken: string) =>
       sessionResult('/api/v1/auth/oauth/callback', {
         method: 'POST',
-        body: JSON.stringify({ access_token: accessToken, refresh_token: refreshToken }),
+        body: JSON.stringify(withTenantSlug({ access_token: accessToken, refresh_token: refreshToken })),
       }),
 
     requestOtp: async (phone: string): Promise<Result<OtpToken, AuthError>> => {
@@ -84,7 +95,7 @@ export const createHttpAuthRepository = (baseUrl: string): IAuthRepository => {
     verifyOtp: (otpToken: OtpToken, code: string) =>
       sessionResult('/api/v1/auth/sign-in/phone/verify', {
         method: 'POST',
-        body: JSON.stringify({ phone: otpToken, token: code }),
+        body: JSON.stringify(withTenantSlug({ phone: otpToken, token: code })),
       }),
 
     register: async (data: {
@@ -108,6 +119,9 @@ export const createHttpAuthRepository = (baseUrl: string): IAuthRepository => {
 
     logout: () => request<void>('/api/v1/auth/sign-out', { method: 'POST' }),
 
-    refresh: () => sessionResult('/api/v1/auth/refresh', { method: 'POST' }),
+    refresh: () => sessionResult('/api/v1/auth/refresh', {
+      method: 'POST',
+      body: JSON.stringify(withTenantSlug({})),
+    }),
   }
 }

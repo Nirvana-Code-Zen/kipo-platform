@@ -1,4 +1,5 @@
 import os
+import re
 from flask import request, Response
 
 
@@ -27,13 +28,29 @@ def _allowed_origins() -> list[str]:
     return origins
 
 
+def _wildcard_pattern() -> re.Pattern | None:
+    domain = os.environ.get("CORS_WILDCARD_DOMAIN", "").strip()
+    if not domain:
+        return None
+    return re.compile(rf"^https://([a-z0-9-]+\.)?{re.escape(domain)}$")
+
+
+def _origin_allowed(origin: str) -> bool:
+    if not origin:
+        return False
+    if origin in _allowed_origins():
+        return True
+    pattern = _wildcard_pattern()
+    return bool(pattern and pattern.match(origin))
+
+
 def init_cors(app) -> None:
     @app.before_request
     def handle_preflight():
         if request.method != "OPTIONS":
             return None
         origin = request.headers.get("Origin", "")
-        if origin not in _allowed_origins():
+        if not _origin_allowed(origin):
             return None
         res = Response(status=204)
         res.headers["Access-Control-Allow-Origin"] = origin
@@ -44,7 +61,7 @@ def init_cors(app) -> None:
     @app.after_request
     def add_cors_headers(response):
         origin = request.headers.get("Origin", "")
-        if origin in _allowed_origins():
+        if _origin_allowed(origin):
             response.headers["Access-Control-Allow-Origin"] = origin
             for k, v in _CORS_HEADERS.items():
                 response.headers[k] = v

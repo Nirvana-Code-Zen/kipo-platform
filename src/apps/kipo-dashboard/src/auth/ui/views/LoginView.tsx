@@ -18,6 +18,7 @@ const ERROR_MESSAGE: Record<AuthError['kind'], string> = {
   UserAlreadyExists: 'Esta cuenta ya existe',
   UserNotFound: 'Cuenta no encontrada',
   SessionExpired: 'Tu sesión expiró',
+  WrongTenant: 'Esta cuenta no pertenece a esta organización',
   NetworkError: 'Error de conexión',
   ServerError: 'Error del servidor',
 }
@@ -57,7 +58,7 @@ const FacebookIcon = () => (
   </svg>
 )
 
-export const LoginView = () => {
+export const LoginView = ({ tenantName }: { tenantName?: string } = {}) => {
   const { isLoading, isOtpPending, error, pendingOtp, clearError, loginWithEmail, loginWithSocial, requestOtp, verifyOtp } = useAuth()
 
   const [tab, setTab] = useState<'email' | 'phone'>('email')
@@ -109,6 +110,23 @@ export const LoginView = () => {
           </Link>
         </p>
       </div>
+
+      {tenantName && (
+        <div
+          style={{
+            background: 'var(--bg-subtle)',
+            border: '1.5px solid var(--border-subtle)',
+            borderRadius: 12,
+            padding: '10px 14px',
+            fontSize: 13,
+            color: 'var(--text-strong)',
+            fontFamily: 'var(--font-body)',
+            marginBottom: 16,
+          }}
+        >
+          Iniciando sesión en <strong>{tenantName}</strong>
+        </div>
+      )}
 
       {error && (
         <div

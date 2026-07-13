@@ -18,6 +18,7 @@ const ERROR_MESSAGE: Record<AuthError['kind'], string> = {
   UserAlreadyExists: 'Ya existe una cuenta con estos datos',
   UserNotFound: 'Cuenta no encontrada',
   SessionExpired: 'Tu sesión expiró',
+  WrongTenant: 'Esta cuenta no pertenece a esta organización',
   NetworkError: 'Error de conexión',
   ServerError: 'Error del servidor',
 }

@@ -5,6 +5,7 @@ export type AuthError =
   | { kind: 'UserAlreadyExists'; identifier: string }
   | { kind: 'UserNotFound' }
   | { kind: 'SessionExpired' }
+  | { kind: 'WrongTenant' }
   | { kind: 'NetworkError'; message: string }
   | { kind: 'ServerError'; status: number; message: string }
 
@@ -15,6 +16,7 @@ export const authError = {
   userAlreadyExists: (identifier: string): AuthError => ({ kind: 'UserAlreadyExists', identifier }),
   userNotFound: (): AuthError => ({ kind: 'UserNotFound' }),
   sessionExpired: (): AuthError => ({ kind: 'SessionExpired' }),
+  wrongTenant: (): AuthError => ({ kind: 'WrongTenant' }),
   network: (message: string): AuthError => ({ kind: 'NetworkError', message }),
   server: (status: number, message: string): AuthError => ({ kind: 'ServerError', status, message }),
 }

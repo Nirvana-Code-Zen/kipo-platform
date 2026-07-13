@@ -12,3 +12,6 @@ class ITenantRepository(ABC):
 
     @abstractmethod
     def find_by_auth_id(self, auth_id: str) -> Tenant | None: ...
+
+    @abstractmethod
+    def find_by_schema_name(self, schema_name: str) -> Tenant | None: ...

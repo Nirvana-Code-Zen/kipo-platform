@@ -14,3 +14,6 @@ dependencies = [
   "requests>=2.34.2",
   "nh3>=0.2.0",
 ]
+
+[tool.vercel]
+entrypoint = "run:app"

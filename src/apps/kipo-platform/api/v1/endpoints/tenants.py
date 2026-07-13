@@ -1,10 +1,21 @@
 from flask import Blueprint, request, jsonify, g
 from tenant.execute import execute as tenant_execute
 from tenant.commands import RegisterTenantCommand
+from tenant.value_objects.tenant_slug import public_slug
+from tenant.value_objects.tenant_status import TenantStatus
 from shared.auth_decorators import require_auth
 from shared.exceptions import BusinessRuleViolation
+from shared.providers import get_tenant_repo
 
 tenants_bp = Blueprint("tenants", __name__, url_prefix="/api/v1/tenants")
+
+
+@tenants_bp.route("/by-slug/<slug>", methods=["GET"])
+def by_slug(slug: str):
+    tenant = get_tenant_repo().find_by_schema_name(f"tenant_{slug}")
+    if not tenant or tenant.status == TenantStatus.INACTIVE:
+        return jsonify({"error": "not found"}), 404
+    return jsonify({"name": tenant.name, "slug": public_slug(tenant.schema_name)}), 200
 
 @tenants_bp.route("/register", methods=["POST"])
 @require_auth

@@ -161,6 +161,24 @@ class SupabaseTenantRepository(ITenantRepository):
             return None
         return self._to_tenant_from_row(row, auth_id)
 
+    def find_by_schema_name(self, schema_name: str) -> Tenant | None:
+        with admin_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    SELECT id, name, schema_name, plan_type, status,
+                           features_enabled, timezone, currency, storage_quota_bytes
+                    FROM public.tenants
+                    WHERE schema_name = %s
+                    LIMIT 1
+                    """,
+                    (schema_name,),
+                )
+                row = cur.fetchone()
+        if not row:
+            return None
+        return self._to_tenant_from_row(row, auth_id=str(row[0]))
+
     def _to_tenant_from_row(self, row: tuple, auth_id: str) -> Tenant:
         (
             id_,
