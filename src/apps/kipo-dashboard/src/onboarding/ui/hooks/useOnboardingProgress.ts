@@ -5,7 +5,7 @@ import { useState, useRef } from 'react'
 import { useAuthStore } from '@/src/auth/ui/store/authStore'
 import { patchAuthSession } from '@/src/auth/ui/store/sessionStoage'
 
-type PendingTenant = { tenantId: string; schemaName: string; name: string }
+type PendingTenant = { tenantId: string; slug: string; name: string }
 
 type OnboardingProgress = {
   step: 1 | 2 | 3 | 4
@@ -41,10 +41,10 @@ export function useOnboardingProgress() {
     setStep(nextStep)
   }
 
-  function onTenantCreated(tenantId: string, schemaName: string, name: string) {
-    pendingTenantRef.current = { tenantId, schemaName, name }
-    patchAuthSession({ tenantId, tenantSlug: schemaName, tenantName: name })
-    advanceTo(2, { tenantId, schemaName, name })
+  function onTenantCreated(tenantId: string, slug: string, name: string) {
+    pendingTenantRef.current = { tenantId, slug, name }
+    patchAuthSession({ tenantId, tenantSlug: slug, tenantName: name })
+    advanceTo(2, { tenantId, slug, name })
   }
 
   function complete() {
@@ -52,7 +52,7 @@ export function useOnboardingProgress() {
     if (pending) {
       setStore((prev) => ({
         persistedSession: prev.persistedSession
-          ? { ...prev.persistedSession, tenantId: pending.tenantId, tenantSlug: pending.schemaName as never, tenantName: pending.name }
+          ? { ...prev.persistedSession, tenantId: pending.tenantId, tenantSlug: pending.slug as never, tenantName: pending.name }
           : prev.persistedSession,
       }))
     }

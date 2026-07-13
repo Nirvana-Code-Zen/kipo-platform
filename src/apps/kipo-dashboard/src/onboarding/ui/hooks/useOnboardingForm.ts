@@ -21,7 +21,7 @@ const toSchemaSlug = (value: string) =>
     .replace(/^-+|-+$/g, '')
     .slice(0, 50)
 
-export const useOnboardingForm = (onSuccess: (tenantId: string, schemaName: string, name: string) => void) => {
+export const useOnboardingForm = (onSuccess: (tenantId: string, slug: string, name: string) => void) => {
   const accessToken = useAuthStore((s) => s.accessToken)
 
   const [name, setName] = useState('')
@@ -52,7 +52,7 @@ export const useOnboardingForm = (onSuccess: (tenantId: string, schemaName: stri
     )
     setIsLoading(false)
     if (result.ok) {
-      onSuccess(result.value.tenantId, result.value.schemaName, result.value.name)
+      onSuccess(result.value.tenantId, result.value.slug, result.value.name)
     } else {
       setError(result.error)
     }

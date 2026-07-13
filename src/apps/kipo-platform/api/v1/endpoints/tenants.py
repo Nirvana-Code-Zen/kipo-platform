@@ -38,6 +38,7 @@ def register():
             "tenant_id": str(tenant.id),
             "name": tenant.name,
             "schema_name": tenant.schema_name,
+            "slug": public_slug(tenant.schema_name),
             "plan_type": tenant.plan_type.value,
             "status": tenant.status.value,
             "timezone": tenant.timezone,

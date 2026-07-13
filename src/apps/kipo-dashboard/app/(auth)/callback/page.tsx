@@ -6,6 +6,7 @@ import { useRouter } from 'next/navigation'
 import { Loader2 } from 'lucide-react'
 
 import { useAuthStore } from '@/src/auth/ui/store/authStore'
+import { SessionStatus } from '@/src/auth/ui/store/types'
 
 export default function OAuthCallbackPage() {
   const router = useRouter()
@@ -23,8 +24,13 @@ export default function OAuthCallbackPage() {
       return
     }
 
+    // On success, AuthLayout's effect redirects to the tenant's subdomain
+    // once auth state updates — it needs the resolved tenant slug, which
+    // this page doesn't have.
     void completeOAuth(accessToken, refreshToken).then(() => {
-      void router.replace('/dashboard')
+      if (useAuthStore.getState().status === SessionStatus.unauthenticated) {
+        void router.replace('/login?error=oauth_failed')
+      }
     })
   }, [completeOAuth, router])
 

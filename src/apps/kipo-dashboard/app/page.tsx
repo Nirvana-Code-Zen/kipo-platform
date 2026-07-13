@@ -5,16 +5,18 @@ import { useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
 import { useAuth } from '@/src/auth/ui/hooks/useAuth'
+import { goToTenantPath } from '@/src/auth/ui/lib/tenantRedirect'
 
 export default function RootPage () {
-  const { isAuthenticated, hasTenant, isLoading } = useAuth()
+  const { isAuthenticated, hasTenant, isLoading, tenantSlug } = useAuth()
   const router = useRouter()
 
   useEffect(() => {
     if (isLoading) return
     if (!isAuthenticated) { router.replace('/login'); return }
-    router.replace(hasTenant ? '/dashboard' : '/onboarding')
-  }, [isAuthenticated, hasTenant, isLoading, router])
+    if (hasTenant) { goToTenantPath(router.replace, tenantSlug, '/dashboard'); return }
+    router.replace('/onboarding')
+  }, [isAuthenticated, hasTenant, isLoading, tenantSlug, router])
 
   return null
 }

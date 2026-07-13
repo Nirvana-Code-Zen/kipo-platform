@@ -4,6 +4,7 @@ export type TenantCreated = {
   tenantId: string
   name: string
   schemaName: string
+  slug: string
   timezone: string
   currency: string
 }

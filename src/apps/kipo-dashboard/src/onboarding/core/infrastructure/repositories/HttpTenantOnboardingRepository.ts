@@ -27,12 +27,13 @@ export const createHttpTenantOnboardingRepository = (baseUrl: string): ITenantOn
       }
 
       const raw = await res.json() as {
-        tenant_id: string; name: string; schema_name: string; timezone: string; currency: string
+        tenant_id: string; name: string; schema_name: string; slug: string; timezone: string; currency: string
       }
       return ok({
         tenantId: raw.tenant_id,
         name: raw.name,
         schemaName: raw.schema_name,
+        slug: raw.slug,
         timezone: raw.timezone,
         currency: raw.currency,
       })

@@ -32,7 +32,7 @@ def _wildcard_pattern() -> re.Pattern | None:
     domain = os.environ.get("CORS_WILDCARD_DOMAIN", "").strip()
     if not domain:
         return None
-    return re.compile(rf"^https://([a-z0-9-]+\.)?{re.escape(domain)}$")
+    return re.compile(rf"^https?://([a-z0-9-]+\.)?{re.escape(domain)}(:\d+)?$")
 
 
 def _origin_allowed(origin: str) -> bool:

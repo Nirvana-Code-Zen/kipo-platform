@@ -20,16 +20,21 @@
     "lint": "pnpm -r --parallel lint",
     "typecheck": "pnpm -r --parallel typecheck",
     "install:py": "pnpm --filter kipo-api sync",
-    "prepare": "husky"
+    "prepare": "husky",
+    "test:e2e": "playwright test --config e2e/playwright.config.ts",
+    "test:e2e:headed": "playwright test --config e2e/playwright.config.ts --headed --workers=1",
+    "test:e2e:ui": "playwright test --config e2e/playwright.config.ts --ui"
   },
   "devDependencies": {
+    "@playwright/test": "1.61.1",
+    "@types/node": "22.10.5",
     "@typescript-eslint/parser": "8.62.0",
     "astro-eslint-parser": "2.0.0",
     "eslint": "10.5.0",
     "eslint-plugin-astro": "2.0.0",
     "husky": "9.1.7",
     "lint-staged": "17.0.8",
-    "playwright": "1.45.0",
+    "playwright": "1.61.1",
     "typescript": "5.4.5"
   }
 }
