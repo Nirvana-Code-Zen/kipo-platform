@@ -27,3 +27,16 @@ class UploadCsdCommand:
 @dataclass(frozen=True)
 class ConfirmManifiestoCommand:
     schema_name: str
+
+
+@dataclass(frozen=True)
+class UpdatePdfCustomizationCommand:
+    schema_name: str
+    custom_section_html: str | None
+    display_options: dict
+
+
+@dataclass(frozen=True)
+class UpdateLogoCommand:
+    schema_name: str
+    logo_path: str | None

@@ -17,3 +17,11 @@ class FakeFacturapiPacClient(IPacClient):
         password: str,
     ) -> bool:
         return bool(cer_bytes and key_bytes and password)
+
+    def upload_logo(
+        self,
+        organization_id: str,
+        image_bytes: bytes,
+        content_type: str,
+    ) -> bool:
+        return bool(image_bytes and content_type)

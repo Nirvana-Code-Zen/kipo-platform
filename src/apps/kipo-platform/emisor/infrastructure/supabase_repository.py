@@ -1,7 +1,9 @@
 from psycopg2 import sql
+from psycopg2.extras import Json
 from supabase import Client
 from emisor.repository import IEmisorRepository
 from emisor.emisor import Emisor
+from emisor.pdf_customization_constants import DEFAULT_DISPLAY_OPTIONS
 from shared.db_admin import admin_connection
 
 
@@ -19,7 +21,8 @@ class SupabaseEmisorRepository(IEmisorRepository):
                         SELECT id, rfc, razon_social, regimen_fiscal, codigo_postal,
                                series, folio_siguiente, created_at, updated_at,
                                facturapi_organization_id, csd_configured, csd_configured_at,
-                               manifiesto_signed, manifiesto_signed_at
+                               manifiesto_signed, manifiesto_signed_at,
+                               custom_section_html, display_options, logo_path
                         FROM {schema}.emisor
                         LIMIT 1
                     """).format(schema=schema)
@@ -59,7 +62,8 @@ class SupabaseEmisorRepository(IEmisorRepository):
                             RETURNING id, rfc, razon_social, regimen_fiscal, codigo_postal,
                                       series, folio_siguiente, created_at, updated_at,
                                       facturapi_organization_id, csd_configured, csd_configured_at,
-                                      manifiesto_signed, manifiesto_signed_at
+                                      manifiesto_signed, manifiesto_signed_at,
+                                      custom_section_html, display_options, logo_path
                         """).format(schema=schema),
                         (rfc, razon_social, regimen_fiscal, codigo_postal, series, str(existing[0])),
                     )
@@ -72,7 +76,8 @@ class SupabaseEmisorRepository(IEmisorRepository):
                             RETURNING id, rfc, razon_social, regimen_fiscal, codigo_postal,
                                       series, folio_siguiente, created_at, updated_at,
                                       facturapi_organization_id, csd_configured, csd_configured_at,
-                                      manifiesto_signed, manifiesto_signed_at
+                                      manifiesto_signed, manifiesto_signed_at,
+                                      custom_section_html, display_options, logo_path
                         """).format(schema=schema),
                         (rfc, razon_social, regimen_fiscal, codigo_postal, series),
                     )
@@ -95,7 +100,8 @@ class SupabaseEmisorRepository(IEmisorRepository):
                         RETURNING id, rfc, razon_social, regimen_fiscal, codigo_postal,
                                   series, folio_siguiente, created_at, updated_at,
                                   facturapi_organization_id, csd_configured, csd_configured_at,
-                                  manifiesto_signed, manifiesto_signed_at
+                                  manifiesto_signed, manifiesto_signed_at,
+                                  custom_section_html, display_options, logo_path
                     """).format(schema=schema),
                     (organization_id,),
                 )
@@ -117,8 +123,56 @@ class SupabaseEmisorRepository(IEmisorRepository):
                         RETURNING id, rfc, razon_social, regimen_fiscal, codigo_postal,
                                   series, folio_siguiente, created_at, updated_at,
                                   facturapi_organization_id, csd_configured, csd_configured_at,
-                                  manifiesto_signed, manifiesto_signed_at
+                                  manifiesto_signed, manifiesto_signed_at,
+                                  custom_section_html, display_options, logo_path
                     """).format(schema=schema)
+                )
+                row = cur.fetchone()
+            conn.commit()
+        return self._build_emisor(row)
+
+    def update_pdf_customization(
+        self, schema_name: str, custom_section_html: str | None, display_options: dict
+    ) -> Emisor:
+        schema = sql.Identifier(schema_name)
+        with admin_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    sql.SQL("""
+                        UPDATE {schema}.emisor
+                        SET custom_section_html = %s,
+                            display_options = %s,
+                            updated_at = NOW()
+                        WHERE id = (SELECT id FROM {schema}.emisor LIMIT 1)
+                        RETURNING id, rfc, razon_social, regimen_fiscal, codigo_postal,
+                                  series, folio_siguiente, created_at, updated_at,
+                                  facturapi_organization_id, csd_configured, csd_configured_at,
+                                  manifiesto_signed, manifiesto_signed_at,
+                                  custom_section_html, display_options, logo_path
+                    """).format(schema=schema),
+                    (custom_section_html, Json(display_options)),
+                )
+                row = cur.fetchone()
+            conn.commit()
+        return self._build_emisor(row)
+
+    def update_logo(self, schema_name: str, logo_path: str | None) -> Emisor:
+        schema = sql.Identifier(schema_name)
+        with admin_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    sql.SQL("""
+                        UPDATE {schema}.emisor
+                        SET logo_path = %s,
+                            updated_at = NOW()
+                        WHERE id = (SELECT id FROM {schema}.emisor LIMIT 1)
+                        RETURNING id, rfc, razon_social, regimen_fiscal, codigo_postal,
+                                  series, folio_siguiente, created_at, updated_at,
+                                  facturapi_organization_id, csd_configured, csd_configured_at,
+                                  manifiesto_signed, manifiesto_signed_at,
+                                  custom_section_html, display_options, logo_path
+                    """).format(schema=schema),
+                    (logo_path,),
                 )
                 row = cur.fetchone()
             conn.commit()
@@ -145,6 +199,7 @@ class SupabaseEmisorRepository(IEmisorRepository):
         return (int(row[0]), row[1])
 
     def _build_emisor(self, row: tuple) -> Emisor:
+        display_options = {**DEFAULT_DISPLAY_OPTIONS, **(row[15] or {})}
         return Emisor(
             id=str(row[0]),
             rfc=row[1],
@@ -160,4 +215,7 @@ class SupabaseEmisorRepository(IEmisorRepository):
             csd_configured_at=row[11].isoformat() if row[11] else None,
             manifiesto_signed=row[12],
             manifiesto_signed_at=row[13].isoformat() if row[13] else None,
+            custom_section_html=row[14],
+            display_options=display_options,
+            logo_path=row[16],
         )

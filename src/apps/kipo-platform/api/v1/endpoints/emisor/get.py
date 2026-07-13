@@ -2,6 +2,7 @@ from flask import jsonify, g
 
 from . import emisor_bp
 from shared.auth_decorators import require_auth
+from shared.supabase import get_client
 from emisor.execute import execute as emisor_execute
 from emisor.commands import GetEmisorQuery
 from shared.providers import get_tenant_repo
@@ -38,4 +39,7 @@ def _serialize(emisor) -> dict:
         "csd_configured_at": emisor.csd_configured_at,
         "manifiesto_signed": emisor.manifiesto_signed,
         "manifiesto_signed_at": emisor.manifiesto_signed_at,
+        "custom_section_html": emisor.custom_section_html,
+        "display_options": emisor.display_options,
+        "logo_url": get_client().storage.from_("org-logos").get_public_url(emisor.logo_path) if emisor.logo_path else None,
     }

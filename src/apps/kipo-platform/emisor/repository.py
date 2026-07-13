@@ -26,3 +26,11 @@ class IEmisorRepository(ABC):
 
     @abstractmethod
     def update_manifiesto(self, schema_name: str) -> Emisor: ...
+
+    @abstractmethod
+    def update_pdf_customization(
+        self, schema_name: str, custom_section_html: str | None, display_options: dict
+    ) -> Emisor: ...
+
+    @abstractmethod
+    def update_logo(self, schema_name: str, logo_path: str | None) -> Emisor: ...

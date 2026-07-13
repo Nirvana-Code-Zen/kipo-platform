@@ -23,6 +23,19 @@ interface EmisorApiResponse {
   csd_configured_at: string | null
   manifiesto_signed: boolean
   manifiesto_signed_at: string | null
+  custom_section_html: string | null
+  display_options: {
+    show_catalog_codes: boolean
+    show_product_key: boolean
+    show_address_codes: boolean
+    show_export_key: boolean
+    round_unit_price: boolean
+    show_tax_breakdown: boolean
+    show_ieps_breakdown: boolean
+    combine_ieps_with_subtotal: boolean
+    repeat_signature_each_page: boolean
+  }
+  logo_url: string | null
 }
 
 export function mapFromApi(raw: EmisorApiResponse): UIFiscalSettings {
@@ -37,6 +50,19 @@ export function mapFromApi(raw: EmisorApiResponse): UIFiscalSettings {
     csdConfiguredAt: raw.csd_configured_at,
     manifiestoSigned: raw.manifiesto_signed,
     manifiestoSignedAt: raw.manifiesto_signed_at,
+    customSectionHtml: raw.custom_section_html,
+    displayOptions: {
+      showCatalogCodes: raw.display_options.show_catalog_codes,
+      showProductKey: raw.display_options.show_product_key,
+      showAddressCodes: raw.display_options.show_address_codes,
+      showExportKey: raw.display_options.show_export_key,
+      roundUnitPrice: raw.display_options.round_unit_price,
+      showTaxBreakdown: raw.display_options.show_tax_breakdown,
+      showIepsBreakdown: raw.display_options.show_ieps_breakdown,
+      combineIepsWithSubtotal: raw.display_options.combine_ieps_with_subtotal,
+      repeatSignatureEachPage: raw.display_options.repeat_signature_each_page,
+    },
+    logoUrl: raw.logo_url,
   }
 }
 

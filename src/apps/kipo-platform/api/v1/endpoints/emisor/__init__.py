@@ -6,3 +6,5 @@ from . import get    # noqa: E402
 from . import upsert  # noqa: E402
 from . import csd  # noqa: E402
 from . import manifiesto  # noqa: E402
+from . import pdf_customization  # noqa: E402
+from . import logo  # noqa: E402

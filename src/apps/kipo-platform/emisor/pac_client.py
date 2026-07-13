@@ -14,3 +14,15 @@ class IPacClient(ABC):
         key_bytes: bytes,
         password: str,
     ) -> bool: ...
+
+    @abstractmethod
+    def upload_logo(
+        self,
+        organization_id: str,
+        image_bytes: bytes,
+        content_type: str,
+    ) -> bool:
+        """Unused for now — the live upload flow only persists the logo to our
+        own Supabase Storage bucket and `emisor.logo_path`. This is an isolated
+        point of integration for when real FacturAPI credentials exist."""
+        ...

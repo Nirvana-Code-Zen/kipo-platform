@@ -1,13 +1,14 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 
 import { Button } from "@kipo/ui-react"
-import { AlertCircle, Building2, User } from "lucide-react"
+import { AlertCircle, Building2, User, ImageUp } from "lucide-react"
 
 import { AuthInput } from "@/src/auth/ui/components/AuthInput"
 import { useCatalogs } from "@/src/catalogs/ui/hooks/useCatalogs"
 import { useSaveFiscalSettings } from "@/src/settings/ui/hooks/useSaveFiscalSettings"
+import { useUploadLogo } from "@/src/settings/ui/hooks/useUploadLogo"
 import { detectRfcType, RFC_TYPE_LABEL } from "@/src/shared/domain/rfc"
 
 interface FiscalDataStepProps {
@@ -26,9 +27,28 @@ export function FiscalDataStep({ onSaved, onSkip }: FiscalDataStepProps) {
   const [series, setSeries] = useState("")
   const [folioSiguiente, setFolioSiguiente] = useState(1)
   const [validationError, setValidationError] = useState<string | null>(null)
+  const [logoFile, setLogoFile] = useState<File | null>(null)
+  const [logoPreviewUrl, setLogoPreviewUrl] = useState<string | null>(null)
+  const logoInputRef = useRef<HTMLInputElement>(null)
 
   const { save, isSaving, error } = useSaveFiscalSettings()
+  const { upload: uploadLogo, isUploading: isUploadingLogo, error: logoError } = useUploadLogo()
   const { regimenFiscal: regimenFiscalCatalog } = useCatalogs()
+
+  useEffect(() => {
+    return () => {
+      if (logoPreviewUrl) URL.revokeObjectURL(logoPreviewUrl)
+    }
+  }, [logoPreviewUrl])
+
+  function handleLogoChange(e: React.ChangeEvent<HTMLInputElement>) {
+    const file = e.target.files?.[0]
+    e.target.value = ""
+    if (!file) return
+    if (logoPreviewUrl) URL.revokeObjectURL(logoPreviewUrl)
+    setLogoFile(file)
+    setLogoPreviewUrl(URL.createObjectURL(file))
+  }
 
   const rfcType = detectRfcType(rfc)
   const rfcValid = rfcType === "natural" || rfcType === "legal"
@@ -53,9 +73,13 @@ export function FiscalDataStep({ onSaved, onSkip }: FiscalDataStepProps) {
     setValidationError(null)
 
     const result = await save({ rfc, razonSocial, regimenFiscal, codigoPostal, series, folioSiguiente })
-    if (result !== null) {
-      onSaved()
+    if (result === null) return
+
+    if (logoFile) {
+      await uploadLogo(logoFile)
     }
+
+    onSaved()
   }
 
   const displayError = validationError ?? error
@@ -156,6 +180,55 @@ export function FiscalDataStep({ onSaved, onSkip }: FiscalDataStepProps) {
           />
         </div>
 
+        <div className="mb-6">
+          <label className="text-[13px] font-semibold text-muted-foreground font-sans mb-1 block">
+            Logo de tu empresa
+          </label>
+          <div className="flex items-center gap-3">
+            {logoPreviewUrl ? (
+              <>
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={logoPreviewUrl}
+                  alt="Logo de la empresa"
+                  className="h-14 w-14 object-contain rounded-md border border-border-subtle bg-muted/30"
+                />
+                <Button
+                  type="button"
+                  variant="secondary"
+                  size="sm"
+                  disabled={isUploadingLogo}
+                  onClick={() => logoInputRef.current?.click()}
+                >
+                  <ImageUp size={14} />
+                  Cambiar logo
+                </Button>
+              </>
+            ) : (
+              <button
+                type="button"
+                disabled={isUploadingLogo}
+                onClick={() => logoInputRef.current?.click()}
+                className="flex h-14 w-full items-center justify-center gap-2 rounded-md border border-dashed border-border-strong text-[13px] text-muted-foreground hover:bg-muted transition-colors disabled:opacity-60"
+              >
+                <ImageUp size={16} />
+                Subir logo
+              </button>
+            )}
+            <input
+              ref={logoInputRef}
+              type="file"
+              accept="image/png,image/jpeg,image/webp"
+              className="hidden"
+              onChange={handleLogoChange}
+            />
+          </div>
+          <p className="text-xs text-muted-foreground font-sans mt-1">
+            Opcional. Aparecerá en tus facturas — también puedes agregarlo después desde Ajustes.
+          </p>
+          {logoError && <p className="text-xs text-destructive font-sans mt-1">{logoError}</p>}
+        </div>
+
         <p className="text-[11px] font-bold tracking-[0.08em] text-muted-foreground font-sans mb-3 uppercase mt-6">
           Configuración de folio
         </p>
@@ -183,8 +256,8 @@ export function FiscalDataStep({ onSaved, onSkip }: FiscalDataStepProps) {
           <p className="text-xs text-muted-foreground font-sans mt-1">El número con el que arrancará tu primera factura</p>
         </div>
 
-        <Button onClick={handleSubmit} disabled={isSaving || !canSubmit} full>
-          {isSaving ? "Guardando..." : "Guardar y continuar"}
+        <Button onClick={handleSubmit} disabled={isSaving || isUploadingLogo || !canSubmit} full>
+          {isSaving ? "Guardando..." : isUploadingLogo ? "Subiendo logo..." : "Guardar y continuar"}
         </Button>
 
         <div className="text-center mt-4">

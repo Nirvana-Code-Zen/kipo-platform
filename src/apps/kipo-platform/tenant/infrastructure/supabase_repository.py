@@ -90,6 +90,9 @@ class SupabaseTenantRepository(ITenantRepository):
                         csd_configured_at           TIMESTAMPTZ,
                         manifiesto_signed           BOOLEAN     NOT NULL DEFAULT FALSE,
                         manifiesto_signed_at        TIMESTAMPTZ,
+                        custom_section_html         TEXT,
+                        display_options             JSONB       NOT NULL DEFAULT '{}'::jsonb,
+                        logo_path                   TEXT,
                         created_at                  TIMESTAMPTZ DEFAULT NOW(),
                         updated_at                  TIMESTAMPTZ DEFAULT NOW()
                     )

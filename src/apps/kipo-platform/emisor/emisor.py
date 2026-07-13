@@ -1,4 +1,4 @@
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 
 
 @dataclass(frozen=True)
@@ -17,3 +17,6 @@ class Emisor:
     csd_configured_at: str | None = None
     manifiesto_signed: bool = False
     manifiesto_signed_at: str | None = None
+    custom_section_html: str | None = None
+    display_options: dict = field(default_factory=dict)
+    logo_path: str | None = None
