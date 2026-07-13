@@ -36,6 +36,8 @@ CFDI_CATALOGS: dict[str, str] = {
     "uso_cfdi": "sat_uso_cfdi",
     "relacion_facturas": "sat_relacion_facturas",
     "mes": "sat_mes",
+    "objeto_imp": "sat_objeto_imp",
+    "iva_tasa": "sat_iva_tasa",
     "tipo_contrato": "sat_tipo_contrato",
     "tipo_jornada": "sat_tipo_jornada",
     "tipo_regimen_nomina": "sat_tipo_regimen_nomina",

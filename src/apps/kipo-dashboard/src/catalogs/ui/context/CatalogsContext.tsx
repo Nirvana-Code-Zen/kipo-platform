@@ -17,6 +17,8 @@ export interface CatalogsContextValue {
   usoCfdi: CatalogItem[]
   metodoPago: CatalogItem[]
   formaPago: CatalogItem[]
+  objetoImp: CatalogItem[]
+  ivaTasa: CatalogItem[]
   tipoPercepcion: CatalogItem[]
   tipoRegimenNomina: CatalogItem[]
   meses: CatalogItem[]

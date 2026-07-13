@@ -28,16 +28,3 @@ export const UNIT_CODES = [
   { code: "SET", label: "SET - Conjunto" },
   { code: "XBX", label: "XBX - Caja" },
 ] as const
-
-export const TAX_OBJECTS = [
-  { code: "01", label: "01 - No objeto de impuesto" },
-  { code: "02", label: "02 - Sí objeto de impuesto" },
-  { code: "03", label: "03 - No obligado al desglose" },
-] as const
-
-export const IVA_RATES = [
-  { code: "16", label: "IVA 16%" },
-  { code: "8",  label: "IVA 8%" },
-  { code: "0",  label: "IVA 0%" },
-  { code: "exento", label: "Exento" },
-] as const

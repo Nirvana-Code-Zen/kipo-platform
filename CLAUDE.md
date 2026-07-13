@@ -168,5 +168,8 @@ Cada dominio tiene su skeleton que replica la forma visual del componente real. 
 - `"use client"` explícito en todo componente o hook que use estado/efectos
 - No agregar comentarios que expliquen qué hace el código — los nombres de funciones y variables deben ser suficientemente claros
 - No crear abstracciones prematuras: tres archivos similares están bien antes de generalizar
-- CSS variables del design system (`var(--brand)`, `var(--radius-md)`, etc.) para todo lo visual — no hardcodear colores
-- Tailwind para layout/spacing, inline styles con CSS vars para colores y tokens del design system
+- **UI nueva: solo clases de Tailwind, nada de `style={{ ... }}`.** Esto incluye colores y tokens del design system, no solo layout/spacing — no hardcodear colores.
+- Los tokens del design system están mapeados como clases de Tailwind en `src/apps/kipo-dashboard/app/globals.css` (bloque `@theme inline`): `bg-card`, `bg-muted`, `text-foreground`, `text-muted-foreground`, `text-destructive`, `border-input`, `border-border-subtle`, `border-border-strong`, `rounded-md`/`rounded-sm`/`rounded-lg`, `font-sans`, `font-mono`, `shadow-lg`, etc. Usa esas clases en vez de `var(--...)` inline.
+- Para tamaños que no calzan en la escala de Tailwind (ej. `13px`, `11px`) usa valores arbitrarios (`text-[13px]`) en vez de `style=`.
+- Para hover/focus usa pseudo-clases de Tailwind (`hover:bg-muted`) en vez de `onMouseEnter`/`onMouseLeave` manipulando `style` por JS.
+- Código legado (`StyledSelect`, `ReceiverSearch`, el propio `Input` de `@kipo/ui-react`, etc.) todavía usa `style={{ }}` con `var(--...)` — no es el patrón a seguir en componentes nuevos; no migrarlo salvo que se pida explícitamente.

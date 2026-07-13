@@ -1,0 +1,48 @@
+export interface MockProductServiceCode {
+  code: string
+  description: string
+}
+
+// PLACEHOLDER — subconjunto de c_ClaveProdServ solo para autocompletar localmente.
+// Reemplazar por búsqueda vía PAC; borrar este archivo + useProductServiceSearch.ts cuando eso ocurra.
+export const MOCK_PRODUCT_SERVICE_CODES: MockProductServiceCode[] = [
+  { code: "81111500", description: "Desarrollo de software" },
+  { code: "81112000", description: "Servicios de soporte de software" },
+  { code: "81111800", description: "Servicios de datos o de procesamiento de información" },
+  { code: "81112500", description: "Servicios de hospedaje (hosting) de sitios en Internet" },
+  { code: "43232408", description: "Software de contabilidad o de finanzas" },
+  { code: "43233205", description: "Servicios en la nube (cloud computing)" },
+  { code: "78101800", description: "Transporte de carga por carretera" },
+  { code: "78111800", description: "Servicios de transporte de pasajeros" },
+  { code: "78121600", description: "Servicios de mensajería y paquetería" },
+  { code: "80101500", description: "Servicios de consultoría de negocios" },
+  { code: "80101504", description: "Servicios de asesoría en gestión de proyectos" },
+  { code: "80111600", description: "Servicios de personal temporal" },
+  { code: "80111500", description: "Servicios de reclutamiento de personal" },
+  { code: "80121700", description: "Servicios legales" },
+  { code: "84111500", description: "Servicios de contabilidad" },
+  { code: "84111600", description: "Servicios de auditoría financiera" },
+  { code: "93141500", description: "Servicios de capacitación y educación" },
+  { code: "86101800", description: "Servicios educativos y de formación" },
+  { code: "90101600", description: "Servicios de alimentos y bebidas" },
+  { code: "90111600", description: "Servicios de alojamiento (hoteles)" },
+  { code: "72101500", description: "Servicios de construcción residencial" },
+  { code: "72102900", description: "Servicios de remodelación y mantenimiento" },
+  { code: "76111500", description: "Servicios de limpieza general" },
+  { code: "76121100", description: "Servicios de fumigación y control de plagas" },
+  { code: "85101500", description: "Servicios médicos generales" },
+  { code: "85121800", description: "Servicios dentales" },
+  { code: "82101500", description: "Servicios de publicidad" },
+  { code: "82101801", description: "Servicios de diseño gráfico" },
+  { code: "83101500", description: "Servicios de telecomunicaciones" },
+  { code: "83111600", description: "Servicios de Internet" },
+  { code: "42131600", description: "Equipo médico y de laboratorio" },
+  { code: "44101500", description: "Equipo de cómputo y accesorios" },
+  { code: "44101800", description: "Impresoras y consumibles" },
+  { code: "25172500", description: "Vehículos automotores" },
+  { code: "15101500", description: "Combustibles" },
+  { code: "31201500", description: "Materiales de construcción" },
+  { code: "14111500", description: "Papel y productos de papel" },
+  { code: "56101500", description: "Mobiliario de oficina" },
+  { code: "10101501", description: "Servicios veterinarios" },
+]
