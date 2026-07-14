@@ -55,7 +55,7 @@ CREATE POLICY "tenants_select" ON public.tenants
     USING (
         EXISTS (
             SELECT 1 FROM public.tenant_users tu
-            WHERE tu.tenant_id = id
+            WHERE tu.tenant_id = tenants.id
               AND tu.user_id = (SELECT auth.uid())
         )
     );

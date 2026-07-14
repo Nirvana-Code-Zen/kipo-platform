@@ -77,10 +77,11 @@ export default async function globalSetup() {
     await waitFor(`http://localhost:${BACKEND_PORT}/api/v1/tenants/by-slug/__e2e_healthcheck__`, 60_000)
 
     console.log('[e2e] starting dashboard on port', FRONTEND_PORT)
-    frontend = spawn('pnpm', ['--filter', 'kipo-dashboard-ui', 'dev', '--', '-p', String(FRONTEND_PORT)], {
+    frontend = spawn('pnpm', ['--filter', 'kipo-dashboard-ui', 'dev'], {
       cwd: ROOT,
       env: {
         ...process.env,
+        PORT: String(FRONTEND_PORT),
         NEXT_PUBLIC_API_URL: `http://localhost:${BACKEND_PORT}`,
         NEXT_PUBLIC_APP_DOMAIN: 'localhost',
       },

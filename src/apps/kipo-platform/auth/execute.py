@@ -8,10 +8,12 @@ from auth.commands import (
     SignOutCommand,
     RefreshSessionCommand,
     OAuthCallbackCommand,
+    CreateExchangeCodeCommand,
+    ConsumeExchangeCodeCommand,
 )
-from auth.operations import sign_up, sign_in, verify_otp, sign_out
+from auth.operations import sign_up, sign_in, verify_otp, sign_out, exchange_session
 from shared.exceptions import BusinessRuleViolation
-from shared.providers import get_auth_repo
+from shared.providers import get_auth_repo, get_exchange_code_repo
 
 
 def execute(command: Any) -> Any:
@@ -33,6 +35,10 @@ def execute(command: Any) -> Any:
             return sign_out.execute(repo, access_token)
         case RefreshSessionCommand(refresh_token):
             return repo.refresh_session(refresh_token)
+        case CreateExchangeCodeCommand(refresh_token, user_id):
+            return exchange_session.create_code(get_exchange_code_repo(), refresh_token, user_id)
+        case ConsumeExchangeCodeCommand(code):
+            return exchange_session.consume_code(repo, get_exchange_code_repo(), code)
         case _:
             raise BusinessRuleViolation(
                 f"Unknown auth command: {type(command).__name__}"

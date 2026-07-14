@@ -18,7 +18,7 @@ CREATE POLICY "profiles_tenant_insert" ON storage.objects
     AND EXISTS (
       SELECT 1 FROM public.tenant_users tu
       JOIN public.tenants t ON t.id = tu.tenant_id
-      WHERE t.schema_name = (storage.foldername(name))[1]
+      WHERE t.schema_name = (storage.foldername(objects.name))[1]
         AND tu.user_id = (SELECT auth.uid())
     )
   );
@@ -30,7 +30,7 @@ CREATE POLICY "profiles_tenant_select" ON storage.objects
     AND EXISTS (
       SELECT 1 FROM public.tenant_users tu
       JOIN public.tenants t ON t.id = tu.tenant_id
-      WHERE t.schema_name = (storage.foldername(name))[1]
+      WHERE t.schema_name = (storage.foldername(objects.name))[1]
         AND tu.user_id = (SELECT auth.uid())
     )
   );
@@ -42,10 +42,10 @@ CREATE POLICY "profiles_tenant_update" ON storage.objects
     AND EXISTS (
       SELECT 1 FROM public.tenant_users tu
       JOIN public.tenants t ON t.id = tu.tenant_id
-      WHERE t.schema_name = (storage.foldername(name))[1]
+      WHERE t.schema_name = (storage.foldername(objects.name))[1]
         AND tu.user_id = (SELECT auth.uid())
     )
-    AND (storage.foldername(name))[2] = (SELECT auth.uid()::text)
+    AND (storage.foldername(objects.name))[2] = (SELECT auth.uid()::text)
   );
 
 CREATE POLICY "profiles_tenant_delete" ON storage.objects
@@ -55,8 +55,8 @@ CREATE POLICY "profiles_tenant_delete" ON storage.objects
     AND EXISTS (
       SELECT 1 FROM public.tenant_users tu
       JOIN public.tenants t ON t.id = tu.tenant_id
-      WHERE t.schema_name = (storage.foldername(name))[1]
+      WHERE t.schema_name = (storage.foldername(objects.name))[1]
         AND tu.user_id = (SELECT auth.uid())
     )
-    AND (storage.foldername(name))[2] = (SELECT auth.uid()::text)
+    AND (storage.foldername(objects.name))[2] = (SELECT auth.uid()::text)
   );

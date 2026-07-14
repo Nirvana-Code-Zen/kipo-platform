@@ -2,13 +2,11 @@
 
 import { useRef, useState } from 'react'
 
-import { useRouter } from 'next/navigation'
 import { Button } from '@kipo/ui-react'
 import { Camera } from 'lucide-react'
 
 import { AuthInput } from '@/src/auth/ui/components/AuthInput'
 import { useAuthStore } from '@/src/auth/ui/store/authStore'
-import { goToTenantPath } from '@/src/auth/ui/lib/tenantRedirect'
 import { uploadAvatar } from '@/src/settings/ui/hooks/useProfileEdit'
 
 import { TIMEZONES, CURRENCIES } from '../data/constants'
@@ -19,15 +17,12 @@ import { FiscalDataStep } from '../components/FiscalDataStep'
 import { CsdStep } from '../components/CsdStep'
 
 export const OnboardingView = () => {
-  const router = useRouter()
   const accessToken = useAuthStore((s) => s.accessToken)
 
-  const { step, pendingTenantRef, onTenantCreated, advanceTo, complete } = useOnboardingProgress()
+  const { step, onTenantCreated, advanceTo, complete } = useOnboardingProgress()
 
   const onboardingComplete = () => {
-    const slug = pendingTenantRef.current?.slug
     complete()
-    goToTenantPath(router.replace, slug, '/dashboard')
   }
 
   const nameHook = useOnboardingDisplayName(() => advanceTo(3))

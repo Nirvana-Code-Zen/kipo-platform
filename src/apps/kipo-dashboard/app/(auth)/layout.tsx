@@ -15,7 +15,7 @@ export default function AuthLayout ({ children }: { children: React.ReactNode })
   useEffect(() => {
     if (isLoading) return
     if (isEmailPending) { router.replace('/email-confirm'); return }
-    if (isAuthenticated && hasTenant) { goToTenantPath(router.replace, tenantSlug, '/dashboard'); return }
+    if (isAuthenticated && hasTenant) { void goToTenantPath(router.replace, tenantSlug, '/dashboard'); return }
     if (isAuthenticated && !hasTenant) { router.replace('/onboarding'); return }
   }, [isAuthenticated, hasTenant, isEmailPending, isLoading, tenantSlug, router])
 

@@ -17,6 +17,8 @@ import { verifyOtpUseCase } from '../../core/application/use-cases/verifyOtpUseC
 import { registerUseCase } from '../../core/application/use-cases/registerUseCase'
 import { logoutUseCase } from '../../core/application/use-cases/logoutUseCase'
 import { refreshSessionUseCase } from '../../core/application/use-cases/refreshSessionUseCase'
+import { createExchangeCodeUseCase } from '../../core/application/use-cases/createExchangeCodeUseCase'
+import { consumeExchangeCodeUseCase } from '../../core/application/use-cases/consumeExchangeCodeUseCase'
 
 import type { Session } from '../../core/domain/entities/Session'
 
@@ -150,7 +152,8 @@ export const useAuthStore = create<AuthState>()(
 
       logout: async () => {
         set({ status: SessionStatus.loading })
-        try { await logoutUseCase(repo)() } catch { /* ignore logout errors */ }
+        const { accessToken } = get()
+        try { await logoutUseCase(repo)(accessToken) } catch { /* ignore logout errors */ }
         clearRefreshTimer()
         removeAuthSession()
         set({ ...CLEARED_STATE, pendingEmail: null })
@@ -173,6 +176,25 @@ export const useAuthStore = create<AuthState>()(
         clearRefreshTimer()
         removeAuthSession()
         set(CLEARED_STATE)
+      },
+
+      mintExchangeCode: async () => {
+        const { accessToken } = get()
+        if (!accessToken) return null
+        const result = await createExchangeCodeUseCase(repo)(accessToken)
+        return result.ok ? result.value : null
+      },
+
+      adoptExchangeCode: async (code: string) => {
+        set({ status: SessionStatus.loading, error: null })
+        const result = await consumeExchangeCodeUseCase(repo)(code)
+        if (result.ok) {
+          applySession(set, result.value)
+          setAuthSession(result.value)
+          return true
+        }
+        set({ status: SessionStatus.unauthenticated, error: result.error })
+        return false
       },
 
       clearError: () => set({ error: null }),
@@ -213,4 +235,18 @@ export const scheduleRefreshForCurrentSession = () => {
   if (persistedSession && accessToken) {
     scheduleRefresh(persistedSession.expiresAt)
   }
+}
+
+// One-shot, app-load-scoped latch: tries to restore a session via the
+// httpOnly refresh cookie exactly once, driven solely from
+// AuthSessionManager (mounted once, app-wide) instead of duplicated inside
+// every useAuth() call site — avoids two concurrent refresh() calls racing
+// against Supabase's rotating refresh tokens.
+let bootstrapAttempted = false
+
+export const attemptBootstrapOnce = (): Promise<boolean> | null => {
+  if (bootstrapAttempted) return null
+  bootstrapAttempted = true
+  useAuthStore.setState({ status: SessionStatus.loading })
+  return useAuthStore.getState().refresh()
 }

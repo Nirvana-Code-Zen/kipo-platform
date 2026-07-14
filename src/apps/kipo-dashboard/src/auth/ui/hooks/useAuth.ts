@@ -1,7 +1,5 @@
 'use client'
 
-import { useEffect } from 'react'
-
 import { useShallow } from 'zustand/react/shallow'
 
 import { hydrateSession } from '../../core/domain/entities/Session'
@@ -29,12 +27,6 @@ export const useAuth = () => {
     logout: s.logout,
     clearError: s.clearError,
   })))
-
-  useEffect(() => {
-    if (store.status === SessionStatus.idle && store.persistedSession && !store.accessToken) {
-      store.refresh()
-    }
-  }, [store])
 
   const isAuthenticated = store.status === SessionStatus.authenticated && store.accessToken !== null && store.persistedSession !== null
 

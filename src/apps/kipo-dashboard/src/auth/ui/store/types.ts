@@ -38,6 +38,8 @@ export type AuthState = {
   logout: () => Promise<void>
   refresh: () => Promise<boolean>
   forceUnauthenticated: () => void
+  mintExchangeCode: () => Promise<string | null>
+  adoptExchangeCode: (code: string) => Promise<boolean>
   clearError: () => void
   updateProfile: (displayName: string, avatarUrl: string | undefined) => void
 }

@@ -14,7 +14,7 @@ export default function RootPage () {
   useEffect(() => {
     if (isLoading) return
     if (!isAuthenticated) { router.replace('/login'); return }
-    if (hasTenant) { goToTenantPath(router.replace, tenantSlug, '/dashboard'); return }
+    if (hasTenant) { void goToTenantPath(router.replace, tenantSlug, '/dashboard'); return }
     router.replace('/onboarding')
   }, [isAuthenticated, hasTenant, isLoading, tenantSlug, router])
 

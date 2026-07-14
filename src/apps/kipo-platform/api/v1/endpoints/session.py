@@ -1,5 +1,5 @@
 import os
-from flask import Blueprint, request, jsonify, make_response
+from flask import Blueprint, request, jsonify, make_response, g
 from shared.config import config_mapping
 from auth.execute import execute as auth_execute
 from auth.commands import (
@@ -11,9 +11,12 @@ from auth.commands import (
     SignOutCommand,
     RefreshSessionCommand,
     OAuthCallbackCommand,
+    CreateExchangeCodeCommand,
+    ConsumeExchangeCodeCommand,
 )
 from shared.exceptions import BusinessRuleViolation
 from shared.providers import get_tenant_repo
+from shared.auth_decorators import require_auth
 from tenant.value_objects.tenant_slug import public_slug
 
 session_bp = Blueprint("session", __name__, url_prefix="/api/v1/auth")
@@ -182,10 +185,42 @@ def oauth_callback():
         return jsonify({"error": str(err)}), 401
 
 
+@session_bp.route("/exchange-code", methods=["POST"])
+@require_auth
+def create_exchange_code():
+    refresh_token = request.cookies.get("kipo_refresh_token")
+    if not refresh_token:
+        return jsonify({"error": "No refresh token"}), 401
+    code = auth_execute(CreateExchangeCodeCommand(refresh_token=refresh_token, user_id=g.user_id))
+    return jsonify({"code": code}), 200
+
+
+@session_bp.route("/exchange-code/consume", methods=["POST"])
+def consume_exchange_code():
+    data = request.get_json() or {}
+    code = data.get("code", "")
+    if not code:
+        return jsonify({"error": "Missing code"}), 400
+    try:
+        result = auth_execute(ConsumeExchangeCodeCommand(code=code))
+        resp, error = _resolve_session(result, data.get("tenant_slug"))
+        if error:
+            return error
+        return _with_refresh_cookie(resp, result["refresh_token"])
+    except BusinessRuleViolation as err:
+        return jsonify({"error": str(err)}), 401
+
+
 @session_bp.route("/sign-out", methods=["POST"])
 def logout():
     token = request.headers.get("Authorization", "").removeprefix("Bearer ").strip()
-    auth_execute(SignOutCommand(access_token=token))
+    try:
+        auth_execute(SignOutCommand(access_token=token))
+    except Exception:
+        # Revoking the upstream session is best-effort — the cookie below is
+        # what actually keeps the browser logged in, so it must always be
+        # cleared even if Supabase is unreachable or rejects the token.
+        pass
     resp = make_response(jsonify({"message": "Signed out"}), 200)
     resp.delete_cookie("kipo_refresh_token", path="/api/v1/auth")
     return resp

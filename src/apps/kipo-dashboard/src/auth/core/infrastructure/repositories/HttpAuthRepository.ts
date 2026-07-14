@@ -117,11 +117,29 @@ export const createHttpAuthRepository = (baseUrl: string): IAuthRepository => {
       return ok({ emailPending: true as const, email: result.value.email ?? null })
     },
 
-    logout: () => request<void>('/api/v1/auth/sign-out', { method: 'POST' }),
+    logout: (accessToken: string | null) => request<void>('/api/v1/auth/sign-out', {
+      method: 'POST',
+      headers: accessToken ? { Authorization: `Bearer ${accessToken}` } : undefined,
+    }),
 
     refresh: () => sessionResult('/api/v1/auth/refresh', {
       method: 'POST',
       body: JSON.stringify(withTenantSlug({})),
     }),
+
+    createExchangeCode: async (accessToken: string) => {
+      const result = await request<{ code: string }>('/api/v1/auth/exchange-code', {
+        method: 'POST',
+        headers: { Authorization: `Bearer ${accessToken}` },
+      })
+      if (!result.ok) return result
+      return ok(result.value.code)
+    },
+
+    consumeExchangeCode: (code: string) =>
+      sessionResult('/api/v1/auth/exchange-code/consume', {
+        method: 'POST',
+        body: JSON.stringify(withTenantSlug({ code })),
+      }),
   }
 }

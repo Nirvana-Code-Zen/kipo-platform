@@ -44,3 +44,14 @@ class RefreshSessionCommand:
 class OAuthCallbackCommand:
     access_token: str
     refresh_token: str
+
+
+@dataclass(frozen=True)
+class CreateExchangeCodeCommand:
+    refresh_token: str
+    user_id: str
+
+
+@dataclass(frozen=True)
+class ConsumeExchangeCodeCommand:
+    code: str

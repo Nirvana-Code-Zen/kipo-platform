@@ -1,6 +1,7 @@
 from flask import g
 from shared import supabase
 from auth.infrastructure.supabase_repository import SupabaseAuthRepository
+from auth.infrastructure.exchange_code_repository import ExchangeCodeRepository
 from tenant.infrastructure.supabase_repository import SupabaseTenantRepository
 from customer.infrastructure.supabase_repository import SupabaseCustomerRepository
 from invoice.infrastructure.supabase_repository import SupabaseInvoiceRepository
@@ -14,6 +15,12 @@ def get_auth_repo() -> SupabaseAuthRepository:
     if "auth_repo" not in g:
         g.auth_repo = SupabaseAuthRepository(supabase.get_client())
     return g.auth_repo
+
+
+def get_exchange_code_repo() -> ExchangeCodeRepository:
+    if "exchange_code_repo" not in g:
+        g.exchange_code_repo = ExchangeCodeRepository()
+    return g.exchange_code_repo
 
 
 def get_tenant_repo() -> SupabaseTenantRepository:

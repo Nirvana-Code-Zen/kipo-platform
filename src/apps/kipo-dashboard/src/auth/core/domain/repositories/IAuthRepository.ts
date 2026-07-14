@@ -22,6 +22,8 @@ export type IAuthRepository = {
     password?: string
     idToken?: string
   }) => Promise<Result<{ emailPending: true; email: string | null }, AuthError>>
-  logout: () => Promise<Result<void, AuthError>>
+  logout: (accessToken: string | null) => Promise<Result<void, AuthError>>
   refresh: () => Promise<Result<Session, AuthError>>
+  createExchangeCode: (accessToken: string) => Promise<Result<string, AuthError>>
+  consumeExchangeCode: (code: string) => Promise<Result<Session, AuthError>>
 }

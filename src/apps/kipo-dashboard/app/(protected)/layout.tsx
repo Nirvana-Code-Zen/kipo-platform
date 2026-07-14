@@ -24,7 +24,15 @@ export default function ProtectedLayout ({ children }: { children: React.ReactNo
     if (!hasTenant) { router.replace('/onboarding'); return }
   }, [mounted, isAuthenticated, hasTenant, isLoading, router])
 
-  if (!mounted || isLoading || !isAuthenticated || !hasTenant) return null
+  if (!mounted) return null
+  if (isLoading || !isAuthenticated || !hasTenant) {
+    return (
+      <div className="flex flex-col items-center justify-center min-h-dvh gap-3 text-muted-foreground">
+        <div className="w-6 h-6 border-2 border-primary border-t-transparent rounded-full animate-spin" />
+        <p className="text-sm">Cargando…</p>
+      </div>
+    )
+  }
   return (
     <CatalogsProvider>
       <DashboardShell>{children}</DashboardShell>

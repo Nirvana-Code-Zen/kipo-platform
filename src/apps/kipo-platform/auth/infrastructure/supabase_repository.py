@@ -87,9 +87,11 @@ class SupabaseAuthRepository(IAuthRepository):
         }
 
     def sign_out(self, access_token: str) -> None:
+        if not access_token:
+            return
         try:
             self._client.auth.admin.sign_out(access_token, scope="global")
-        except AuthApiError:
+        except Exception:
             pass
 
     @_guard
