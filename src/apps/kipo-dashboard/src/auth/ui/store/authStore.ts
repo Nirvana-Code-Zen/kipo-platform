@@ -24,7 +24,6 @@ import type { Session } from '../../core/domain/entities/Session'
 
 const repo = createHttpAuthRepository(API_BASE_URL)
 
-// Refreshes this many ms before the access token actually expires.
 const REFRESH_LEAD_MS = 60_000
 const REFRESH_MIN_DELAY_MS = 5_000
 
@@ -37,7 +36,6 @@ const clearRefreshTimer = () => {
   }
 }
 
-// expiresAt may arrive as a string after a round-trip through localStorage/sessionStorage.
 const scheduleRefresh = (expiresAt: Date | string) => {
   clearRefreshTimer()
   const delay = Math.max(new Date(expiresAt).getTime() - Date.now() - REFRESH_LEAD_MS, REFRESH_MIN_DELAY_MS)
@@ -227,9 +225,6 @@ export const useAuthStore = create<AuthState>()(
   )
 )
 
-// Schedules the proactive refresh for a session hydrated at module load
-// (e.g. sessionStorage surviving a page reload) — applySession() already
-// schedules it for sessions applied via login/refresh/OTP actions.
 export const scheduleRefreshForCurrentSession = () => {
   const { persistedSession, accessToken } = useAuthStore.getState()
   if (persistedSession && accessToken) {
@@ -237,16 +232,17 @@ export const scheduleRefreshForCurrentSession = () => {
   }
 }
 
-// One-shot, app-load-scoped latch: tries to restore a session via the
-// httpOnly refresh cookie exactly once, driven solely from
-// AuthSessionManager (mounted once, app-wide) instead of duplicated inside
-// every useAuth() call site — avoids two concurrent refresh() calls racing
-// against Supabase's rotating refresh tokens.
 let bootstrapAttempted = false
 
 export const attemptBootstrapOnce = (): Promise<boolean> | null => {
   if (bootstrapAttempted) return null
   bootstrapAttempted = true
+
+  const { status, persistedSession, accessToken } = useAuthStore.getState()
+  if (!(status === SessionStatus.idle && persistedSession && !accessToken)) {
+    return null
+  }
+
   useAuthStore.setState({ status: SessionStatus.loading })
   return useAuthStore.getState().refresh()
 }

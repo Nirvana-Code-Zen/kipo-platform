@@ -77,4 +77,19 @@ test.describe.serial('registro → onboarding → login', () => {
 
     await expect(page).toHaveURL(new RegExp(`^http://${tenantSlug}\\.localhost:3100/dashboard`))
   })
+
+  test('recargar el dashboard no expulsa al login', async ({ page }) => {
+    expect(tenantSlug, 'requires the previous test to have created the tenant').toBeTruthy()
+
+    await page.goto('http://localhost:3100/login')
+    await page.getByLabel('Correo electrónico').fill(email)
+    await page.getByLabel('Contraseña', { exact: true }).fill(password)
+    await page.getByRole('button', { name: 'Entrar' }).click()
+    await expect(page).toHaveURL(new RegExp(`^http://${tenantSlug}\\.localhost:3100/dashboard`))
+
+    await page.reload()
+
+    // Debe seguir en el dashboard del tenant — nunca rebotar a /login.
+    await expect(page).toHaveURL(new RegExp(`^http://${tenantSlug}\\.localhost:3100/dashboard`))
+  })
 })

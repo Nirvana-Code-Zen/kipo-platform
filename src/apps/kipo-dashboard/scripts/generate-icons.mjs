@@ -40,7 +40,6 @@ function makePng(size, r, g, b) {
   ihdr[11] = 0  // filter
   ihdr[12] = 0  // interlace
 
-  // Image data: filter byte (0) + RGB per pixel per row
   const row = Buffer.allocUnsafe(1 + size * 3)
   row[0] = 0 // filter none
   for (let x = 0; x < size; x++) {
@@ -59,10 +58,9 @@ function makePng(size, r, g, b) {
   ])
 }
 
-// Kipo brand dark navy #032641 → rgb(3, 38, 65)
 const [r, g, b] = [3, 38, 65]
 
-writeFileSync(join(outDir, "icon-192.png"), makePng(192, r, g, b))
-writeFileSync(join(outDir, "icon-512.png"), makePng(512, r, g, b))
+writeFileSync(join(outDir, "logo.svg"), makePng(192, r, g, b))
+writeFileSync(join(outDir, "logo.svg"), makePng(512, r, g, b))
 
 console.log("✓ icons/icon-192.png and icons/icon-512.png generated")
