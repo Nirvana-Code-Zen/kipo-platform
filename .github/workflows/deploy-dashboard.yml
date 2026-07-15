@@ -2,12 +2,21 @@ name: Deploy kipo-dashboard → Vercel
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: "Entorno destino"
+        type: choice
+        options:
+          - Production
+          - Staging
+        default: Production
 
 jobs:
   deploy:
-    name: Deploy to Vercel (production)
+    name: Deploy to Vercel (${{ inputs.environment }})
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: inputs.environment == 'Staging' || github.ref == 'refs/heads/main'
+    environment: ${{ inputs.environment }}
 
     steps:
       - uses: actions/checkout@v4
@@ -15,12 +24,8 @@ jobs:
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
 
-      # All env vars come from GitHub (Secrets/Variables), not from Vercel
-      # project settings — this is a remote build, so both --build-env
-      # (baked into the client bundle at build time) and --env (available
-      # to the deployed Server Components/route handlers at runtime) are
-      # needed for the NEXT_PUBLIC_* vars.
       - name: Deploy to production
+        if: inputs.environment == 'Production'
         shell: bash
         run: |
           ARGS=(deploy --prod --yes --token "$VERCEL_TOKEN")
@@ -29,6 +34,25 @@ jobs:
           ARGS+=(--env "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL")
           ARGS+=(--env "NEXT_PUBLIC_APP_DOMAIN=$NEXT_PUBLIC_APP_DOMAIN")
           vercel "${ARGS[@]}"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_DASHBOARD }}
+          NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL }}
+          NEXT_PUBLIC_APP_DOMAIN: ${{ vars.NEXT_PUBLIC_APP_DOMAIN }}
+
+      - name: Deploy to staging (preview) and alias domain
+        if: inputs.environment == 'Staging'
+        shell: bash
+        run: |
+          ARGS=(deploy --yes --token "$VERCEL_TOKEN")
+          ARGS+=(--build-env "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL")
+          ARGS+=(--build-env "NEXT_PUBLIC_APP_DOMAIN=$NEXT_PUBLIC_APP_DOMAIN")
+          ARGS+=(--env "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL")
+          ARGS+=(--env "NEXT_PUBLIC_APP_DOMAIN=$NEXT_PUBLIC_APP_DOMAIN")
+          DEPLOY_URL=$(vercel "${ARGS[@]}")
+          vercel alias "$DEPLOY_URL" staging.kipo.com.mx --token "$VERCEL_TOKEN"
+          vercel alias "$DEPLOY_URL" "*.staging.kipo.com.mx" --token "$VERCEL_TOKEN"
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}

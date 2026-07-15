@@ -2,12 +2,21 @@ name: Deploy kipo-platform → Vercel
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: "Entorno destino"
+        type: choice
+        options:
+          - Production
+          - Staging
+        default: Production
 
 jobs:
   deploy:
-    name: Deploy to Vercel (production)
+    name: Deploy to Vercel (${{ inputs.environment }})
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: inputs.environment == 'Staging' || github.ref == 'refs/heads/main'
+    environment: ${{ inputs.environment }}
 
     steps:
       - uses: actions/checkout@v4
@@ -15,12 +24,8 @@ jobs:
       - name: Install Vercel CLI
         run: npm install -g vercel@latest
 
-      # All env vars come from GitHub (Secrets/Variables), not from Vercel
-      # project settings. Flask reads these at request time inside the
-      # deployed function, so --env (runtime) is what matters here —
-      # --build-env is included too since it's harmless and keeps the two
-      # deploy workflows consistent.
       - name: Deploy to production
+        if: inputs.environment == 'Production'
         shell: bash
         run: |
           ARGS=(deploy --prod --yes --token "$VERCEL_TOKEN")
@@ -38,7 +43,37 @@ jobs:
           VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_BACKEND }}
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
           PROJECT_URL: ${{ vars.PROJECT_URL }}
-          AUTH_KEY_PUBLISHABLE: ${{ vars.AUTH_KEY_PUBLISHABLE }}
+          AUTH_KEY_PUBLISHABLE: ${{ secrets.AUTH_KEY_PUBLISHABLE }}
+          AUTH_KEY_SECRET: ${{ secrets.AUTH_KEY_SECRET }}
+          STORAGE_URL: ${{ vars.STORAGE_URL }}
+          STORAGE_ACCESS_KEY: ${{ secrets.STORAGE_ACCESS_KEY }}
+          STORAGE_SECRET_KEY: ${{ secrets.STORAGE_SECRET_KEY }}
+          STORAGE_REGION: ${{ vars.STORAGE_REGION }}
+          CORS_EXTRA_ORIGINS: ${{ vars.CORS_EXTRA_ORIGINS }}
+          CORS_WILDCARD_DOMAIN: ${{ vars.CORS_WILDCARD_DOMAIN }}
+          FLASK_ENV: production
+
+      - name: Deploy to staging (preview) and alias domain
+        if: inputs.environment == 'Staging'
+        shell: bash
+        run: |
+          ARGS=(deploy --yes --token "$VERCEL_TOKEN")
+          for KEY in DATABASE_URL PROJECT_URL AUTH_KEY_PUBLISHABLE AUTH_KEY_SECRET \
+                     STORAGE_URL STORAGE_ACCESS_KEY STORAGE_SECRET_KEY STORAGE_REGION \
+                     CORS_EXTRA_ORIGINS CORS_WILDCARD_DOMAIN FLASK_ENV; do
+            VALUE="${!KEY}"
+            ARGS+=(--env "$KEY=$VALUE")
+            ARGS+=(--build-env "$KEY=$VALUE")
+          done
+          DEPLOY_URL=$(vercel "${ARGS[@]}")
+          vercel alias "$DEPLOY_URL" staging-api.kipo.com.mx --token "$VERCEL_TOKEN"
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_BACKEND }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          PROJECT_URL: ${{ vars.PROJECT_URL }}
+          AUTH_KEY_PUBLISHABLE: ${{ secrets.AUTH_KEY_PUBLISHABLE }}
           AUTH_KEY_SECRET: ${{ secrets.AUTH_KEY_SECRET }}
           STORAGE_URL: ${{ vars.STORAGE_URL }}
           STORAGE_ACCESS_KEY: ${{ secrets.STORAGE_ACCESS_KEY }}
