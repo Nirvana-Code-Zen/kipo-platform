@@ -18,3 +18,9 @@ dependencies = [
 
 [tool.vercel]
 entrypoint = "run:app"
+
+[tool.ruff.lint.per-file-ignores]
+# Blueprint packages define `x_bp = Blueprint(...)` then import endpoint
+# modules for their route-registration side effects — the import position
+# and the unused binding are both intentional here, not in app code.
+"**/__init__.py" = ["E402", "F401"]
