@@ -142,6 +142,25 @@ class SupabaseTenantRepository(ITenantRepository):
                 )
             conn.commit()
 
+    def update_plan(
+        self,
+        tenant_id: TenantId,
+        plan_type: PlanType,
+        status: TenantStatus,
+        features_enabled: tuple[str, ...],
+    ) -> None:
+        with admin_connection() as conn:
+            with conn.cursor() as cur:
+                cur.execute(
+                    """
+                    UPDATE public.tenants
+                    SET plan_type = %s, status = %s, features_enabled = %s
+                    WHERE id = %s
+                    """,
+                    (plan_type.value, status.value, list(features_enabled), str(tenant_id)),
+                )
+            conn.commit()
+
     def find_by_auth_id(self, auth_id: str) -> Tenant | None:
         with admin_connection() as conn:
             with conn.cursor() as cur:

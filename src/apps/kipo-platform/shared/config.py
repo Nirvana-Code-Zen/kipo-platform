@@ -21,6 +21,10 @@ class BaseConfig:
     STORAGE_SECRET = os.environ.get("STORAGE_SECRET_KEY", "access-secret")
     STORAGE_REGION = os.environ.get("STORAGE_REGION", "local")
 
+    STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY", "")
+    STRIPE_WEBHOOK_SECRET = os.environ.get("STRIPE_WEBHOOK_SECRET", "")
+    STRIPE_STAMP_WEBHOOK_SECRET = os.environ.get("STRIPE_STAMP_WEBHOOK_SECRET", "")
+
     COOKIE_SECURE = False
     PROPAGATE_EXCEPTIONS = True
 

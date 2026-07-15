@@ -26,7 +26,7 @@ import { EmisorMissingBanner } from "../components/EmisorMissingBanner"
 import { useDashboardSummary } from "../hooks/useDashboardSummary"
 
 export function Dashboard() {
-  const { summary, isLoading, addAvailableStamps } = useDashboardSummary()
+  const { summary, isLoading } = useDashboardSummary()
   const [buySheetOpen, setBuySheetOpen] = useState(false)
 
   return (
@@ -69,7 +69,6 @@ export function Dashboard() {
       <BuyStampsSheet
         isOpen={buySheetOpen}
         onClose={() => setBuySheetOpen(false)}
-        onPurchased={addAvailableStamps}
       />
     </>
   )

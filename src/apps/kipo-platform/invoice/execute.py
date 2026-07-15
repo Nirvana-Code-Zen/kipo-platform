@@ -47,8 +47,8 @@ def execute(command: Any) -> Any:
                 receiver,
                 concepts,
             )
-        case ListInvoicesQuery(schema_name, limit, offset):
-            return list_.execute(repo, schema_name, limit, offset)
+        case ListInvoicesQuery(schema_name, limit, offset, history_months):
+            return list_.execute(repo, schema_name, limit, offset, history_months)
         case CancelInvoiceCommand(schema_name, invoice_id):
             return cancel_.execute(repo, schema_name, invoice_id)
         case DeleteInvoiceCommand(schema_name, invoice_id):

@@ -13,15 +13,11 @@ import { STAMP_PACK_CATALOG } from "../data/stampPackCatalog"
 interface BuyStampsSheetProps {
   isOpen: boolean
   onClose: () => void
-  onPurchased: (purchasedQty: number) => void
 }
 
-export function BuyStampsSheet({ isOpen, onClose, onPurchased }: BuyStampsSheetProps) {
+export function BuyStampsSheet({ isOpen, onClose }: BuyStampsSheetProps) {
   const { selectedPackId, setSelectedPackId } = useStampPackSelection(100)
-  const { buy, isPurchasing, error } = useBuyStampPack((purchasedQty) => {
-    onPurchased(purchasedQty)
-    onClose()
-  })
+  const { buy, isPurchasing, error } = useBuyStampPack()
 
   if (!isOpen) return null
 

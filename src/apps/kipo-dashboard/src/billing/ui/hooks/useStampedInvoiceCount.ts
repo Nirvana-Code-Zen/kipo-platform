@@ -29,9 +29,5 @@ export function useStampedInvoiceCount() {
     return () => { cancelled = true }
   }, [accessToken])
 
-  function addAvailableStamps(qty: number) {
-    setAvailableStamps((prev) => (prev ?? 0) + qty)
-  }
-
-  return { stamped, draft, availableStamps, addAvailableStamps }
+  return { stamped, draft, availableStamps }
 }

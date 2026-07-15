@@ -11,3 +11,11 @@ class RegisterTenantCommand:
     currency: str = "MXN"
     storage_quota_bytes: int = 5_368_709_120  # 5 GB
     features_enabled: tuple[str, ...] = field(default_factory=tuple)
+
+
+@dataclass(frozen=True)
+class UpdateTenantPlanCommand:
+    tenant_id: str
+    plan_type: str
+    status: str
+    features_enabled: tuple[str, ...] = field(default_factory=tuple)

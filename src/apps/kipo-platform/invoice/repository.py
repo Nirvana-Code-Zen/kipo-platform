@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+from datetime import datetime
 from invoice.invoice import Invoice
 
 
@@ -8,7 +9,9 @@ class IInvoiceRepository(ABC):
     def save(self, invoice: Invoice, schema_name: str) -> Invoice: ...
 
     @abstractmethod
-    def find_all(self, schema_name: str, limit: int, offset: int) -> list[Invoice]: ...
+    def find_all(
+        self, schema_name: str, limit: int, offset: int, since: datetime | None = None
+    ) -> list[Invoice]: ...
 
     @abstractmethod
     def find_by_id(self, invoice_id: str, schema_name: str) -> Invoice: ...

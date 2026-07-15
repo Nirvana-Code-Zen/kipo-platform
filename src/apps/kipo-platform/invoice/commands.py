@@ -20,6 +20,7 @@ class ListInvoicesQuery:
     schema_name: str
     limit: int = 20
     offset: int = 0
+    history_months: int | None = None
 
 
 @dataclass(frozen=True)
