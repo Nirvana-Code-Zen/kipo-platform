@@ -21,38 +21,12 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Vercel CLI
-        run: npm install -g vercel@latest
-
-      - name: Deploy to production
-        if: inputs.environment == 'Production'
-        shell: bash
-        run: |
-          ARGS=(deploy --prod --yes --token "$VERCEL_TOKEN")
-          ARGS+=(--build-env "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL")
-          ARGS+=(--build-env "NEXT_PUBLIC_APP_DOMAIN=$NEXT_PUBLIC_APP_DOMAIN")
-          ARGS+=(--env "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL")
-          ARGS+=(--env "NEXT_PUBLIC_APP_DOMAIN=$NEXT_PUBLIC_APP_DOMAIN")
-          vercel "${ARGS[@]}"
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_DASHBOARD }}
-          NEXT_PUBLIC_API_URL: ${{ vars.NEXT_PUBLIC_API_URL }}
-          NEXT_PUBLIC_APP_DOMAIN: ${{ vars.NEXT_PUBLIC_APP_DOMAIN }}
-
-      - name: Deploy to staging (preview) and alias domain
-        if: inputs.environment == 'Staging'
-        shell: bash
-        run: |
-          ARGS=(deploy --yes --token "$VERCEL_TOKEN")
-          ARGS+=(--build-env "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL")
-          ARGS+=(--build-env "NEXT_PUBLIC_APP_DOMAIN=$NEXT_PUBLIC_APP_DOMAIN")
-          ARGS+=(--env "NEXT_PUBLIC_API_URL=$NEXT_PUBLIC_API_URL")
-          ARGS+=(--env "NEXT_PUBLIC_APP_DOMAIN=$NEXT_PUBLIC_APP_DOMAIN")
-          DEPLOY_URL=$(vercel "${ARGS[@]}")
-          vercel alias "$DEPLOY_URL" staging.kipo.com.mx --token "$VERCEL_TOKEN"
-          vercel alias "$DEPLOY_URL" "*.staging.kipo.com.mx" --token "$VERCEL_TOKEN"
+      - name: Deploy
+        uses: ./.github/actions/deploy-vercel
+        with:
+          production: ${{ inputs.environment == 'Production' }}
+          env-keys: NEXT_PUBLIC_API_URL NEXT_PUBLIC_APP_DOMAIN
+          alias-domains: staging.kipo.com.mx *.staging.kipo.com.mx
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}

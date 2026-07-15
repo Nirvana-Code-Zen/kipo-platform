@@ -1,0 +1,30 @@
+name: Lint kipo-api
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'src/apps/kipo-platform/**'
+      - '.github/workflows/lint-kipo-api.yml'
+
+jobs:
+  lint:
+    name: Ruff
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      # setup-uv publishes only immutable full-semver tags (no moving @vN
+      # majors) — bump this manually when a newer release is needed.
+      - uses: astral-sh/setup-uv@v8.3.2
+        with:
+          python-version: "3.14"
+
+      - name: Install dependencies
+        working-directory: src/apps/kipo-platform
+        run: uv sync
+
+      - name: Lint
+        working-directory: src/apps/kipo-platform
+        run: uv run ruff check .
