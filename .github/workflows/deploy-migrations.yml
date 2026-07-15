@@ -2,12 +2,21 @@ name: Deploy Supabase migrations
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: "Entorno destino"
+        type: choice
+        options:
+          - Production
+          - Staging
+        default: Production
 
 jobs:
   push:
-    name: supabase db push
+    name: supabase db push (${{ inputs.environment }})
     runs-on: ubuntu-latest
-    if: github.ref == 'refs/heads/main'
+    if: inputs.environment == 'Staging' || github.ref == 'refs/heads/main'
+    environment: ${{ inputs.environment }}
 
     steps:
       - uses: actions/checkout@v4
