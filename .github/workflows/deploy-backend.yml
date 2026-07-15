@@ -21,52 +21,18 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Install Vercel CLI
-        run: npm install -g vercel@latest
-
-      - name: Deploy to production
-        if: inputs.environment == 'Production'
-        shell: bash
-        run: |
-          ARGS=(deploy --prod --yes --token "$VERCEL_TOKEN")
-          for KEY in DATABASE_URL PROJECT_URL AUTH_KEY_PUBLISHABLE AUTH_KEY_SECRET \
-                     STORAGE_URL STORAGE_ACCESS_KEY STORAGE_SECRET_KEY STORAGE_REGION \
-                     CORS_EXTRA_ORIGINS CORS_WILDCARD_DOMAIN FLASK_ENV; do
-            VALUE="${!KEY}"
-            ARGS+=(--env "$KEY=$VALUE")
-            ARGS+=(--build-env "$KEY=$VALUE")
-          done
-          vercel "${ARGS[@]}"
-        env:
-          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
-          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID_BACKEND }}
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          PROJECT_URL: ${{ vars.PROJECT_URL }}
-          AUTH_KEY_PUBLISHABLE: ${{ secrets.AUTH_KEY_PUBLISHABLE }}
-          AUTH_KEY_SECRET: ${{ secrets.AUTH_KEY_SECRET }}
-          STORAGE_URL: ${{ vars.STORAGE_URL }}
-          STORAGE_ACCESS_KEY: ${{ secrets.STORAGE_ACCESS_KEY }}
-          STORAGE_SECRET_KEY: ${{ secrets.STORAGE_SECRET_KEY }}
-          STORAGE_REGION: ${{ vars.STORAGE_REGION }}
-          CORS_EXTRA_ORIGINS: ${{ vars.CORS_EXTRA_ORIGINS }}
-          CORS_WILDCARD_DOMAIN: ${{ vars.CORS_WILDCARD_DOMAIN }}
-          FLASK_ENV: production
-
-      - name: Deploy to staging (preview) and alias domain
-        if: inputs.environment == 'Staging'
-        shell: bash
-        run: |
-          ARGS=(deploy --yes --token "$VERCEL_TOKEN")
-          for KEY in DATABASE_URL PROJECT_URL AUTH_KEY_PUBLISHABLE AUTH_KEY_SECRET \
-                     STORAGE_URL STORAGE_ACCESS_KEY STORAGE_SECRET_KEY STORAGE_REGION \
-                     CORS_EXTRA_ORIGINS CORS_WILDCARD_DOMAIN FLASK_ENV; do
-            VALUE="${!KEY}"
-            ARGS+=(--env "$KEY=$VALUE")
-            ARGS+=(--build-env "$KEY=$VALUE")
-          done
-          DEPLOY_URL=$(vercel "${ARGS[@]}")
-          vercel alias "$DEPLOY_URL" staging-api.kipo.com.mx --token "$VERCEL_TOKEN"
+      # FLASK_ENV se manda como "production" en ambos entornos a propósito:
+      # shared/config.py todavía no tiene una entrada "staging" en
+      # config_mapping y el import fallaría con KeyError.
+      - name: Deploy
+        uses: ./.github/actions/deploy-vercel
+        with:
+          production: ${{ inputs.environment == 'Production' }}
+          env-keys: >-
+            DATABASE_URL PROJECT_URL AUTH_KEY_PUBLISHABLE AUTH_KEY_SECRET
+            STORAGE_URL STORAGE_ACCESS_KEY STORAGE_SECRET_KEY STORAGE_REGION
+            CORS_EXTRA_ORIGINS CORS_WILDCARD_DOMAIN FLASK_ENV
+          alias-domains: staging-api.kipo.com.mx
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
           VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}

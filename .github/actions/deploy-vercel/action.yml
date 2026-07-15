@@ -1,0 +1,48 @@
+name: Deploy to Vercel
+description: >
+  Deploy a Vercel project to production or to a staging preview aliased to
+  fixed domain(s). Env vars forwarded to Vercel must already be set on the
+  calling step's `env:` block (composite actions inherit it automatically).
+
+inputs:
+  production:
+    description: "'true' for a production deploy (--prod), 'false' for a staging preview"
+    required: true
+  env-keys:
+    description: "Space-separated env var names to forward to Vercel via --env/--build-env"
+    required: true
+  alias-domains:
+    description: "Space-separated domains to alias the deployment to (ignored when production is 'true')"
+    required: false
+    default: ""
+
+runs:
+  using: composite
+  steps:
+    - name: Install Vercel CLI
+      shell: bash
+      run: npm install -g vercel@latest
+
+    - name: Deploy
+      shell: bash
+      run: |
+        # noglob: alias-domains legitimately contains "*.sub.domain" wildcards
+        # that must reach `vercel alias` literally, not get pathname-expanded.
+        set -f
+        ARGS=(deploy --yes --token "$VERCEL_TOKEN")
+        if [ "${{ inputs.production }}" = "true" ]; then
+          ARGS+=(--prod)
+        fi
+        for KEY in ${{ inputs.env-keys }}; do
+          VALUE="${!KEY}"
+          ARGS+=(--env "$KEY=$VALUE")
+          ARGS+=(--build-env "$KEY=$VALUE")
+        done
+        DEPLOY_URL=$(vercel "${ARGS[@]}")
+        echo "Deployed: $DEPLOY_URL"
+
+        if [ "${{ inputs.production }}" != "true" ] && [ -n "${{ inputs.alias-domains }}" ]; then
+          for DOMAIN in ${{ inputs.alias-domains }}; do
+            vercel alias "$DEPLOY_URL" "$DOMAIN" --token "$VERCEL_TOKEN"
+          done
+        fi
