@@ -60,9 +60,5 @@ export function useDashboardSummary() {
     }
   }, [accessToken])
 
-  function addAvailableStamps(qty: number) {
-    setSummary((prev) => prev ? { ...prev, stamps: { ...prev.stamps, available: prev.stamps.available + qty } } : prev)
-  }
-
-  return { summary, isLoading, addAvailableStamps }
+  return { summary, isLoading }
 }

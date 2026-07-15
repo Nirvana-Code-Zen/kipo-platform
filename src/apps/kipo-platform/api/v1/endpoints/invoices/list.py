@@ -6,6 +6,7 @@ from shared.auth_decorators import require_auth
 from invoice.commands import ListInvoicesQuery
 from invoice.execute import execute as invoice_execute
 from shared.providers import get_tenant_repo
+from tenant.plan_catalog import entitlements_for
 
 
 @invoices_bp.route("", methods=["GET"])
@@ -29,11 +30,14 @@ def list_invoices():
     limit = max(1, min(limit, 50))
     offset = max(0, offset)
 
+    entitlements = entitlements_for(tenant)
+
     invoices = invoice_execute(
         ListInvoicesQuery(
             schema_name=tenant.schema_name,
             limit=limit,
             offset=offset,
+            history_months=entitlements.history_months,
         )
     )
     return jsonify([invoice_requester.serialize_invoice(inv) for inv in invoices]), 200

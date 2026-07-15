@@ -1,4 +1,5 @@
 import json
+from datetime import datetime
 from psycopg2 import sql
 from supabase import Client
 from invoice.repository import IInvoiceRepository
@@ -144,21 +145,37 @@ class SupabaseInvoiceRepository(IInvoiceRepository):
             created_at=created_at.isoformat(),
         )
 
-    def find_all(self, schema_name: str, limit: int, offset: int) -> list[Invoice]:
+    def find_all(
+        self, schema_name: str, limit: int, offset: int, since: datetime | None = None
+    ) -> list[Invoice]:
         schema = sql.Identifier(schema_name)
         with admin_connection() as conn:
             with conn.cursor() as cur:
-                cur.execute(
-                    sql.SQL("""
-                        SELECT id, folio_num, series, voucher_type, payment_method, payment_form,
-                               currency, export_type, issuer_zip, customer_id, receiver,
-                               subtotal, iva, total, status, created_at
-                        FROM {schema}.invoices
-                        ORDER BY created_at DESC
-                        LIMIT %s OFFSET %s
-                    """).format(schema=schema),
-                    (limit, offset),
-                )
+                if since is not None:
+                    cur.execute(
+                        sql.SQL("""
+                            SELECT id, folio_num, series, voucher_type, payment_method, payment_form,
+                                   currency, export_type, issuer_zip, customer_id, receiver,
+                                   subtotal, iva, total, status, created_at
+                            FROM {schema}.invoices
+                            WHERE created_at >= %s
+                            ORDER BY created_at DESC
+                            LIMIT %s OFFSET %s
+                        """).format(schema=schema),
+                        (since, limit, offset),
+                    )
+                else:
+                    cur.execute(
+                        sql.SQL("""
+                            SELECT id, folio_num, series, voucher_type, payment_method, payment_form,
+                                   currency, export_type, issuer_zip, customer_id, receiver,
+                                   subtotal, iva, total, status, created_at
+                            FROM {schema}.invoices
+                            ORDER BY created_at DESC
+                            LIMIT %s OFFSET %s
+                        """).format(schema=schema),
+                        (limit, offset),
+                    )
                 rows = cur.fetchall()
                 invoices = [self._build_invoice(cur, schema, row) for row in rows]
         return invoices

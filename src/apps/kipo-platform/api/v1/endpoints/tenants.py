@@ -3,9 +3,11 @@ from tenant.execute import execute as tenant_execute
 from tenant.commands import RegisterTenantCommand
 from tenant.value_objects.tenant_slug import public_slug
 from tenant.value_objects.tenant_status import TenantStatus
+from tenant.value_objects.plan_type import PlanType
+from tenant.plan_catalog import entitlements_for
 from shared.auth_decorators import require_auth
 from shared.exceptions import BusinessRuleViolation
-from shared.providers import get_tenant_repo
+from shared.providers import get_tenant_repo, get_subscription_repo
 
 tenants_bp = Blueprint("tenants", __name__, url_prefix="/api/v1/tenants")
 
@@ -16,6 +18,29 @@ def by_slug(slug: str):
     if not tenant or tenant.status == TenantStatus.INACTIVE:
         return jsonify({"error": "not found"}), 404
     return jsonify({"name": tenant.name, "slug": public_slug(tenant.schema_name)}), 200
+
+
+@tenants_bp.route("/me", methods=["GET"])
+@require_auth
+def me():
+    tenant = get_tenant_repo().find_by_auth_id(g.user_id)
+    if not tenant:
+        return jsonify({"error": "Tenant not found for this user"}), 404
+
+    entitlements = entitlements_for(tenant)
+    subscription = get_subscription_repo().find_by_tenant_id(tenant.id)
+    if subscription:
+        tier = subscription.tier
+    else:
+        tier = "enterprise" if tenant.plan_type == PlanType.ENTERPRISE else "basico"
+
+    return jsonify({
+        "plan_type": tenant.plan_type.value,
+        "status": tenant.status.value,
+        "tier": tier,
+        "features": list(entitlements.features),
+        "history_months": entitlements.history_months,
+    }), 200
 
 @tenants_bp.route("/register", methods=["POST"])
 @require_auth

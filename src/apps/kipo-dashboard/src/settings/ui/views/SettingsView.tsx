@@ -16,6 +16,9 @@ import { useAuthStore } from '@/src/auth/ui/store/authStore'
 import { Header } from '@/src/shared/ui/components/dashboard/header'
 import { useStampedInvoiceCount } from '@/src/billing/ui/hooks/useStampedInvoiceCount'
 import { BuyStampsSheet } from '@/src/stamp-packs/ui/components/BuyStampsSheet'
+import { useTenantPlan } from '@/src/subscriptions/ui/hooks/useTenantPlan'
+import { UpgradePlanSheet } from '@/src/subscriptions/ui/components/UpgradePlanSheet'
+import { PLAN_LABELS } from '@/src/subscriptions/ui/data/planLabels'
 
 import { useFiscalSettings } from '../hooks/useFiscalSettings'
 import { FiscalSettingsSection } from '../components/FiscalSettingsSection'
@@ -35,9 +38,13 @@ export function SettingsView() {
   const [profileSheetOpen, setProfileSheetOpen] = useState(false)
   const [csdSheetOpen, setCsdSheetOpen] = useState(false)
   const [buySheetOpen, setBuySheetOpen] = useState(false)
+  const [upgradeSheetOpen, setUpgradeSheetOpen] = useState(false)
 
   const { data: fiscalData, isLoading: fiscalLoading, setData: setFiscalData } = useFiscalSettings()
-  const { availableStamps, addAvailableStamps } = useStampedInvoiceCount()
+  const { availableStamps } = useStampedInvoiceCount()
+  const { plan } = useTenantPlan()
+  const planLabel = plan ? PLAN_LABELS[plan.tier] : PLAN_LABELS.basico
+  const canUpgrade = plan?.tier === 'basico' || plan?.tier === 'emprendedor'
 
   const searchParams = useSearchParams()
   useEffect(() => {
@@ -140,13 +147,15 @@ export function SettingsView() {
             <div className="flex items-center gap-3">
               <CreditCard className="w-4 h-4 text-muted-foreground" />
               <div>
-                <p className="text-sm font-medium text-foreground">Plan Básico</p>
-                <p className="text-xs text-muted-foreground">Gratis</p>
+                <p className="text-sm font-medium text-foreground">{planLabel.name}</p>
+                <p className="text-xs text-muted-foreground">{planLabel.priceLabel}</p>
               </div>
             </div>
-            <Button size="sm" className="shrink-0">
-              Mejorar plan
-            </Button>
+            {canUpgrade && (
+              <Button size="sm" className="shrink-0" onClick={() => setUpgradeSheetOpen(true)}>
+                Mejorar plan
+              </Button>
+            )}
           </div>
           <div className="flex items-center justify-between pt-4 border-t border-border">
             <div>
@@ -195,7 +204,11 @@ export function SettingsView() {
       <BuyStampsSheet
         isOpen={buySheetOpen}
         onClose={() => setBuySheetOpen(false)}
-        onPurchased={addAvailableStamps}
+      />
+
+      <UpgradePlanSheet
+        isOpen={upgradeSheetOpen}
+        onClose={() => setUpgradeSheetOpen(false)}
       />
     </>
   )

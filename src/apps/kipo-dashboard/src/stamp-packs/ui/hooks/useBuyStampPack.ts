@@ -2,31 +2,45 @@
 
 import { useState } from "react"
 
-import { isErr } from "@/src/shared/domain/result"
-
-import { createMockStampPackRepository } from "../../core/infrastructure/repositories/MockStampPackRepository"
-import { buyStampPackUseCase } from "../../core/application/use-cases/buyStampPackUseCase"
+import { useAuthStore } from "@/src/auth/ui/store/authStore"
+import { API_BASE_URL } from "@/src/shared/infrastructure/config"
 
 import type { StampPackId } from "../../core/domain/value-objects/StampPackId"
-import type { StampPackError } from "../../core/domain/exceptions/stampPack.errors"
 
-const stampPackRepo = createMockStampPackRepository()
-
-export function useBuyStampPack(onPurchased: (purchasedQty: number) => void) {
+export function useBuyStampPack() {
   const [isPurchasing, setIsPurchasing] = useState(false)
-  const [error, setError] = useState<StampPackError | null>(null)
+  const [error, setError] = useState(false)
 
   async function buy(packId: StampPackId): Promise<boolean> {
     setIsPurchasing(true)
-    setError(null)
-    const result = await buyStampPackUseCase({ stampPackRepo })({ packId })
-    setIsPurchasing(false)
-    if (isErr(result)) {
-      setError(result.error)
+    setError(false)
+    try {
+      const accessToken = useAuthStore.getState().accessToken
+      const res = await fetch(`${API_BASE_URL}/api/v1/stamp-packs/checkout`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${accessToken ?? ""}`,
+        },
+        body: JSON.stringify({
+          pack_id: String(packId),
+          success_url: `${window.location.origin}/settings?stamps_purchased=true`,
+          cancel_url: `${window.location.origin}/settings`,
+        }),
+      })
+      if (!res.ok) {
+        setError(true)
+        return false
+      }
+      const data = (await res.json()) as { checkout_url: string }
+      window.location.href = data.checkout_url
+      return true
+    } catch {
+      setError(true)
       return false
+    } finally {
+      setIsPurchasing(false)
     }
-    onPurchased(result.value.purchasedQty)
-    return true
   }
 
   return { buy, isPurchasing, error }
