@@ -1,6 +1,21 @@
+import os
 from functools import wraps
+
+import jwt
 from flask import request, jsonify, g
-from shared.supabase import get_client
+from jwt import PyJWKClient
+
+_PROJECT_URL = os.environ.get("PROJECT_URL", "http://127.0.0.1:54321")
+_JWKS_URL = f"{_PROJECT_URL}/auth/v1/.well-known/jwks.json"
+
+_jwk_client: PyJWKClient | None = None
+
+
+def _get_jwk_client() -> PyJWKClient:
+    global _jwk_client
+    if _jwk_client is None:
+        _jwk_client = PyJWKClient(_JWKS_URL, cache_keys=True)
+    return _jwk_client
 
 
 def require_auth(f):
@@ -11,8 +26,14 @@ def require_auth(f):
         if not token:
             return jsonify({"error": "Unauthorized"}), 401
         try:
-            user = get_client().auth.get_user(token)
-            g.user_id = str(user.user.id)
+            signing_key = _get_jwk_client().get_signing_key_from_jwt(token)
+            claims = jwt.decode(
+                token,
+                signing_key.key,
+                algorithms=["ES256"],
+                audience="authenticated",
+            )
+            g.user_id = claims["sub"]
             g.access_token = token
         except Exception:
             return jsonify({"error": "Invalid or expired token"}), 401
@@ -20,4 +41,3 @@ def require_auth(f):
         return f(*args, **kwargs)
 
     return decorated_functions
-

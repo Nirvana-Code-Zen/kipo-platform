@@ -14,7 +14,11 @@ _GOTRUE_URL = os.environ.get("PROJECT_URL", "http://127.0.0.1:54321") + "/auth/v
 
 
 def _gotrue_headers(token: str) -> dict:
-    return {"Authorization": f"Bearer {token}", "Content-Type": "application/json"}
+    return {
+        "Authorization": f"Bearer {token}",
+        "apikey": os.environ.get("AUTH_KEY_SECRET", ""),
+        "Content-Type": "application/json",
+    }
 
 
 @profile_bp.route("", methods=["PUT"])
