@@ -6,9 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage, Button, Card } from '@kipo/ui-reac
 import {
   User,
   CreditCard,
-  HelpCircle,
   LogOut,
-  ExternalLink,
 } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
@@ -43,8 +41,8 @@ export function SettingsView() {
   const { data: fiscalData, isLoading: fiscalLoading, setData: setFiscalData } = useFiscalSettings()
   const { availableStamps } = useStampedInvoiceCount()
   const { plan } = useTenantPlan()
-  const planLabel = (plan && PLAN_LABELS[plan.tier]) || PLAN_LABELS.basico
-  const canUpgrade = plan?.tier === 'basico' || plan?.tier === 'emprendedor'
+  const planLabel = (plan && PLAN_LABELS[plan.tier]) || PLAN_LABELS.free
+  const canUpgrade = plan?.tier === 'free' || plan?.tier === 'pro'
 
   const searchParams = useSearchParams()
   useEffect(() => {
