@@ -9,7 +9,7 @@ export interface UITenantPlan {
 }
 
 export interface UIUpgradeOption {
-  tier: Extract<PlanTier, 'emprendedor' | 'pyme'>
+  tier: PlanTier
   name: string
   priceLabel: string
   description: string
