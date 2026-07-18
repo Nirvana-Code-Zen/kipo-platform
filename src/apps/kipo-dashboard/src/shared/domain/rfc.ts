@@ -24,3 +24,9 @@ export function detectRfcType(rfc: string): RfcType {
   if (v.length < 12) return "empty"
   return "invalid"
 }
+
+export function getRfcSixthDigit(rfc: string): number | null {
+  const digits = rfc.trim().toUpperCase().replace(/[^0-9]/g, "")
+  if (digits.length < 6) return null
+  return Number(digits[5])
+}
