@@ -3,6 +3,7 @@
 import { useState, useEffect, useRef } from "react"
 import { createPortal } from "react-dom"
 
+import Image from 'next/image'
 import { Button } from "@kipo/ui-react"
 import { X, Camera } from "lucide-react"
 
@@ -145,9 +146,11 @@ export function ProfileEditSheet({ isOpen, onClose }: ProfileEditSheetProps) {
                   style={{ background: "var(--surface-brand-soft)" }}
                 >
                   {currentAvatarUrl ? (
-                    <img
+                    <Image
                       src={currentAvatarUrl}
                       alt={displayName}
+                      height={10}
+                      width={10}
                       className="w-full h-full object-cover"
                     />
                   ) : (

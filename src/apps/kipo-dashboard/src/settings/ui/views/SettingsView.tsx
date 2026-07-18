@@ -7,6 +7,8 @@ import {
   User,
   CreditCard,
   LogOut,
+  HelpCircle,
+  ExternalLink,
 } from 'lucide-react'
 import { useRouter, useSearchParams } from 'next/navigation'
 
@@ -23,6 +25,7 @@ import { FiscalSettingsSection } from '../components/FiscalSettingsSection'
 import { FiscalSettingsSheet } from '../components/FiscalSettingsSheet'
 import { ProfileEditSheet } from '../components/ProfileEditSheet'
 import { CSDSection } from '../components/CSDSection'
+import { CSDSettingsSheet } from '../components/CSDSettingsSheet'
 
 export function SettingsView() {
   const persistedSession = useAuthStore((s) => s.persistedSession)
