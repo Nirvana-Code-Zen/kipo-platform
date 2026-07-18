@@ -3,9 +3,6 @@ name: Lint kipo-dashboard
 on:
   pull_request:
     branches: [main]
-    paths:
-      - 'src/apps/kipo-dashboard/**'
-      - '.github/workflows/lint-dashboard.yml'
 
 jobs:
   lint:
@@ -15,17 +12,29 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            dashboard:
+              - 'src/apps/kipo-dashboard/**'
+              - '.github/workflows/lint-dashboard.yml'
+
       - uses: pnpm/action-setup@v4
+        if: steps.filter.outputs.dashboard == 'true'
         with:
           version: 10
 
       - uses: actions/setup-node@v4
+        if: steps.filter.outputs.dashboard == 'true'
         with:
           node-version: 22
           cache: pnpm
 
       - name: Install dependencies
+        if: steps.filter.outputs.dashboard == 'true'
         run: pnpm install --frozen-lockfile
 
       - name: Lint
+        if: steps.filter.outputs.dashboard == 'true'
         run: pnpm --filter kipo-dashboard-ui lint
