@@ -43,7 +43,7 @@ export function SettingsView() {
   const { data: fiscalData, isLoading: fiscalLoading, setData: setFiscalData } = useFiscalSettings()
   const { availableStamps } = useStampedInvoiceCount()
   const { plan } = useTenantPlan()
-  const planLabel = plan ? PLAN_LABELS[plan.tier] : PLAN_LABELS.basico
+  const planLabel = (plan && PLAN_LABELS[plan.tier]) || PLAN_LABELS.basico
   const canUpgrade = plan?.tier === 'basico' || plan?.tier === 'emprendedor'
 
   const searchParams = useSearchParams()
