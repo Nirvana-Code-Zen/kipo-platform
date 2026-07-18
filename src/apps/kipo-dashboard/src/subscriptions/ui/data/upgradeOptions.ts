@@ -2,7 +2,7 @@ import type { UIUpgradeOption } from '../components/types'
 
 export const UPGRADE_OPTIONS: readonly UIUpgradeOption[] = [
   {
-    tier: 'emprendedor',
+    tier: 'free',
     name: 'Emprendedor',
     priceLabel: '$299 MXN/mes',
     description: 'Para freelancers y negocios que facturan seguido.',
@@ -14,7 +14,7 @@ export const UPGRADE_OPTIONS: readonly UIUpgradeOption[] = [
     ],
   },
   {
-    tier: 'pyme',
+    tier: 'pro',
     name: 'PyME',
     priceLabel: '$599 MXN/mes',
     description: 'Para negocios con equipo y operación contable compleja.',
