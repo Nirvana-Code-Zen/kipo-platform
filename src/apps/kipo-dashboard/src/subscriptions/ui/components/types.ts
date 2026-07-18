@@ -1,4 +1,4 @@
-export type PlanTier = 'basico' | 'emprendedor' | 'pyme' | 'enterprise'
+export type PlanTier = 'free' | 'pro' | 'pyme' | 'enterprise'
 
 export interface UITenantPlan {
   planType: 'free' | 'pro' | 'enterprise'
