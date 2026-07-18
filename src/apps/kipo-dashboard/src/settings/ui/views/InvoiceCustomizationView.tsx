@@ -5,6 +5,7 @@ import { useState, useEffect, useMemo, useRef } from "react"
 import { useRouter } from "next/navigation"
 import { Button, Card, Switch } from "@kipo/ui-react"
 import { ArrowLeft, CheckCircle2, ImageUp } from "lucide-react"
+import Image from 'next/image'
 
 import { Header } from "@/src/shared/ui/components/dashboard/header"
 
@@ -141,10 +142,11 @@ export function InvoiceCustomizationView() {
               <div className="flex items-center gap-3">
                 {logoUrl ? (
                   <>
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
+                    <Image
                       src={logoUrl}
                       alt="Logo de la empresa"
+                      width={16}
+                      height={16}
                       className="h-16 w-16 object-contain rounded-md border border-border-subtle bg-muted/30"
                     />
                     <Button
