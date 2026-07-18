@@ -13,7 +13,7 @@
     "dev:landing": "pnpm --filter Kipo-landing dev",
     "dev:api": "pnpm --filter kipo-api dev",
     "build": "pnpm build:packages && pnpm --parallel --filter './src/apps/**' build",
-    "build:dashboard": "pnpm build:packages && pnpm --filter kipo-dashboard build",
+    "build:dashboard": "pnpm build:packages && pnpm --filter kipo-dashboard-ui build",
     "build:landing": "pnpm build:packages && pnpm --filter Kipo-landing build",
     "build:packages": "pnpm --filter @kipo/ui-react build",
     "storybook": "pnpm --filter @kipo/ui-react storybook",
