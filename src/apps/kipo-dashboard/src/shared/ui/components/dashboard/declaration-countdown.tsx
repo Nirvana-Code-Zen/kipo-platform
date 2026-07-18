@@ -4,22 +4,16 @@ import { useState, useEffect } from "react"
 
 import { Card, Button } from "@kipo/ui-react"
 
-function getTargetDate(): Date {
-  const now = new Date()
-  const target = new Date(now.getFullYear(), now.getMonth(), 17, 23, 59, 59)
-  if (now >= target) {
-    target.setMonth(target.getMonth() + 1)
-  }
-  return target
-}
+import { useDeclarationDeadline } from "@/src/shared/ui/hooks/useDeclarationDeadline"
 
 export function DeclarationCountdown() {
+  const { deadline, hasProrroga, extraBusinessDays } = useDeclarationDeadline()
   const [remaining, setRemaining] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
 
   useEffect(() => {
     function tick() {
       const now = new Date()
-      const diff = Math.max(0, getTargetDate().getTime() - now.getTime())
+      const diff = Math.max(0, deadline.getTime() - now.getTime())
       const days = Math.floor(diff / (1000 * 60 * 60 * 24))
       const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60))
       const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60))
@@ -29,9 +23,14 @@ export function DeclarationCountdown() {
     tick()
     const interval = setInterval(tick, 1000)
     return () => clearInterval(interval)
-  }, [])
+  }, [deadline])
 
   const pad = (n: number) => String(n).padStart(2, "0")
+  const formattedDeadline = new Intl.DateTimeFormat("es-MX", {
+    day: "numeric",
+    month: "short",
+    year: "numeric",
+  }).format(deadline)
 
   return (
     <Card
@@ -59,11 +58,17 @@ export function DeclarationCountdown() {
 
       <div className="relative z-10">
         <h2 className="text-lg font-semibold mb-1">Límite declaración</h2>
-        <p className="text-xs opacity-60 mb-4">Declaración mensual SAT — día 17</p>
+        <p className="text-xs opacity-60 mb-4">Declaración mensual SAT — vence el {formattedDeadline}</p>
         <div className="text-4xl sm:text-5xl font-mono font-bold mb-1 tracking-tight">
           {remaining.days}d {pad(remaining.hours)}:{pad(remaining.minutes)}:{pad(remaining.seconds)}
         </div>
-        <p className="text-xs opacity-50 mb-4">días restantes</p>
+        <p className="text-xs opacity-50 mb-1">días restantes</p>
+        {hasProrroga && (
+          <p className="text-xs opacity-50 mb-4">
+            +{extraBusinessDays} día{extraBusinessDays === 1 ? "" : "s"} hábil{extraBusinessDays === 1 ? "" : "es"} de prórroga según tu RFC
+          </p>
+        )}
+        {!hasProrroga && <div className="mb-4" />}
         <Button
           size="md"
           className="bg-background text-foreground hover:bg-background/90 transition-all duration-300 hover:scale-105"
