@@ -148,8 +148,6 @@ export function InvoiceCustomizationView() {
                       width={16}
                       height={16}
                       alt="Logo de la empresa"
-                      width={16}
-                      height={16}
                       className="h-16 w-16 object-contain rounded-md border border-border-subtle bg-muted/30"
                     />
                     <Button

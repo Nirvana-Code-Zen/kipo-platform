@@ -2,6 +2,7 @@
 
 import { createPortal } from "react-dom"
 
+import Image from "next/img"
 import { X, ShieldCheck, FileText, XCircle } from "lucide-react"
 import { Badge } from "@kipo/ui-react"
 
@@ -75,7 +76,7 @@ function EmisorHeader({
       <div className="flex items-start justify-between gap-4">
         <div className="flex items-start gap-3">
           {logoUrl ? (
-            <img src={logoUrl} alt="Logo de la empresa" className="h-12 w-auto object-contain" />
+            <Image height={12} width={12} src={logoUrl} alt="Logo de la empresa" className="h-12 w-auto object-contain" />
           ) : (
             <div className="flex h-12 w-24 shrink-0 items-center justify-center rounded-md border border-dashed border-border-strong text-[10px] text-muted-foreground">
               Sin logo
