@@ -1,3 +1,5 @@
+import re
+
 from flask import jsonify, request, g
 
 from . import invoices_bp
@@ -7,6 +9,8 @@ from invoice.execute import execute as invoice_execute
 from invoice.commands import CreateInvoiceCommand
 from shared.exceptions import BusinessRuleViolation
 from shared.providers import get_tenant_repo
+
+_RFC_REGEX = re.compile(r'^[A-ZÑ&]{3,4}\d{6}[A-Z\d]{3}$')
 
 
 @invoices_bp.route("", methods=["POST"])
@@ -19,6 +23,15 @@ def create_invoice():
         return jsonify({"error": "Tenant not found for this user"}), 404
 
     data = request.get_json() or {}
+
+    receiver = data.get("receiver", {})
+    tax_id = receiver.get("tax_id", "").strip().upper()
+    zip_code = receiver.get("zip", "").strip()
+    if not _RFC_REGEX.match(tax_id):
+        return jsonify({"error": "RFC del receptor inválido"}), 400
+    if not re.match(r'^\d{5}$', zip_code):
+        return jsonify({"error": "C.P. del receptor requerido (5 dígitos)"}), 400
+
     try:
         invoice = invoice_execute(
             CreateInvoiceCommand(

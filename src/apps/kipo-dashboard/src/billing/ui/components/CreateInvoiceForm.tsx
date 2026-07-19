@@ -97,9 +97,11 @@ interface ReceiverSearchProps {
   receiverTaxId: string
   receiverName: string
   receiverZip: string
+  isCustomerSelected: boolean
   errorTaxId?: string
   errorName?: string
-  onSelect: (suggestion: ReceiverSuggestion) => void
+  errorZip?: string
+  onSelectCustomer: (suggestion: ReceiverSuggestion) => void
   onChangeTaxId: (v: string) => void
   onChangeName: (v: string) => void
   onChangeZip: (v: string) => void
@@ -110,9 +112,11 @@ function ReceiverSearch({
   receiverTaxId,
   receiverName,
   receiverZip,
+  isCustomerSelected,
   errorTaxId,
   errorName,
-  onSelect,
+  errorZip,
+  onSelectCustomer,
   onChangeTaxId,
   onChangeName,
   onChangeZip,
@@ -122,9 +126,7 @@ function ReceiverSearch({
   const dropdownRef = useRef<HTMLDivElement>(null)
   useClickOutside(dropdownRef, () => search.setIsOpen(false))
 
-  const isSelected = !!(receiverTaxId && receiverName)
-
-  if (isSelected) {
+  if (isCustomerSelected) {
     return (
       <div style={{
         display: "flex", alignItems: "center", gap: 12,
@@ -163,6 +165,8 @@ function ReceiverSearch({
     )
   }
 
+  const showNoResults = search.isOpen && search.query.trim().length >= 2 && search.suggestions.length === 0
+
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
       <label style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 13, color: "var(--text-strong)" }}>
@@ -196,55 +200,68 @@ function ReceiverSearch({
           />
         </div>
 
-      {search.isOpen && search.suggestions.length > 0 && (
-        <div style={{
-          position: "absolute", top: "calc(100% + 4px)", left: 0, right: 0, zIndex: 50,
-          background: "var(--surface-card)",
-          border: "1.5px solid var(--border-strong)",
-          borderRadius: "var(--radius-md)",
-          boxShadow: "var(--shadow-lg)",
-          overflow: "hidden",
-        }}>
-          {search.suggestions.map((s) => (
-            <button
-              key={s.taxId}
-              type="button"
-              onClick={() => {
-                onSelect(s)
-                onChangeTaxId(s.taxId)
-                onChangeName(s.name)
-                onChangeZip(s.zip ?? "")
-                search.clear()
-              }}
-              style={{
-                display: "flex", alignItems: "center", gap: 12,
-                width: "100%", padding: "10px 14px",
-                background: "transparent",
-                border: "none", borderBottom: "1px solid var(--border-soft)",
-                cursor: "pointer", textAlign: "left",
-              }}
-              onMouseEnter={(e) => (e.currentTarget.style.background = "var(--surface-muted)")}
-              onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
-            >
-              <div style={{
-                width: 32, height: 32, borderRadius: "var(--radius-circle)",
-                background: "var(--surface-brand-soft)",
-                display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
-              }}>
-                <User size={14} style={{ color: "var(--brand)" }} />
-              </div>
-              <div style={{ minWidth: 0 }}>
-                <p style={{ fontSize: 14, fontWeight: 600, color: "var(--text-strong)", margin: 0, lineHeight: 1.3 }}>
-                  {s.name}
-                </p>
-                <p style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "var(--text-muted)", margin: "2px 0 0" }}>
-                  {s.taxId}
-                </p>
-              </div>
-            </button>
-          ))}
-        </div>
-      )}
+        {search.isOpen && search.suggestions.length > 0 && (
+          <div style={{
+            position: "absolute", top: "calc(100% + 4px)", left: 0, right: 0, zIndex: 50,
+            background: "var(--surface-card)",
+            border: "1.5px solid var(--border-strong)",
+            borderRadius: "var(--radius-md)",
+            boxShadow: "var(--shadow-lg)",
+            overflow: "hidden",
+          }}>
+            {search.suggestions.map((s) => (
+              <button
+                key={s.taxId}
+                type="button"
+                onMouseDown={(e) => {
+                  e.preventDefault()
+                  onSelectCustomer(s)
+                  search.clear()
+                }}
+                style={{
+                  display: "flex", alignItems: "center", gap: 12,
+                  width: "100%", padding: "10px 14px",
+                  background: "transparent",
+                  border: "none", borderBottom: "1px solid var(--border-soft)",
+                  cursor: "pointer", textAlign: "left",
+                }}
+                onMouseEnter={(e) => (e.currentTarget.style.background = "var(--surface-muted)")}
+                onMouseLeave={(e) => (e.currentTarget.style.background = "transparent")}
+              >
+                <div style={{
+                  width: 32, height: 32, borderRadius: "var(--radius-circle)",
+                  background: "var(--surface-brand-soft)",
+                  display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0,
+                }}>
+                  <User size={14} style={{ color: "var(--brand)" }} />
+                </div>
+                <div style={{ minWidth: 0 }}>
+                  <p style={{ fontSize: 14, fontWeight: 600, color: "var(--text-strong)", margin: 0, lineHeight: 1.3 }}>
+                    {s.name}
+                  </p>
+                  <p style={{ fontSize: 11, fontFamily: "var(--font-mono)", color: "var(--text-muted)", margin: "2px 0 0" }}>
+                    {s.taxId}
+                  </p>
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+
+        {showNoResults && (
+          <div style={{
+            position: "absolute", top: "calc(100% + 4px)", left: 0, right: 0, zIndex: 50,
+            background: "var(--surface-card)",
+            border: "1.5px solid var(--border-strong)",
+            borderRadius: "var(--radius-md)",
+            boxShadow: "var(--shadow-lg)",
+            padding: "12px 14px",
+          }}>
+            <p style={{ fontSize: 13, color: "var(--text-muted)", margin: 0 }}>
+              No se encontraron clientes. Llena los datos manualmente o crea el cliente primero.
+            </p>
+          </div>
+        )}
       </div>
 
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 12, marginTop: 12 }}>
@@ -271,7 +288,7 @@ function ReceiverSearch({
           placeholder="00000"
           value={receiverZip}
           onChange={(e) => onChangeZip(e.target.value.replace(/\D/g, "").slice(0, 5))}
-          hint="Opcional"
+          error={errorZip}
           mono
           maxLength={5}
         />
@@ -333,6 +350,7 @@ function ProductServiceSearch({
                 type="button"
                 onClick={() => {
                   onSelectCode(s.code)
+                  onChangeDescription(s.description)
                   search.setIsOpen(false)
                 }}
                 className="flex w-full flex-col gap-0.5 border-0 border-b border-border-subtle bg-transparent px-3.5 py-2.5 text-left cursor-pointer hover:bg-muted"
@@ -485,9 +503,16 @@ export function CreateInvoiceForm({ form, onFormSubmit, onCancel, isSubmitting, 
             receiverTaxId={form.receiverTaxId}
             receiverName={form.receiverName}
             receiverZip={form.receiverZip}
+            isCustomerSelected={!!form.customerId}
             errorTaxId={form.errors.receiverTaxId}
             errorName={form.errors.receiverName}
-            onSelect={(s) => form.setCustomerId(s.id)}
+            errorZip={form.errors.receiverZip}
+            onSelectCustomer={(s) => {
+              form.setCustomerId(s.id)
+              form.setReceiverTaxId(s.taxId)
+              form.setReceiverName(s.name)
+              form.setReceiverZip(s.zip ?? "")
+            }}
             onChangeTaxId={form.setReceiverTaxId}
             onChangeName={form.setReceiverName}
             onChangeZip={form.setReceiverZip}
@@ -578,6 +603,7 @@ export function CreateInvoiceForm({ form, onFormSubmit, onCancel, isSubmitting, 
                       mono
                       prefix="$"
                       min="0"
+                      className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     />
                   </div>
 

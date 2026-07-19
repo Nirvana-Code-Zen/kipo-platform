@@ -149,8 +149,8 @@ export function ProfileEditSheet({ isOpen, onClose }: ProfileEditSheetProps) {
                     <Image
                       src={currentAvatarUrl}
                       alt={displayName}
-                      height={10}
-                      width={10}
+                      width={50}
+                      height={50}
                       className="w-full h-full object-cover"
                     />
                   ) : (

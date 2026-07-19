@@ -10,7 +10,6 @@ export interface Customer {
   taxRegime: string
   taxRegimeCode?: string
   zipCode?: string
-  cfdiUsage?: string
   avatar: string
   initials: string
 }

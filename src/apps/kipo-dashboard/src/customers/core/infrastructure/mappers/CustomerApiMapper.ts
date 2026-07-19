@@ -23,7 +23,6 @@ export const CustomerApiMapper = {
       legal_name: customer.legalName,
       tax_regime: customer.taxRegimeCode ?? customer.taxRegime,
       zip: customer.zipCode ?? "",
-      cfdi_use: customer.cfdiUsage ?? "",
       email: customer.email,
       avatar_url: customer.avatar || null,
     }
@@ -35,7 +34,6 @@ export const CustomerApiMapper = {
       legal_name: customer.legalName,
       tax_regime: customer.taxRegimeCode ?? customer.taxRegime,
       zip: customer.zipCode ?? "",
-      cfdi_use: customer.cfdiUsage ?? "",
       email: customer.email,
       avatar_url: customer.avatar || null,
     }
@@ -49,7 +47,6 @@ export const CustomerApiMapper = {
       taxRegime: getRegimeLabel(raw.tax_regime, regimenFiscal),
       taxRegimeCode: raw.tax_regime,
       zipCode: raw.zip,
-      cfdiUsage: raw.cfdi_use,
       email: raw.email,
       status: raw.is_active ? "active" : "inactive",
       avatar: raw.avatar_url ?? "",

@@ -1,11 +1,3 @@
-// Conversión entre la experiencia de texto plano que ve el usuario y el HTML
-// restringido (`customSectionHtml`) que se persiste y se sanitiza de forma
-// autoritativa en el backend (ver pdfCustomizationConstants.ts para la lista
-// de tags permitidos). plainTextToHtml es una transformación de string pura
-// (segura en SSR/módulo). htmlToPlainText necesita DOM (DOMParser), así que
-// solo debe llamarse en cliente, dentro de efectos o handlers — nunca a nivel
-// de módulo ni durante SSR.
-
 const HTML_ESCAPES: Record<string, string> = {
   '&': '&amp;',
   '<': '&lt;',

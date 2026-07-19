@@ -3,6 +3,7 @@
 import { useState, useEffect, useMemo, useRef } from "react"
 
 import { useRouter } from "next/navigation"
+import Image from 'next/image'
 import { Button, Card, Switch } from "@kipo/ui-react"
 import { ArrowLeft, CheckCircle2, ImageUp } from "lucide-react"
 import Image from 'next/image'
@@ -144,9 +145,9 @@ export function InvoiceCustomizationView() {
                   <>
                     <Image
                       src={logoUrl}
-                      alt="Logo de la empresa"
                       width={16}
                       height={16}
+                      alt="Logo de la empresa"
                       className="h-16 w-16 object-contain rounded-md border border-border-subtle bg-muted/30"
                     />
                     <Button
