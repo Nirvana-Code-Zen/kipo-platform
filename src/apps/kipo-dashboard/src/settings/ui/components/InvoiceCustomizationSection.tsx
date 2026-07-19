@@ -2,6 +2,7 @@
 
 import { Palette } from "lucide-react"
 import { Button } from "@kipo/ui-react"
+import Image from 'next/image'
 
 import { DEFAULT_DISPLAY_OPTIONS } from "./pdfCustomizationConstants"
 
@@ -33,9 +34,11 @@ export function InvoiceCustomizationSection({ data, onEdit }: InvoiceCustomizati
         <Palette size={18} className={active ? "text-primary" : "text-muted-foreground"} />
       </div>
       {data?.logoUrl && (
-        <img
+        <Image
           src={data.logoUrl}
           alt="Logo de la empresa"
+          height={8}
+          width={8}
           className="h-8 w-8 object-contain rounded border border-border-subtle shrink-0"
         />
       )}

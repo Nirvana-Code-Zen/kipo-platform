@@ -151,6 +151,24 @@ export function useInvoiceForm() {
       voucherType: voucherType as VoucherType,
       paymentMethod,
       paymentForm: resolvedPaymentForm,
+      concepts: concepts.map((c) => {
+        const qty = parseFloat(c.quantity) || 0
+        const price = parseFloat(c.unitPrice) || 0
+        const amount = Math.round(qty * price * 100) / 100
+        const ivaRate = c.taxObject === "02" && c.ivaRate !== "exento" ? parseFloat(c.ivaRate) : null
+        const ivaAmount = ivaRate !== null ? Math.round(amount * ivaRate / 100 * 100) / 100 : 0
+        return {
+          productServiceCode: c.productServiceCode.trim(),
+          unitCode: c.unitCode,
+          description: c.description.trim(),
+          quantity: qty,
+          unitPrice: price,
+          amount,
+          taxObject: c.taxObject,
+          ivaRate,
+          ivaAmount,
+        }
+      }),
     }
   }
 

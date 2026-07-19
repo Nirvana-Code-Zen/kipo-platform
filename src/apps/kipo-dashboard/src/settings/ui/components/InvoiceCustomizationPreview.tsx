@@ -1,9 +1,5 @@
 "use client"
 
-// Best-effort visual approximation of FacturAPI's rendered invoice PDF — not
-// pixel-perfect, no real sample PDF available to verify exact layout/placement
-// of the custom section.
-
 import { useMemo } from "react"
 
 import { ShieldCheck } from "lucide-react"
