@@ -8,7 +8,7 @@ import { API_BASE_URL } from "@/src/shared/infrastructure/config"
 import { fromApiResponse } from "../../core/application/dtos/InvoiceApiDTO"
 
 import type { CreateInvoiceApiRequest, InvoiceApiResponse } from "../../core/application/dtos/InvoiceApiDTO"
-import type { UIInvoice } from "../components/types"
+import type { UIInvoice } from "../components/shared/types"
 
 export function useCreateInvoice(onCreated: (invoice: UIInvoice) => void) {
   const accessToken = useAuthStore((s) => s.accessToken)

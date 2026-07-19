@@ -4,18 +4,12 @@ import { createPortal } from "react-dom"
 
 import { AlertTriangle, Check, X } from "lucide-react"
 
-import { useInvoiceForm } from "../hooks/useInvoiceForm"
-import { useCreateInvoice } from "../hooks/useCreateInvoice"
-import { useStampedInvoiceCount } from "../hooks/useStampedInvoiceCount"
-import { CreateInvoiceForm } from "./CreateInvoiceForm"
+import { useInvoiceForm } from "../../hooks/useInvoiceForm"
+import { useCreateInvoice } from "../../hooks/useCreateInvoice"
+import { useStampedInvoiceCount } from "../../hooks/useStampedInvoiceCount"
+import { CreateInvoiceForm } from "../CreateInvoiceForm"
 
-import type { UIInvoice } from "./types"
-
-interface CreateInvoiceSheetProps {
-  isOpen: boolean
-  onClose: () => void
-  onCreated: (invoice: UIInvoice) => void
-}
+import type { CreateInvoiceSheetProps } from "./types"
 
 export function CreateInvoiceSheet({ isOpen, onClose, onCreated }: CreateInvoiceSheetProps) {
   const form = useInvoiceForm()
@@ -54,13 +48,7 @@ export function CreateInvoiceSheet({ isOpen, onClose, onCreated }: CreateInvoice
                 {hasStamps ? "Se timbrará automáticamente" : "El borrador se puede timbrar después"}
               </p>
               {hasStamps && (
-                <span
-                  className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[11px] font-medium"
-                  style={{
-                    background: "var(--surface-brand-soft)",
-                    color: "var(--brand)",
-                  }}
-                >
+                <span className="inline-flex items-center gap-1 px-1.5 py-0.5 rounded-full text-[11px] font-medium bg-[var(--surface-brand-soft)] text-[var(--brand)]">
                   <Check className="w-3 h-3" />
                   {availableStamps} timbres disponibles
                 </span>
@@ -76,24 +64,14 @@ export function CreateInvoiceSheet({ isOpen, onClose, onCreated }: CreateInvoice
         </div>
 
         {noStamps && (
-          <div className="mx-5 mt-4 px-3.5 py-2.5 rounded-md text-[13px] flex-shrink-0 flex items-start gap-2.5 border" style={{
-            background: "var(--kipo-warning-bg)",
-            borderColor: "var(--kipo-warning)",
-            color: "var(--kipo-warning)",
-            fontFamily: "var(--font-body)",
-          }}>
+          <div className="mx-5 mt-4 px-3.5 py-2.5 rounded-md text-[13px] flex-shrink-0 flex items-start gap-2.5 border font-sans bg-[var(--kipo-warning-bg)] border-[var(--kipo-warning)] text-[var(--kipo-warning)]">
             <AlertTriangle className="w-4 h-4 flex-shrink-0 mt-0.5" />
             <span>No tienes timbres disponibles. La factura se guardará como borrador y podrás timbrarla cuando adquieras timbres.</span>
           </div>
         )}
 
         {apiError && (
-          <div className="mx-5 mt-4 px-3.5 py-2.5 rounded-md text-[13px] flex-shrink-0 border" style={{
-            background: "var(--kipo-danger-bg)",
-            borderColor: "var(--kipo-danger)",
-            color: "var(--kipo-danger)",
-            fontFamily: "var(--font-body)",
-          }}>
+          <div className="mx-5 mt-4 px-3.5 py-2.5 rounded-md text-[13px] flex-shrink-0 border font-sans bg-[var(--kipo-danger-bg)] border-[var(--kipo-danger)] text-[var(--kipo-danger)]">
             {apiError}
           </div>
         )}

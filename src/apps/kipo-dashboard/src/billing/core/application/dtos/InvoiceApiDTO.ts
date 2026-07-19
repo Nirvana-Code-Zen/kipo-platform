@@ -1,4 +1,4 @@
-import type { UIInvoice } from "../../../ui/components/types"
+import type { UIInvoice } from "../../../ui/components/shared/types"
 
 export type InvoiceConceptApiPayload = {
   product_service_code: string

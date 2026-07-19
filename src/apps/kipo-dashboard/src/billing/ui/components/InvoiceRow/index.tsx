@@ -5,40 +5,10 @@ import { useState } from "react"
 import { Badge } from "@kipo/ui-react"
 import { MoreHorizontal } from "lucide-react"
 
-import { InvoiceRowMenu } from "./InvoiceRowMenu"
+import { InvoiceRowMenu } from "../InvoiceRowMenu"
+import { VOUCHER_TYPE_LABEL, INVOICE_STATUS_TONE, INVOICE_STATUS_LABEL, formatMXN } from "./constants"
 
-import type { UIInvoice } from "./types"
-
-interface InvoiceRowProps {
-  invoice: UIInvoice
-  index: number
-  onViewDetails: (invoice: UIInvoice) => void
-  onCancel: (id: string) => void
-  onDelete: (id: string) => void
-}
-
-const VOUCHER_TYPE_LABEL: Record<string, string> = {
-  I: "Ingreso",
-  E: "Egreso",
-  T: "Traslado",
-  N: "Nómina",
-  P: "Pago",
-}
-
-const statusTone = {
-  draft: "neutral",
-  stamped: "success",
-  cancelled: "danger",
-} as const
-
-const statusLabel = {
-  draft: "Borrador",
-  stamped: "Timbrada",
-  cancelled: "Cancelada",
-} as const
-
-const formatMXN = (amount: number) =>
-  new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(amount)
+import type { InvoiceRowProps } from "./types"
 
 export function InvoiceRow({ invoice, index, onViewDetails, onCancel, onDelete }: InvoiceRowProps) {
   const [menuOpen, setMenuOpen] = useState(false)
@@ -48,9 +18,7 @@ export function InvoiceRow({ invoice, index, onViewDetails, onCancel, onDelete }
       className="flex items-center gap-4 px-4 py-3.5 hover:bg-muted/50 transition-colors rounded-xl animate-slide-in"
       style={{ animationDelay: `${index * 60}ms` }}
     >
-      <div className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold"
-        style={{ background: "var(--kipo-red-50)", color: "var(--kipo-red-dark)" }}
-      >
+      <div className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold bg-[var(--kipo-red-50)] text-[var(--kipo-red-dark)]">
         {invoice.voucherType}
       </div>
 
@@ -77,7 +45,7 @@ export function InvoiceRow({ invoice, index, onViewDetails, onCancel, onDelete }
       </span>
 
       <div className="flex-shrink-0 hidden sm:block">
-        <Badge tone={statusTone[invoice.status]}>{statusLabel[invoice.status]}</Badge>
+        <Badge tone={INVOICE_STATUS_TONE[invoice.status]}>{INVOICE_STATUS_LABEL[invoice.status]}</Badge>
       </div>
 
       <div className="relative flex-shrink-0">

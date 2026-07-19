@@ -6,17 +6,17 @@ import { Card } from "@kipo/ui-react"
 
 import { InvoicesListSkeleton } from "@/src/shared/ui/components/dashboard/skeletons"
 
-import { InvoiceRow } from "./InvoiceRow"
-import { InvoiceDetailSheet } from "./InvoiceDetailSheet"
-import { InvoiceFilters } from "./InvoiceFilters"
-import { useInvoiceList } from "../hooks/useInvoiceList"
-import { useAddInvoice } from "../hooks/useAddInvoice"
-import { useCancelInvoice } from "../hooks/useCancelInvoice"
-import { useDeleteInvoice } from "../hooks/useDeleteInvoice"
-import { useInvoiceFilters } from "../hooks/useInvoiceFilters"
+import { InvoiceRow } from "../InvoiceRow"
+import { InvoiceDetailSheet } from "../InvoiceDetailSheet"
+import { InvoiceFilters } from "../InvoiceFilters"
+import { useInvoiceList } from "../../hooks/useInvoiceList"
+import { useAddInvoice } from "../../hooks/useAddInvoice"
+import { useCancelInvoice } from "../../hooks/useCancelInvoice"
+import { useDeleteInvoice } from "../../hooks/useDeleteInvoice"
+import { useInvoiceFilters } from "../../hooks/useInvoiceFilters"
 
-import type { UIInvoice } from "./types"
-import type { StatusFilter } from "../hooks/useInvoiceFilters"
+import type { UIInvoice } from "../shared/types"
+import type { StatusFilter } from "../../hooks/useInvoiceFilters"
 
 export interface InvoicesHandle {
   addInvoice: (invoice: UIInvoice) => void
@@ -63,8 +63,7 @@ export const Invoices = forwardRef<InvoicesHandle, { initialStatus?: StatusFilte
             <button
               type="button"
               onClick={filters.clearAll}
-              className="text-xs font-semibold underline underline-offset-2"
-              style={{ color: "var(--brand)", background: "none", border: "none", cursor: "pointer" }}
+              className="text-xs font-semibold underline underline-offset-2 text-[var(--brand)] bg-transparent border-0 cursor-pointer"
             >
               Limpiar filtros
             </button>

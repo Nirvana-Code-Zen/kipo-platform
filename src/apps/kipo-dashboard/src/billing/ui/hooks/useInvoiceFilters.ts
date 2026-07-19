@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react"
 
-import type { UIInvoice, InvoiceStatus } from "../components/types"
+import type { UIInvoice, InvoiceStatus } from "../components/shared/types"
 
 export type StatusFilter = "all" | InvoiceStatus
 

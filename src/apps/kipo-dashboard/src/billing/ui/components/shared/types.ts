@@ -18,8 +18,8 @@ export interface UIInvoice {
   id: string
   folio: string
   status: InvoiceStatus
-  issuedAt: string     // display: "01 jul 2026"
-  issuedAtISO: string  // filter/sort: "2026-07-01"
+  issuedAt: string
+  issuedAtISO: string
   receiverName: string
   receiverTaxId: string
   subtotal: number

@@ -2,6 +2,7 @@
 
 import { useMemo } from "react"
 
+import Image from "next/image"
 import { ShieldCheck } from "lucide-react"
 
 import { sanitizeHtmlPreview } from "./sanitizeHtmlPreview"
@@ -103,7 +104,7 @@ export function InvoiceCustomizationPreview({
           <div className="flex items-start justify-between gap-4">
             <div className="flex items-start gap-3">
               {logoUrl ? (
-                <img src={logoUrl} alt="Logo de la empresa" className="h-12 w-auto object-contain" />
+                <Image src={logoUrl} alt="Logo de la empresa" heigth={12} width={12} className="h-12 w-auto object-contain" />
               ) : (
                 <div className="flex h-12 w-24 shrink-0 items-center justify-center rounded-md border border-dashed border-border-strong text-[10px] text-muted-foreground">
                   Tu logo aquí

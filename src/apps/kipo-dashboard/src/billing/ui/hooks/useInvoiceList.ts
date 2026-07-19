@@ -9,7 +9,7 @@ import { fromApiResponse } from "../../core/application/dtos/InvoiceApiDTO"
 
 import type { Dispatch, SetStateAction } from "react"
 import type { InvoiceApiResponse } from "../../core/application/dtos/InvoiceApiDTO"
-import type { UIInvoice } from "../components/types"
+import type { UIInvoice } from "../components/shared/types"
 
 export type { Dispatch, SetStateAction }
 

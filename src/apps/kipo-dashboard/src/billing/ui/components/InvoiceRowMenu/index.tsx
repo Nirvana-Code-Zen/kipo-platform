@@ -6,16 +6,7 @@ import { Eye, Ban, Trash2 } from "lucide-react"
 
 import { useClickOutside } from "@/src/shared/ui/hooks/useClickOutside"
 
-import type { InvoiceStatus } from "./types"
-
-interface InvoiceRowMenuProps {
-  isOpen: boolean
-  onClose: () => void
-  status: InvoiceStatus
-  onViewDetails: () => void
-  onCancel: () => void
-  onDelete: () => void
-}
+import type { InvoiceRowMenuProps, MenuItemProps } from "./types"
 
 export function InvoiceRowMenu({
   isOpen,
@@ -64,29 +55,17 @@ export function InvoiceRowMenu({
   )
 }
 
-function MenuItem({
-  icon,
-  label,
-  onClick,
-  tone,
-}: {
-  icon: React.ReactNode
-  label: string
-  onClick: () => void
-  tone?: "warning" | "danger"
-}) {
-  const color =
-    tone === "danger"
-      ? "var(--kipo-danger)"
-      : tone === "warning"
-      ? "var(--kipo-warning)"
-      : "var(--text-body)"
-
+function MenuItem({ icon, label, onClick, tone }: MenuItemProps) {
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-2.5 w-full px-3 py-2 text-sm hover:bg-muted transition-colors text-left"
-      style={{ color }}
+      className={`flex items-center gap-2.5 w-full px-3 py-2 text-sm hover:bg-muted transition-colors text-left ${
+        tone === "danger"
+          ? "text-[var(--kipo-danger)]"
+          : tone === "warning"
+          ? "text-[var(--kipo-warning)]"
+          : "text-foreground"
+      }`}
     >
       {icon}
       {label}

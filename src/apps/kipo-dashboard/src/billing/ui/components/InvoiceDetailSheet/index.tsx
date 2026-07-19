@@ -2,7 +2,7 @@
 
 import { createPortal } from "react-dom"
 
-import Image from "next/img"
+import Image from "next/image"
 import { X, ShieldCheck, FileText, XCircle } from "lucide-react"
 import { Badge } from "@kipo/ui-react"
 
@@ -10,56 +10,10 @@ import { useCatalogs } from "@/src/catalogs/ui/hooks/useCatalogs"
 import { useEmisorStore } from "@/src/settings/ui/store/emisorStore"
 import { DEFAULT_DISPLAY_OPTIONS } from "@/src/settings/ui/components/pdfCustomizationConstants"
 
-import { UNIT_CODES } from "../data/catalogs"
+import { VOUCHER_TYPE_LABEL, STATUS_TONE, STATUS_LABEL, formatMXN, resolveUnitLabel } from "./constants"
 
-import type { UIInvoice, UIInvoiceConcept, InvoiceStatus } from "./types"
-import type { UIInvoiceDisplayOptions } from "@/src/settings/ui/components/types"
-
-interface InvoiceDetailSheetProps {
-  invoice: UIInvoice | null
-  onClose: () => void
-}
-
-const VOUCHER_TYPE_LABEL: Record<string, string> = {
-  I: "Ingreso",
-  E: "Egreso",
-  T: "Traslado",
-  N: "Nómina",
-  P: "Complemento de pago",
-}
-
-const STATUS_TONE = {
-  draft: "neutral",
-  stamped: "success",
-  cancelled: "danger",
-} as const
-
-const STATUS_LABEL = {
-  draft: "Borrador",
-  stamped: "Timbrada",
-  cancelled: "Cancelada",
-} as const
-
-const formatMXN = (amount: number) =>
-  new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(amount)
-
-function resolveUnitLabel(code: string): string {
-  const entry = UNIT_CODES.find((u) => u.code === code)
-  if (!entry) return code
-  const parts = entry.label.split(" - ")
-  return parts.length > 1 ? parts.slice(1).join(" - ") : entry.label
-}
-
-interface EmisorHeaderProps {
-  razonSocial: string | undefined
-  rfc: string | undefined
-  regimenLabel: string
-  logoUrl: string | null
-  folio: string
-  voucherTypeLabel: string
-  issuedAt: string
-  showExportKey: boolean
-}
+import type { InvoiceDetailSheetProps, EmisorHeaderProps, ConceptsTableProps } from "./types"
+import type { InvoiceStatus } from "../shared/types"
 
 function EmisorHeader({
   razonSocial,
@@ -109,11 +63,6 @@ function ReceptorBlock({ name, taxId }: { name: string; taxId: string }) {
       <p className="text-muted-foreground">RFC: {taxId}</p>
     </div>
   )
-}
-
-interface ConceptsTableProps {
-  concepts: UIInvoiceConcept[]
-  displayOptions: UIInvoiceDisplayOptions
 }
 
 function ConceptsTable({ concepts, displayOptions }: ConceptsTableProps) {
