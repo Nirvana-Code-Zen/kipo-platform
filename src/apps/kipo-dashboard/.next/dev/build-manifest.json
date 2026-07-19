@@ -1,6 +1,31 @@
 {
   "pages": {
-    "/_app": []
+    "/_app": [
+      "static/chunks/0d31_next_dist_compiled_0h51b3s._.js",
+      "static/chunks/0d31_next_dist_shared_lib_1f1unlp._.js",
+      "static/chunks/0d31_next_dist_client_1ek6ip9._.js",
+      "static/chunks/0d31_next_dist_10visg2._.js",
+      "static/chunks/0d31_next_app_0zcde3r.js",
+      "static/chunks/[next]_entry_page-loader_ts_1mb6ec2._.js",
+      "static/chunks/162a_react-dom_1hsf_h5._.js",
+      "static/chunks/node_modules__pnpm_20tl2_t._.js",
+      "static/chunks/[root-of-the-server]__02hg9l_._.js",
+      "static/chunks/src_apps_kipo-dashboard_pages__app_0du2_q-._.js",
+      "static/chunks/turbopack-src_apps_kipo-dashboard_pages__app_1a-qiel._.js"
+    ],
+    "/_error": [
+      "static/chunks/0d31_next_dist_compiled_0h51b3s._.js",
+      "static/chunks/0d31_next_dist_shared_lib_1f1unlp._.js",
+      "static/chunks/0d31_next_dist_client_1ek6ip9._.js",
+      "static/chunks/0d31_next_dist_02rtf-2._.js",
+      "static/chunks/17io_next_dist_pages__error_1i6k2f1.js",
+      "static/chunks/[next]_entry_page-loader_ts_1bptua_._.js",
+      "static/chunks/162a_react-dom_1hsf_h5._.js",
+      "static/chunks/node_modules__pnpm_20tl2_t._.js",
+      "static/chunks/[root-of-the-server]__11ffhot._.js",
+      "static/chunks/src_apps_kipo-dashboard_pages__error_0du2_q-._.js",
+      "static/chunks/turbopack-src_apps_kipo-dashboard_pages__error_0cfv6y1._.js"
+    ]
   },
   "devFiles": [],
   "polyfillFiles": [
