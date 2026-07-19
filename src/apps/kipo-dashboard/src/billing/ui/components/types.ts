@@ -10,6 +10,8 @@ export interface UIInvoice {
   issuedAtISO: string  // filter/sort: "2026-07-01"
   receiverName: string
   receiverTaxId: string
+  subtotal: number
+  iva: number
   total: number
   currency: string
   voucherType: VoucherType

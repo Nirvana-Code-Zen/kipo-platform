@@ -57,6 +57,8 @@ export function fromApiResponse(raw: InvoiceApiResponse): UIInvoice {
     issuedAtISO: raw.created_at.slice(0, 10),
     receiverName: raw.receiver.name,
     receiverTaxId: raw.receiver.tax_id,
+    subtotal: raw.subtotal,
+    iva: raw.iva,
     total: raw.total,
     currency: raw.currency,
     voucherType: raw.voucher_type as UIInvoice["voucherType"],

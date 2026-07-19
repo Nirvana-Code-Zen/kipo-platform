@@ -97,8 +97,10 @@ interface ReceiverSearchProps {
   receiverTaxId: string
   receiverName: string
   receiverZip: string
+  isCustomerSelected: boolean
   errorTaxId?: string
   errorName?: string
+  errorZip?: string
   onSelect: (suggestion: ReceiverSuggestion) => void
   onChangeTaxId: (v: string) => void
   onChangeName: (v: string) => void
@@ -110,8 +112,10 @@ function ReceiverSearch({
   receiverTaxId,
   receiverName,
   receiverZip,
+  isCustomerSelected,
   errorTaxId,
   errorName,
+  errorZip,
   onSelect,
   onChangeTaxId,
   onChangeName,
@@ -122,7 +126,7 @@ function ReceiverSearch({
   const dropdownRef = useRef<HTMLDivElement>(null)
   useClickOutside(dropdownRef, () => search.setIsOpen(false))
 
-  const isSelected = !!(receiverTaxId && receiverName)
+  const isSelected = isCustomerSelected
 
   if (isSelected) {
     return (
@@ -271,7 +275,7 @@ function ReceiverSearch({
           placeholder="00000"
           value={receiverZip}
           onChange={(e) => onChangeZip(e.target.value.replace(/\D/g, "").slice(0, 5))}
-          hint="Opcional"
+          error={errorZip}
           mono
           maxLength={5}
         />
@@ -333,6 +337,7 @@ function ProductServiceSearch({
                 type="button"
                 onClick={() => {
                   onSelectCode(s.code)
+                  onChangeDescription(s.description)
                   search.setIsOpen(false)
                 }}
                 className="flex w-full flex-col gap-0.5 border-0 border-b border-border-subtle bg-transparent px-3.5 py-2.5 text-left cursor-pointer hover:bg-muted"
@@ -485,8 +490,10 @@ export function CreateInvoiceForm({ form, onFormSubmit, onCancel, isSubmitting, 
             receiverTaxId={form.receiverTaxId}
             receiverName={form.receiverName}
             receiverZip={form.receiverZip}
+            isCustomerSelected={!!form.customerId}
             errorTaxId={form.errors.receiverTaxId}
             errorName={form.errors.receiverName}
+            errorZip={form.errors.receiverZip}
             onSelect={(s) => form.setCustomerId(s.id)}
             onChangeTaxId={form.setReceiverTaxId}
             onChangeName={form.setReceiverName}

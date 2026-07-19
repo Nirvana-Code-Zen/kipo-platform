@@ -2,10 +2,11 @@
 
 import { createPortal } from "react-dom"
 
+import { X, ShieldCheck, FileText, XCircle } from "lucide-react"
 import { Badge } from "@kipo/ui-react"
-import { X, Hash, Calendar, User, FileText, CreditCard, DollarSign } from "lucide-react"
 
 import { useCatalogs } from "@/src/catalogs/ui/hooks/useCatalogs"
+import { useEmisorStore } from "@/src/settings/ui/store/emisorStore"
 
 import type { UIInvoice } from "./types"
 
@@ -38,76 +39,161 @@ const formatMXN = (amount: number) =>
   new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(amount)
 
 export function InvoiceDetailSheet({ invoice, onClose }: InvoiceDetailSheetProps) {
-  const { metodoPago, formaPago } = useCatalogs()
+  const { metodoPago, formaPago, regimenFiscal } = useCatalogs()
+  const emisor = useEmisorStore((s) => s.data)
 
   if (!invoice) return null
 
-  const paymentMethod = metodoPago.find((m) => m.code === invoice.paymentMethod)
-  const paymentMethodLabel = paymentMethod
-    ? `${paymentMethod.code} - ${paymentMethod.description}`
+  const paymentMethodEntry = metodoPago.find((m) => m.code === invoice.paymentMethod)
+  const paymentMethodLabel = paymentMethodEntry
+    ? `${paymentMethodEntry.code} · ${paymentMethodEntry.description}`
     : invoice.paymentMethod
 
-  const paymentForm = formaPago.find((f) => f.code === invoice.paymentForm)
-  const paymentFormLabel = paymentForm
-    ? `${paymentForm.code} - ${paymentForm.description}`
+  const paymentFormEntry = formaPago.find((f) => f.code === invoice.paymentForm)
+  const paymentFormLabel = paymentFormEntry
+    ? `${paymentFormEntry.code} · ${paymentFormEntry.description}`
     : invoice.paymentForm
 
+  const regimenEntry = regimenFiscal.find((r) => r.code === emisor?.regimenFiscal)
+  const regimenLabel = regimenEntry
+    ? `${regimenEntry.code} · ${regimenEntry.description}`
+    : (emisor?.regimenFiscal ?? "—")
+
+  const voucherTypeLabel = VOUCHER_TYPE_LABEL[invoice.voucherType] ?? invoice.voucherType
+
   return createPortal(
-    <div className="fixed inset-0 z-[100] flex flex-col justify-end sm:justify-center sm:items-center">
+    <div className="fixed inset-0 z-[100] flex flex-col justify-end sm:items-center sm:justify-center">
       <div
         className="absolute inset-0 bg-black/50 backdrop-blur-sm animate-in fade-in duration-200"
         onClick={onClose}
       />
 
-      <div className="relative z-10 w-full sm:max-w-md bg-card rounded-t-2xl sm:rounded-2xl shadow-2xl animate-in slide-in-from-bottom-4 sm:slide-in-from-bottom-0 sm:zoom-in-95 duration-300">
-        <div className="flex justify-center pt-3 pb-1 sm:hidden">
-          <div className="w-10 h-1 rounded-full bg-muted-foreground/30" />
+      <div className="relative z-10 flex max-h-[92vh] w-full flex-col rounded-t-2xl bg-card shadow-2xl animate-in slide-in-from-bottom-4 duration-300 sm:max-h-[85vh] sm:max-w-2xl sm:rounded-2xl sm:slide-in-from-bottom-0 sm:zoom-in-95">
+        <div className="flex justify-center pb-1 pt-3 sm:hidden">
+          <div className="h-1 w-10 rounded-full bg-muted-foreground/30" />
         </div>
 
-        <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-border">
+        <div className="flex shrink-0 items-center justify-between border-b border-border px-5 pb-3 pt-4">
           <div className="flex items-center gap-2.5">
-            <h2 className="font-semibold text-base">Factura {invoice.folio}</h2>
+            <h2 className="text-base font-semibold">Factura {invoice.folio}</h2>
             <Badge tone={statusTone[invoice.status]}>{statusLabel[invoice.status]}</Badge>
           </div>
           <button
             onClick={onClose}
-            className="rounded-lg p-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition-colors"
+            className="rounded-lg p-1.5 text-muted-foreground transition-colors hover:bg-muted hover:text-foreground"
           >
-            <X className="w-4 h-4" />
+            <X className="h-4 w-4" />
           </button>
         </div>
 
-        <div className="px-5 py-5 space-y-3">
-          <DetailRow icon={<Hash className="w-4 h-4" />} label="Folio" value={invoice.folio} />
-          <DetailRow icon={<Calendar className="w-4 h-4" />} label="Fecha de emisión" value={invoice.issuedAt} />
-          <DetailRow icon={<User className="w-4 h-4" />} label="Receptor" value={invoice.receiverName} />
-          <DetailRow icon={<FileText className="w-4 h-4" />} label="RFC receptor" value={invoice.receiverTaxId} />
-          <DetailRow
-            icon={<FileText className="w-4 h-4" />}
-            label="Tipo de comprobante"
-            value={VOUCHER_TYPE_LABEL[invoice.voucherType] ?? invoice.voucherType}
-          />
-          <DetailRow
-            icon={<CreditCard className="w-4 h-4" />}
-            label="Método de pago"
-            value={paymentMethodLabel}
-          />
-          <DetailRow
-            icon={<CreditCard className="w-4 h-4" />}
-            label="Forma de pago"
-            value={paymentFormLabel}
-          />
-          <DetailRow
-            icon={<DollarSign className="w-4 h-4" />}
-            label="Total"
-            value={`${formatMXN(invoice.total)} ${invoice.currency}`}
-          />
+        <div className="flex-1 overflow-y-auto p-4">
+          <div className="mx-auto max-w-2xl space-y-4 font-sans text-[13px] leading-snug text-foreground">
+
+            <div className="rounded-md border border-border-strong p-4">
+              <div className="flex items-start justify-between gap-4">
+                <div className="flex items-start gap-3">
+                  {emisor?.logoUrl ? (
+                    <img
+                      src={emisor.logoUrl}
+                      alt="Logo de la empresa"
+                      className="h-12 w-auto object-contain"
+                    />
+                  ) : (
+                    <div className="flex h-12 w-24 shrink-0 items-center justify-center rounded-md border border-dashed border-border-strong text-[10px] text-muted-foreground">
+                      Sin logo
+                    </div>
+                  )}
+                  <div>
+                    <p className="text-sm font-bold">{emisor?.razonSocial ?? "—"}</p>
+                    <p className="text-muted-foreground">RFC: {emisor?.rfc ?? "—"}</p>
+                    {regimenLabel && (
+                      <p className="text-muted-foreground">Régimen: {regimenLabel}</p>
+                    )}
+                  </div>
+                </div>
+                <div className="shrink-0 text-right">
+                  <p className="text-sm font-bold">Factura {invoice.folio}</p>
+                  <p className="text-muted-foreground">Tipo: {voucherTypeLabel}</p>
+                  <p className="text-muted-foreground">Fecha: {invoice.issuedAt}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-md border border-border-subtle p-4">
+              <p className="mb-1 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Receptor
+              </p>
+              <p className="font-semibold">{invoice.receiverName}</p>
+              <p className="text-muted-foreground">RFC: {invoice.receiverTaxId}</p>
+            </div>
+
+            <div className="flex justify-end">
+              <div className="w-full max-w-xs space-y-1 rounded-md border border-border-subtle p-3">
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">Subtotal</span>
+                  <span>{formatMXN(invoice.subtotal)}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-muted-foreground">IVA (16%)</span>
+                  <span>{formatMXN(invoice.iva)}</span>
+                </div>
+                <div className="flex justify-between border-t border-border-subtle pt-1 font-bold">
+                  <span>Total</span>
+                  <span>{formatMXN(invoice.total)} {invoice.currency}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-md border border-border-subtle p-3">
+              <p className="mb-2 text-[11px] font-semibold uppercase tracking-wider text-muted-foreground">
+                Pago
+              </p>
+              <div className="space-y-1">
+                <div className="flex justify-between gap-4">
+                  <span className="text-muted-foreground">Método</span>
+                  <span className="text-right">{paymentMethodLabel}</span>
+                </div>
+                <div className="flex justify-between gap-4">
+                  <span className="text-muted-foreground">Forma</span>
+                  <span className="text-right">{paymentFormLabel}</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-md border border-border-subtle p-3 text-[11px] text-muted-foreground">
+              {invoice.status === "stamped" && (
+                <div>
+                  <div className="flex items-center gap-1.5">
+                    <ShieldCheck className="h-3.5 w-3.5 text-foreground" />
+                    <p className="font-semibold uppercase tracking-wide text-foreground">Sello digital</p>
+                  </div>
+                  <p className="mt-1">
+                    Esta factura fue timbrada exitosamente. El folio fiscal (UUID) y los sellos
+                    digitales están disponibles en el PDF descargable.
+                  </p>
+                </div>
+              )}
+              {invoice.status === "draft" && (
+                <div className="flex items-center gap-1.5">
+                  <FileText className="h-3.5 w-3.5" />
+                  <p>Borrador — pendiente de timbrar ante el SAT.</p>
+                </div>
+              )}
+              {invoice.status === "cancelled" && (
+                <div className="flex items-center gap-1.5">
+                  <XCircle className="h-3.5 w-3.5" />
+                  <p>Factura cancelada. El folio fiscal original está disponible en el PDF.</p>
+                </div>
+              )}
+            </div>
+
+          </div>
         </div>
 
-        <div className="px-5 pb-6 pt-2">
+        <div className="shrink-0 border-t border-border px-5 pb-5 pt-3">
           <button
             onClick={onClose}
-            className="w-full py-2.5 rounded-xl text-sm font-medium border border-border hover:bg-muted transition-colors"
+            className="w-full rounded-xl border border-border py-2.5 text-sm font-medium transition-colors hover:bg-muted"
           >
             Cerrar
           </button>
@@ -115,17 +201,5 @@ export function InvoiceDetailSheet({ invoice, onClose }: InvoiceDetailSheetProps
       </div>
     </div>,
     document.body
-  )
-}
-
-function DetailRow({ icon, label, value }: { icon: React.ReactNode; label: string; value: string }) {
-  return (
-    <div className="flex items-start gap-3">
-      <span className="mt-0.5 flex-shrink-0 text-muted-foreground">{icon}</span>
-      <div className="min-w-0">
-        <p className="text-xs text-muted-foreground leading-none mb-0.5">{label}</p>
-        <p className="text-sm font-medium break-all">{value}</p>
-      </div>
-    </div>
   )
 }

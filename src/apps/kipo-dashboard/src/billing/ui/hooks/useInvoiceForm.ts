@@ -25,6 +25,7 @@ export type InvoiceFormErrors = {
   exportType?: string
   receiverTaxId?: string
   receiverName?: string
+  receiverZip?: string
   concepts?: string
   items?: Partial<Record<keyof ConceptFormItem, string>>[]
 }
@@ -100,8 +101,15 @@ export function useInvoiceForm() {
     if (paymentMethod && paymentMethod !== "PPD" && !paymentForm) next.paymentForm = "Selecciona la forma de pago"
     if (!currency) next.currency = "Selecciona la moneda"
     if (!/^\d{5}$/.test(issuerZipCode.trim())) next.issuerZipCode = "5 dígitos requeridos"
-    if (!receiverTaxId.trim()) next.receiverTaxId = "RFC del receptor requerido"
+    const RFC_REGEX = /^[A-ZÑ&]{3,4}\d{6}[A-Z\d]{3}$/
+    const taxId = receiverTaxId.trim().toUpperCase()
+    if (!taxId) {
+      next.receiverTaxId = "RFC del receptor requerido"
+    } else if (!RFC_REGEX.test(taxId)) {
+      next.receiverTaxId = "RFC inválido (ej. XAXX010101000)"
+    }
     if (!receiverName.trim()) next.receiverName = "Nombre del receptor requerido"
+    if (!/^\d{5}$/.test(receiverZip.trim())) next.receiverZip = "C.P. receptor requerido (5 dígitos)"
 
     if (concepts.length === 0) {
       next.concepts = "Agrega al menos un concepto"
@@ -136,6 +144,8 @@ export function useInvoiceForm() {
       issuedAtISO: now.toISOString().slice(0, 10),
       receiverName: receiverName.trim(),
       receiverTaxId: receiverTaxId.trim().toUpperCase(),
+      subtotal: totals.subtotal,
+      iva: totals.iva,
       total: totals.total,
       currency,
       voucherType: voucherType as VoucherType,
