@@ -135,7 +135,7 @@ export function CreateInvoiceForm({ form, onFormSubmit, onCancel, isSubmitting, 
               return (
                 <div
                   key={concept.id}
-                  className="border-[1.5px] border-[var(--border-soft)] rounded-md p-4 bg-muted flex flex-col gap-3"
+                  className="ounded-md p-4 bg-muted flex flex-col gap-3"
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-[12px] font-bold text-muted-foreground uppercase tracking-[0.04em]">
@@ -233,7 +233,7 @@ export function CreateInvoiceForm({ form, onFormSubmit, onCancel, isSubmitting, 
           </button>
         </section>
 
-        <div className="rounded-md border-[1.5px] border-[var(--border-soft)] overflow-hidden">
+        <div className="rounded-md overflow-hidden">
           <TotalRow label="Subtotal" value={formatMXN(form.totals.subtotal)} />
           <TotalRow label="IVA"      value={formatMXN(form.totals.iva)} />
           <TotalRow label="Total"    value={formatMXN(form.totals.total)} bold />

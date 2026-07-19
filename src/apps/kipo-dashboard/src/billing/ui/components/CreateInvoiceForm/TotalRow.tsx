@@ -2,7 +2,7 @@
 
 export function TotalRow({ label, value, bold }: { label: string; value: string; bold?: boolean }) {
   return (
-    <div className={`flex justify-between items-center px-4 py-3 border-t border-[var(--border-soft)] ${
+    <div className={`flex justify-between items-center px-4 py-3 ${
       bold ? "bg-[var(--surface-brand-soft)]" : "bg-muted"
     }`}>
       <span className={`text-[13px] font-sans ${bold ? "font-bold text-[var(--brand)]" : "font-medium text-foreground"}`}>
