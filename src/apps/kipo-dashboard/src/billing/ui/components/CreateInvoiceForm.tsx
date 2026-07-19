@@ -603,6 +603,7 @@ export function CreateInvoiceForm({ form, onFormSubmit, onCancel, isSubmitting, 
                       mono
                       prefix="$"
                       min="0"
+                      className="[appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                     />
                   </div>
 
