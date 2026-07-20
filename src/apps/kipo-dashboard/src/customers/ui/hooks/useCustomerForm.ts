@@ -11,7 +11,7 @@ import { createZipCode } from "../../core/domain/value-objects/ZipCode"
 import { createEmail } from "../../core/domain/value-objects/Email"
 import { getInitials } from "../../core/domain/value-objects/AvatarUrl"
 
-import type { Customer as UICustomer } from "../components/types"
+import type { Customer as UICustomer } from "../components/shared/types"
 
 export type { RfcType } from "@/src/shared/domain/rfc"
 

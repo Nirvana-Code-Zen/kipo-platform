@@ -8,7 +8,6 @@ import type { InvoiceConcept } from './InvoiceConcept'
 
 export type InvoiceStatus = 'draft' | 'stamped' | 'cancelled'
 
-// Stamp data received from backend after PAC processing
 export type StampData = Readonly<{
   uuid: string
   stampDate: Date
@@ -17,7 +16,6 @@ export type StampData = Readonly<{
   satSeal: string
 }>
 
-// Catalog fields are plain strings — backend owns the valid values
 export type Invoice = Readonly<{
   id: InvoiceId
   status: InvoiceStatus
@@ -62,7 +60,6 @@ export type InvoiceInput = {
   items: readonly InvoiceConcept[]
 }
 
-// Factory — calculates totals for local preview before sending to backend
 export const createInvoice = (input: InvoiceInput): Invoice => {
   const subtotal = calcSubtotal(input.items.map((c) => c.amount))
   const totalTransferredTaxes = calcSubtotal(input.items.map(conceptTotalTransferred))

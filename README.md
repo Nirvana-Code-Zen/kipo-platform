@@ -51,8 +51,26 @@ Hay tres `.env` distintos, cada uno gitignored salvo los `.env.example`:
 | Archivo | Para qué |
 |---|---|
 | `.env` (raíz) | Providers de auth de Supabase local: SMS (Twilio) y social login (Google/Facebook/Apple). Ver `.env.example` |
-| `src/apps/kipo-platform/.env` | Conexión del backend a Supabase (`PROJECT_URL`, `DATABASE_URL`, `AUTH_KEY_*`, `STORAGE_*`, `CORS_EXTRA_ORIGINS`) |
-| `src/apps/kipo-dashboard/.env.local` | `NEXT_PUBLIC_API_URL` — URL del backend que consume el dashboard |
+| `src/apps/kipo-platform/.env` | Conexión del backend a Supabase (`PROJECT_URL`, `DATABASE_URL`, `AUTH_KEY_*`, `STORAGE_*`, `CORS_EXTRA_ORIGINS`, `CORS_WILDCARD_DOMAIN`) |
+| `src/apps/kipo-dashboard/.env.local` | `NEXT_PUBLIC_API_URL` — URL del backend que consume el dashboard. `NEXT_PUBLIC_APP_DOMAIN` — dominio base para routing por subdominio (ej. `localhost` en dev, `kipo.com.mx` en prod) |
+
+### Variables clave para subdomain routing en local
+
+El dashboard rutea cada tenant a su propio subdominio (`tenant.kipo.com.mx` en prod). Para que funcione en local:
+
+1. **`src/apps/kipo-dashboard/.env.local`** — agrega:
+   ```
+   NEXT_PUBLIC_APP_DOMAIN=localhost
+   ```
+
+2. **`src/apps/kipo-platform/.env`** — agrega:
+   ```
+   CORS_WILDCARD_DOMAIN=localhost
+   ```
+   Esto permite que el backend acepte requests desde `http://<tenant>.localhost:3000`.
+
+> Los browsers modernos resuelven `*.localhost` a `127.0.0.1` sin configuración adicional de DNS.  
+> **Reinicia el dev server de Next.js** después de cambiar `.env.local` — los cambios no se hot-reload.
 
 El `.env` de la raíz **no se carga automáticamente** por el CLI de Supabase — hay que exportarlo antes de levantar el stack:
 

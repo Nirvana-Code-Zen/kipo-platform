@@ -99,18 +99,53 @@ ui/hooks/catalogs.ts  ← MAL — no es un hook
 
 ### Separación de componentes
 
-Cada componente tiene su propio archivo. El componente orquestador (`invoices.tsx`, `customers.tsx`) importa los componentes hijos y compone los hooks.
+Cada componente vive en su propia subcarpeta con `index.tsx` como punto de entrada. El componente orquestador (`invoices/`, `customers/`) importa los componentes hijos y compone los hooks.
 
 ```
 ui/components/
-  types.ts                ← Tipo UI plano del dominio (separado de la entidad de dominio)
-  InvoiceRow.tsx          ← Un componente = un archivo
-  InvoiceRowMenu.tsx
-  InvoiceDetailSheet.tsx
-  CreateInvoiceForm.tsx
-  CreateInvoiceSheet.tsx
-  invoices.tsx            ← Orquestador: usa hooks + renderiza componentes hijos
+  InvoiceRow/
+    index.tsx            ← SOLO JSX del componente
+    types.ts             ← interface InvoiceRowProps (props del componente)
+  InvoiceDetailSheet/
+    index.tsx
+    types.ts             ← interface InvoiceDetailSheetProps
+    constants.ts         ← VOUCHER_TYPE_LABEL, STATUS_LABEL, STATUS_TONE, formatMXN
+  CreateInvoiceForm/
+    index.tsx
+    types.ts             ← CreateInvoiceFormProps, ReceiverSearchProps, etc.
+    constants.ts         ← formatMXN, resolveUnitLabel, arrays de configuración
+  invoices/
+    index.tsx            ← Orquestador: usa hooks + renderiza componentes hijos
+  shared/
+    types.ts             ← Tipos UI del dominio: UIInvoice, UIInvoiceConcept, InvoiceStatus
 ```
+
+### Reglas de estructura interna de componentes
+
+**`index.tsx`** — solo JSX. Sin interfaces ni constantes no-triviales definidas dentro del archivo.
+
+**`types.ts`** — interfaces de props y tipos locales del componente. Crear si hay ≥ 1 interface.
+
+**`constants.ts`** — arrays de config, objetos de mapeo (labels, colores por estado), helpers puros sin estado. Crear si hay ≥ 1 constante no-trivial.
+
+**`components/shared/`** — archivos `.ts` que aplican a todo el dominio (tipos UI, utilidades compartidas). Los `types.ts` que antes vivían en la raíz de `components/` van aquí.
+
+```
+// MAL — interface y constante dentro del TSX
+export function InvoiceDetailSheet({ invoice }: Props) {
+  const STATUS_LABEL = { active: 'Activa', cancelled: 'Cancelada' }
+  interface Props { invoice: UIInvoice }
+  return <div>...</div>
+}
+
+// BIEN — separado en archivos hermanos
+// types.ts     → interface InvoiceDetailSheetProps { invoice: UIInvoice }
+// constants.ts → export const STATUS_LABEL = { active: 'Activa', cancelled: 'Cancelada' }
+// index.tsx    → import { InvoiceDetailSheetProps } from './types'
+//                import { STATUS_LABEL } from './constants'
+```
+
+Excepción: una constante simple (un string, un regex corto) puede quedarse en `index.tsx`.
 
 ### Tipo UI vs entidad de dominio
 
@@ -150,7 +185,7 @@ const invoicesRef = useRef<InvoicesHandle>(null)
 // ...
 invoicesRef.current?.addInvoice(newInvoice)
 
-// components/invoices.tsx
+// components/invoices/index.tsx
 export const Invoices = forwardRef<InvoicesHandle>(function Invoices(_, ref) {
   const addInvoice = useAddInvoice(setInvoices)
   useImperativeHandle(ref, () => ({ addInvoice }))

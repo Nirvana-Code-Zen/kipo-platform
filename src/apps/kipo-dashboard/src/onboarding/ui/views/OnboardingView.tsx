@@ -2,7 +2,7 @@
 
 import { useRef, useState } from 'react'
 
-import Image from "next/img"
+import Image from "next/image"
 import { Button } from '@kipo/ui-react'
 import { Camera } from 'lucide-react'
 
@@ -108,7 +108,7 @@ export const OnboardingView = () => {
                 style={{ background: 'var(--surface-brand-soft)' }}
               >
                 {avatarPreview ? (
-                  <Image widht={12} height={12} src={avatarPreview} alt="" className="w-full h-full object-cover" />
+                  <Image width={80} height={12} src={avatarPreview} alt="" className="w-full h-full object-cover" />
                 ) : (
                   <span className="text-[28px] font-bold text-primary font-display tracking-[-0.02em] leading-none">
                     {initials || '?'}

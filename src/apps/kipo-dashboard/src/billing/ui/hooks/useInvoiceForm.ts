@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react"
 
-import type { UIInvoice, VoucherType } from "../components/types"
+import type { UIInvoice, VoucherType } from "../components/shared/types"
 import type { CreateInvoiceApiRequest } from "../../core/application/dtos/InvoiceApiDTO"
 
 export type ConceptFormItem = {

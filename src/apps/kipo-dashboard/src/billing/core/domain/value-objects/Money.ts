@@ -1,4 +1,3 @@
-// SAT requires 6-decimal precision on amounts and tax rates
 export const roundSat = (value: number, decimals = 6): number => {
   const factor = Math.pow(10, decimals)
   return Math.round(value * factor) / factor

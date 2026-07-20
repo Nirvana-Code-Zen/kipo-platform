@@ -8,7 +8,7 @@ import { API_BASE_URL } from "@/src/shared/infrastructure/config"
 import { useEmisorStore } from "../store/emisorStore"
 import { mapFromApi, type EmisorApiResponse } from "./useEmisorInit"
 
-import type { UIFiscalSettings } from "../components/types"
+import type { UIFiscalSettings } from "../components/shared/types"
 
 const ALLOWED_LOGO_TYPES = ["image/jpeg", "image/png", "image/webp"]
 

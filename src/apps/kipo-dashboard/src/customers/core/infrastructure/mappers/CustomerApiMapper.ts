@@ -1,6 +1,6 @@
 import type { CatalogItem } from '@/src/catalogs/ui/data/catalogTypes'
 import type { CustomerCreateRequest, CustomerUpdateRequest, CustomerApiResponse } from '../../application/dtos/CustomerApiDTO'
-import type { Customer as UICustomer } from '@/src/customers/ui/components/types'
+import type { Customer as UICustomer } from '@/src/customers/ui/components/shared/types'
 
 function getRegimeLabel(code: string, regimenFiscal: CatalogItem[]): string {
   return regimenFiscal.find((r) => r.code === code)?.description ?? code

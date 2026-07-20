@@ -10,7 +10,6 @@ self.addEventListener("activate", (event) => {
       Promise.all(keys.filter((k) => k !== CACHE_NAME).map((k) => caches.delete(k)))
     )
   )
-  // No clients.claim() — avoids forced reload on SW activation
 })
 
 self.addEventListener("fetch", (event) => {
@@ -18,14 +17,12 @@ self.addEventListener("fetch", (event) => {
 
   const url = new URL(event.request.url)
 
-  // Never intercept: navigation requests (HTML pages), Next.js internals, API calls
   if (
     event.request.mode === "navigate" ||
     url.pathname.startsWith("/_next/") ||
     url.pathname.startsWith("/api/")
   ) return
 
-  // Only cache static assets: images, fonts, SVGs
   const isStaticAsset = /\.(png|jpg|jpeg|svg|gif|webp|ico|woff|woff2|ttf)$/.test(url.pathname)
   if (!isStaticAsset) return
 

@@ -47,7 +47,7 @@ export function useReceiverSearch() {
           }))
       )
     } catch {
-      // keep empty on failure
+      //TODO: make something when failed
     }
   }, [])
 

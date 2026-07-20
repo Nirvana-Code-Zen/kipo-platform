@@ -8,7 +8,7 @@ import { CustomerApiMapper } from "@/src/customers/core/infrastructure/mappers/C
 import { API_BASE_URL } from "@/src/shared/infrastructure/config"
 
 import type { CustomerApiResponse } from "@/src/customers/core/application/dtos/CustomerApiDTO"
-import type { Customer } from "../components/types"
+import type { Customer } from "../components/shared/types"
 
 const PAGE_SIZE = 12
 
