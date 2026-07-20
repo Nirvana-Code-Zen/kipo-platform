@@ -1,5 +1,5 @@
 import type { UIInvoice, UIInvoiceConcept } from "../shared/types"
-import type { UIInvoiceDisplayOptions } from "@/src/settings/ui/components/types"
+import type { UIInvoiceDisplayOptions } from "@/src/settings/ui/components/shared/types"
 
 export interface InvoiceDetailSheetProps {
   invoice: UIInvoice | null

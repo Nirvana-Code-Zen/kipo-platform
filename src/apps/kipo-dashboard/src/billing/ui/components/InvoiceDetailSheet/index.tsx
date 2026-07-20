@@ -8,7 +8,7 @@ import { Badge } from "@kipo/ui-react"
 
 import { useCatalogs } from "@/src/catalogs/ui/hooks/useCatalogs"
 import { useEmisorStore } from "@/src/settings/ui/store/emisorStore"
-import { DEFAULT_DISPLAY_OPTIONS } from "@/src/settings/ui/components/pdfCustomizationConstants"
+import { DEFAULT_DISPLAY_OPTIONS } from "@/src/settings/ui/components/shared/pdfCustomizationConstants"
 
 import { VOUCHER_TYPE_LABEL, STATUS_TONE, STATUS_LABEL, formatMXN, resolveUnitLabel } from "./constants"
 

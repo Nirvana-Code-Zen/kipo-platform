@@ -2,7 +2,7 @@
 
 import { create } from 'zustand'
 
-import type { UIFiscalSettings } from '../components/types'
+import type { UIFiscalSettings } from '../components/shared/types'
 
 interface EmisorState {
   data: UIFiscalSettings | null

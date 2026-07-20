@@ -3,18 +3,15 @@
 import { useState, useEffect, useRef } from "react"
 import { createPortal } from "react-dom"
 
-import Image from 'next/image'
+import Image from "next/image"
 import { Button } from "@kipo/ui-react"
 import { X, Camera } from "lucide-react"
 
 import { useAuthStore } from "@/src/auth/ui/store/authStore"
 
-import { useProfileEdit } from "../hooks/useProfileEdit"
+import { useProfileEdit } from "../../hooks/useProfileEdit"
 
-interface ProfileEditSheetProps {
-  isOpen: boolean
-  onClose: () => void
-}
+import type { ProfileEditSheetProps } from "./types"
 
 export function ProfileEditSheet({ isOpen, onClose }: ProfileEditSheetProps) {
   const session = useAuthStore((s) => s.persistedSession)
@@ -118,21 +115,13 @@ export function ProfileEditSheet({ isOpen, onClose }: ProfileEditSheetProps) {
         </div>
 
         {error && (
-          <div
-            className="mx-5 mt-4 px-3.5 py-2.5 rounded-md text-[13px] flex-shrink-0 border"
-            style={{
-              background: "var(--kipo-danger-bg)",
-              borderColor: "var(--kipo-danger)",
-              color: "var(--kipo-danger)",
-              fontFamily: "var(--font-body)",
-            }}
-          >
+          <div className="mx-5 mt-4 px-3.5 py-2.5 rounded-md text-[13px] flex-shrink-0 border bg-[var(--kipo-danger-bg)] border-[var(--kipo-danger)] text-[var(--kipo-danger)] font-sans">
             {error}
           </div>
         )}
 
         <div className="overflow-y-auto flex-1 px-5 py-6">
-          <div style={{ display: "flex", flexDirection: "column", gap: 24 }}>
+          <div className="flex flex-col gap-6">
 
             <div className="flex justify-center">
               <button
@@ -141,31 +130,22 @@ export function ProfileEditSheet({ isOpen, onClose }: ProfileEditSheetProps) {
                 className="relative group focus:outline-none"
                 aria-label="Cambiar foto de perfil"
               >
-                <div
-                  className="w-20 h-20 rounded-full overflow-hidden flex items-center justify-center ring-2 ring-primary/20"
-                  style={{ background: "var(--surface-brand-soft)" }}
-                >
+                <div className="w-20 h-20 rounded-full overflow-hidden flex items-center justify-center ring-2 ring-primary/20 bg-[var(--surface-brand-soft)]">
                   {currentAvatarUrl ? (
                     <Image
                       src={currentAvatarUrl}
                       alt={displayName}
-                      width={50}
-                      height={50}
+                      width={80}
+                      height={80}
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <span
-                      className="text-xl font-bold"
-                      style={{ color: "var(--brand)" }}
-                    >
+                    <span className="text-xl font-bold text-[var(--brand)]">
                       {initials || "?"}
                     </span>
                   )}
                 </div>
-                <div
-                  className="absolute bottom-0 right-0 w-6 h-6 rounded-full flex items-center justify-center shadow-md group-hover:scale-110 transition-transform"
-                  style={{ background: "var(--brand)" }}
-                >
+                <div className="absolute bottom-0 right-0 w-6 h-6 rounded-full flex items-center justify-center shadow-md group-hover:scale-110 transition-transform bg-[var(--brand)]">
                   <Camera className="w-3 h-3 text-white" />
                 </div>
               </button>
@@ -178,15 +158,8 @@ export function ProfileEditSheet({ isOpen, onClose }: ProfileEditSheetProps) {
               />
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-              <label
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontWeight: 600,
-                  fontSize: 13,
-                  color: "var(--text-strong)",
-                }}
-              >
+            <div className="flex flex-col gap-1.5">
+              <label className="font-sans font-semibold text-[13px] text-foreground">
                 Nombre
               </label>
               <input
@@ -194,29 +167,12 @@ export function ProfileEditSheet({ isOpen, onClose }: ProfileEditSheetProps) {
                 value={displayName}
                 onChange={(e) => setDisplayName(e.target.value.replace(/\b\w/g, (c) => c.toUpperCase()))}
                 autoComplete="name"
-                style={{
-                  width: "100%",
-                  background: "var(--surface-card)",
-                  border: "1.5px solid var(--border-strong)",
-                  borderRadius: "var(--radius-md)",
-                  padding: "12px 14px",
-                  fontSize: 15,
-                  fontFamily: "var(--font-body)",
-                  color: "var(--text-strong)",
-                  outline: "none",
-                }}
+                className="w-full bg-card border-[1.5px] border-input rounded-md px-3.5 py-3 text-[15px] font-sans text-foreground outline-none"
               />
             </div>
 
-            <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-              <label
-                style={{
-                  fontFamily: "var(--font-body)",
-                  fontWeight: 600,
-                  fontSize: 13,
-                  color: "var(--text-strong)",
-                }}
-              >
+            <div className="flex flex-col gap-1.5">
+              <label className="font-sans font-semibold text-[13px] text-foreground">
                 Correo electrónico
               </label>
               <input
@@ -224,32 +180,16 @@ export function ProfileEditSheet({ isOpen, onClose }: ProfileEditSheetProps) {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 autoComplete="email"
-                style={{
-                  width: "100%",
-                  background: "var(--surface-card)",
-                  border: "1.5px solid var(--border-strong)",
-                  borderRadius: "var(--radius-md)",
-                  padding: "12px 14px",
-                  fontSize: 15,
-                  fontFamily: "var(--font-body)",
-                  color: "var(--text-strong)",
-                  outline: "none",
-                }}
+                className="w-full bg-card border-[1.5px] border-input rounded-md px-3.5 py-3 text-[15px] font-sans text-foreground outline-none"
               />
               {emailChanged && (
-                <span
-                  style={{
-                    fontSize: 12,
-                    color: "var(--text-muted)",
-                    fontFamily: "var(--font-body)",
-                  }}
-                >
+                <span className="text-xs text-muted-foreground font-sans">
                   Al cambiar, deberás iniciar sesión nuevamente.
                 </span>
               )}
             </div>
 
-            <div style={{ display: "flex", gap: 10, paddingTop: 4 }}>
+            <div className="flex gap-2.5 pt-1">
               <Button type="button" variant="secondary" size="md" full onClick={onClose}>
                 Cancelar
               </Button>

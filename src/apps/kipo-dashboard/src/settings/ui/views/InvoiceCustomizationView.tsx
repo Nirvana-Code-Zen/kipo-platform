@@ -3,10 +3,9 @@
 import { useState, useEffect, useMemo, useRef } from "react"
 
 import { useRouter } from "next/navigation"
-import Image from 'next/image'
+import Image from "next/image"
 import { Button, Card, Switch } from "@kipo/ui-react"
 import { ArrowLeft, CheckCircle2, ImageUp } from "lucide-react"
-import Image from 'next/image'
 
 import { Header } from "@/src/shared/ui/components/dashboard/header"
 
@@ -14,10 +13,10 @@ import { useFiscalSettings } from "../hooks/useFiscalSettings"
 import { useSaveInvoiceCustomization } from "../hooks/useSaveInvoiceCustomization"
 import { useUploadLogo } from "../hooks/useUploadLogo"
 import { InvoiceCustomizationPreview } from "../components/InvoiceCustomizationPreview"
-import { DEFAULT_DISPLAY_OPTIONS } from "../components/pdfCustomizationConstants"
-import { plainTextToHtml, htmlToPlainText } from "../components/plainTextToHtml"
+import { DEFAULT_DISPLAY_OPTIONS } from "../components/shared/pdfCustomizationConstants"
+import { plainTextToHtml, htmlToPlainText } from "../components/shared/plainTextToHtml"
 
-import type { UIInvoiceDisplayOptions } from "../components/types"
+import type { UIInvoiceDisplayOptions } from "../components/shared/types"
 
 const DISPLAY_OPTION_LABELS: Record<keyof UIInvoiceDisplayOptions, string> = {
   showCatalogCodes: "Mostrar claves de catálogo",

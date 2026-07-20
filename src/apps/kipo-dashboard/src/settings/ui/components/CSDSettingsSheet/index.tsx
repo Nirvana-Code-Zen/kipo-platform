@@ -6,66 +6,38 @@ import { createPortal } from "react-dom"
 import { Button, Input, Tooltip } from "@kipo/ui-react"
 import { X, CheckCircle2, FileUp, Eye, EyeOff, HelpCircle } from "lucide-react"
 
-import { useUploadCsd } from "../hooks/useUploadCsd"
+import { useUploadCsd } from "../../hooks/useUploadCsd"
+import { CSD_HELP_TEXT } from "./constants"
 
-import type { UIFiscalSettings } from "./types"
-
-interface CSDSettingsSheetProps {
-  isOpen: boolean
-  onClose: () => void
-  onSaved: (data: UIFiscalSettings) => void
-}
-
-const CSD_HELP_TEXT =
-  "El CSD (Certificado de Sello Digital) es un archivo que el SAT te entrega para firmar tus facturas electrónicamente. Necesitas tu archivo .cer, tu archivo .key y la contraseña de la llave privada, obtenidos desde el portal del SAT."
+import type { CSDSettingsSheetProps, FilePickerProps } from "./types"
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-      <span style={{
-        fontFamily: "var(--font-body)", fontWeight: 700, fontSize: 13,
-        color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em",
-      }}>
+    <div className="flex items-center gap-2">
+      <span className="font-sans font-bold text-[13px] text-muted-foreground uppercase tracking-[0.06em]">
         {children}
       </span>
-      <div style={{ flex: 1, height: 1, background: "var(--border-soft)" }} />
+      <div className="flex-1 h-px bg-[var(--border-soft)]" />
     </div>
   )
-}
-
-interface FilePickerProps {
-  label: string
-  accept: string
-  file: File | null
-  onSelect: (file: File) => void
-  error?: string
 }
 
 function FilePicker({ label, accept, file, onSelect, error }: FilePickerProps) {
   const inputRef = useRef<HTMLInputElement>(null)
 
   return (
-    <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-      <label style={{ fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 13, color: "var(--text-strong)" }}>
+    <div className="flex flex-col gap-1.5">
+      <label className="font-sans font-semibold text-[13px] text-foreground">
         {label}
       </label>
       <button
         type="button"
         onClick={() => inputRef.current?.click()}
-        style={{
-          display: "flex", alignItems: "center", gap: 8,
-          width: "100%", textAlign: "left",
-          background: "var(--surface-card)",
-          border: `1.5px solid ${error ? "var(--kipo-danger)" : "var(--border-strong)"}`,
-          borderRadius: "var(--radius-md)",
-          padding: "12px 14px",
-          fontSize: 14,
-          fontFamily: "var(--font-body)",
-          color: file ? "var(--text-strong)" : "var(--text-muted)",
-          cursor: "pointer",
-        }}
+        className={`flex items-center gap-2 w-full text-left bg-card rounded-md px-3.5 py-3 text-[14px] font-sans cursor-pointer border-[1.5px] ${
+          error ? "border-[var(--kipo-danger)]" : "border-[var(--border-strong)]"
+        } ${file ? "text-foreground" : "text-muted-foreground"}`}
       >
-        <FileUp size={15} style={{ color: "var(--text-muted)", flexShrink: 0 }} />
+        <FileUp size={15} className="text-muted-foreground shrink-0" />
         {file ? file.name : `Seleccionar archivo ${accept}`}
       </button>
       <input
@@ -79,7 +51,7 @@ function FilePicker({ label, accept, file, onSelect, error }: FilePickerProps) {
           e.target.value = ""
         }}
       />
-      {error && <span style={{ fontSize: 12, color: "var(--kipo-danger)" }}>{error}</span>}
+      {error && <span className="text-xs text-[var(--kipo-danger)]">{error}</span>}
     </div>
   )
 }
@@ -139,11 +111,11 @@ export function CSDSettingsSheet({ isOpen, onClose, onSaved }: CSDSettingsSheetP
 
         <div className="flex items-center justify-between px-5 pt-4 pb-3 border-b border-border flex-shrink-0">
           <div>
-            <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+            <div className="flex items-center gap-1.5">
               <h2 className="font-semibold text-base">Configurar CSD</h2>
               <Tooltip content={CSD_HELP_TEXT}>
-                <button type="button" aria-label="¿Qué es un CSD?" style={{ display: "inline-flex", border: "none", background: "none", padding: 0, cursor: "pointer" }}>
-                  <HelpCircle size={14} style={{ color: "var(--text-muted)" }} />
+                <button type="button" aria-label="¿Qué es un CSD?" className="inline-flex border-0 bg-transparent p-0 cursor-pointer">
+                  <HelpCircle size={14} className="text-muted-foreground" />
                 </button>
               </Tooltip>
             </div>
@@ -160,21 +132,16 @@ export function CSDSettingsSheet({ isOpen, onClose, onSaved }: CSDSettingsSheetP
         </div>
 
         {error && (
-          <div className="mx-5 mt-4 px-3.5 py-2.5 rounded-md text-[13px] flex-shrink-0 border" style={{
-            background: "var(--kipo-danger-bg)",
-            borderColor: "var(--kipo-danger)",
-            color: "var(--kipo-danger)",
-            fontFamily: "var(--font-body)",
-          }}>
+          <div className="mx-5 mt-4 px-3.5 py-2.5 rounded-md text-[13px] flex-shrink-0 border bg-[var(--kipo-danger-bg)] border-[var(--kipo-danger)] text-[var(--kipo-danger)] font-sans">
             {error}
           </div>
         )}
 
         <div className="overflow-y-auto flex-1 px-5 py-5">
           <form onSubmit={handleSubmit} noValidate>
-            <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
+            <div className="flex flex-col gap-7">
 
-              <section style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              <section className="flex flex-col gap-4">
                 <SectionTitle>Archivos del certificado</SectionTitle>
 
                 <FilePicker label="Certificado (.cer)" accept=".cer" file={cerFile} onSelect={setCerFile} error={fieldErrors.cer} />
@@ -191,7 +158,7 @@ export function CSDSettingsSheet({ isOpen, onClose, onSaved }: CSDSettingsSheetP
                     <button
                       type="button"
                       onClick={() => setShowPassword((v) => !v)}
-                      style={{ display: "flex", border: "none", background: "none", padding: 0, cursor: "pointer" }}
+                      className="flex border-0 bg-transparent p-0 cursor-pointer"
                       aria-label={showPassword ? "Ocultar contraseña" : "Mostrar contraseña"}
                     >
                       {showPassword ? <EyeOff size={15} /> : <Eye size={15} />}
@@ -200,7 +167,7 @@ export function CSDSettingsSheet({ isOpen, onClose, onSaved }: CSDSettingsSheetP
                 />
               </section>
 
-              <div style={{ display: "flex", gap: 10, paddingTop: 4 }}>
+              <div className="flex gap-2.5 pt-1">
                 <Button type="button" variant="secondary" size="md" full onClick={onClose}>
                   Cancelar
                 </Button>

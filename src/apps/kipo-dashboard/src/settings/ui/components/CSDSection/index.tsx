@@ -5,7 +5,7 @@ import { useState } from "react"
 import { FileKey2, FileText, FileSignature } from "lucide-react"
 import { Button, Input } from "@kipo/ui-react"
 
-import { FileField } from "./FileField"
+import { FileField } from "../FileField"
 
 export function CSDSection() {
   const [cerFile, setCerFile] = useState<File | null>(null)
@@ -14,7 +14,7 @@ export function CSDSection() {
   const [showManifesto, setShowManifesto] = useState(false)
 
   return (
-    <div className="overflow-hidden bg-[var(--surface-card)] rounded-[var(--radius-lg)]">
+    <div className="overflow-hidden bg-card rounded-lg">
       <div className="px-5 py-4 flex flex-col gap-3.5">
         <FileField
           label="Certificado (.cer)"
@@ -44,10 +44,10 @@ export function CSDSection() {
       <div className="pt-3.5 px-5 pb-4">
         <div className={`flex items-center justify-between${showManifesto ? " mb-3.5" : ""}`}>
           <div>
-            <p className="text-sm font-semibold m-0 text-[var(--text-strong)] [font-family:var(--font-body)]">
+            <p className="text-sm font-semibold m-0 text-foreground font-sans">
               Firmar manifiesto
             </p>
-            <p className="text-xs mt-0.5 text-[var(--text-muted)] [font-family:var(--font-body)]">
+            <p className="text-xs mt-0.5 text-muted-foreground font-sans">
               Acepta los términos de uso de FacturAPI
             </p>
           </div>
@@ -65,7 +65,7 @@ export function CSDSection() {
         {showManifesto && (
           <iframe
             src="https://www.facturapi.io/embedded/manifiesto"
-            className="w-full h-[500px] block rounded-[var(--radius-md)]"
+            className="w-full h-[500px] block rounded-md"
             title="Manifiesto FacturAPI"
           />
         )}

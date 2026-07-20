@@ -7,7 +7,7 @@ import { API_BASE_URL } from "@/src/shared/infrastructure/config"
 
 import { useEmisorStore } from "../store/emisorStore"
 
-import type { UIFiscalSettings } from "../components/types"
+import type { UIFiscalSettings } from "../components/shared/types"
 
 interface EmisorApiResponse {
   id: string

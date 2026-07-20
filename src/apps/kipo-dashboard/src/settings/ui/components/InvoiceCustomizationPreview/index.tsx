@@ -5,74 +5,10 @@ import { useMemo } from "react"
 import Image from "next/image"
 import { ShieldCheck } from "lucide-react"
 
-import { sanitizeHtmlPreview } from "./sanitizeHtmlPreview"
+import { sanitizeHtmlPreview } from "../shared/sanitizeHtmlPreview"
+import { MOCK_LINE_ITEMS, MOCK_UUID, MOCK_SEAL_CFDI, MOCK_SEAL_SAT, MOCK_CERT_NUMBER, formatCurrency, formatUnitPrice } from "./constants"
 
-import type { UIInvoiceDisplayOptions } from "./types"
-
-interface InvoiceCustomizationPreviewProps {
-  customSectionHtml: string
-  displayOptions: UIInvoiceDisplayOptions
-  logoUrl?: string | null
-}
-
-interface MockLineItem {
-  productKey: string
-  description: string
-  unitKey: string
-  unitLabel: string
-  quantity: number
-  unitPrice: number
-  iva: number
-  ieps: number
-}
-
-const MOCK_LINE_ITEMS: MockLineItem[] = [
-  {
-    productKey: "01010101",
-    description: "Servicio de consultoría administrativa",
-    unitKey: "E48",
-    unitLabel: "Unidad de servicio",
-    quantity: 1,
-    unitPrice: 1500.5,
-    iva: 240.08,
-    ieps: 0,
-  },
-  {
-    productKey: "43211500",
-    description: "Licencia de software anual",
-    unitKey: "H87",
-    unitLabel: "Pieza",
-    quantity: 2,
-    unitPrice: 899.25,
-    iva: 287.76,
-    ieps: 89.93,
-  },
-  {
-    productKey: "81112501",
-    description: "Soporte técnico remoto",
-    unitKey: "E48",
-    unitLabel: "Unidad de servicio",
-    quantity: 3,
-    unitPrice: 350.0,
-    iva: 168.0,
-    ieps: 0,
-  },
-]
-
-const MOCK_UUID = "3F2A9C1E-7B4D-4E8A-9C2F-1D5E6A7B8C9D"
-const MOCK_SEAL_CFDI =
-  "kJ8sX2mQ9pL4vN6rT1wY3zA5bC7dE0fG2hI4jK6lM8nO0pQ2rS4tU6vW8xY0zA2b=="
-const MOCK_SEAL_SAT =
-  "aB3cD5eF7gH9iJ1kL3mN5oP7qR9sT1uV3wX5yZ7aB9cD1eF3gH5iJ7kL9mN1oP3q=="
-const MOCK_CERT_NUMBER = "00001000000504654321"
-
-function formatCurrency(amount: number): string {
-  return new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(amount)
-}
-
-function formatUnitPrice(amount: number, roundUnitPrice: boolean): string {
-  return amount.toFixed(roundUnitPrice ? 2 : 4)
-}
+import type { InvoiceCustomizationPreviewProps } from "./types"
 
 export function InvoiceCustomizationPreview({
   customSectionHtml,
@@ -104,7 +40,7 @@ export function InvoiceCustomizationPreview({
           <div className="flex items-start justify-between gap-4">
             <div className="flex items-start gap-3">
               {logoUrl ? (
-                <Image src={logoUrl} alt="Logo de la empresa" heigth={12} width={12} className="h-12 w-auto object-contain" />
+                <Image src={logoUrl} alt="Logo de la empresa" height={48} width={96} className="h-12 w-auto object-contain" />
               ) : (
                 <div className="flex h-12 w-24 shrink-0 items-center justify-center rounded-md border border-dashed border-border-strong text-[10px] text-muted-foreground">
                   Tu logo aquí

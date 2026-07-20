@@ -9,27 +9,18 @@ import { X, CheckCircle2, AlertCircle, Building2, User } from "lucide-react"
 import { useCatalogs } from "@/src/catalogs/ui/hooks/useCatalogs"
 import { detectRfcType, RFC_TYPE_LABEL } from "@/src/shared/domain/rfc"
 
-import { useSaveFiscalSettings } from "../hooks/useSaveFiscalSettings"
+import { useSaveFiscalSettings } from "../../hooks/useSaveFiscalSettings"
 
-import type { UIFiscalSettings } from "./types"
-
-interface FiscalSettingsSheetProps {
-  isOpen: boolean
-  onClose: () => void
-  initial: UIFiscalSettings | null
-  onSaved: (data: UIFiscalSettings) => void
-}
+import type { FiscalSettingsSheetProps } from "./types"
+import type { UIFiscalSettings } from "../shared/types"
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
-    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-      <span style={{
-        fontFamily: "var(--font-body)", fontWeight: 700, fontSize: 13,
-        color: "var(--text-muted)", textTransform: "uppercase", letterSpacing: "0.06em",
-      }}>
+    <div className="flex items-center gap-2">
+      <span className="font-sans font-bold text-[13px] text-muted-foreground uppercase tracking-[0.06em]">
         {children}
       </span>
-      <div style={{ flex: 1, height: 1, background: "var(--border-soft)" }} />
+      <div className="flex-1 h-px bg-[var(--border-soft)]" />
     </div>
   )
 }
@@ -131,21 +122,16 @@ export function FiscalSettingsSheet({ isOpen, onClose, initial, onSaved }: Fisca
         </div>
 
         {error && (
-          <div className="mx-5 mt-4 px-3.5 py-2.5 rounded-md text-[13px] flex-shrink-0 border" style={{
-            background: "var(--kipo-danger-bg)",
-            borderColor: "var(--kipo-danger)",
-            color: "var(--kipo-danger)",
-            fontFamily: "var(--font-body)",
-          }}>
+          <div className="mx-5 mt-4 px-3.5 py-2.5 rounded-md text-[13px] flex-shrink-0 border bg-[var(--kipo-danger-bg)] border-[var(--kipo-danger)] text-[var(--kipo-danger)] font-sans">
             {error}
           </div>
         )}
 
         <div className="overflow-y-auto flex-1 px-5 py-5">
           <form onSubmit={handleSubmit} noValidate>
-            <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
+            <div className="flex flex-col gap-7">
 
-              <section style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              <section className="flex flex-col gap-4">
                 <SectionTitle>Datos del emisor</SectionTitle>
 
                 <div>
@@ -164,15 +150,12 @@ export function FiscalSettingsSheet({ isOpen, onClose, initial, onSaved }: Fisca
                   {showRfcIndicator && (
                     <div className="flex items-center gap-1.5 mt-1">
                       {rfcType === "invalid"
-                        ? <AlertCircle size={13} style={{ color: "var(--kipo-danger)", flexShrink: 0 }} />
+                        ? <AlertCircle size={13} className="text-[var(--kipo-danger)] shrink-0" />
                         : rfcType === "natural"
-                          ? <User size={13} style={{ color: "var(--brand)", flexShrink: 0 }} />
-                          : <Building2 size={13} style={{ color: "var(--brand)", flexShrink: 0 }} />
+                          ? <User size={13} className="text-[var(--brand)] shrink-0" />
+                          : <Building2 size={13} className="text-[var(--brand)] shrink-0" />
                       }
-                      <span
-                        className="text-[12px] font-semibold font-sans"
-                        style={{ color: rfcType === "invalid" ? "var(--kipo-danger)" : "var(--brand)" }}
-                      >
+                      <span className={`text-[12px] font-semibold font-sans ${rfcType === "invalid" ? "text-[var(--kipo-danger)]" : "text-[var(--brand)]"}`}>
                         {RFC_TYPE_LABEL[rfcType]}
                       </span>
                     </div>
@@ -188,32 +171,19 @@ export function FiscalSettingsSheet({ isOpen, onClose, initial, onSaved }: Fisca
                   autoComplete="off"
                 />
 
-                <div style={{ display: "flex", flexDirection: "column", gap: 6 }}>
-                  <label style={{
-                    fontFamily: "var(--font-body)", fontWeight: 600, fontSize: 13,
-                    color: "var(--text-strong)",
-                  }}>
+                <div className="flex flex-col gap-1.5">
+                  <label className="font-sans font-semibold text-[13px] text-foreground">
                     Régimen fiscal
                   </label>
-                  <div style={{ position: "relative" }}>
+                  <div className="relative">
                     <select
                       value={regimenFiscal}
                       onChange={(e) => setRegimenFiscal(e.target.value)}
-                      style={{
-                        width: "100%",
-                        appearance: "none",
-                        background: "var(--surface-card)",
-                        border: `1.5px solid ${fieldErrors.regimenFiscal ? "var(--kipo-danger)" : "var(--border-strong)"}`,
-                        borderRadius: "var(--radius-md)",
-                        padding: "12px 40px 12px 14px",
-                        fontSize: 15,
-                        fontFamily: "var(--font-body)",
-                        color: regimenFiscal ? "var(--text-strong)" : "var(--text-muted)",
-                        outline: "none",
-                        cursor: "pointer",
-                      }}
+                      className={`w-full appearance-none bg-card rounded-md px-3.5 py-3 pr-10 text-[15px] font-sans cursor-pointer outline-none border-[1.5px] ${
+                        fieldErrors.regimenFiscal ? "border-[var(--kipo-danger)]" : "border-[var(--border-strong)]"
+                      } ${regimenFiscal ? "text-foreground" : "text-muted-foreground"}`}
                     >
-                      <option value="" disabled style={{ color: "var(--text-muted)" }}>
+                      <option value="" disabled className="text-muted-foreground">
                         Seleccionar...
                       </option>
                       {regimenFiscalCatalog.map((r) => (
@@ -222,15 +192,12 @@ export function FiscalSettingsSheet({ isOpen, onClose, initial, onSaved }: Fisca
                         </option>
                       ))}
                     </select>
-                    <span style={{
-                      position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)",
-                      pointerEvents: "none", color: "var(--text-muted)", fontSize: 12,
-                    }}>
+                    <span className="absolute right-3.5 top-1/2 -translate-y-1/2 pointer-events-none text-muted-foreground text-xs">
                       ▾
                     </span>
                   </div>
                   {fieldErrors.regimenFiscal && (
-                    <span style={{ fontSize: 12, color: "var(--kipo-danger)" }}>
+                    <span className="text-xs text-[var(--kipo-danger)]">
                       {fieldErrors.regimenFiscal}
                     </span>
                   )}
@@ -247,7 +214,7 @@ export function FiscalSettingsSheet({ isOpen, onClose, initial, onSaved }: Fisca
                 />
               </section>
 
-              <section style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+              <section className="flex flex-col gap-4">
                 <SectionTitle>Configuración de folio</SectionTitle>
 
                 <Input
@@ -275,7 +242,7 @@ export function FiscalSettingsSheet({ isOpen, onClose, initial, onSaved }: Fisca
                 )}
               </section>
 
-              <div style={{ display: "flex", gap: 10, paddingTop: 4 }}>
+              <div className="flex gap-2.5 pt-1">
                 <Button type="button" variant="secondary" size="md" full onClick={onClose}>
                   Cancelar
                 </Button>
