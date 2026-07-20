@@ -24,9 +24,6 @@ export default function OAuthCallbackPage() {
       return
     }
 
-    // On success, AuthLayout's effect redirects to the tenant's subdomain
-    // once auth state updates — it needs the resolved tenant slug, which
-    // this page doesn't have.
     void completeOAuth(accessToken, refreshToken).then(() => {
       if (useAuthStore.getState().status === SessionStatus.unauthenticated) {
         void router.replace('/login?error=oauth_failed')

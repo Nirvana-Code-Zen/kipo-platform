@@ -2,8 +2,8 @@ import { calcImporte, calcImpuesto, roundSat } from '../value-objects/Money'
 
 export type Transfer = Readonly<{
   base: number
-  tax: string       // '001' ISR | '002' IVA | '003' IEPS
-  factorType: string // 'Tasa' | 'Cuota' | 'Exento'
+  tax: string
+  factorType: string
   rate: number
   amount: number
 }>
@@ -40,7 +40,6 @@ export type ConceptInput = {
   retentions?: Array<{ tax: string; factorType: string; rate: number }>
 }
 
-// Calculates amounts locally for form preview — backend recalculates before stamping
 export const createInvoiceConcept = (input: ConceptInput): InvoiceConcept => {
   const amount = calcImporte(input.quantity, input.unitPrice)
 

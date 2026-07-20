@@ -41,7 +41,6 @@ export function useInvoiceList(): InvoiceListState {
       const raw = (await res.json()) as InvoiceApiResponse[]
       setInvoices(raw.map(fromApiResponse))
     } catch {
-      // keep empty list on failure
     } finally {
       setIsLoading(false)
     }

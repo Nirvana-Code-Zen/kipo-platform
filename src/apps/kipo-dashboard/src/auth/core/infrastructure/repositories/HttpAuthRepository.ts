@@ -14,8 +14,6 @@ import type { OtpToken } from '../../domain/value-objects/AccessToken'
 import type { AuthProvider } from '../../domain/value-objects/AuthProvider'
 import type { AuthError } from '../../domain/exceptions/auth.errors'
 
-// Attaches the current subdomain's tenant slug (if any) so the backend can
-// reject a login/refresh whose session belongs to a different tenant.
 const withTenantSlug = (body: Record<string, unknown>): Record<string, unknown> => {
   if (typeof window === 'undefined') return body
   const slug = getTenantSlugFromHost(window.location.hostname, APP_DOMAIN)

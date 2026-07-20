@@ -24,7 +24,7 @@ export type PersistedState = {
 export type AuthState = {
   accessToken: Session['accessToken'] | null
   persistedSession: PersistedSession | null
-  pendingEmail: string | null  // email awaiting confirmation after register
+  pendingEmail: string | null
   status: AuthStatus
   error: AuthError | null
   pendingOtp: { phone: string; otpToken: OtpToken } | null

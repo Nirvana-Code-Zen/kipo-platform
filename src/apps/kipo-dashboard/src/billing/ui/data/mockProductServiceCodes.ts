@@ -3,8 +3,7 @@ export interface MockProductServiceCode {
   description: string
 }
 
-// PLACEHOLDER — subconjunto de c_ClaveProdServ solo para autocompletar localmente.
-// Reemplazar por búsqueda vía PAC; borrar este archivo + useProductServiceSearch.ts cuando eso ocurra.
+// TODO: Reemplazar por búsqueda vía PAC; borrar este archivo + useProductServiceSearch.ts cuando eso ocurra.
 export const MOCK_PRODUCT_SERVICE_CODES: MockProductServiceCode[] = [
   { code: "81111500", description: "Desarrollo de software" },
   { code: "81112000", description: "Servicios de soporte de software" },

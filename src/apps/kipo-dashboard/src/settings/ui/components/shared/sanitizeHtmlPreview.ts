@@ -1,8 +1,5 @@
 import { PDF_CUSTOM_SECTION_ALLOWED_TAGS } from './pdfCustomizationConstants'
 
-// Visual/UX aid only — not a security boundary. The backend independently
-// re-sanitizes before persisting anything; this output is only ever
-// rendered locally in the browser, never sent anywhere.
 export function sanitizeHtmlPreview(html: string): string {
   const allowedTags = new Set<string>(PDF_CUSTOM_SECTION_ALLOWED_TAGS)
   const container = document.createElement('div')

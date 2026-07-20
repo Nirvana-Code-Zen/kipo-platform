@@ -4,7 +4,6 @@ import type { OtpToken } from '../value-objects/AccessToken'
 import type { AuthProvider } from '../value-objects/AuthProvider'
 import type { AuthError } from '../exceptions/auth.errors'
 
-// Repository interface uses only domain primitives and value objects — no application DTOs
 export type IAuthRepository = {
   loginWithEmail: (email: string, password: string) => Promise<Result<Session, AuthError>>
   loginWithSocial: (

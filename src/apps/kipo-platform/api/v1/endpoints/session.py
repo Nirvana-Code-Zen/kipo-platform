@@ -217,9 +217,6 @@ def logout():
     try:
         auth_execute(SignOutCommand(access_token=token))
     except Exception:
-        # Revoking the upstream session is best-effort — the cookie below is
-        # what actually keeps the browser logged in, so it must always be
-        # cleared even if Supabase is unreachable or rejects the token.
         pass
     resp = make_response(jsonify({"message": "Signed out"}), 200)
     resp.delete_cookie("kipo_refresh_token", path="/api/v1/auth")

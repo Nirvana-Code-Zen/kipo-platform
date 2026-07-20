@@ -28,10 +28,6 @@ export function easterSunday(year: number): Date {
   return new Date(year, month - 1, day)
 }
 
-// SAT también suspende labores durante sus "vacaciones generales" (bloques
-// variables de ~2 semanas en julio y diciembre, publicados administrativamente
-// cada año) — esos periodos NO están incluidos aquí porque no se derivan de una
-// regla fija; solo se modelan los feriados oficiales del Art. 74 LFT.
 export function getMexicanHolidays(year: number): Date[] {
   const easter = easterSunday(year)
   const juevesSanto = new Date(easter)

@@ -1,6 +1,5 @@
 import type { UIInvoiceDisplayOptions } from './types'
 
-// Keep in sync with backend: src/apps/kipo-platform/emisor/pdf_customization_constants.py
 export const PDF_CUSTOM_SECTION_ALLOWED_TAGS = [
   'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'div', 'p', 'span', 'small', 'br',
   'b', 'i', 'ul', 'ol', 'li', 'strong', 'table', 'thead', 'tbody', 'tfoot', 'tr', 'th', 'td',

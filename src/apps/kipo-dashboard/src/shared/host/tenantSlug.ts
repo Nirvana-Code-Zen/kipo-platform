@@ -10,8 +10,6 @@ export const getTenantSlugFromHost = (hostname: string, appDomain: string): stri
   return label
 }
 
-// Builds an absolute URL on the given tenant's subdomain, preserving the
-// current protocol and port (works for both localhost:3000 and kipo.com.mx).
 export const buildTenantUrl = (slug: string, appDomain: string, path: string): string => {
   const { protocol, port } = window.location
   return `${protocol}//${slug}.${appDomain}${port ? `:${port}` : ''}${path}`

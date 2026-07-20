@@ -1,4 +1,3 @@
-# Keep in sync with frontend: src/apps/kipo-dashboard/src/settings/ui/components/pdfCustomizationConstants.ts
 ALLOWED_HTML_TAGS = frozenset({
     "h1", "h2", "h3", "h4", "h5", "h6", "div", "p", "span", "small", "br",
     "b", "i", "ul", "ol", "li", "strong", "table", "thead", "tbody", "tfoot", "tr", "th", "td",
