@@ -5,8 +5,8 @@ import { useRouter } from 'next/navigation'
 
 import { useEmisorStore } from '@/src/settings/ui/store/emisorStore'
 
-import { MissingCSDBanner } from './MissingCSD'
-import { MissingManifestBanner } from './MissingManifest'
+import { MissingCSDBanner } from '../MissingCSD'
+import { MissingManifestBanner } from '../MissingManifest'
 
 export function EmisorMissingBanner() {
   const data = useEmisorStore((s) => s.data)
