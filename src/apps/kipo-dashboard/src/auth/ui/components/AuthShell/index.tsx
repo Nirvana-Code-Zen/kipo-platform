@@ -1,10 +1,10 @@
-'use client'
+"use client"
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 
 import Image from 'next/image'
 
-import { SLIDES, INTERVAL_MS } from './constants'
+import { SLIDES, INTERVAL_MS, DOT_WIDTH_ACTIVE, DOT_WIDTH_INACTIVE } from './constants'
 
 import type { AuthShellProps } from './types'
 
@@ -31,7 +31,7 @@ export function AuthShell({ children }: AuthShellProps) {
 
   return (
     <div
-      className='min-h-screen flex flex-col md:grid bg-[var(--bg-base)] [grid-template-columns:45fr_55fr]'
+      className='min-h-screen flex flex-col md:grid bg-bg-base [grid-template-columns:45fr_55fr]'
     >
       <div className='flex flex-col [padding:clamp(20px,3vw,28px)] [min-height:clamp(240px,40vw,100vh)]'>
         <div className='flex items-center gap-2 flex-shrink-0'>
@@ -50,13 +50,10 @@ export function AuthShell({ children }: AuthShellProps) {
           {SLIDES.map((slide, i) => (
             <div
               key={slide.src}
-              className='absolute inset-0'
+              className={`absolute inset-0 transition-opacity duration-[850ms] ease-[cubic-bezier(0.4,0,0.2,1)] ${
+                i === current ? 'opacity-100 z-[1]' : 'opacity-0 z-0'
+              }`}
               aria-hidden={i !== current}
-              style={{
-                opacity: i === current ? 1 : 0,
-                transition: 'opacity 0.85s cubic-bezier(0.4, 0, 0.2, 1)',
-                zIndex: i === current ? 1 : 0,
-              }}
             >
               <Image
                 src={slide.src}
@@ -71,13 +68,11 @@ export function AuthShell({ children }: AuthShellProps) {
 
           <div
             aria-hidden='true'
-            className='absolute inset-x-0 bottom-0 h-[58%] pointer-events-none bg-[linear-gradient(to_top,rgba(10,6,2,0.78)_0%,transparent_100%)]'
-            style={{ zIndex: 2 }}
+            className='absolute inset-x-0 bottom-0 h-[58%] pointer-events-none bg-[linear-gradient(to_top,rgba(10,6,2,0.78)_0%,transparent_100%)] z-[2]'
           />
 
           <div
-            className='absolute bottom-0 left-0 right-0 hidden md:flex flex-col [padding:clamp(20px,3vw,28px)] gap-[14px]'
-            style={{ zIndex: 3 }}
+            className='absolute bottom-0 left-0 right-0 hidden md:flex flex-col [padding:clamp(20px,3vw,28px)] gap-[14px] z-[3]'
           >
             <p
               className='font-display font-bold [font-size:clamp(18px,1.8vw,23px)] text-white leading-[1.3] tracking-[-0.02em] m-0'
@@ -96,12 +91,9 @@ export function AuthShell({ children }: AuthShellProps) {
                   aria-selected={i === current}
                   aria-label={`Imagen ${i + 1} de ${SLIDES.length}`}
                   onClick={() => goTo(i)}
-                  className='h-[6px] rounded-[3px] border-0 cursor-pointer p-0 shrink-0'
-                  style={{
-                    width: i === current ? 22 : 6,
-                    background: i === current ? '#fff' : 'rgba(255,255,255,0.42)',
-                    transition: 'width 0.35s cubic-bezier(0.4,0,0.2,1), background 0.2s',
-                  }}
+                  className={`h-[6px] rounded-[3px] border-0 cursor-pointer p-0 shrink-0 transition-[width,background-color] duration-300 ease-[cubic-bezier(0.4,0,0.2,1)] ${
+                    i === current ? DOT_WIDTH_ACTIVE : DOT_WIDTH_INACTIVE
+                  }`}
                 />
               ))}
             </div>

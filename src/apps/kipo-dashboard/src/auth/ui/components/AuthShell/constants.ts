@@ -19,3 +19,7 @@ export const SLIDES: SlideItem[] = [
 ]
 
 export const INTERVAL_MS = 5000
+
+export const DOT_WIDTH_ACTIVE = 'w-[22px] bg-white'
+
+export const DOT_WIDTH_INACTIVE = 'w-1.5 bg-white/40'

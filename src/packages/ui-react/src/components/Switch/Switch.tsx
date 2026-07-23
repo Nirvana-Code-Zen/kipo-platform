@@ -1,60 +1,37 @@
-import { type CSSProperties } from 'react'
 import { cn } from '../../lib/cn'
 
-export interface SwitchProps {
-  checked?: boolean
-  onChange?: (next: boolean) => void
-  disabled?: boolean
-  label?: string
-  className?: string
-  style?: CSSProperties
-}
+import type { SwitchProps } from './types'
 
-export function Switch({ checked = false, onChange, disabled = false, label = '', className, style }: SwitchProps) {
+export function Switch({ checked = false, onChange, disabled = false, label = '', className }: SwitchProps) {
   const toggle = () => { if (!disabled && onChange) onChange(!checked) }
 
   return (
     <label
-      className={cn(className)}
-      style={{
-        display: 'inline-flex',
-        alignItems: 'center',
-        gap: 10,
-        cursor: disabled ? 'not-allowed' : 'pointer',
-        opacity: disabled ? 0.5 : 1,
-        ...style,
-      }}
+      className={cn(
+        'inline-flex items-center gap-2.5',
+        disabled ? 'cursor-not-allowed opacity-50' : 'cursor-pointer',
+        className,
+      )}
     >
       <span
         onClick={toggle}
         role="switch"
         aria-checked={checked}
-        style={{
-          width: 46,
-          height: 28,
-          borderRadius: 'var(--radius-pill)',
-          background: checked ? 'var(--kipo-gradient)' : 'var(--kipo-cream-300)',
-          position: 'relative',
-          transition: 'background var(--dur-base) var(--ease-out)',
-          flexShrink: 0,
-        }}
+        className={cn(
+          'relative w-[46px] h-7 rounded-kipo-pill shrink-0 transition-colors duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]',
+          checked ? 'bg-kipo-gradient' : 'bg-[var(--kipo-cream-300)]',
+        )}
       >
         <span
-          style={{
-            position: 'absolute',
-            top: 3,
-            left: checked ? 21 : 3,
-            width: 22,
-            height: 22,
-            borderRadius: 'var(--radius-circle)',
-            background: '#fff',
-            boxShadow: 'var(--shadow-sm)',
-            transition: 'left var(--dur-base) var(--ease-out)',
-          }}
+          className={cn(
+            'absolute top-[3px] w-[22px] h-[22px] rounded-full bg-white shadow-kipo-sm',
+            'transition-[left] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]',
+            checked ? 'left-[21px]' : 'left-[3px]',
+          )}
         />
       </span>
       {label && (
-        <span style={{ fontFamily: 'var(--font-body)', fontSize: 14, color: 'var(--text-body)' }}>{label}</span>
+        <span className="font-sans text-sm text-text-body">{label}</span>
       )}
     </label>
   )

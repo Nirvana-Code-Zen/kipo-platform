@@ -22,23 +22,15 @@ export const Components: Story = {
     return (
       <DocPage category="Components">
 
-        {/* ── Inputs & Switch ── */}
         <DocSection
           title="Inputs & Switch"
           subtitle="Labelled fields, mono fiscal inputs, toggle"
         >
-          <div style={{
-            background: 'var(--bg-base)',
-            borderRadius: 'var(--radius-lg)',
-            padding: '24px',
-            display: 'grid',
-            gridTemplateColumns: '1fr 1fr',
-            gap: '20px 24px',
-          }}>
+          <div className="bg-bg-base rounded-kipo-lg p-6 grid grid-cols-2 gap-x-6 gap-y-5">
             <Input
               label="Client RFC"
               defaultValue="VEGL900312H45"
-              style={{ fontFamily: 'var(--font-mono)' }}
+              className="font-mono"
             />
             <Input
               label="Amount"
@@ -53,7 +45,7 @@ export const Components: Story = {
               defaultValue="hello@"
               error="Check the format"
             />
-            <div style={{ display: 'flex', flexDirection: 'column', justifyContent: 'center', gap: 20, paddingTop: 22 }}>
+            <div className="flex flex-col justify-center gap-5 pt-[22px]">
               <Switch
                 label="Auto stamp"
                 checked={auto}
@@ -68,12 +60,11 @@ export const Components: Story = {
           </div>
         </DocSection>
 
-        {/* ── Stamp Packs ── */}
         <DocSection
           title="Stamp Packs — Pay as you go"
           subtitle="$3.50 MXN per CFDI stamp checkout cards"
         >
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 16 }}>
+          <div className="grid grid-cols-3 gap-4">
             <StampCard
               qty={20}
               unitPrice={3.5}

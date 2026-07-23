@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { DocPage, DocSection, MonoMeta } from './doc-helpers'
+import { cn } from '../lib/cn'
 
 const meta: Meta = {
   title: 'Design Tokens/Typography',
@@ -7,6 +8,18 @@ const meta: Meta = {
 }
 export default meta
 type Story = StoryObj
+
+const typeScaleSizeClass: Record<number, string> = {
+  56: 'text-[56px]',
+  40: 'text-[40px]',
+  32: 'text-[32px]',
+  24: 'text-2xl',
+  16: 'text-base',
+  12: 'text-xs',
+}
+
+const typeScaleTrackingClass = (px: number) =>
+  px >= 32 ? 'tracking-[-0.025em]' : px === 12 ? 'tracking-[0.06em]' : 'tracking-[-0.01em]'
 
 export const Typography: Story = {
   name: 'Typography',
@@ -17,37 +30,14 @@ export const Typography: Story = {
         title="Body & UI — Inter"
         subtitle="Interface copy, high legibility on mobile"
       >
-        <div style={{ maxWidth: 560 }}>
-          <div style={{
-            fontFamily: 'var(--font-body)',
-            fontWeight: 700,
-            fontSize: 11,
-            color: 'var(--brand)',
-            letterSpacing: '0.1em',
-            textTransform: 'uppercase',
-            marginBottom: 10,
-          }}>
+        <div className="max-w-[560px]">
+          <div className="font-sans font-bold text-[11px] text-brand tracking-[0.1em] uppercase mb-2.5">
             New account
           </div>
-          <div style={{
-            fontFamily: 'var(--font-display)',
-            fontWeight: 700,
-            fontSize: 24,
-            color: 'var(--text-strong)',
-            letterSpacing: '-0.02em',
-            lineHeight: 1.2,
-            marginBottom: 12,
-          }}>
+          <div className="font-display font-bold text-2xl text-text-strong tracking-[-0.02em] leading-tight mb-3">
             Your RFC, your logo, and done.
           </div>
-          <p style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: 16,
-            fontWeight: 400,
-            color: 'var(--text-body)',
-            lineHeight: 1.6,
-            margin: '0 0 16px',
-          }}>
+          <p className="font-sans text-base font-normal text-text-body leading-relaxed m-0 mb-4">
             Scan your Tax Status Certificate and Kipo fills in your data
             automatically. No endless forms, no odd bureaucracy — just valid
             invoices before the SAT.
@@ -61,26 +51,10 @@ export const Typography: Story = {
         subtitle="Headings & hero titles, bold geometric"
       >
         <div>
-          <div style={{
-            fontFamily: 'var(--font-display)',
-            fontWeight: 800,
-            fontSize: 56,
-            color: 'var(--text-strong)',
-            letterSpacing: '-0.03em',
-            lineHeight: 1.0,
-            marginBottom: 12,
-          }}>
+          <div className="font-display font-extrabold text-[56px] text-text-strong tracking-[-0.03em] leading-none mb-3">
             Invoice. No drama.
           </div>
-          <div style={{
-            fontFamily: 'var(--font-display)',
-            fontWeight: 600,
-            fontSize: 32,
-            color: 'var(--text-strong)',
-            letterSpacing: '-0.02em',
-            lineHeight: 1.15,
-            marginBottom: 20,
-          }}>
+          <div className="font-display font-semibold text-[32px] text-text-strong tracking-[-0.02em] leading-[1.15] mb-5">
             Charge and stamp in seconds.
           </div>
           <MonoMeta>Plus Jakarta Sans · 600 / 800 · letter-spacing -0.015 to -0.03em</MonoMeta>
@@ -92,32 +66,22 @@ export const Typography: Story = {
         subtitle="Amounts, RFC, folios, tax tables — tabular"
       >
         <div>
-          <div style={{
-            fontFamily: 'var(--font-mono)',
-            fontSize: 52,
-            fontWeight: 600,
-            letterSpacing: '-0.02em',
-            fontVariantNumeric: 'tabular-nums',
-            lineHeight: 1.1,
-            marginBottom: 24,
-          }}>
-            <span style={{ color: 'var(--text-strong)' }}>$ 12,480.</span>
-            <span style={{ color: 'var(--text-muted)' }}>00</span>
+          <div className="font-mono text-[52px] font-semibold tracking-[-0.02em] tabular-nums leading-[1.1] mb-6">
+            <span className="text-text-strong">$ 12,480.</span>
+            <span className="text-text-muted">00</span>
           </div>
 
-          <table style={{ width: '100%', borderCollapse: 'collapse', fontFamily: 'var(--font-body)', fontSize: 14 }}>
+          <table className="w-full border-collapse font-sans text-sm">
             <thead>
-              <tr style={{ borderBottom: '1px solid var(--border-subtle)' }}>
+              <tr className="border-b border-border-subtle">
                 {['Item', 'Qty.', 'Amount'].map((h, i) => (
-                  <th key={h} style={{
-                    fontFamily: 'var(--font-mono)',
-                    fontSize: 12,
-                    fontWeight: 500,
-                    color: 'var(--text-muted)',
-                    textAlign: i === 0 ? 'left' : 'right',
-                    padding: '0 0 10px',
-                    letterSpacing: '0.02em',
-                  }}>
+                  <th
+                    key={h}
+                    className={cn(
+                      'font-mono text-xs font-medium text-text-muted pb-2.5 tracking-[0.02em]',
+                      i === 0 ? 'text-left' : 'text-right',
+                    )}
+                  >
                     {h}
                   </th>
                 ))}
@@ -129,10 +93,10 @@ export const Typography: Story = {
                 ['Photo session',  '2', '4,480.00'],
                 ['VAT 16%',        '—', '1,996.80'],
               ].map(([item, qty, amount]) => (
-                <tr key={item} style={{ borderBottom: '1px solid var(--border-subtle)' }}>
-                  <td style={{ padding: '12px 0', color: 'var(--text-strong)', fontWeight: 400 }}>{item}</td>
-                  <td style={{ padding: '12px 0', color: 'var(--text-body)', textAlign: 'right', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>{qty}</td>
-                  <td style={{ padding: '12px 0', color: 'var(--text-strong)', textAlign: 'right', fontFamily: 'var(--font-mono)', fontVariantNumeric: 'tabular-nums' }}>{amount}</td>
+                <tr key={item} className="border-b border-border-subtle">
+                  <td className="py-3 text-text-strong font-normal">{item}</td>
+                  <td className="py-3 text-text-body text-right font-mono tabular-nums">{qty}</td>
+                  <td className="py-3 text-text-strong text-right font-mono tabular-nums">{amount}</td>
                 </tr>
               ))}
             </tbody>
@@ -146,38 +110,32 @@ export const Typography: Story = {
         title="Type Scale"
         subtitle="Display → caption, with role + size"
       >
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div className="flex flex-col">
           {[
-            { role: 'display', px: 56, text: 'Invoice. No drama.',        weight: 800 },
-            { role: 'h1',      px: 40, text: 'Your business, in order',   weight: 700 },
-            { role: 'h2',      px: 32, text: 'Charge in seconds',         weight: 700 },
-            { role: 'h3',      px: 24, text: 'Invoice line items',        weight: 700 },
-            { role: 'base',    px: 16, text: 'Interface and body text',   weight: 400 },
-            { role: 'xs',      px: 12, text: 'LABEL / EYEBROW',           weight: 700 },
+            { role: 'display', px: 56, text: 'Invoice. No drama.',        weight: 'font-extrabold' },
+            { role: 'h1',      px: 40, text: 'Your business, in order',   weight: 'font-bold' },
+            { role: 'h2',      px: 32, text: 'Charge in seconds',         weight: 'font-bold' },
+            { role: 'h3',      px: 24, text: 'Invoice line items',        weight: 'font-bold' },
+            { role: 'base',    px: 16, text: 'Interface and body text',   weight: 'font-normal' },
+            { role: 'xs',      px: 12, text: 'LABEL / EYEBROW',           weight: 'font-bold' },
           ].map(({ role, px, text, weight }, i, arr) => (
             <div
               key={role}
-              style={{
-                display: 'grid',
-                gridTemplateColumns: '130px 1fr',
-                alignItems: 'center',
-                gap: 32,
-                padding: '14px 0',
-                borderBottom: i < arr.length - 1 ? '1px solid var(--border-subtle)' : 'none',
-              }}
+              className={cn(
+                'grid grid-cols-[130px_1fr] items-center gap-8 py-3.5',
+                i < arr.length - 1 && 'border-b border-border-subtle',
+              )}
             >
-              <div style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: 'var(--text-muted)', lineHeight: 1.4, flexShrink: 0 }}>
+              <div className="font-mono text-xs text-text-muted leading-snug shrink-0">
                 {role} · {px}
               </div>
-              <div style={{
-                fontFamily: 'var(--font-display)',
-                fontSize: px,
-                fontWeight: weight,
-                color: 'var(--text-strong)',
-                letterSpacing: px >= 32 ? '-0.025em' : px === 12 ? '0.06em' : '-0.01em',
-                lineHeight: 1.05,
-                textTransform: px === 12 ? 'uppercase' : 'none',
-              } as React.CSSProperties}>
+              <div className={cn(
+                'font-display text-text-strong leading-[1.05]',
+                typeScaleSizeClass[px],
+                weight,
+                typeScaleTrackingClass(px),
+                px === 12 && 'uppercase',
+              )}>
                 {text}
               </div>
             </div>

@@ -10,77 +10,30 @@ export const EmailConfirmView = () => {
 
   return (
     <>
-      <div style={{ textAlign: 'center', padding: '8px 0 24px' }}>
-        <div style={{ fontSize: 48, marginBottom: 24 }}>
-          <MailCheck />
-        </div>
-        <h1
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontWeight: 700,
-            fontSize: 28,
-            color: 'var(--text-strong)',
-            letterSpacing: '-0.03em',
-            lineHeight: 1.2,
-            marginBottom: 12,
-          }}
-        >
+      <div className='text-center py-2 pb-6'>
+        <MailCheck className='w-12 h-12 mx-auto mb-6 text-foreground' />
+        <h1 className='font-display font-bold text-[28px] text-foreground tracking-[-0.03em] leading-tight mb-3'>
           Revisa tu correo
         </h1>
-        <p
-          style={{
-            fontSize: 14,
-            color: 'var(--text-muted)',
-            fontFamily: 'var(--font-body)',
-            lineHeight: 1.6,
-            marginBottom: 8,
-          }}
-        >
+        <p className='text-sm text-muted-foreground font-sans leading-relaxed mb-2'>
           Enviamos un enlace de confirmación a
         </p>
         {pendingEmail && (
-          <p
-            style={{
-              fontSize: 15,
-              fontWeight: 600,
-              color: 'var(--text-strong)',
-              fontFamily: 'var(--font-body)',
-              marginBottom: 24,
-            }}
-          >
+          <p className='text-[15px] font-semibold text-foreground font-sans mb-6'>
             {pendingEmail}
           </p>
         )}
-        <p
-          style={{
-            fontSize: 13,
-            color: 'var(--text-muted)',
-            fontFamily: 'var(--font-body)',
-            lineHeight: 1.6,
-          }}
-        >
+        <p className='text-[13px] text-muted-foreground font-sans leading-relaxed'>
           Confirma tu cuenta para continuar.
           <br />
           Después podrás iniciar sesión y configurar tu empresa.
         </p>
       </div>
 
-      <div
-        style={{
-          borderTop: '1px solid var(--border-subtle)',
-          paddingTop: 20,
-          textAlign: 'center',
-        }}
-      >
+      <div className='border-t border-border-subtle pt-5 text-center'>
         <Link
           href='/login'
-          style={{
-            fontSize: 13,
-            color: 'var(--text-muted)',
-            fontFamily: 'var(--font-body)',
-            textDecoration: 'underline',
-            textUnderlineOffset: 3,
-          }}
+          className='text-[13px] text-muted-foreground font-sans underline underline-offset-[3px]'
         >
           Volver al inicio de sesión
         </Link>

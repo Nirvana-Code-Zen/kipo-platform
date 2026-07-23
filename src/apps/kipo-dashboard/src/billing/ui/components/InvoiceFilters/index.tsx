@@ -70,8 +70,7 @@ export function InvoiceFilters({
             placeholder="Receptor, RFC, folio o folio fiscal..."
             value={searchQuery}
             onChange={(e) => onSearchQueryChange(e.target.value)}
-            className="w-full box-border bg-card border-[1.5px] border-input rounded-md px-3 py-2 pl-[34px] text-[13px] font-sans text-foreground outline-none cursor-pointer"
-            style={{ paddingRight: searchQuery ? 34 : 12 }}
+            className={`w-full box-border bg-card border-[1.5px] border-input rounded-md px-3 py-2 pl-[34px] text-[13px] font-sans text-foreground outline-none cursor-pointer ${searchQuery ? 'pr-[34px]' : 'pr-3'}`}
           />
           {searchQuery && (
             <button

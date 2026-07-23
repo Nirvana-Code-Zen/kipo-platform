@@ -40,7 +40,7 @@ export const Ghost: Story = {
 
 export const GhostTones: Story = {
   render: () => (
-    <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+    <div className="flex gap-3 items-center">
       <Button variant="ghost" tone="brand">Brand</Button>
       <Button variant="ghost" tone="accent">Accent</Button>
       <Button variant="ghost" tone="danger">Danger</Button>
@@ -54,7 +54,7 @@ export const Danger: Story = {
 
 export const AllVariants: Story = {
   render: () => (
-    <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', alignItems: 'center' }}>
+    <div className="flex gap-3 flex-wrap items-center">
       <Button variant="primary">Primary</Button>
       <Button variant="accent">Accent</Button>
       <Button variant="secondary">Secondary</Button>
@@ -66,7 +66,7 @@ export const AllVariants: Story = {
 
 export const AllSizes: Story = {
   render: () => (
-    <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+    <div className="flex gap-3 items-center">
       <Button size="sm">Small</Button>
       <Button size="md">Medium</Button>
       <Button size="lg">Large</Button>
@@ -82,7 +82,7 @@ export const FullWidth: Story = {
   args: { full: true },
   decorators: [
     (Story) => (
-      <div style={{ width: 320 }}>
+      <div className="w-80">
         <Story />
       </div>
     ),

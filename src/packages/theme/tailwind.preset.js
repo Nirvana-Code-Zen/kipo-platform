@@ -31,6 +31,13 @@ module.exports = {
         'info-soft':     'var(--kipo-info-bg)',
         // Surface extras
         'surface-muted': 'var(--bg-subtle)',
+        'surface-brand-soft': 'var(--surface-brand-soft)',
+        'banner-warning-bg': 'var(--banner-warning-bg)',
+        'banner-warning-border': 'var(--banner-warning-border)',
+        'banner-warning-icon': 'var(--banner-warning-icon)',
+        'banner-warning-text': 'var(--banner-warning-text)',
+        'banner-warning-link': 'var(--banner-warning-link)',
+        'kipo-slate-900': 'var(--kipo-slate-900)',
         // Raw palette (kept for escape-hatch use)
         kipo: {
           red: '#e00b26',

@@ -11,6 +11,7 @@ import { useSaveFiscalSettings } from "@/src/settings/ui/hooks/useSaveFiscalSett
 import { useUploadLogo } from "@/src/settings/ui/hooks/useUploadLogo"
 import { detectRfcType, RFC_TYPE_LABEL } from "@/src/shared/domain/rfc"
 
+import { SkipButton } from "../SkipButton"
 import { CP_REGEX } from "./constants"
 
 import type { FiscalDataStepProps } from "./types"
@@ -89,7 +90,8 @@ export function FiscalDataStep({ onSaved, onSkip }: FiscalDataStepProps) {
           Configura tu perfil fiscal
         </h1>
         <p className="text-sm text-muted-foreground font-sans leading-relaxed mb-8">
-          Podrás editarlos en cualquier momento desde Ajustes.
+          <span> Podrás editarlos en cualquier momento desde Ajustes. </span>
+          <SkipButton inline onClick={onSkip} className="ml-3">Omitir por ahora</SkipButton>
         </p>
 
         {displayError && (
@@ -250,14 +252,7 @@ export function FiscalDataStep({ onSaved, onSkip }: FiscalDataStepProps) {
           {isSaving ? "Guardando..." : isUploadingLogo ? "Subiendo logo..." : "Guardar y continuar"}
         </Button>
 
-        <div className="text-center mt-4">
-          <button
-            onClick={onSkip}
-            className="bg-transparent border-0 p-0 text-[13px] text-muted-foreground font-sans underline cursor-pointer"
-          >
-            Omitir por ahora
-          </button>
-        </div>
+        <SkipButton onClick={onSkip}>Omitir por ahora</SkipButton>
       </div>
     </div>
   )

@@ -21,7 +21,7 @@ const meta: Meta<typeof StampCard> = {
   },
   decorators: [
     (Story) => (
-      <div style={{ width: 200 }}>
+      <div className="w-[200px]">
         <Story />
       </div>
     ),
@@ -58,7 +58,7 @@ export const PricingGrid: Story = {
     ] as const
 
     return (
-      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 200px)', gap: 16 }}>
+      <div className="grid grid-cols-[repeat(3,200px)] gap-4">
         {plans.map((plan) => (
           <StampCard
             key={plan.qty}

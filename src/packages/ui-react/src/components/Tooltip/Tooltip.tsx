@@ -1,14 +1,7 @@
 import * as TooltipPrimitive from '@radix-ui/react-tooltip'
 import { cn } from '../../lib/cn'
 
-export interface TooltipProps {
-  content: React.ReactNode
-  children: React.ReactNode
-  side?: 'top' | 'right' | 'bottom' | 'left'
-  align?: 'start' | 'center' | 'end'
-  delayDuration?: number
-  className?: string
-}
+import type { TooltipProps } from './types'
 
 function Tooltip({
   content,
@@ -28,22 +21,14 @@ function Tooltip({
             side={side}
             align={align}
             sideOffset={6}
-            className={cn(className)}
-            style={{
-              background: 'var(--kipo-slate-900)',
-              color: '#FFFFFF',
-              borderRadius: 'var(--radius-md)',
-              padding: '8px 12px',
-              fontSize: 12,
-              fontFamily: 'var(--font-body)',
-              lineHeight: 1.4,
-              maxWidth: 260,
-              boxShadow: 'var(--shadow-md)',
-              zIndex: 1000,
-            }}
+            className={cn(
+              'z-[1000] max-w-[260px] bg-kipo-slate-900 text-white rounded-kipo px-3 py-2',
+              'text-xs font-sans leading-[1.4] shadow-kipo-md',
+              className,
+            )}
           >
             {content}
-            <TooltipPrimitive.Arrow style={{ fill: 'var(--kipo-slate-900)' }} />
+            <TooltipPrimitive.Arrow className="fill-kipo-slate-900" />
           </TooltipPrimitive.Content>
         </TooltipPrimitive.Portal>
       </TooltipPrimitive.Root>

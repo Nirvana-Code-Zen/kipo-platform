@@ -8,3 +8,5 @@ export const statusStyles: Record<string, { color: string; icon: typeof FileText
 
 export const formatDate = (value: string) =>
   new Date(value).toLocaleDateString('es-MX', { day: '2-digit', month: 'short', year: 'numeric' })
+
+export const INVOICE_STAGGER = ['delay-800', 'delay-900', 'delay-1000', '[animation-delay:1100ms]', '[animation-delay:1200ms]'] as const

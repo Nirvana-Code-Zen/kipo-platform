@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react'
 import { Avatar, AvatarImage, AvatarFallback } from './Avatar'
+import { cn } from '../../lib/cn'
 
 const meta: Meta<typeof Avatar> = {
   title: 'Components/Avatar',
@@ -30,7 +31,7 @@ export const FallbackInitials: Story = {
 
 export const Sizes: Story = {
   render: () => (
-    <div style={{ display: 'flex', alignItems: 'center', gap: 16 }}>
+    <div className="flex items-center gap-4">
       {(['w-6 h-6', 'w-8 h-8', 'w-9 h-9', 'w-12 h-12', 'w-16 h-16'] as const).map((size) => (
         <Avatar key={size} className={size}>
           <AvatarImage src="https://i.pravatar.cc/64?img=12" alt="Edgar Figueroa" />
@@ -52,12 +53,17 @@ export const InHeader: Story = {
 
 export const Group: Story = {
   render: () => (
-    <div style={{ display: 'flex' }}>
+    <div className="flex">
       {[12, 32, 47].map((img, i) => (
         <Avatar
           key={img}
-          className="w-9 h-9 ring-2"
-          style={{ marginLeft: i === 0 ? 0 : -12, zIndex: 3 - i }}
+          className={cn(
+            'w-9 h-9 ring-2',
+            i === 0 ? 'ml-0' : '-ml-3',
+            i === 0 && 'z-[3]',
+            i === 1 && 'z-[2]',
+            i === 2 && 'z-[1]',
+          )}
         >
           <AvatarImage src={`https://i.pravatar.cc/64?img=${img}`} alt="" />
           <AvatarFallback>--</AvatarFallback>

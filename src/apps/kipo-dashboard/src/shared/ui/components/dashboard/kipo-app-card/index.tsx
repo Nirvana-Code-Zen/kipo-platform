@@ -5,12 +5,7 @@ import { useState, useEffect } from "react"
 import { Button, Card } from '@kipo/ui-react'
 import { Download, Monitor } from "lucide-react"
 
-declare global {
-  interface BeforeInstallPromptEvent extends Event {
-    prompt(): Promise<void>
-    userChoice: Promise<{ outcome: "accepted" | "dismissed" }>
-  }
-}
+import "./types"
 
 export function KipoAppCard() {
   const [installPrompt, setInstallPrompt] = useState<Event | null>(null)
@@ -33,15 +28,13 @@ export function KipoAppCard() {
 
   return (
     <Card
-      className="p-4 transition-all duration-500 hover:shadow-2xl animate-slide-in-up overflow-hidden relative group bg-[var(--color-foreground)] text-[var(--color-background)]"
-      style={{ animationDelay: "900ms" }}
+      className="p-4 transition-all duration-500 hover:shadow-2xl animate-slide-in-up overflow-hidden relative group bg-foreground text-background delay-900"
     >
       <div className="absolute bottom-0 left-0 right-0 h-24 overflow-hidden">
         <svg
-          className="absolute bottom-0 w-full"
+          className="absolute bottom-0 w-full h-[100px]"
           viewBox="0 0 200 60"
           preserveAspectRatio="none"
-          style={{ height: "100px" }}
         >
           <path
             d="M0,30 Q25,15 50,30 T100,30 T150,30 T200,30 L200,60 L0,60 Z"

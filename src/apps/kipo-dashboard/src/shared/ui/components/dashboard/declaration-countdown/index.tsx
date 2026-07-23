@@ -6,6 +6,8 @@ import { Card, Button } from "@kipo/ui-react"
 
 import { useDeclarationDeadline } from "@/src/shared/ui/hooks/useDeclarationDeadline"
 
+import { WAVE_CLASSES } from "./constants"
+
 export function DeclarationCountdown() {
   const { deadline, hasProrroga, extraBusinessDays } = useDeclarationDeadline()
   const [remaining, setRemaining] = useState({ days: 0, hours: 0, minutes: 0, seconds: 0 })
@@ -34,15 +36,13 @@ export function DeclarationCountdown() {
 
   return (
     <Card
-      className="p-4 transition-all duration-500 hover:shadow-2xl animate-slide-in-up overflow-hidden relative group bg-[var(--color-foreground)] text-[var(--color-background)]"
-      style={{ animationDelay: "1000ms" }}
+      className="p-4 transition-all duration-500 hover:shadow-2xl animate-slide-in-up overflow-hidden relative group bg-foreground text-background delay-1000"
     >
       <div className="absolute top-0 right-0 w-48 h-full opacity-15">
         {[...Array(6)].map((_, i) => (
           <svg
             key={i}
-            className="absolute"
-            style={{ top: `${i * 50}px`, right: `-${i * 10}px`, width: "150px", height: "80px" }}
+            className={`absolute ${WAVE_CLASSES[i]}`}
             viewBox="0 0 100 50"
             preserveAspectRatio="none"
           >

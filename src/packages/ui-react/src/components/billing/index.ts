@@ -1,2 +1,2 @@
 export { StampCard } from './StampCard'
-export type { StampCardProps } from './StampCard'
+export type { StampCardProps } from './StampCard.types'

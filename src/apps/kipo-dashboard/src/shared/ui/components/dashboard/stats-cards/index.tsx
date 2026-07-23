@@ -24,8 +24,7 @@ export function StatsCards({ stats }: { stats: DashboardStats | null }) {
           onMouseEnter={() => setHoveredCard(index)}
           onMouseLeave={() => setHoveredCard(null)}
           onClick={() => router.push(`/billing?status=${stat.filter}`)}
-          style={{ animationDelay: stat.delay }}
-          className={`p-4 transition-all duration-500 ease-out animate-slide-in-up cursor-pointer ${
+          className={`p-4 transition-all duration-500 ease-out animate-slide-in-up cursor-pointer ${stat.delay} ${
             stat.isPrimary ? "bg-primary text-primary-foreground" : "bg-card text-foreground"
           } ${hoveredCard === index ? "scale-105 shadow-2xl" : "shadow-lg"}`}
         >

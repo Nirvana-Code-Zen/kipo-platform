@@ -8,20 +8,7 @@ import { Button } from '@kipo/ui-react'
 
 import { AuthInput } from '../components/AuthInput'
 import { useAuth } from '../hooks/useAuth'
-
-import type { AuthError } from '../../core/domain/exceptions/auth.errors'
-
-const ERROR_MESSAGE: Record<AuthError['kind'], string> = {
-  InvalidCredentials: 'Correo o contraseña incorrectos',
-  OtpExpired: 'El código expiró. Solicita uno nuevo.',
-  OtpInvalid: 'Código incorrecto',
-  UserAlreadyExists: 'Esta cuenta ya existe',
-  UserNotFound: 'Cuenta no encontrada',
-  SessionExpired: 'Tu sesión expiró',
-  WrongTenant: 'Esta cuenta no pertenece a esta organización',
-  NetworkError: 'Error de conexión',
-  ServerError: 'Error del servidor',
-}
+import { LOGIN_ERROR_MESSAGE } from './constants'
 
 const EyeIcon = ({ open }: { open: boolean }) => open
   ? (
@@ -86,25 +73,15 @@ export const LoginView = ({ tenantName }: { tenantName?: string } = {}) => {
 
   return (
     <>
-      <div style={{ marginBottom: 28 }}>
-        <h1
-          style={{
-            fontFamily: 'var(--font-display)',
-            fontWeight: 700,
-            fontSize: 34,
-            color: 'var(--text-strong)',
-            letterSpacing: '-0.03em',
-            lineHeight: 1.15,
-            marginBottom: 10,
-          }}
-        >
+      <div className='mb-7'>
+        <h1 className='font-display font-bold text-[34px] text-foreground tracking-[-0.03em] leading-[1.15] mb-2.5'>
           Bienvenido de nuevo
         </h1>
-        <p style={{ fontSize: 14, color: 'var(--text-muted)', fontFamily: 'var(--font-body)' }}>
+        <p className='text-sm text-muted-foreground font-sans'>
           ¿No tienes cuenta?{' '}
           <Link
             href='/register'
-            style={{ color: 'var(--text-strong)', fontWeight: 600, textDecoration: 'underline', textUnderlineOffset: 3 }}
+            className='text-foreground font-semibold underline underline-offset-[3px]'
           >
             Regístrate
           </Link>
@@ -112,18 +89,7 @@ export const LoginView = ({ tenantName }: { tenantName?: string } = {}) => {
       </div>
 
       {tenantName && (
-        <div
-          style={{
-            background: 'var(--bg-subtle)',
-            border: '1.5px solid var(--border-subtle)',
-            borderRadius: 12,
-            padding: '10px 14px',
-            fontSize: 13,
-            color: 'var(--text-strong)',
-            fontFamily: 'var(--font-body)',
-            marginBottom: 16,
-          }}
-        >
+        <div className='bg-muted border-[1.5px] border-border-subtle rounded-kipo px-3.5 py-2.5 text-[13px] text-foreground font-sans mb-4'>
           Iniciando sesión en <strong>{tenantName}</strong>
         </div>
       )}
@@ -131,47 +97,24 @@ export const LoginView = ({ tenantName }: { tenantName?: string } = {}) => {
       {error && (
         <div
           role='alert'
-          style={{
-            background: 'var(--kipo-danger-bg)',
-            border: '1.5px solid var(--kipo-danger)',
-            borderRadius: 12,
-            padding: '10px 14px',
-            fontSize: 13,
-            color: 'var(--kipo-danger)',
-            fontFamily: 'var(--font-body)',
-            marginBottom: 20,
-          }}
+          className='bg-danger-soft border-[1.5px] border-danger rounded-kipo px-3.5 py-2.5 text-[13px] text-danger font-sans mb-5'
         >
-          {ERROR_MESSAGE[error.kind] ?? 'Error desconocido'}
+          {LOGIN_ERROR_MESSAGE[error.kind] ?? 'Error desconocido'}
         </div>
       )}
 
-      <div
-        style={{
-          display: 'flex',
-          borderBottom: '1.5px solid var(--border-subtle)',
-          marginBottom: 24,
-        }}
-      >
+      <div className='flex border-b-[1.5px] border-border-subtle mb-6'>
         {(['email', 'phone'] as const).map((t) => (
           <button
             key={t}
             type='button'
             onClick={() => { clearError(); setTab(t) }}
-            style={{
-              padding: '8px 4px',
-              marginRight: 20,
-              fontSize: 14,
-              fontWeight: tab === t ? 600 : 400,
-              fontFamily: 'var(--font-body)',
-              color: tab === t ? 'var(--text-strong)' : 'var(--text-muted)',
-              background: 'none',
-              border: 'none',
-              borderBottom: `2px solid ${tab === t ? 'var(--brand)' : 'transparent'}`,
-              marginBottom: -1.5,
-              cursor: 'pointer',
-              transition: 'color 0.15s, border-color 0.15s',
-            }}
+            className={[
+              'py-2 px-1 mr-5 text-sm font-sans cursor-pointer bg-transparent border-0 border-b-2 -mb-[1.5px] transition-[color,border-color] duration-150',
+              tab === t
+                ? 'font-semibold text-foreground border-brand'
+                : 'font-normal text-muted-foreground border-transparent',
+            ].join(' ')}
           >
             {t === 'email' ? 'Correo' : 'Teléfono'}
           </button>
@@ -179,7 +122,7 @@ export const LoginView = ({ tenantName }: { tenantName?: string } = {}) => {
       </div>
 
       {tab === 'email' && (
-        <form onSubmit={handleEmailLogin} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <form onSubmit={handleEmailLogin} className='flex flex-col gap-3'>
           <AuthInput
             label='Correo electrónico'
             type='email'
@@ -200,13 +143,13 @@ export const LoginView = ({ tenantName }: { tenantName?: string } = {}) => {
                 type='button'
                 onClick={() => setShowPassword((v) => !v)}
                 aria-label={showPassword ? 'Ocultar contraseña' : 'Mostrar contraseña'}
-                style={{ background: 'none', border: 'none', cursor: 'pointer', color: 'var(--text-muted)', display: 'flex', padding: 0, lineHeight: 0 }}
+                className='bg-transparent border-0 cursor-pointer text-muted-foreground flex p-0 leading-none'
               >
                 <EyeIcon open={showPassword} />
               </button>
             }
           />
-          <div style={{ marginTop: 8 }}>
+          <div className='mt-2'>
             <Button type='submit' variant='primary' size='md' full disabled={isLoading}>
               {isLoading ? <><Loader2 size={16} className='animate-spin' /> Entrando…</> : 'Entrar'}
             </Button>
@@ -215,7 +158,7 @@ export const LoginView = ({ tenantName }: { tenantName?: string } = {}) => {
       )}
 
       {tab === 'phone' && !isOtpPending && (
-        <form onSubmit={handleRequestOtp} style={{ display: 'flex', flexDirection: 'column', gap: 12 }}>
+        <form onSubmit={handleRequestOtp} className='flex flex-col gap-3'>
           <AuthInput
             label='Número de teléfono'
             type='tel'
@@ -226,7 +169,7 @@ export const LoginView = ({ tenantName }: { tenantName?: string } = {}) => {
             placeholder='+52 55 1234 5678'
           />
 
-          <div style={{ marginTop: 8 }}>
+          <div className='mt-2'>
             <Button type='submit' variant='primary' size='md' full disabled={isLoading}>
               {isLoading ? <><Loader2 size={16} className='animate-spin' /> Enviando…</> : 'Enviar código'}
             </Button>
@@ -235,24 +178,15 @@ export const LoginView = ({ tenantName }: { tenantName?: string } = {}) => {
       )}
 
       {tab === 'phone' && isOtpPending && (
-        <form onSubmit={handleVerifyOtp} style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-          <p style={{ fontSize: 14, color: 'var(--text-body)', fontFamily: 'var(--font-body)', lineHeight: 1.5, margin: 0 }}>
-            Código enviado a <strong style={{ color: 'var(--text-strong)' }}>{pendingOtp?.phone}</strong>{' '}
+        <form onSubmit={handleVerifyOtp} className='flex flex-col gap-3.5'>
+          <p className='text-sm text-text-body font-sans leading-normal m-0'>
+            Código enviado a <strong className='text-foreground'>{pendingOtp?.phone}</strong>{' '}
             vía SMS
           </p>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
+          <div className='flex flex-col gap-1'>
             <label htmlFor='otp-code' className='sr-only'>Código de verificación</label>
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                background: 'var(--bg-subtle)',
-                border: '1.5px solid transparent',
-                borderRadius: 14,
-                padding: '0 16px',
-              }}
-            >
+            <div className='flex items-center bg-muted border-[1.5px] border-transparent rounded-[14px] px-4'>
               <input
                 id='otp-code'
                 type='text'
@@ -263,24 +197,12 @@ export const LoginView = ({ tenantName }: { tenantName?: string } = {}) => {
                 value={otpCode}
                 onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, ''))}
                 placeholder='000000'
-                style={{
-                  flex: 1,
-                  border: 'none',
-                  outline: 'none',
-                  background: 'transparent',
-                  padding: '15px 0',
-                  fontSize: 24,
-                  textAlign: 'center',
-                  letterSpacing: '0.3em',
-                  fontFamily: 'var(--font-mono)',
-                  color: 'var(--text-strong)',
-                  fontVariantNumeric: 'tabular-nums',
-                }}
+                className='flex-1 border-0 outline-none bg-transparent py-[15px] text-2xl text-center tracking-[0.3em] font-mono text-foreground tabular-nums'
               />
             </div>
           </div>
 
-          <div style={{ marginTop: 4 }}>
+          <div className='mt-1'>
             <Button type='submit' variant='primary' size='md' full disabled={isLoading || otpCode.length < 6}>
               {isLoading ? <><Loader2 size={16} className='animate-spin' /> Verificando…</> : 'Verificar'}
             </Button>
@@ -289,23 +211,23 @@ export const LoginView = ({ tenantName }: { tenantName?: string } = {}) => {
           <button
             type='button'
             onClick={() => { clearError(); setOtpCode('') }}
-            style={{ background: 'none', border: 'none', cursor: 'pointer', fontSize: 13, color: 'var(--text-muted)', fontFamily: 'var(--font-body)', padding: 0, textAlign: 'center' }}
+            className='bg-transparent border-0 cursor-pointer text-[13px] text-muted-foreground font-sans p-0 text-center'
           >
             Cambiar número
           </button>
         </form>
       )}
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: 12, margin: '24px 0 20px' }}>
-        <div style={{ flex: 1, height: 1, background: 'var(--border-subtle)' }} />
-        <span style={{ fontSize: 12, color: 'var(--text-muted)', fontFamily: 'var(--font-body)', whiteSpace: 'nowrap' }}>
+      <div className='flex items-center gap-3 my-6 mb-5'>
+        <div className='flex-1 h-px bg-border-subtle' />
+        <span className='text-xs text-muted-foreground font-sans whitespace-nowrap'>
           O continúa con
         </span>
-        <div style={{ flex: 1, height: 1, background: 'var(--border-subtle)' }} />
+        <div className='flex-1 h-px bg-border-subtle' />
       </div>
 
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 10 }}>
-        <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 10 }}>
+      <div className='flex flex-col gap-2.5'>
+        <div className='grid grid-cols-2 gap-2.5'>
           <Button variant='secondary' size='md' full disabled={isLoading} iconLeft={<GoogleIcon />} onClick={() => handleSocial('google')}>
             Google
           </Button>
