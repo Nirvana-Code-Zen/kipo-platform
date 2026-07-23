@@ -20,3 +20,16 @@ export const INVOICE_STATUS_LABEL = {
 
 export const formatMXN = (amount: number) =>
   new Intl.NumberFormat("es-MX", { style: "currency", currency: "MXN" }).format(amount)
+
+export const ROW_STAGGER = [
+  '[animation-delay:0ms]',
+  '[animation-delay:60ms]',
+  '[animation-delay:120ms]',
+  '[animation-delay:180ms]',
+  '[animation-delay:240ms]',
+  '[animation-delay:300ms]',
+  '[animation-delay:360ms]',
+  '[animation-delay:420ms]',
+  '[animation-delay:480ms]',
+  '[animation-delay:540ms]',
+] as const

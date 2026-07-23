@@ -6,6 +6,7 @@ import { Avatar, AvatarFallback, AvatarImage, Badge, Button, Card } from "@kipo/
 import { Mail, MoreHorizontal } from "lucide-react"
 
 import { CustomerCardMenu } from "../CustomerCardMenu"
+import { CARD_STAGGER } from "./constants"
 
 import type { CustomerCardProps } from "./types"
 
@@ -14,8 +15,7 @@ export function CustomerCard({ customer, index, onToggleStatus, onDelete, onView
 
   return (
     <Card
-      className="p-6 hover:shadow-lg transition-all duration-300 animate-slide-in"
-      style={{ animationDelay: `${index * 100}ms` }}
+      className={`p-6 hover:shadow-lg transition-all duration-300 animate-slide-in ${CARD_STAGGER[index] ?? CARD_STAGGER[0]}`}
     >
       <div className="flex items-start justify-between mb-4">
         <Avatar className="w-16 h-16 border-2 border-primary/20">

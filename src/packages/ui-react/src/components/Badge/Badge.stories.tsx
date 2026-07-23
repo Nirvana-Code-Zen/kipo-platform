@@ -34,7 +34,7 @@ export const WithDot: Story = {
 
 export const AllTones: Story = {
   render: () => (
-    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+    <div className="flex gap-2 flex-wrap">
       {(['neutral', 'brand', 'success', 'warning', 'danger', 'info'] as const).map((tone) => (
         <Badge key={tone} tone={tone}>{tone}</Badge>
       ))}
@@ -44,7 +44,7 @@ export const AllTones: Story = {
 
 export const AllTonesSolid: Story = {
   render: () => (
-    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+    <div className="flex gap-2 flex-wrap">
       {(['neutral', 'brand', 'success', 'warning', 'danger', 'info'] as const).map((tone) => (
         <Badge key={tone} tone={tone} solid>{tone}</Badge>
       ))}
@@ -54,7 +54,7 @@ export const AllTonesSolid: Story = {
 
 export const InvoiceStatuses: Story = {
   render: () => (
-    <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap' }}>
+    <div className="flex gap-2 flex-wrap">
       <Badge tone="success" dot>Stamped</Badge>
       <Badge tone="warning" dot>Pending</Badge>
       <Badge tone="danger"  dot>Cancelled</Badge>

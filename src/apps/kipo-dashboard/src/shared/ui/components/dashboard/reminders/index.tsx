@@ -15,8 +15,7 @@ export function Reminders() {
 
   return (
     <Card
-      className="p-6 transition-all duration-500 hover:shadow-xl animate-slide-in-up"
-      style={{ animationDelay: "500ms" }}
+      className="p-6 transition-all duration-500 hover:shadow-xl animate-slide-in-up delay-500"
     >
       <h2 className="text-xl font-semibold text-foreground mb-6">Recordatorios</h2>
       <div className="space-y-4">

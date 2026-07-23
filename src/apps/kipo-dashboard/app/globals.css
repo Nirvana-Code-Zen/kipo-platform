@@ -81,11 +81,55 @@ body {
     background: linear-gradient(135deg, var(--bg-base) 0%, #ffffff 100%);
   }
 
+  .bg-kipo-gradient {
+    background: var(--kipo-gradient);
+  }
+
   .font-financial {
     font-family: var(--font-mono);
     font-variant-numeric: tabular-nums;
     font-feature-settings: "tnum" 1, "zero" 1;
     letter-spacing: -0.01em;
+  }
+
+  .animate-slide-in {
+    animation: slideInUp 0.5s ease-out forwards;
+  }
+
+  .delay-400 { animation-delay: 400ms; }
+  .delay-500 { animation-delay: 500ms; }
+  .delay-600 { animation-delay: 600ms; }
+  .delay-650 { animation-delay: 650ms; }
+  .delay-700 { animation-delay: 700ms; }
+  .delay-750 { animation-delay: 750ms; }
+  .delay-800 { animation-delay: 800ms; }
+  .delay-850 { animation-delay: 850ms; }
+  .delay-900 { animation-delay: 900ms; }
+  .delay-950 { animation-delay: 950ms; }
+  .delay-1000 { animation-delay: 1000ms; }
+  .delay-0 { animation-delay: 0ms; }
+  .delay-100 { animation-delay: 100ms; }
+  .delay-200 { animation-delay: 200ms; }
+  .delay-300 { animation-delay: 300ms; }
+
+  .bg-stamps-ring-pattern {
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 6px,
+      oklch(0.42 0.15 155) 6px,
+      oklch(0.42 0.15 155) 12px
+    );
+  }
+
+  .bg-stamps-draft-dot {
+    background: repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 2px,
+      oklch(0.55 0.02 120) 2px,
+      oklch(0.55 0.02 120) 4px
+    );
   }
 }
 

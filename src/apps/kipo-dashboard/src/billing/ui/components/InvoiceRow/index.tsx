@@ -6,7 +6,7 @@ import { Badge } from "@kipo/ui-react"
 import { MoreHorizontal } from "lucide-react"
 
 import { InvoiceRowMenu } from "../InvoiceRowMenu"
-import { VOUCHER_TYPE_LABEL, INVOICE_STATUS_TONE, INVOICE_STATUS_LABEL, formatMXN } from "./constants"
+import { VOUCHER_TYPE_LABEL, INVOICE_STATUS_TONE, INVOICE_STATUS_LABEL, formatMXN, ROW_STAGGER } from "./constants"
 
 import type { InvoiceRowProps } from "./types"
 
@@ -15,8 +15,7 @@ export function InvoiceRow({ invoice, index, onViewDetails, onCancel, onDelete }
 
   return (
     <div
-      className="flex items-center gap-4 px-4 py-3.5 hover:bg-muted/50 transition-colors rounded-xl animate-slide-in"
-      style={{ animationDelay: `${index * 60}ms` }}
+      className={`flex items-center gap-4 px-4 py-3.5 hover:bg-muted/50 transition-colors rounded-xl animate-slide-in ${ROW_STAGGER[index] ?? ROW_STAGGER[0]}`}
     >
       <div className="flex-shrink-0 w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold bg-[var(--kipo-red-50)] text-[var(--kipo-red-dark)]">
         {invoice.voucherType}

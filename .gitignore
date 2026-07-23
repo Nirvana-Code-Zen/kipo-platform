@@ -26,6 +26,10 @@ Thumbs.db
 *.swp
 *.swo
 
+# Tooling cache
+**/vite.config.ts.timestamp-*.mjs
+**/.astro/settings.json
+
 # Playwright e2e
 e2e/.runtime.json
 e2e/test-results/

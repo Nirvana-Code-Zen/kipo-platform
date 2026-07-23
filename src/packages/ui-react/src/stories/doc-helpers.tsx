@@ -1,10 +1,11 @@
-import type { ReactNode, CSSProperties } from 'react'
+import type { ReactNode } from 'react'
+import { cn } from '../lib/cn'
 
 export function DocPage({ category, children }: { category: string; children: ReactNode }) {
   return (
-    <div style={{ minHeight: '100vh', background: 'var(--bg-base)', fontFamily: 'var(--font-body)' }}>
-      <div style={{ padding: '20px 48px 16px', borderBottom: '1px solid var(--border-subtle)' }}>
-        <span style={{ fontFamily: 'var(--font-body)', fontSize: 12, color: 'var(--text-muted)', letterSpacing: '0.02em' }}>
+    <div className="min-h-screen bg-bg-base font-sans">
+      <div className="border-b border-border-subtle px-12 pt-5 pb-4">
+        <span className="font-sans text-xs text-text-muted tracking-[0.02em]">
           {category}
         </span>
       </div>
@@ -15,19 +16,7 @@ export function DocPage({ category, children }: { category: string; children: Re
 
 function DocBtn({ children }: { children: ReactNode }) {
   return (
-    <button style={{
-      fontFamily: 'var(--font-body)',
-      fontSize: 13,
-      fontWeight: 500,
-      color: 'var(--text-strong)',
-      background: 'var(--surface-card)',
-      border: '1px solid var(--border-strong)',
-      borderRadius: 8,
-      padding: '6px 14px',
-      cursor: 'pointer',
-      lineHeight: 1.4,
-      whiteSpace: 'nowrap',
-    }}>
+    <button className="font-sans text-[13px] font-medium text-text-strong bg-surface-card border border-border-strong rounded-kipo-sm px-3.5 py-1.5 cursor-pointer leading-snug whitespace-nowrap">
       {children}
     </button>
   )
@@ -37,61 +26,36 @@ export function DocSection({
   title,
   subtitle,
   children,
-  cardStyle,
+  cardClassName,
 }: {
   title: string
   subtitle: string
   children: ReactNode
-  cardStyle?: CSSProperties
+  cardClassName?: string
 }) {
   return (
-    <div style={{ padding: '40px 48px 20px' }}>
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: 20 }}>
+    <div className="px-12 pt-10 pb-5">
+      <div className="flex justify-between items-start mb-5">
         <div>
-          <h2 style={{
-            fontFamily: 'var(--font-display)',
-            fontWeight: 700,
-            fontSize: 22,
-            color: 'var(--text-strong)',
-            margin: 0,
-            letterSpacing: '-0.02em',
-            lineHeight: 1.2,
-          }}>
+          <h2 className="font-display font-bold text-[22px] text-text-strong m-0 tracking-[-0.02em] leading-tight">
             {title}
           </h2>
-          <p style={{
-            fontFamily: 'var(--font-body)',
-            fontSize: 15,
-            color: 'var(--text-muted)',
-            margin: '5px 0 0',
-            lineHeight: 1.4,
-          }}>
+          <p className="font-sans text-[15px] text-text-muted mt-[5px] mb-0 leading-snug">
             {subtitle}
           </p>
         </div>
-        <div style={{ display: 'flex', gap: 8, flexShrink: 0, marginLeft: 32 }}>
+        <div className="flex gap-2 shrink-0 ml-8">
           <DocBtn>Feedback</DocBtn>
           <DocBtn>↗ Edit</DocBtn>
         </div>
       </div>
-      <div style={{
-        background: 'var(--surface-card)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: 'var(--radius-lg)',
-        padding: '28px',
-        overflow: 'hidden',
-        ...cardStyle,
-      }}>
+      <div className={cn(
+        'bg-surface-card border border-border-subtle rounded-kipo-lg p-7 overflow-hidden',
+        cardClassName,
+      )}>
         {children}
       </div>
-      <div style={{
-        marginTop: 12,
-        fontFamily: 'var(--font-body)',
-        fontSize: 13,
-        color: 'var(--text-muted)',
-        paddingLeft: 2,
-        cursor: 'pointer',
-      }}>
+      <div className="mt-3 font-sans text-[13px] text-text-muted pl-0.5 cursor-pointer">
         Add usage notes
       </div>
     </div>
@@ -102,32 +66,29 @@ export function Swatch({
   step,
   hex,
   dark = false,
-  style,
+  className,
 }: {
   step: string | number
   hex?: string
   dark?: boolean
-  style?: CSSProperties
+  className?: string
 }) {
-  const textColor = dark ? '#fff' : '#032641'
-  const subColor = dark ? 'rgba(255,255,255,0.55)' : 'rgba(3,38,65,0.45)'
   return (
-    <div style={{
-      borderRadius: 12,
-      minHeight: 112,
-      padding: '12px 14px',
-      display: 'flex',
-      flexDirection: 'column',
-      justifyContent: 'flex-end',
-      flex: '1 1 0',
-      minWidth: 0,
-      ...style,
-    }}>
-      <span style={{ fontFamily: 'var(--font-mono)', fontWeight: 700, fontSize: 14, color: textColor, lineHeight: 1.3 }}>
+    <div className={cn(
+      'rounded-kipo min-h-28 px-3.5 py-3 flex flex-col justify-end flex-1 min-w-0',
+      className,
+    )}>
+      <span className={cn(
+        'font-mono font-bold text-sm leading-snug',
+        dark ? 'text-white' : 'text-kipo-slate-900',
+      )}>
         {step}
       </span>
       {hex && (
-        <span style={{ fontFamily: 'var(--font-mono)', fontSize: 12, color: subColor, marginTop: 2 }}>
+        <span className={cn(
+          'font-mono text-xs mt-0.5',
+          dark ? 'text-white/55' : 'text-[rgba(3,38,65,0.45)]',
+        )}>
           {hex}
         </span>
       )}
@@ -135,9 +96,9 @@ export function Swatch({
   )
 }
 
-export function SwatchRow({ children, style }: { children: ReactNode; style?: CSSProperties }) {
+export function SwatchRow({ children, className }: { children: ReactNode; className?: string }) {
   return (
-    <div style={{ display: 'flex', gap: 8, ...style }}>
+    <div className={cn('flex gap-2', className)}>
       {children}
     </div>
   )
@@ -145,13 +106,7 @@ export function SwatchRow({ children, style }: { children: ReactNode; style?: CS
 
 export function MonoMeta({ children }: { children: ReactNode }) {
   return (
-    <div style={{
-      fontFamily: 'var(--font-mono)',
-      fontSize: 13,
-      color: 'var(--text-muted)',
-      marginTop: 20,
-      lineHeight: 1.5,
-    }}>
+    <div className="font-mono text-[13px] text-text-muted mt-5 leading-normal">
       {children}
     </div>
   )

@@ -1,57 +1,26 @@
-import { type HTMLAttributes, type ReactNode } from 'react'
 import { cn } from '../../lib/cn'
 
-export interface CardProps extends HTMLAttributes<HTMLDivElement> {
-  elevation?: 'none' | 'xs' | 'sm' | 'md' | 'lg'
-  padding?: string
-  radius?: string
-  interactive?: boolean
-  children?: ReactNode
-}
-
-const shadows: Record<string, string> = {
-  none: 'none',
-  xs:   'var(--shadow-xs)',
-  sm:   'var(--shadow-sm)',
-  md:   'var(--shadow-md)',
-  lg:   'var(--shadow-lg)',
-}
+import { elevationClasses, paddingClasses } from './constants'
+import type { CardProps } from './types'
 
 export function Card({
   elevation = 'sm',
-  padding = 'var(--space-5)',
-  radius = 'var(--radius-lg)',
+  padding = 'md',
   interactive = false,
   children,
   className,
-  style,
   ...rest
 }: CardProps) {
-  const shadow = shadows[elevation] ?? shadows.sm
-
   return (
     <div
-      className={cn(className)}
-      style={{
-        background: 'var(--surface-card)',
-        border: '1px solid var(--border-subtle)',
-        borderRadius: radius,
-        boxShadow: shadow,
-        padding,
-        transition: 'transform var(--dur-base) var(--ease-out), box-shadow var(--dur-base) var(--ease-out)',
-        cursor: interactive ? 'pointer' : 'default',
-        ...style,
-      }}
-      onMouseEnter={(e) => {
-        if (!interactive) return
-        e.currentTarget.style.transform = 'translateY(-2px)'
-        e.currentTarget.style.boxShadow = 'var(--shadow-md)'
-      }}
-      onMouseLeave={(e) => {
-        if (!interactive) return
-        e.currentTarget.style.transform = 'translateY(0)'
-        e.currentTarget.style.boxShadow = shadow
-      }}
+      className={cn(
+        'bg-surface-card border border-border-subtle rounded-kipo-lg',
+        'transition-[transform,box-shadow] duration-200 ease-[cubic-bezier(0.22,1,0.36,1)]',
+        elevationClasses[elevation],
+        paddingClasses[padding],
+        interactive && 'cursor-pointer hover:-translate-y-0.5 hover:shadow-kipo-md',
+        className,
+      )}
       {...rest}
     >
       {children}

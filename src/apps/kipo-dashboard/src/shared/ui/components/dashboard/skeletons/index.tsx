@@ -3,16 +3,13 @@ import { Card } from '@kipo/ui-react'
 function Sk({
   className = '',
   dark = false,
-  style,
 }: {
   className?: string
   dark?: boolean
-  style?: React.CSSProperties
 }) {
   return (
     <div
       className={`${dark ? 'skeleton-dark' : 'skeleton'} ${className}`}
-      style={style}
     />
   )
 }
@@ -34,9 +31,20 @@ export function StatsCardsSkeleton() {
   )
 }
 
-export function BillingAnalyticsSkeleton() {
-  const bars = [80, 140, 110, 180, 65, 155, 90]
+const BAR_HEIGHTS = [
+  'h-[80px]',
+  'h-[140px]',
+  'h-[110px]',
+  'h-[180px]',
+  'h-[65px]',
+  'h-[155px]',
+  'h-[90px]',
+] as const
 
+const VARIABLE_WIDTHS = ['w-[55%]', 'w-[70%]', 'w-[85%]'] as const
+const RECENT_CLIENT_WIDTHS = ['w-[45%]', 'w-[60%]', 'w-[75%]'] as const
+
+export function BillingAnalyticsSkeleton() {
   return (
     <Card className="p-5">
       <div className="flex items-center justify-between mb-5">
@@ -52,9 +60,9 @@ export function BillingAnalyticsSkeleton() {
       </div>
 
       <div className="flex items-end gap-2 h-48 px-1">
-        {bars.map((h, i) => (
+        {BAR_HEIGHTS.map((heightClass, i) => (
           <div key={i} className="flex-1 flex flex-col items-center gap-1">
-            <Sk className="w-full rounded-t-md rounded-b-none" style={{ height: h }} />
+            <Sk className={`w-full rounded-t-md rounded-b-none ${heightClass}`} />
             <Sk className="h-2.5 w-6" />
           </div>
         ))}
@@ -86,7 +94,7 @@ export function InvoiceListSkeleton() {
           <div key={i} className="flex items-center gap-3 p-3">
             <Sk className="w-10 h-10 rounded-lg flex-shrink-0" />
             <div className="flex-1 space-y-1.5">
-              <Sk className="h-3.5" style={{ width: `${55 + (i % 3) * 15}%` }} />
+              <Sk className={`h-3.5 ${VARIABLE_WIDTHS[i % 3]}`} />
               <Sk className="h-2.5 w-28" />
             </div>
           </div>
@@ -133,7 +141,7 @@ export function RecentClientsSkeleton() {
           <div key={i} className="flex items-center gap-4 p-3">
             <Sk className="w-12 h-12 rounded-full flex-shrink-0" />
             <div className="flex-1 space-y-1.5">
-              <Sk className="h-3.5" style={{ width: `${45 + (i % 3) * 15}%` }} />
+              <Sk className={`h-3.5 ${RECENT_CLIENT_WIDTHS[i % 3]}`} />
               <Sk className="h-2.5 w-44" />
             </div>
             <Sk className="h-6 w-20 rounded-full flex-shrink-0" />

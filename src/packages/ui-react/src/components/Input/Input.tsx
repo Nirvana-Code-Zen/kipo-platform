@@ -1,77 +1,61 @@
-import { useState, type InputHTMLAttributes, type ReactNode } from 'react'
+import { useState } from 'react'
 import { cn } from '../../lib/cn'
 
-export interface InputProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'prefix'> {
-  label?: string
-  hint?: string
-  error?: string
-  mono?: boolean
-  prefix?: ReactNode
-  suffix?: ReactNode
-  wrapperClassName?: string
-}
+import type { InputProps } from './types'
 
-export function Input({ label, hint, error, mono = false, prefix, suffix, style, id, className, wrapperClassName, ...rest }: InputProps) {
+export function Input({
+  label,
+  hint,
+  error,
+  mono = false,
+  prefix,
+  suffix,
+  id,
+  className,
+  wrapperClassName,
+  ...rest
+}: InputProps) {
   const [focus, setFocus] = useState(false)
   const inputId = id ?? (label ? 'in-' + label.replace(/\s+/g, '-').toLowerCase() : undefined)
 
-  const borderColor = error
-    ? 'var(--kipo-danger)'
-    : focus
-    ? 'var(--brand)'
-    : 'var(--border-strong)'
-
   return (
-    <div className={cn(wrapperClassName)} style={{ display: 'flex', flexDirection: 'column', gap: 6, ...style }}>
+    <div className={cn('flex flex-col gap-1.5', wrapperClassName)}>
       {label && (
-        <label
-          htmlFor={inputId}
-          style={{ fontFamily: 'var(--font-body)', fontWeight: 600, fontSize: 13, color: 'var(--text-strong)' }}
-        >
+        <label htmlFor={inputId} className="font-sans font-semibold text-[13px] text-text-strong">
           {label}
         </label>
       )}
       <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          gap: 8,
-          background: 'var(--surface-card)',
-          border: `1.5px solid ${borderColor}`,
-          borderRadius: 'var(--radius-md)',
-          padding: '0 14px',
-          boxShadow: focus ? '0 0 0 4px var(--focus-ring)' : 'none',
-          transition: 'border-color var(--dur-fast), box-shadow var(--dur-fast)',
-        }}
+        className={cn(
+          'flex items-center gap-2 bg-surface-card border-[1.5px] rounded-kipo px-3.5',
+          'transition-[border-color,box-shadow] duration-[120ms]',
+          error
+            ? 'border-danger'
+            : focus
+              ? 'border-brand shadow-[0_0_0_4px_var(--focus-ring)]'
+              : 'border-border-strong',
+        )}
       >
         {prefix && (
-          <span style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: 14 }}>{prefix}</span>
+          <span className="text-text-muted font-mono text-sm">{prefix}</span>
         )}
         <input
           id={inputId}
-          className={cn(className)}
+          className={cn(
+            'flex-1 border-0 outline-none bg-transparent py-3 text-[15px] text-text-strong',
+            mono ? 'font-mono tabular-nums tracking-[-0.01em]' : 'font-sans',
+            className,
+          )}
           onFocus={() => setFocus(true)}
           onBlur={() => setFocus(false)}
-          style={{
-            flex: 1,
-            border: 'none',
-            outline: 'none',
-            background: 'transparent',
-            padding: '12px 0',
-            fontSize: 15,
-            color: 'var(--text-strong)',
-            fontFamily: mono ? 'var(--font-mono)' : 'var(--font-body)',
-            fontVariantNumeric: mono ? 'tabular-nums' : 'normal',
-            letterSpacing: mono ? '-0.01em' : 'normal',
-          }}
           {...rest}
         />
         {suffix && (
-          <span style={{ color: 'var(--text-muted)', fontFamily: 'var(--font-mono)', fontSize: 14 }}>{suffix}</span>
+          <span className="text-text-muted font-mono text-sm">{suffix}</span>
         )}
       </div>
       {(error ?? hint) && (
-        <span style={{ fontSize: 12, color: error ? 'var(--kipo-danger)' : 'var(--text-muted)' }}>
+        <span className={cn('text-xs', error ? 'text-danger' : 'text-text-muted')}>
           {error ?? hint}
         </span>
       )}

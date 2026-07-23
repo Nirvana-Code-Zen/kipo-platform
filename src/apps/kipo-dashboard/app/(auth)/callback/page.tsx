@@ -32,18 +32,9 @@ export default function OAuthCallbackPage() {
   }, [completeOAuth, router])
 
   return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        minHeight: '100vh',
-        flexDirection: 'column',
-        gap: 16,
-      }}
-    >
-      <Loader2 size={32} className='animate-spin' style={{ color: 'var(--brand)' }} />
-      <p style={{ fontFamily: 'var(--font-body)', color: 'var(--text-muted)', fontSize: 14 }}>
+    <div className="flex flex-col items-center justify-center min-h-screen gap-4">
+      <Loader2 size={32} className="animate-spin text-brand" />
+      <p className="font-sans text-text-muted text-sm">
         Completando inicio de sesión…
       </p>
     </div>

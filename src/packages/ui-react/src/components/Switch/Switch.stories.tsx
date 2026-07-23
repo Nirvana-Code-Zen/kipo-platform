@@ -62,7 +62,7 @@ export const Group: Story = {
       setStates((s) => ({ ...s, [key]: !s[key] }))
 
     return (
-      <div style={{ display: 'flex', flexDirection: 'column', gap: 16, minWidth: 280 }}>
+      <div className="flex flex-col gap-4 min-w-[280px]">
         <Switch label="Issued invoices"      checked={states.invoices}   onChange={() => toggle('invoices')} />
         <Switch label="Received payments"    checked={states.payments}   onChange={() => toggle('payments')} />
         <Switch label="Due date reminders"   checked={states.reminders}  onChange={() => toggle('reminders')} />

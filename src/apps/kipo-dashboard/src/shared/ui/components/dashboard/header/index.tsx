@@ -33,7 +33,7 @@ export function Header({ title, description, actions }: HeaderProps) {
                 ⌘F
               </kbd>
             }
-            style={{ margin: 0 }}
+            wrapperClassName="m-0"
           />
         </div>
 

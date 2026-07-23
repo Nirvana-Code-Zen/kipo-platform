@@ -55,6 +55,13 @@
   --surface-card: var(--kipo-cream-0);
   --surface-raised: var(--kipo-cream-0);
   --surface-sunken: var(--kipo-cream-200);
+  --surface-brand-soft: var(--kipo-red-50);
+
+  --banner-warning-bg: #fffbeb;
+  --banner-warning-border: #fde68a;
+  --banner-warning-icon: #d97706;
+  --banner-warning-text: #92400e;
+  --banner-warning-link: #b45309;
 
   --border-subtle: var(--kipo-cream-200);
   --border-strong: var(--kipo-cream-300);
@@ -174,4 +181,10 @@
   font-feature-settings:
     "tnum" 1,
     "zero" 1;
+}
+
+@layer utilities {
+  .bg-kipo-gradient {
+    background: var(--kipo-gradient);
+  }
 }

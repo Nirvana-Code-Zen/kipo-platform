@@ -26,19 +26,12 @@ export function StampsProgress({ stamps, onBuyClick }: StampsProgressProps) {
 
   return (
     <Card
-      className="p-4 transition-all duration-500 hover:shadow-xl animate-slide-in-up overflow-hidden"
-      style={{ animationDelay: "800ms" }}
+      className="p-4 transition-all duration-500 hover:shadow-xl animate-slide-in-up overflow-hidden delay-800"
     >
       <h2 className="text-lg font-semibold text-foreground mb-4">Timbres</h2>
       <div className="flex flex-col items-center">
         <div className="relative w-40 h-40 mb-4">
-          <div
-            className="absolute inset-0 rounded-full opacity-20"
-            style={{
-              background:
-                "repeating-linear-gradient(45deg, transparent, transparent 6px, oklch(0.42 0.15 155) 6px, oklch(0.42 0.15 155) 12px)",
-            }}
-          />
+          <div className="absolute inset-0 rounded-full opacity-20 bg-stamps-ring-pattern" />
           <svg className="w-full h-full -rotate-90 relative z-10" viewBox="0 0 160 160">
             <circle
               cx="80"
@@ -77,13 +70,7 @@ export function StampsProgress({ stamps, onBuyClick }: StampsProgressProps) {
             <span className="text-muted-foreground whitespace-nowrap">En proceso</span>
           </div>
           <div className="flex items-center gap-1.5">
-            <div
-              className="w-2.5 h-2.5 rounded-full flex-shrink-0"
-              style={{
-                background:
-                  "repeating-linear-gradient(45deg, transparent, transparent 2px, oklch(0.55 0.02 120) 2px, oklch(0.55 0.02 120) 4px)",
-              }}
-            />
+            <div className="w-2.5 h-2.5 rounded-full flex-shrink-0 bg-stamps-draft-dot" />
             <span className="text-muted-foreground whitespace-nowrap">Borradores</span>
           </div>
         </div>

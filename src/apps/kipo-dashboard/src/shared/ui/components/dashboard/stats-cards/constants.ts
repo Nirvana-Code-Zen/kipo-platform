@@ -14,7 +14,7 @@ export function buildStats(stats: DashboardStats | null) {
       increase: monthDelta(stats, 'total'),
       filter: 'all',
       isPrimary: true,
-      delay: '0ms',
+      delay: 'delay-0',
     },
     {
       title: 'Canceladas',
@@ -22,7 +22,7 @@ export function buildStats(stats: DashboardStats | null) {
       increase: monthDelta(stats, 'cancelled'),
       filter: 'cancelled',
       isPrimary: false,
-      delay: '100ms',
+      delay: 'delay-100',
     },
     {
       title: 'Timbradas',
@@ -30,7 +30,7 @@ export function buildStats(stats: DashboardStats | null) {
       increase: monthDelta(stats, 'stamped'),
       filter: 'stamped',
       isPrimary: false,
-      delay: '200ms',
+      delay: 'delay-200',
     },
     {
       title: 'Borradores',
@@ -38,7 +38,7 @@ export function buildStats(stats: DashboardStats | null) {
       subtitle: 'En revisión',
       filter: 'draft',
       isPrimary: false,
-      delay: '300ms',
+      delay: 'delay-300',
     },
   ]
 }

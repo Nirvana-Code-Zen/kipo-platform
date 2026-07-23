@@ -5,6 +5,7 @@ import { Plus, Users } from "lucide-react"
 import { Avatar, AvatarFallback, AvatarImage, Button, Card } from "@kipo/ui-react"
 
 import { RecentClientsSkeleton } from "../skeletons"
+import { CLIENT_STAGGER } from "./constants"
 
 import type { RecentClientsProps } from "./types"
 
@@ -52,8 +53,7 @@ export function RecentClients({ clients, isLoading }: RecentClientsProps) {
 
   return (
     <Card
-      className="p-6 transition-all duration-500 hover:shadow-xl animate-slide-in-up"
-      style={{ animationDelay: "600ms" }}
+      className="p-6 transition-all duration-500 hover:shadow-xl animate-slide-in-up delay-600"
     >
       <div className="flex items-center justify-between mb-6">
         <h2 className="text-xl font-semibold text-foreground">Clientes recientes</h2>
@@ -75,8 +75,7 @@ export function RecentClients({ clients, isLoading }: RecentClientsProps) {
           {clients.map((client, index) => (
             <div
               key={client.tax_id}
-              className="flex items-center gap-4 p-3 rounded-lg hover:bg-secondary transition-all duration-300 cursor-pointer group"
-              style={{ animationDelay: `${650 + index * 100}ms` }}
+              className={`flex items-center gap-4 p-3 rounded-lg hover:bg-secondary transition-all duration-300 cursor-pointer group animate-slide-in-up ${CLIENT_STAGGER[index] ?? CLIENT_STAGGER[0]}`}
             >
               <Avatar className="w-12 h-12 ring-2 ring-primary/20 transition-all duration-300 group-hover:ring-primary/40 group-hover:scale-110">
                 {client.avatar_url && <AvatarImage src={client.avatar_url} alt={client.legal_name} className="object-cover w-full h-full" />}

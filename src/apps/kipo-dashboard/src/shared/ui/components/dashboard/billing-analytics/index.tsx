@@ -16,11 +16,11 @@ import {
   formatAxisMXN,
   getWeekStart,
   formatWeekRange,
+  MONTHLY_BAR_HEIGHTS,
+  WEEKLY_BAR_HEIGHTS,
 } from "./constants"
 
-import type { TooltipProps } from "recharts"
-
-type CustomTooltipProps = TooltipProps<number | string, string>
+import type { CustomTooltipProps } from "./types"
 
 export function BillingAnalytics() {
   const [hoveredBar, setHoveredBar] = useState<number | null>(null)
@@ -55,8 +55,7 @@ export function BillingAnalytics() {
 
   return (
     <Card
-      className="p-6 transition-all duration-500 hover:shadow-xl animate-slide-in-up bg-gradient-to-br from-background to-muted/20"
-      style={{ animationDelay: "400ms" }}
+      className="p-6 transition-all duration-500 hover:shadow-xl animate-slide-in-up delay-400 bg-gradient-to-br from-background to-muted/20"
     >
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4">
         <h2 className="text-xl font-semibold text-foreground">Actividad de Facturación</h2>
@@ -105,11 +104,8 @@ export function BillingAnalytics() {
       <div className="h-64 mb-4 relative">
         {chartLoading ? (
           <div className="h-full flex items-end gap-2 pb-6">
-            {(viewMode === "monthly"
-              ? [90, 140, 110, 160, 180, 130, 100, 40, 40, 40, 40, 40]
-              : [80, 160, 130, 210, 70, 180, 95]
-            ).map((h, i) => (
-              <div key={i} className="flex-1 rounded-lg bg-muted animate-pulse" style={{ height: h }} />
+            {(viewMode === "monthly" ? MONTHLY_BAR_HEIGHTS : WEEKLY_BAR_HEIGHTS).map((heightClass, i) => (
+              <div key={i} className={`flex-1 rounded-lg bg-muted animate-pulse ${heightClass}`} />
             ))}
           </div>
         ) : (
@@ -145,11 +141,11 @@ export function BillingAnalytics() {
                     key={`cell-${index}`}
                     fill={barColors[index % barColors.length]}
                     opacity={chartData[index].value === 0 ? 0.15 : 1}
-                    style={{
-                      filter: hoveredBar === index && chartData[index].value > 0
-                        ? "brightness(1.2) drop-shadow(0 4px 8px rgba(45, 106, 159, 0.4))"
-                        : "none",
-                    }}
+                    className={
+                      hoveredBar === index && chartData[index].value > 0
+                        ? 'brightness-125 drop-shadow-[0_4px_8px_rgba(45,106,159,0.4)]'
+                        : undefined
+                    }
                   />
                 ))}
               </Bar>

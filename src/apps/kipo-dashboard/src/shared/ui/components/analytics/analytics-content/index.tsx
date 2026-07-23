@@ -13,17 +13,20 @@ const stats = [
 ]
 
 const monthlyData = [
-  { month: "Jan", tasks: 45, projects: 8 },
-  { month: "Feb", tasks: 52, projects: 9 },
-  { month: "Mar", tasks: 48, projects: 10 },
-  { month: "Apr", tasks: 61, projects: 11 },
-  { month: "May", tasks: 55, projects: 12 },
-  { month: "Jun", tasks: 67, projects: 12 },
+  { month: "Jan", tasks: 45, projects: 8,  barWidth: "w-[67.16%]", delay: "[animation-delay:0ms]" },
+  { month: "Feb", tasks: 52, projects: 9,  barWidth: "w-[77.61%]", delay: "[animation-delay:50ms]" },
+  { month: "Mar", tasks: 48, projects: 10, barWidth: "w-[71.64%]", delay: "[animation-delay:100ms]" },
+  { month: "Apr", tasks: 61, projects: 11, barWidth: "w-[91.04%]", delay: "[animation-delay:150ms]" },
+  { month: "May", tasks: 55, projects: 12, barWidth: "w-[82.09%]", delay: "[animation-delay:200ms]" },
+  { month: "Jun", tasks: 67, projects: 12, barWidth: "w-full",     delay: "[animation-delay:250ms]" },
 ]
+
+const STAT_CARD_DELAYS = ["delay-0", "delay-100", "delay-200", "delay-300"] as const
+
+const PROJECT_DELAYS = ["delay-0", "delay-100", "delay-200", "delay-300"] as const
 
 export function AnalyticsContent() {
   const [hoveredCard, setHoveredCard] = useState<number | null>(null)
-  const maxTasks = Math.max(...monthlyData.map((d) => d.tasks))
 
   return (
     <div className="space-y-6 animate-fade-in">
@@ -33,8 +36,7 @@ export function AnalyticsContent() {
             key={stat.title}
             onMouseEnter={() => setHoveredCard(index)}
             onMouseLeave={() => setHoveredCard(null)}
-            style={{ animationDelay: `${index * 100}ms` }}
-            className={`bg-card text-foreground p-4 transition-all duration-500 ease-out animate-slide-in-up cursor-pointer ${
+            className={`bg-card text-foreground p-4 transition-all duration-500 ease-out animate-slide-in-up cursor-pointer ${STAT_CARD_DELAYS[index]} ${
               hoveredCard === index ? "scale-105 shadow-2xl" : "shadow-lg"
             }`}
           >
@@ -73,11 +75,10 @@ export function AnalyticsContent() {
         <Card className="p-6">
           <h3 className="font-semibold text-lg mb-6">Monthly Task Completion</h3>
           <div className="space-y-4">
-            {monthlyData.map((data, index) => (
+            {monthlyData.map((data) => (
               <div
                 key={data.month}
-                className="space-y-2 animate-slide-in"
-                style={{ animationDelay: `${index * 50}ms` }}
+                className={`space-y-2 animate-slide-in ${data.delay}`}
               >
                 <div className="flex items-center justify-between text-sm">
                   <span className="font-medium">{data.month}</span>
@@ -85,8 +86,7 @@ export function AnalyticsContent() {
                 </div>
                 <div className="w-full bg-secondary rounded-full h-2 overflow-hidden">
                   <div
-                    className="h-full bg-primary rounded-full transition-all duration-1000 ease-out"
-                    style={{ width: `${(data.tasks / maxTasks) * 100}%` }}
+                    className={`h-full bg-primary rounded-full transition-all duration-1000 ease-out ${data.barWidth}`}
                   />
                 </div>
               </div>
@@ -105,8 +105,7 @@ export function AnalyticsContent() {
             ].map((item, index) => (
               <div
                 key={item.name}
-                className="flex items-center justify-between p-3 rounded-lg border border-border hover:shadow-md transition-all duration-300 animate-slide-in"
-                style={{ animationDelay: `${index * 100}ms` }}
+                className={`flex items-center justify-between p-3 rounded-lg border border-border hover:shadow-md transition-all duration-300 animate-slide-in ${PROJECT_DELAYS[index]}`}
               >
                 <div className="flex items-center gap-3">
                   <div className={`w-3 h-3 rounded-full ${item.color}`} />

@@ -34,3 +34,7 @@ export function formatWeekRange(weekStart: Date): string {
   const fmt = (d: Date) => `${d.getDate()} ${MONTHS[d.getMonth()]}`
   return `${fmt(weekStart)} — ${fmt(end)}`
 }
+
+export const MONTHLY_BAR_HEIGHTS = ['h-[90px]', 'h-[140px]', 'h-[110px]', 'h-[160px]', 'h-[180px]', 'h-[130px]', 'h-[100px]', 'h-10', 'h-10', 'h-10', 'h-10', 'h-10'] as const
+
+export const WEEKLY_BAR_HEIGHTS = ['h-[80px]', 'h-[160px]', 'h-[130px]', 'h-[210px]', 'h-[70px]', 'h-[180px]', 'h-[95px]'] as const

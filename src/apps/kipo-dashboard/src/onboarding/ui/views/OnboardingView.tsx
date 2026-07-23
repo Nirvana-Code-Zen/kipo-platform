@@ -104,8 +104,7 @@ export const OnboardingView = () => {
               aria-label="Subir foto de perfil"
             >
               <div
-                className="w-20 h-20 rounded-full overflow-hidden flex items-center justify-center border-2 border-primary"
-                style={{ background: 'var(--surface-brand-soft)' }}
+                className="w-20 h-20 rounded-full overflow-hidden flex items-center justify-center border-2 border-primary bg-surface-brand-soft"
               >
                 {avatarPreview ? (
                   <Image width={80} height={12} src={avatarPreview} alt="" className="w-full h-full object-cover" />
@@ -131,8 +130,7 @@ export const OnboardingView = () => {
           {(nameHook.error || avatarUploadError) && (
             <div
               role="alert"
-              className="bg-danger-soft border-destructive rounded-xl px-3.5 py-2.5 text-[13px] text-destructive font-sans mb-5"
-              style={{ borderWidth: '1.5px', borderStyle: 'solid' }}
+              className="bg-danger-soft border-destructive border-[1.5px] border-solid rounded-xl px-3.5 py-2.5 text-[13px] text-destructive font-sans mb-5"
             >
               {avatarUploadError ?? nameHook.error}
             </div>
@@ -189,8 +187,7 @@ export const OnboardingView = () => {
         {tenantError && (
           <div
             role="alert"
-            className="bg-danger-soft border-destructive rounded-xl px-3.5 py-2.5 text-[13px] text-destructive font-sans mb-5"
-            style={{ borderWidth: '1.5px', borderStyle: 'solid' }}
+            className="bg-danger-soft border-destructive border-[1.5px] border-solid rounded-xl px-3.5 py-2.5 text-[13px] text-destructive font-sans mb-5"
           >
             {tenantError.message}
           </div>
@@ -214,8 +211,7 @@ export const OnboardingView = () => {
               <select
                 value={timezone}
                 onChange={(e) => setTimezone(e.target.value)}
-                className="bg-muted border-transparent rounded-[14px] px-4 py-3.5 text-sm font-sans text-foreground outline-none cursor-pointer w-full"
-                style={{ borderWidth: '1.5px', borderStyle: 'solid' }}
+                className="bg-muted border-transparent border-[1.5px] border-solid rounded-[14px] px-4 py-3.5 text-sm font-sans text-foreground outline-none cursor-pointer w-full"
               >
                 {TIMEZONES.map((tz) => (
                   <option key={tz} value={tz}>{tz.split('/')[1].replace(/_/g, ' ')}</option>
@@ -230,8 +226,7 @@ export const OnboardingView = () => {
               <select
                 value={currency}
                 onChange={(e) => setCurrency(e.target.value)}
-                className="bg-muted border-transparent rounded-[14px] px-4 py-3.5 text-sm font-sans text-foreground outline-none cursor-pointer w-full"
-                style={{ borderWidth: '1.5px', borderStyle: 'solid' }}
+                className="bg-muted border-transparent border-[1.5px] border-solid rounded-[14px] px-4 py-3.5 text-sm font-sans text-foreground outline-none cursor-pointer w-full"
               >
                 {CURRENCIES.map((c) => <option key={c} value={c}>{c}</option>)}
               </select>
