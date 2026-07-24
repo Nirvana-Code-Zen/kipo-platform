@@ -37,6 +37,10 @@ module.exports = {
         'banner-warning-icon': 'var(--banner-warning-icon)',
         'banner-warning-text': 'var(--banner-warning-text)',
         'banner-warning-link': 'var(--banner-warning-link)',
+        'banner-info-bg': 'var(--banner-info-bg)',
+        'banner-info-border': 'var(--banner-info-border)',
+        'banner-info-icon': 'var(--banner-info-icon)',
+        'banner-info-text': 'var(--banner-info-text)',
         'kipo-slate-900': 'var(--kipo-slate-900)',
         // Raw palette (kept for escape-hatch use)
         kipo: {

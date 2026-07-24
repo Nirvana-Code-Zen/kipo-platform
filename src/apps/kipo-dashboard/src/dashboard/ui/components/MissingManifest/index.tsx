@@ -3,6 +3,7 @@
 import { AlertTriangle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
+import { EMISOR_SETUP_PATHS } from '@/src/settings/ui/components/shared/getMissingSetupPath'
 
 export function MissingManifestBanner() {
   const router = useRouter()
@@ -14,8 +15,8 @@ export function MissingManifestBanner() {
         Firma tu Carta Manifiesto con tu e.firma (FIEL)
       </p>
       <button
-        onClick={() => router.push('/settings')}
-        className="text-sm font-semibold shrink-0 underline underline-offset-2 text-banner-warning-link"
+        onClick={() => router.push(EMISOR_SETUP_PATHS.manifest)}
+        className="text-sm font-semibold shrink-0 underline underline-offset-2 text-banner-warning-link cursor-pointer"
       >
         Firma ahora
       </button>

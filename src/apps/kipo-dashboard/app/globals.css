@@ -58,6 +58,19 @@
   --color-info: var(--kipo-info);
   --color-info-soft: var(--kipo-info-bg);
 
+  /* Warning banners (Facturación, Dashboard) */
+  --color-banner-warning-bg: var(--banner-warning-bg);
+  --color-banner-warning-border: var(--banner-warning-border);
+  --color-banner-warning-icon: var(--banner-warning-icon);
+  --color-banner-warning-text: var(--banner-warning-text);
+  --color-banner-warning-link: var(--banner-warning-link);
+
+  /* Info banners (siguiente paso en Ajustes) */
+  --color-banner-info-bg: var(--banner-info-bg);
+  --color-banner-info-border: var(--banner-info-border);
+  --color-banner-info-icon: var(--banner-info-icon);
+  --color-banner-info-text: var(--banner-info-text);
+
   /* Tipografía */
   --font-sans: var(--font-body);
   --font-display: var(--font-display);
