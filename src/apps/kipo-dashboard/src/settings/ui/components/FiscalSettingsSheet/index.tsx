@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { createPortal } from "react-dom"
 
 import { Button, Input } from "@kipo/ui-react"
@@ -8,11 +8,15 @@ import { X, CheckCircle2, AlertCircle, Building2, User } from "lucide-react"
 
 import { useCatalogs } from "@/src/catalogs/ui/hooks/useCatalogs"
 import { detectRfcType, RFC_TYPE_LABEL } from "@/src/shared/domain/rfc"
+import { scrollToFirstFormError } from "@/src/shared/ui/lib/scrollToFirstFormError"
 
 import { useSaveFiscalSettings } from "../../hooks/useSaveFiscalSettings"
+import { EmisorSetupNextStepPrompt } from "../EmisorSetupNextStepPrompt"
+import { getNextEmisorSetupStep } from "../shared/getMissingSetupPath"
 
 import type { FiscalSettingsSheetProps } from "./types"
 import type { UIFiscalSettings } from "../shared/types"
+import type { EmisorSetupStepInfo } from "../shared/getMissingSetupPath"
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
@@ -29,7 +33,9 @@ function rfcIsValid(rfc: string): boolean {
   return /^[A-Z&Ñ]{3,4}[0-9]{6}[A-Z0-9]{3}$/.test(rfc)
 }
 
-export function FiscalSettingsSheet({ isOpen, onClose, initial, onSaved }: FiscalSettingsSheetProps) {
+const FISCAL_FIELD_ORDER = ['rfc', 'razonSocial', 'regimenFiscal', 'codigoPostal'] as const
+
+export function FiscalSettingsSheet({ isOpen, onClose, initial, onSaved, onContinueToNextStep }: FiscalSettingsSheetProps) {
   const { save, isSaving, error } = useSaveFiscalSettings()
   const { regimenFiscal: regimenFiscalCatalog } = useCatalogs()
 
@@ -42,6 +48,8 @@ export function FiscalSettingsSheet({ isOpen, onClose, initial, onSaved }: Fisca
 
   const [rfcBlurred, setRfcBlurred] = useState(false)
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<string, string>>>({})
+  const [nextStep, setNextStep] = useState<EmisorSetupStepInfo | null>(null)
+  const formScrollRef = useRef<HTMLDivElement>(null)
 
   const rfcType = detectRfcType(rfc)
   const rfcValid = rfcType === "natural" || rfcType === "legal"
@@ -59,24 +67,31 @@ export function FiscalSettingsSheet({ isOpen, onClose, initial, onSaved }: Fisca
       setFolioInicial(initial?.folioSiguiente?.toString() ?? "1")
       setFieldErrors({})
       setRfcBlurred(false)
+      setNextStep(null)
     }
   }, [isOpen, initial])
 
   if (!isOpen) return null
 
-  function validate(): boolean {
+  function collectValidationErrors(): Partial<Record<string, string>> {
     const next: Partial<Record<string, string>> = {}
     if (!rfcIsValid(rfc)) next.rfc = "RFC inválido (12 chars moral / 13 chars física)"
     if (!razonSocial.trim()) next.razonSocial = "Requerido"
     if (!regimenFiscal) next.regimenFiscal = "Selecciona un régimen"
     if (!/^\d{5}$/.test(codigoPostal.trim())) next.codigoPostal = "5 dígitos requeridos"
-    setFieldErrors(next)
-    return Object.keys(next).length === 0
+    return next
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (!validate()) return
+    const errors = collectValidationErrors()
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors)
+      requestAnimationFrame(() => {
+        scrollToFirstFormError(formScrollRef.current, FISCAL_FIELD_ORDER, errors)
+      })
+      return
+    }
     const payload: UIFiscalSettings = {
       rfc: rfc.trim().toUpperCase(),
       razonSocial: razonSocial.trim(),
@@ -88,8 +103,25 @@ export function FiscalSettingsSheet({ isOpen, onClose, initial, onSaved }: Fisca
     const result = await save(payload)
     if (result) {
       onSaved(result)
+      const pendingStep = getNextEmisorSetupStep(result)
+      if (pendingStep && onContinueToNextStep) {
+        setNextStep(pendingStep)
+        return
+      }
       onClose()
     }
+  }
+
+  function handleContinueToNextStep() {
+    if (!nextStep) return
+    onContinueToNextStep?.(nextStep.step)
+    setNextStep(null)
+    onClose()
+  }
+
+  function handleDismissNextStep() {
+    setNextStep(null)
+    onClose()
   }
 
   return createPortal(
@@ -127,14 +159,24 @@ export function FiscalSettingsSheet({ isOpen, onClose, initial, onSaved }: Fisca
           </div>
         )}
 
-        <div className="overflow-y-auto flex-1 px-5 py-5">
+        <div ref={formScrollRef} className="overflow-y-auto flex-1 px-5 py-5">
+          {nextStep ? (
+            <EmisorSetupNextStepPrompt
+              savedMessage={nextStep.savedMessage}
+              nextTitle={nextStep.nextTitle}
+              nextDescription={nextStep.nextDescription}
+              ctaLabel={nextStep.ctaLabel}
+              onContinue={handleContinueToNextStep}
+              onClose={handleDismissNextStep}
+            />
+          ) : (
           <form onSubmit={handleSubmit} noValidate>
             <div className="flex flex-col gap-7">
 
               <section className="flex flex-col gap-4">
                 <SectionTitle>Datos del emisor</SectionTitle>
 
-                <div>
+                <div data-form-field="rfc">
                   <Input
                     label="RFC"
                     placeholder="XAXX010101000"
@@ -162,6 +204,7 @@ export function FiscalSettingsSheet({ isOpen, onClose, initial, onSaved }: Fisca
                   )}
                 </div>
 
+                <div data-form-field="razonSocial">
                 <Input
                   label="Razón social"
                   placeholder="Como aparece en la CSF"
@@ -170,8 +213,9 @@ export function FiscalSettingsSheet({ isOpen, onClose, initial, onSaved }: Fisca
                   error={fieldErrors.razonSocial}
                   autoComplete="off"
                 />
+                </div>
 
-                <div className="flex flex-col gap-1.5">
+                <div data-form-field="regimenFiscal" className="flex flex-col gap-1.5">
                   <label className="font-sans font-semibold text-[13px] text-foreground">
                     Régimen fiscal
                   </label>
@@ -203,6 +247,7 @@ export function FiscalSettingsSheet({ isOpen, onClose, initial, onSaved }: Fisca
                   )}
                 </div>
 
+                <div data-form-field="codigoPostal">
                 <Input
                   label="Código postal"
                   placeholder="00000"
@@ -212,6 +257,7 @@ export function FiscalSettingsSheet({ isOpen, onClose, initial, onSaved }: Fisca
                   mono
                   maxLength={5}
                 />
+                </div>
               </section>
 
               <section className="flex flex-col gap-4">
@@ -254,6 +300,7 @@ export function FiscalSettingsSheet({ isOpen, onClose, initial, onSaved }: Fisca
 
             </div>
           </form>
+          )}
         </div>
       </div>
     </div>,

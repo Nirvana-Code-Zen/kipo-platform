@@ -15,6 +15,7 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { useAuthStore } from '@/src/auth/ui/store/authStore'
 import { Header } from '@/src/shared/ui/components/dashboard/header'
 import { useStampedInvoiceCount } from '@/src/billing/ui/hooks/useStampedInvoiceCount'
+import { ManifiestoSignPortal } from '@/src/onboarding/ui/components/ManifiestoSignPortal'
 import { BuyStampsSheet } from '@/src/stamp-packs/ui/components/BuyStampsSheet'
 import { useTenantPlan } from '@/src/subscriptions/ui/hooks/useTenantPlan'
 import { UpgradePlanSheet } from '@/src/subscriptions/ui/components/UpgradePlanSheet'
@@ -24,8 +25,12 @@ import { useFiscalSettings } from '../hooks/useFiscalSettings'
 import { FiscalSettingsSection } from '../components/FiscalSettingsSection'
 import { FiscalSettingsSheet } from '../components/FiscalSettingsSheet'
 import { ProfileEditSheet } from '../components/ProfileEditSheet'
-import { CSDSection } from '../components/CSDSection'
+import { CSDSettingsSection } from '../components/CSDSettingsSection'
 import { CSDSettingsSheet } from '../components/CSDSettingsSheet'
+import { ManifiestoSettingsSection } from '../components/ManifiestoSettingsSection'
+import { useEmisorStore } from '../store/emisorStore'
+
+import type { EmisorSetupStep } from '../components/shared/getMissingSetupPath'
 
 export function SettingsView() {
   const persistedSession = useAuthStore((s) => s.persistedSession)
@@ -35,6 +40,7 @@ export function SettingsView() {
   const [fiscalSheetOpen, setFiscalSheetOpen] = useState(false)
   const [profileSheetOpen, setProfileSheetOpen] = useState(false)
   const [csdSheetOpen, setCsdSheetOpen] = useState(false)
+  const [manifestPortalOpen, setManifestPortalOpen] = useState(false)
   const [buySheetOpen, setBuySheetOpen] = useState(false)
   const [upgradeSheetOpen, setUpgradeSheetOpen] = useState(false)
 
@@ -54,7 +60,21 @@ export function SettingsView() {
       setCsdSheetOpen(true)
       router.replace('/settings')
     }
-  }, [searchParams])
+    if (searchParams.get('openManifest') === 'true') {
+      setManifestPortalOpen(true)
+      router.replace('/settings')
+    }
+  }, [searchParams, router])
+
+  function handleContinueEmisorSetup(step: EmisorSetupStep) {
+    if (step === 'csd') setCsdSheetOpen(true)
+    if (step === 'manifest') setManifestPortalOpen(true)
+  }
+
+  function handleManifestSigned() {
+    setManifestPortalOpen(false)
+    setFiscalData(useEmisorStore.getState().data)
+  }
 
   const displayName = persistedSession?.displayName ?? 'Usuario'
   const email = persistedSession?.email ?? ''
@@ -114,7 +134,18 @@ export function SettingsView() {
           <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-1">
             Certificados de sello digital
           </p>
-          <CSDSection />
+          <CSDSettingsSection
+            data={fiscalData}
+            isLoading={fiscalLoading}
+            onEdit={() => setCsdSheetOpen(true)}
+          />
+        </Card>
+
+        <Card className='p-5'>
+          <p className="text-xs font-semibold text-muted-foreground uppercase tracking-wider mb-2 px-1">
+            Carta Manifiesto
+          </p>
+          <ManifiestoSettingsSection data={fiscalData} />
         </Card>
 
         <Card className="p-5">
@@ -184,6 +215,7 @@ export function SettingsView() {
         onClose={() => setFiscalSheetOpen(false)}
         initial={fiscalData}
         onSaved={(updated) => setFiscalData(updated)}
+        onContinueToNextStep={handleContinueEmisorSetup}
       />
 
       <ProfileEditSheet
@@ -195,6 +227,13 @@ export function SettingsView() {
         isOpen={csdSheetOpen}
         onClose={() => setCsdSheetOpen(false)}
         onSaved={(updated) => setFiscalData(updated)}
+        onContinueToNextStep={handleContinueEmisorSetup}
+      />
+
+      <ManifiestoSignPortal
+        isOpen={manifestPortalOpen}
+        onClose={() => setManifestPortalOpen(false)}
+        onSigned={handleManifestSigned}
       />
 
       <BuyStampsSheet

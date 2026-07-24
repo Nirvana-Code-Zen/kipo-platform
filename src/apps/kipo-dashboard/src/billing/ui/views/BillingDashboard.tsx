@@ -7,18 +7,20 @@ import { FilePlus, Palette } from "lucide-react"
 import { Button } from '@kipo/ui-react'
 
 import { Header } from '@/src/shared/ui/components/dashboard/header'
+import { EmisorMissingBanner } from '@/src/dashboard/ui/components/EmisorMissingBanner'
+import { getMissingSetupPath } from '@/src/settings/ui/components/shared/getMissingSetupPath'
 import { useEmisorStore } from "@/src/settings/ui/store/emisorStore"
 
-import { Invoices } from '../components/invoices'
 import { CreateInvoiceSheet } from '../components/CreateInvoiceSheet'
+import { Invoices } from '../components/invoices'
+import { VALID_STATUSES } from './constants'
 
 import type { InvoicesHandle } from '../components/invoices'
 import type { StatusFilter } from '../hooks/useInvoiceFilters'
 
-const VALID_STATUSES: StatusFilter[] = ["all", "stamped", "draft", "cancelled"]
-
 export const BillingDashboard = () => {
   const issuer = useEmisorStore((s) => s.data)
+  const isLoaded = useEmisorStore((s) => s.isLoaded)
   const searchParams = useSearchParams()
   const router = useRouter()
   const rawStatus = searchParams.get("status") ?? "all"
@@ -27,11 +29,22 @@ export const BillingDashboard = () => {
   const [sheetOpen, setSheetOpen] = useState(false)
   const invoicesRef = useRef<InvoicesHandle>(null)
 
-  useEffect(() => {
-    if (searchParams.get("new") === "1") {
-      setSheetOpen(true)
+  function openCreateInvoice() {
+    if (!isLoaded) return
+
+    const missingPath = getMissingSetupPath(issuer)
+    if (missingPath) {
+      router.push(missingPath)
+      return
     }
-  }, [])
+
+    setSheetOpen(true)
+  }
+
+  useEffect(() => {
+    if (searchParams.get("new") !== "1" || !isLoaded) return
+    openCreateInvoice()
+  }, [isLoaded])
 
   return (
     <>
@@ -50,14 +63,14 @@ export const BillingDashboard = () => {
             <Button
               iconLeft={<FilePlus size={15} />}
               size="sm"
-              onClick={() => setSheetOpen(true)}
-              disabled={!issuer || !issuer.csdConfigured || !issuer.manifiestoSigned}
+              onClick={openCreateInvoice}
             >
               Nueva Factura
             </Button>
           </>
         }
       />
+      <EmisorMissingBanner />
       <div className="mt-6">
         <Invoices ref={invoicesRef} initialStatus={initialStatus} />
       </div>

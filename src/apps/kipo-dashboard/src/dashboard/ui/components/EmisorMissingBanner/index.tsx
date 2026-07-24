@@ -4,6 +4,7 @@ import { AlertTriangle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
 import { useEmisorStore } from '@/src/settings/ui/store/emisorStore'
+import { EMISOR_SETUP_PATHS } from '@/src/settings/ui/components/shared/getMissingSetupPath'
 
 import { MissingCSDBanner } from '../MissingCSD'
 import { MissingManifestBanner } from '../MissingManifest'
@@ -21,8 +22,8 @@ export function EmisorMissingBanner() {
           Configura tus datos fiscales para poder emitir facturas
         </p>
         <button
-          onClick={() => router.push('/settings?openFiscal=true')}
-          className="text-sm font-semibold shrink-0 underline underline-offset-2 text-banner-warning-link"
+          onClick={() => router.push(EMISOR_SETUP_PATHS.fiscal)}
+          className="text-sm font-semibold shrink-0 underline underline-offset-2 text-banner-warning-link cursor-pointer"
         >
           Configurar ahora
         </button>

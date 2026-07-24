@@ -57,11 +57,16 @@
   --surface-sunken: var(--kipo-cream-200);
   --surface-brand-soft: var(--kipo-red-50);
 
-  --banner-warning-bg: #fffbeb;
-  --banner-warning-border: #fde68a;
-  --banner-warning-icon: #d97706;
-  --banner-warning-text: #92400e;
-  --banner-warning-link: #b45309;
+  --banner-warning-bg: #fef9c3;
+  --banner-warning-border: #eab308;
+  --banner-warning-icon: #ca8a04;
+  --banner-warning-text: #713f12;
+  --banner-warning-link: #a16207;
+
+  --banner-info-bg: #eff6ff;
+  --banner-info-border: #60a5fa;
+  --banner-info-icon: #2563eb;
+  --banner-info-text: #1e40af;
 
   --border-subtle: var(--kipo-cream-200);
   --border-strong: var(--kipo-cream-300);

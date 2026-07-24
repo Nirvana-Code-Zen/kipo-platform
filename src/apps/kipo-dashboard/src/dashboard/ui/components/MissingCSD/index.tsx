@@ -3,6 +3,7 @@
 import { AlertTriangle } from 'lucide-react'
 import { useRouter } from 'next/navigation'
 
+import { EMISOR_SETUP_PATHS } from '@/src/settings/ui/components/shared/getMissingSetupPath'
 
 export function MissingCSDBanner() {
   const router = useRouter()
@@ -14,8 +15,8 @@ export function MissingCSDBanner() {
         Sube tu CSD del SAT para poder timbrar facturas.
       </p>
       <button
-        onClick={() => router.push('/settings?openCsd=true')}
-        className="text-sm font-semibold shrink-0 underline underline-offset-2 text-banner-warning-link"
+        onClick={() => router.push(EMISOR_SETUP_PATHS.csd)}
+        className="text-sm font-semibold shrink-0 underline underline-offset-2 text-banner-warning-link cursor-pointer"
       >
         Configurar ahora
       </button>

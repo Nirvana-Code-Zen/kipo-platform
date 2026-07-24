@@ -30,6 +30,9 @@ Thumbs.db
 **/vite.config.ts.timestamp-*.mjs
 **/.astro/settings.json
 
+# Next.js
+**/.next/
+
 # Playwright e2e
 e2e/.runtime.json
 e2e/test-results/

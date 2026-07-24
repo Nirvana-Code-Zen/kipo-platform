@@ -6,10 +6,15 @@ import { createPortal } from "react-dom"
 import { Button, Input, Tooltip } from "@kipo/ui-react"
 import { X, CheckCircle2, FileUp, Eye, EyeOff, HelpCircle } from "lucide-react"
 
+import { scrollToFirstFormError } from "@/src/shared/ui/lib/scrollToFirstFormError"
+
 import { useUploadCsd } from "../../hooks/useUploadCsd"
+import { EmisorSetupNextStepPrompt } from "../EmisorSetupNextStepPrompt"
+import { getNextEmisorSetupStep } from "../shared/getMissingSetupPath"
 import { CSD_HELP_TEXT } from "./constants"
 
 import type { CSDSettingsSheetProps, FilePickerProps } from "./types"
+import type { EmisorSetupStepInfo } from "../shared/getMissingSetupPath"
 
 function SectionTitle({ children }: { children: React.ReactNode }) {
   return (
@@ -22,11 +27,11 @@ function SectionTitle({ children }: { children: React.ReactNode }) {
   )
 }
 
-function FilePicker({ label, accept, file, onSelect, error }: FilePickerProps) {
+function FilePicker({ label, accept, file, onSelect, error, fieldName }: FilePickerProps) {
   const inputRef = useRef<HTMLInputElement>(null)
 
   return (
-    <div className="flex flex-col gap-1.5">
+    <div className="flex flex-col gap-1.5" data-form-field={fieldName}>
       <label className="font-sans font-semibold text-[13px] text-foreground">
         {label}
       </label>
@@ -56,7 +61,9 @@ function FilePicker({ label, accept, file, onSelect, error }: FilePickerProps) {
   )
 }
 
-export function CSDSettingsSheet({ isOpen, onClose, onSaved }: CSDSettingsSheetProps) {
+const CSD_FIELD_ORDER = ['cer', 'key', 'password'] as const
+
+export function CSDSettingsSheet({ isOpen, onClose, onSaved, onContinueToNextStep }: CSDSettingsSheetProps) {
   const { upload, isUploading, error } = useUploadCsd()
 
   const [cerFile, setCerFile] = useState<File | null>(null)
@@ -64,6 +71,8 @@ export function CSDSettingsSheet({ isOpen, onClose, onSaved }: CSDSettingsSheetP
   const [password, setPassword] = useState("")
   const [showPassword, setShowPassword] = useState(false)
   const [fieldErrors, setFieldErrors] = useState<Partial<Record<"cer" | "key" | "password", string>>>({})
+  const [nextStep, setNextStep] = useState<EmisorSetupStepInfo | null>(null)
+  const formScrollRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (isOpen) {
@@ -72,29 +81,54 @@ export function CSDSettingsSheet({ isOpen, onClose, onSaved }: CSDSettingsSheetP
       setPassword("")
       setShowPassword(false)
       setFieldErrors({})
+      setNextStep(null)
     }
   }, [isOpen])
 
   if (!isOpen) return null
 
-  function validate(): boolean {
+  function collectValidationErrors(): Partial<Record<"cer" | "key" | "password", string>> {
     const next: Partial<Record<"cer" | "key" | "password", string>> = {}
     if (!cerFile || !cerFile.name.toLowerCase().endsWith(".cer")) next.cer = "Selecciona un archivo .cer válido"
     if (!keyFile || !keyFile.name.toLowerCase().endsWith(".key")) next.key = "Selecciona un archivo .key válido"
     if (!password) next.password = "Requerida"
-    setFieldErrors(next)
-    return Object.keys(next).length === 0
+    return next
   }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
-    if (!validate() || !cerFile || !keyFile) return
+    const errors = collectValidationErrors()
+    if (Object.keys(errors).length > 0) {
+      setFieldErrors(errors)
+      requestAnimationFrame(() => {
+        scrollToFirstFormError(formScrollRef.current, CSD_FIELD_ORDER, errors)
+      })
+      return
+    }
+    if (!cerFile || !keyFile) return
     const result = await upload({ cerFile, keyFile, password })
     if (result) {
       onSaved(result)
       setPassword("")
+      const pendingStep = getNextEmisorSetupStep(result)
+      if (pendingStep && onContinueToNextStep) {
+        setNextStep(pendingStep)
+        return
+      }
       onClose()
     }
+  }
+
+  function handleContinueToNextStep() {
+    if (!nextStep) return
+    onContinueToNextStep?.(nextStep.step)
+    setNextStep(null)
+    onClose()
+  }
+
+  function handleDismissNextStep() {
+    setNextStep(null)
+    onClose()
   }
 
   return createPortal(
@@ -137,16 +171,27 @@ export function CSDSettingsSheet({ isOpen, onClose, onSaved }: CSDSettingsSheetP
           </div>
         )}
 
-        <div className="overflow-y-auto flex-1 px-5 py-5">
+        <div ref={formScrollRef} className="overflow-y-auto flex-1 px-5 py-5">
+          {nextStep ? (
+            <EmisorSetupNextStepPrompt
+              savedMessage={nextStep.savedMessage}
+              nextTitle={nextStep.nextTitle}
+              nextDescription={nextStep.nextDescription}
+              ctaLabel={nextStep.ctaLabel}
+              onContinue={handleContinueToNextStep}
+              onClose={handleDismissNextStep}
+            />
+          ) : (
           <form onSubmit={handleSubmit} noValidate>
             <div className="flex flex-col gap-7">
 
               <section className="flex flex-col gap-4">
                 <SectionTitle>Archivos del certificado</SectionTitle>
 
-                <FilePicker label="Certificado (.cer)" accept=".cer" file={cerFile} onSelect={setCerFile} error={fieldErrors.cer} />
-                <FilePicker label="Llave privada (.key)" accept=".key" file={keyFile} onSelect={setKeyFile} error={fieldErrors.key} />
+                <FilePicker label="Certificado (.cer)" accept=".cer" file={cerFile} onSelect={setCerFile} error={fieldErrors.cer} fieldName="cer" />
+                <FilePicker label="Llave privada (.key)" accept=".key" file={keyFile} onSelect={setKeyFile} error={fieldErrors.key} fieldName="key" />
 
+                <div data-form-field="password">
                 <Input
                   label="Contraseña de la llave privada"
                   type={showPassword ? "text" : "password"}
@@ -165,6 +210,7 @@ export function CSDSettingsSheet({ isOpen, onClose, onSaved }: CSDSettingsSheetP
                     </button>
                   }
                 />
+                </div>
               </section>
 
               <div className="flex gap-2.5 pt-1">
@@ -179,6 +225,7 @@ export function CSDSettingsSheet({ isOpen, onClose, onSaved }: CSDSettingsSheetP
 
             </div>
           </form>
+          )}
         </div>
       </div>
     </div>,
